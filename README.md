@@ -9,6 +9,10 @@ USB'ye kopyala, air-gapped laba gir, oku.
 
 ## Hızlı başlangıç
 
+Tarayıcıdan oku: **https://pashabuilds.github.io/saha-kilavuzlari/**
+
+veya indir, çevrimdışı oku:
+
 ```bash
 git clone https://github.com/PashaBuilds/saha-kilavuzlari.git
 ```
