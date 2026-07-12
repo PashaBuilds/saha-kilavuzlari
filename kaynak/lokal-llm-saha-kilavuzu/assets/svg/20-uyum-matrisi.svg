@@ -1,0 +1,81 @@
+<svg viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Donanım sınıfı ile model sınıfı uyum matrisi</title>
+
+  <text x="440" y="24" class="tc tb">Uyum matrisi: hangi donanım, hangi model sınıfını taşır? (Q4 varsayımı)</text>
+
+  <!-- sütun başlıkları: x 200 + 6*110 -->
+  <g class="txs tb">
+    <text x="255" y="58" class="tc">≤4B</text>
+    <text x="365" y="58" class="tc">7–14B</text>
+    <text x="475" y="58" class="tc">27–35B</text>
+    <text x="585" y="52" class="tc">70–120B</text>
+    <text x="585" y="64" class="tc tm">MoE</text>
+    <text x="695" y="52" class="tc">200–400B</text>
+    <text x="695" y="64" class="tc tm">MoE</text>
+    <text x="805" y="58" class="tc">~1T</text>
+  </g>
+
+  <!-- satırlar: y 72 + i*52, hücre 104x44 -->
+  <!-- Satır 1: 8-16GB RAM laptop -->
+  <text x="190" y="92" class="te ts">8–16 GB laptop</text>
+  <text x="190" y="106" class="te txs tm">GPU'suz</text>
+  <rect x="204" y="72" width="102" height="44" rx="6" class="bx-t"/><text x="255" y="98" class="tc txs tb">rahat</text>
+  <rect x="314" y="72" width="102" height="44" rx="6" class="bx-g"/><text x="365" y="98" class="tc txs tb">sınırda</text>
+  <rect x="424" y="72" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="475" y="98" class="tc txs">—</text>
+  <rect x="534" y="72" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="585" y="98" class="tc txs">—</text>
+  <rect x="644" y="72" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="695" y="98" class="tc txs">—</text>
+  <rect x="754" y="72" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="805" y="98" class="tc txs">—</text>
+
+  <!-- Satır 2: 12-16GB GPU -->
+  <text x="190" y="144" class="te ts">12–16 GB GPU</text>
+  <text x="190" y="158" class="te txs tm">3060, 5060 Ti</text>
+  <rect x="204" y="124" width="102" height="44" rx="6" class="bx-t"/><text x="255" y="150" class="tc txs tb">rahat</text>
+  <rect x="314" y="124" width="102" height="44" rx="6" class="bx-t"/><text x="365" y="150" class="tc txs tb">rahat</text>
+  <rect x="424" y="124" width="102" height="44" rx="6" class="bx-g"/><text x="475" y="150" class="tc txs tb">sınırda</text>
+  <rect x="534" y="124" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="585" y="150" class="tc txs">—</text>
+  <rect x="644" y="124" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="695" y="150" class="tc txs">—</text>
+  <rect x="754" y="124" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="805" y="150" class="tc txs">—</text>
+
+  <!-- Satır 3: 24-32GB GPU -->
+  <text x="190" y="196" class="te ts">24–32 GB GPU</text>
+  <text x="190" y="210" class="te txs tm">3090, 4090, 5090</text>
+  <rect x="204" y="176" width="102" height="44" rx="6" class="bx-t"/><text x="255" y="202" class="tc txs tb">rahat</text>
+  <rect x="314" y="176" width="102" height="44" rx="6" class="bx-t"/><text x="365" y="202" class="tc txs tb">rahat</text>
+  <rect x="424" y="176" width="102" height="44" rx="6" class="bx-t"/><text x="475" y="202" class="tc txs tb">rahat</text>
+  <rect x="534" y="176" width="102" height="44" rx="6" class="bx-g"/><text x="585" y="196" class="tc txs tb">sınırda</text><text x="585" y="210" class="tc txs">MoE offload*</text>
+  <rect x="644" y="176" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="695" y="202" class="tc txs">—</text>
+  <rect x="754" y="176" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="805" y="202" class="tc txs">—</text>
+
+  <!-- Satır 4: 48-64GB -->
+  <text x="190" y="248" class="te ts">48–64 GB</text>
+  <text x="190" y="262" class="te txs tm">M4 Pro Mac, 2×24 GPU</text>
+  <rect x="204" y="228" width="102" height="44" rx="6" class="bx-t"/><text x="255" y="254" class="tc txs tb">rahat</text>
+  <rect x="314" y="228" width="102" height="44" rx="6" class="bx-t"/><text x="365" y="254" class="tc txs tb">rahat</text>
+  <rect x="424" y="228" width="102" height="44" rx="6" class="bx-t"/><text x="475" y="254" class="tc txs tb">rahat</text>
+  <rect x="534" y="228" width="102" height="44" rx="6" class="bx-g"/><text x="585" y="254" class="tc txs tb">sınırda</text>
+  <rect x="644" y="228" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="695" y="254" class="tc txs">—</text>
+  <rect x="754" y="228" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="805" y="254" class="tc txs">—</text>
+
+  <!-- Satır 5: 128GB unified -->
+  <text x="190" y="300" class="te ts">128 GB unified</text>
+  <text x="190" y="314" class="te txs tm">M4 Max, Strix Halo, Spark</text>
+  <rect x="204" y="280" width="102" height="44" rx="6" class="bx-t"/><text x="255" y="306" class="tc txs tb">rahat</text>
+  <rect x="314" y="280" width="102" height="44" rx="6" class="bx-t"/><text x="365" y="306" class="tc txs tb">rahat</text>
+  <rect x="424" y="280" width="102" height="44" rx="6" class="bx-t"/><text x="475" y="306" class="tc txs tb">rahat</text>
+  <rect x="534" y="280" width="102" height="44" rx="6" class="bx-t"/><text x="585" y="306" class="tc txs tb">rahat</text>
+  <rect x="644" y="280" width="102" height="44" rx="6" class="bx-g"/><text x="695" y="300" class="tc txs tb">sınırda</text><text x="695" y="314" class="tc txs">düşük quant</text>
+  <rect x="754" y="280" width="102" height="44" rx="6" class="bx-r" opacity="0.5"/><text x="805" y="306" class="tc txs">—</text>
+
+  <!-- Satır 6: 256GB+ -->
+  <text x="190" y="352" class="te ts">256 GB+ istasyon</text>
+  <text x="190" y="366" class="te txs tm">M3 Ultra, RAM'li sunucu</text>
+  <rect x="204" y="332" width="102" height="44" rx="6" class="bx-t"/><text x="255" y="358" class="tc txs tb">rahat</text>
+  <rect x="314" y="332" width="102" height="44" rx="6" class="bx-t"/><text x="365" y="358" class="tc txs tb">rahat</text>
+  <rect x="424" y="332" width="102" height="44" rx="6" class="bx-t"/><text x="475" y="358" class="tc txs tb">rahat</text>
+  <rect x="534" y="332" width="102" height="44" rx="6" class="bx-t"/><text x="585" y="358" class="tc txs tb">rahat</text>
+  <rect x="644" y="332" width="102" height="44" rx="6" class="bx-t"/><text x="695" y="358" class="tc txs tb">rahat</text>
+  <rect x="754" y="332" width="102" height="44" rx="6" class="bx-g"/><text x="805" y="352" class="tc txs tb">sınırda</text><text x="805" y="366" class="tc txs">1–2 bit</text>
+
+  <text x="60" y="404" class="txs tm">* MoE offload: sık katmanlar GPU'da, expert havuzu bol sistem RAM'inde (Bölüm 5). Örn. 24 GB GPU + 256 GB RAM, 397B-A17B'yi 25+ token/s koşturabilir.</text>
+  <text x="60" y="424" class="txs tm">"Sınırda": çalışır ama quant/context/hız tavizlerinden en az biri gerekir. "—": Q4'te anlamlı biçimde çalışmaz.</text>
+</svg>

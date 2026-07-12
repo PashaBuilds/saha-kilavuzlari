@@ -1,0 +1,57 @@
+<svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Çıkarım yazılım yığınının katman haritası</title>
+
+  <text x="440" y="26" class="tc tb">Yazılım yığını: dosyadan sohbet penceresine</text>
+
+  <!-- Katman 1: model dosyası -->
+  <rect x="60" y="50" width="760" height="60" rx="10" class="bx-g"/>
+  <text x="105" y="75" class="ts tb tg">1 · Model dosyası</text>
+  <text x="105" y="95" class="txs tm">diskte duran ağırlıklar</text>
+  <text x="480" y="75" class="mono">model.gguf · MLX klasörü · safetensors</text>
+  <text x="480" y="95" class="txs tm">Hugging Face / Ollama deposundan iner</text>
+
+  <path d="M440 114 V 132" class="ln" marker-end="url(#ar)"/>
+
+  <!-- Katman 2: motor -->
+  <rect x="60" y="136" width="760" height="76" rx="10" class="bx-a"/>
+  <text x="105" y="161" class="ts tb ta">2 · Çıkarım motoru</text>
+  <text x="105" y="181" class="txs tm">ağırlıkları yükler,</text>
+  <text x="105" y="194" class="txs tm">token üretir</text>
+  <g class="mono" style="font-size:11.5px">
+    <rect x="300" y="150" width="120" height="22" rx="5" class="bx-0"/><text x="360" y="165" class="tc mono">llama.cpp</text>
+    <rect x="428" y="150" width="70" height="22" rx="5" class="bx-0"/><text x="463" y="165" class="tc mono">MLX</text>
+    <rect x="506" y="150" width="130" height="22" rx="5" class="bx-0"/><text x="571" y="165" class="tc mono">vLLM · SGLang</text>
+  </g>
+  <text x="360" y="196" class="tc txs tm">temel; her yerde</text>
+  <text x="463" y="196" class="tc txs tm">Apple yerlisi</text>
+  <text x="571" y="196" class="tc txs tm">sunucu sınıfı, çok kullanıcı</text>
+
+  <path d="M440 216 V 234" class="ln" marker-end="url(#ar)"/>
+
+  <!-- Katman 3: çalıştırıcı -->
+  <rect x="60" y="238" width="760" height="76" rx="10" class="bx-t"/>
+  <text x="105" y="263" class="ts tb tt">3 · Çalıştırıcı / sunucu</text>
+  <text x="105" y="283" class="txs tm">indirme, model yönetimi,</text>
+  <text x="105" y="296" class="txs tm">API sunma</text>
+  <g class="mono" style="font-size:11.5px">
+    <rect x="300" y="252" width="90" height="22" rx="5" class="bx-0"/><text x="345" y="267" class="tc mono">Ollama</text>
+    <rect x="398" y="252" width="110" height="22" rx="5" class="bx-0"/><text x="453" y="267" class="tc mono">LM Studio</text>
+    <rect x="516" y="252" width="130" height="22" rx="5" class="bx-0"/><text x="581" y="267" class="tc mono">llama-server</text>
+  </g>
+  <text x="345" y="298" class="tc txs tm">kolay başlangıç, CLI</text>
+  <text x="453" y="298" class="tc txs tm">GUI + keşif</text>
+  <text x="581" y="298" class="tc txs tm">çıplak motorun kendisi</text>
+
+  <path d="M440 318 V 336" class="ln" marker-end="url(#ar)"/>
+
+  <!-- Katman 4: API + istemciler -->
+  <rect x="60" y="340" width="360" height="60" rx="10" class="bx"/>
+  <text x="240" y="365" class="tc ts tb">4 · OpenAI-uyumlu API</text>
+  <text x="240" y="386" class="tc mono ta">http://localhost:11434/v1</text>
+
+  <path d="M424 370 H 452" class="ln" marker-end="url(#ar)"/>
+
+  <rect x="456" y="340" width="364" height="60" rx="10" class="bx"/>
+  <text x="638" y="365" class="tc ts tb">5 · İstemciler</text>
+  <text x="638" y="386" class="tc txs tm">Open WebUI · Jan · editör eklentileri · kendi Python kodun</text>
+</svg>

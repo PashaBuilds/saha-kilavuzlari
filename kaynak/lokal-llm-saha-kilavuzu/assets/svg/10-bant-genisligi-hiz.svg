@@ -1,0 +1,39 @@
+<svg viewBox="0 0 880 430" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Memory bandwidth'in token hızını belirlemesi</title>
+
+  <text x="440" y="28" class="tc tb">Kılavuzun en önemli şeması: neden hızı bellek belirler?</text>
+
+  <!-- Bellek kutusu -->
+  <rect x="60" y="70" width="280" height="190" rx="12" class="bx"/>
+  <text x="200" y="98" class="tc ts tb">Bellek</text>
+  <rect x="85" y="112" width="230" height="110" rx="8" class="bx-a"/>
+  <text x="200" y="140" class="tc mono">model ağırlıkları</text>
+  <text x="200" y="162" class="tc mono ta tb" style="font-size:15px">örn. 5 GB (8B-Q4)</text>
+  <text x="200" y="188" class="tc txs tm">aktif parametrelerin</text>
+  <text x="200" y="201" class="tc txs tm">tamamı</text>
+  <text x="200" y="246" class="tc txs tm">VRAM / unified / RAM — fark etmez, kural aynı</text>
+
+  <!-- boru -->
+  <path d="M345 150 H 520" class="ln-g thick" marker-end="url(#ar-g)"/>
+  <path d="M345 180 H 520" class="ln-g thick" marker-end="url(#ar-g)"/>
+  <text x="432" y="135" class="tc ts tb tg">bant genişliği</text>
+  <text x="432" y="212" class="tc txs tm">örn. 360 GB/s (RTX 3060)</text>
+
+  <!-- İşlemci -->
+  <rect x="530" y="70" width="290" height="190" rx="12" class="bx"/>
+  <text x="675" y="98" class="tc ts tb">İşlemci (GPU/CPU)</text>
+  <text x="675" y="130" class="tc ts">her token için ağırlıkların</text>
+  <text x="675" y="150" class="tc ts tb">TAMAMINI okumak zorunda</text>
+  <text x="675" y="182" class="tc txs tm">çarpma işlemi hızlıdır; işlemci çoğu</text>
+  <text x="675" y="196" class="tc txs tm">zaman veriyi BEKLER — dar boğaz</text>
+  <text x="675" y="210" class="tc txs tm">hesap değil, veri taşımadır</text>
+  <text x="675" y="240" class="tc mono tt">1 token = 5 GB okuma</text>
+
+  <!-- formül şeridi -->
+  <rect x="60" y="290" width="760" height="70" rx="12" class="bx-g"/>
+  <text x="440" y="320" class="tc tb" style="font-size:16px">token/s ≈ bant genişliği (GB/s) ÷ aktif model boyutu (GB) × ~0,6</text>
+  <text x="440" y="345" class="tc ts tm">×0,6: pratik verim payı — teorik tavanın %50-70'i tipiktir</text>
+
+  <text x="440" y="392" class="tc ts">Örnek: 360 ÷ 5 × 0,6 ≈ <tspan class="tb tg">43 token/s</tspan> — sahada RTX 3060 + 8B-Q4 ölçümleri ~40-60 arası.</text>
+  <text x="440" y="416" class="tc txs tm">Aynı formül her cihazda çalışır: M4 Max (546 GB/s) + 27B-Q4 (17 GB) → 546÷17×0,6 ≈ 19 token/s.</text>
+</svg>

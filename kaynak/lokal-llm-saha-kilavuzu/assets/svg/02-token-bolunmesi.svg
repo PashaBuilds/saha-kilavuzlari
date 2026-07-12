@@ -1,0 +1,50 @@
+<svg viewBox="0 0 880 270" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Aynı anlamdaki İngilizce ve Türkçe cümlenin token'lara bölünmesi</title>
+
+  <text x="440" y="26" class="tc tb">Aynı cümle, iki dil: tokenizer metni nasıl böler?</text>
+
+  <!-- İngilizce satırı -->
+  <text x="20" y="80" class="ts tb">İngilizce</text>
+  <text x="20" y="97" class="txs tm">“I will be working tomorrow”</text>
+
+  <rect x="200" y="62" width="28" height="30" rx="6" class="bx-a"/>
+  <text x="214" y="82" class="tc mono">I</text>
+  <rect x="234" y="62" width="58" height="30" rx="6" class="bx-g"/>
+  <text x="263" y="82" class="tc mono">·will</text>
+  <rect x="298" y="62" width="44" height="30" rx="6" class="bx-t"/>
+  <text x="320" y="82" class="tc mono">·be</text>
+  <rect x="348" y="62" width="86" height="30" rx="6" class="bx-r"/>
+  <text x="391" y="82" class="tc mono">·working</text>
+  <rect x="440" y="62" width="94" height="30" rx="6" class="bx-a"/>
+  <text x="487" y="82" class="tc mono">·tomorrow</text>
+
+  <rect x="720" y="62" width="120" height="30" rx="15" class="bx-0"/>
+  <text x="780" y="82" class="tc ts tb">5 token</text>
+
+  <!-- Türkçe satırı -->
+  <text x="20" y="150" class="ts tb">Türkçe</text>
+  <text x="20" y="167" class="txs tm">“Yarın çalışıyor olacağım”</text>
+
+  <rect x="200" y="132" width="46" height="30" rx="6" class="bx-a"/>
+  <text x="223" y="152" class="tc mono">Yar</text>
+  <rect x="252" y="132" width="38" height="30" rx="6" class="bx-g"/>
+  <text x="271" y="152" class="tc mono">ın</text>
+  <rect x="296" y="132" width="52" height="30" rx="6" class="bx-t"/>
+  <text x="322" y="152" class="tc mono">·çal</text>
+  <rect x="354" y="132" width="38" height="30" rx="6" class="bx-r"/>
+  <text x="373" y="152" class="tc mono">ış</text>
+  <rect x="398" y="132" width="54" height="30" rx="6" class="bx-a"/>
+  <text x="425" y="152" class="tc mono">ıyor</text>
+  <rect x="458" y="132" width="68" height="30" rx="6" class="bx-g"/>
+  <text x="492" y="152" class="tc mono">·olaca</text>
+  <rect x="532" y="132" width="46" height="30" rx="6" class="bx-t"/>
+  <text x="555" y="152" class="tc mono">ğım</text>
+
+  <rect x="720" y="132" width="120" height="30" rx="15" class="bx-0"/>
+  <text x="780" y="152" class="tc ts tb tg">7 token</text>
+
+  <!-- açıklama -->
+  <path d="M20 195 H 860" class="ln thin dash"/>
+  <text x="20" y="222" class="ts tm">• Nokta (·) token'ın başındaki boşluğu gösterir; boşluk da token'ın parçasıdır.</text>
+  <text x="20" y="244" class="ts tm">• Türkçe'nin ekleri (çalış-ıyor, olacağ-ım) ayrı parçalara bölünür: aynı anlam, daha fazla token.</text>
+</svg>

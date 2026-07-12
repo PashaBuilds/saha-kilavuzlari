@@ -1,0 +1,64 @@
+<svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Prefill ve decode fazlarının zaman çizgisi</title>
+
+  <text x="440" y="26" class="tc tb">Bir cevabın iki fazı: prefill (oku) ve decode (yaz)</text>
+
+  <!-- zaman ekseni -->
+  <path d="M40 300 H 850" class="ln" marker-end="url(#ar)"/>
+  <text x="835" y="322" class="te ts tm">zaman →</text>
+
+  <!-- FAZ 1: PREFILL -->
+  <rect x="60" y="60" width="240" height="220" rx="12" class="bx-a"/>
+  <text x="180" y="88" class="tc ts tb ta">FAZ 1 — PREFILL</text>
+  <text x="180" y="106" class="tc txs tm">prompt'un tamamı işlenir</text>
+
+  <!-- paralel token okları -->
+  <g>
+    <rect x="85" y="124" width="44" height="20" rx="4" class="bx-0"/><text x="107" y="138" class="tc txs">tok 1</text>
+    <rect x="135" y="124" width="44" height="20" rx="4" class="bx-0"/><text x="157" y="138" class="tc txs">tok 2</text>
+    <rect x="185" y="124" width="44" height="20" rx="4" class="bx-0"/><text x="207" y="138" class="tc txs">tok 3</text>
+    <rect x="235" y="124" width="44" height="20" rx="4" class="bx-0"/><text x="257" y="138" class="tc txs">…</text>
+  </g>
+  <path d="M107 148 V 172" class="ln-a thin" marker-end="url(#ar-a)"/>
+  <path d="M157 148 V 172" class="ln-a thin" marker-end="url(#ar-a)"/>
+  <path d="M207 148 V 172" class="ln-a thin" marker-end="url(#ar-a)"/>
+  <path d="M257 148 V 172" class="ln-a thin" marker-end="url(#ar-a)"/>
+  <rect x="85" y="176" width="194" height="24" rx="5" class="bx"/>
+  <text x="182" y="192" class="tc txs">hepsi AYNI ANDA (paralel)</text>
+
+  <text x="180" y="226" class="tc txs tb">compute-bound</text>
+  <text x="180" y="242" class="tc txs tm">dar boğaz: işlem gücü (FLOPS)</text>
+  <text x="180" y="258" class="tc txs tm">GPU'lar burada parlar</text>
+
+  <!-- TTFT işareti -->
+  <path d="M300 300 V 285" class="ln-g"/>
+  <text x="300" y="330" class="tc ts tg tb">ilk token</text>
+  <text x="300" y="346" class="tc txs tm">TTFT: time to first token</text>
+  <path d="M62 308 H 296" class="ln-g thin" marker-start="url(#ar-g)" marker-end="url(#ar-g)"/>
+
+  <!-- FAZ 2: DECODE -->
+  <rect x="320" y="60" width="520" height="220" rx="12" class="bx-t"/>
+  <text x="580" y="88" class="tc ts tb tt">FAZ 2 — DECODE</text>
+  <text x="580" y="106" class="tc txs tm">cevap token token üretilir</text>
+
+  <g>
+    <rect x="345" y="140" width="56" height="26" rx="5" class="bx-0"/><text x="373" y="157" class="tc txs">«Tabii»</text>
+    <path d="M405 153 H 425" class="ln-t thin" marker-end="url(#ar-t)"/>
+    <rect x="429" y="140" width="46" height="26" rx="5" class="bx-0"/><text x="452" y="157" class="tc txs">«,»</text>
+    <path d="M479 153 H 499" class="ln-t thin" marker-end="url(#ar-t)"/>
+    <rect x="503" y="140" width="66" height="26" rx="5" class="bx-0"/><text x="536" y="157" class="tc txs">«bunun»</text>
+    <path d="M573 153 H 593" class="ln-t thin" marker-end="url(#ar-t)"/>
+    <rect x="597" y="140" width="56" height="26" rx="5" class="bx-0"/><text x="625" y="157" class="tc txs">«için»</text>
+    <path d="M657 153 H 677" class="ln-t thin" marker-end="url(#ar-t)"/>
+    <rect x="681" y="140" width="46" height="26" rx="5" class="bx-0"/><text x="704" y="157" class="tc txs">…</text>
+  </g>
+  <text x="580" y="196" class="tc txs">her token bir öncekini bekler — SERİ; her adımda model ağırlıkları baştan okunur</text>
+
+  <text x="580" y="226" class="tc txs tb">bandwidth-bound</text>
+  <text x="580" y="242" class="tc txs tm">dar boğaz: bellek bandı (Bölüm 5 formülü burada yaşar)</text>
+  <text x="580" y="258" class="tc txs tm">yüksek bantlı cihazlar burada parlar</text>
+
+  <text x="580" y="330" class="tc ts tt tb">token/s bu fazın hızıdır</text>
+
+  <text x="440" y="378" class="tc txs tm">İki faz iki ayrı metrik doğurur: TTFT (uzun prompt'ta ne kadar beklerim?) ve token/s (cevap ne hızda akar?). Bir cihaz birinde iyi, diğerinde vasat olabilir.</text>
+</svg>

@@ -1,0 +1,54 @@
+<svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Context penceresinin bütçelenmesi ve kayan pencere davranışı</title>
+
+  <text x="440" y="26" class="tc tb">Context penceresi bir bütçedir — ve sessizce dolar</text>
+
+  <!-- bütçe şeridi: toplam 32K, x 60-820 (760px) -->
+  <text x="60" y="70" class="ts tm">32K'lık pencerenin tipik paylaşımı:</text>
+
+  <g>
+    <rect x="60" y="82" width="76" height="56" rx="6" class="bx-g"/>
+    <text x="98" y="106" class="tc txs tb">sistem</text>
+    <text x="98" y="120" class="tc txs tb">promptu</text>
+
+    <rect x="140" y="82" width="270" height="56" rx="6" class="bx-a"/>
+    <text x="275" y="106" class="tc txs tb">verilen belgeler / kod</text>
+    <text x="275" y="120" class="tc txs">(RAG, dosyalar — en büyük kalem)</text>
+
+    <rect x="414" y="82" width="220" height="56" rx="6" class="bx-t"/>
+    <text x="524" y="106" class="tc txs tb">sohbet geçmişi</text>
+    <text x="524" y="120" class="tc txs">(her tur birikir!)</text>
+
+    <rect x="638" y="82" width="66" height="56" rx="6" class="bx"/>
+    <text x="671" y="110" class="tc txs tb">soru</text>
+
+    <rect x="708" y="82" width="112" height="56" rx="6" class="bx-r"/>
+    <text x="764" y="106" class="tc txs tb tr">cevap payı</text>
+    <text x="764" y="120" class="tc txs tr">(reserve et!)</text>
+  </g>
+
+  <path d="M60 152 H 820" class="ln thin" marker-start="url(#ar)" marker-end="url(#ar)"/>
+  <text x="440" y="172" class="tc txs tm">toplamı context penceresini aşamaz — aşarsa motor bir şeyleri atmak zorunda</text>
+
+  <!-- kayan pencere -->
+  <text x="60" y="215" class="ts tm">Pencere dolunca ne olur? En eski mesajlar sessizce düşer:</text>
+
+  <g class="mono" style="font-size:11px">
+    <rect x="60" y="230" width="90" height="34" rx="5" class="bx-r" opacity="0.45"/>
+    <text x="105" y="251" class="tc txs tr" style="text-decoration:line-through">1. mesaj</text>
+    <rect x="156" y="230" width="90" height="34" rx="5" class="bx-r" opacity="0.45"/>
+    <text x="201" y="251" class="tc txs tr" style="text-decoration:line-through">2. mesaj</text>
+    <rect x="252" y="230" width="90" height="34" rx="5" class="bx"/>
+    <text x="297" y="251" class="tc txs">3. mesaj</text>
+    <rect x="348" y="230" width="90" height="34" rx="5" class="bx"/>
+    <text x="393" y="251" class="tc txs">4. mesaj</text>
+    <rect x="444" y="230" width="90" height="34" rx="5" class="bx"/>
+    <text x="489" y="251" class="tc txs">…</text>
+    <rect x="540" y="230" width="120" height="34" rx="5" class="bx-t"/>
+    <text x="600" y="251" class="tc txs tt tb">yeni mesaj</text>
+  </g>
+  <rect x="246" y="222" width="580" height="50" rx="8" fill="none" class="ln-a dash"/>
+  <text x="536" y="292" class="tc txs ta">modelin fiilen "gördüğü" pencere</text>
+
+  <text x="440" y="320" class="tc txs tm">Belirti: "az önce söylediğimi unuttu". Hata değil, bütçe taşması — model düşen mesajları hiç görmüyor.</text>
+</svg>

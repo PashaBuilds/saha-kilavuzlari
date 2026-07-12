@@ -1,0 +1,71 @@
+<svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Ayrık GPU, unified memory ve CPU-only mimarilerin karşılaştırması</title>
+
+  <text x="440" y="26" class="tc tb">Üç makine mimarisi, üç farklı karakter</text>
+
+  <!-- Panel 1: Ayrık GPU -->
+  <rect x="20" y="45" width="270" height="330" rx="12" class="bx-0"/>
+  <text x="155" y="72" class="tc ts tb ta">Ayrık GPU'lu PC</text>
+
+  <rect x="45" y="90" width="100" height="80" rx="8" class="bx"/>
+  <text x="95" y="118" class="tc ts">CPU</text>
+  <rect x="55" y="130" width="80" height="28" rx="4" class="bx-g"/>
+  <text x="95" y="148" class="tc txs">RAM 32-128GB</text>
+
+  <rect x="165" y="90" width="100" height="80" rx="8" class="bx-a"/>
+  <text x="215" y="118" class="tc ts ta">GPU</text>
+  <rect x="175" y="130" width="80" height="28" rx="4" class="bx"/>
+  <text x="215" y="148" class="tc txs">VRAM 8-32GB</text>
+
+  <path d="M148 130 H 162" class="ln-r thick"/>
+  <text x="155" y="190" class="tc txs tr tb">dar köprü: PCIe ~32-64 GB/s</text>
+
+  <text x="40" y="225" class="txs">+ VRAM bandı çok yüksek</text>
+  <text x="40" y="245" class="txs">+ prompt işleme (prefill) çok hızlı</text>
+  <text x="40" y="265" class="txs tr">− model VRAM'e sığmak zorunda;</text>
+  <text x="52" y="282" class="txs tr">taşan katman PCIe'den sürünür</text>
+  <text x="40" y="305" class="txs tm">karakter: dar ama ışık hızında şerit</text>
+
+  <text x="155" y="350" class="tc txs tm">örn. RTX 3090: 24GB @ 936 GB/s</text>
+
+  <!-- Panel 2: Unified -->
+  <rect x="305" y="45" width="270" height="330" rx="12" class="bx-0"/>
+  <text x="440" y="72" class="tc ts tb tt">Unified Memory</text>
+
+  <rect x="330" y="90" width="220" height="80" rx="8" class="bx-t"/>
+  <text x="385" y="120" class="tc ts">CPU</text>
+  <text x="495" y="120" class="tc ts">GPU</text>
+  <path d="M430 105 V 135" class="ln thin dash"/>
+  <text x="440" y="155" class="tc txs">tek yonga, ortak bellek denetleyicisi</text>
+
+  <rect x="330" y="182" width="220" height="36" rx="6" class="bx-g"/>
+  <text x="440" y="205" class="tc txs">ortak bellek havuzu 16–512 GB</text>
+
+  <text x="325" y="245" class="txs">+ havuz çok büyütülebilir → dev</text>
+  <text x="337" y="262" class="txs">modeller/MoE'ler tek makinede</text>
+  <text x="325" y="282" class="txs">+ "VRAM'e kopyalama" derdi yok</text>
+  <text x="325" y="302" class="txs tr">− bant orta düzey; prefill GPU'lardan yavaş</text>
+  <text x="325" y="325" class="txs tm">karakter: geniş, dengeli nehir</text>
+
+  <text x="440" y="350" class="tc txs tm">örn. M4 Max: 128GB @ 546 GB/s</text>
+
+  <!-- Panel 3: CPU-only -->
+  <rect x="590" y="45" width="270" height="330" rx="12" class="bx-0"/>
+  <text x="725" y="72" class="tc ts tb tg">CPU-only PC</text>
+
+  <rect x="640" y="90" width="170" height="60" rx="8" class="bx"/>
+  <text x="725" y="115" class="tc ts">CPU (çok çekirdek)</text>
+  <text x="725" y="135" class="tc txs tm">AVX/NEON vektör komutları</text>
+  <rect x="640" y="162" width="170" height="36" rx="6" class="bx-g"/>
+  <text x="725" y="185" class="tc txs">DDR4/DDR5 RAM 16-256GB</text>
+
+  <text x="610" y="245" class="txs">+ ekstra donanım istemez —</text>
+  <text x="622" y="262" class="txs">her bilgisayarda çalışır</text>
+  <text x="610" y="282" class="txs">+ RAM ucuz: kapasite sorun değil</text>
+  <text x="610" y="302" class="txs tr">− bant ~50-120 GB/s: küçük model/MoE hariç yavaş</text>
+  <text x="610" y="325" class="txs tm">karakter: geniş ama ağır akan kanal</text>
+
+  <text x="725" y="350" class="tc txs tm">örn. DDR5 çift kanal: ~90 GB/s</text>
+
+  <text x="440" y="405" class="tc txs tm">Üçü de aynı formüle tabidir: token/s ≈ bant ÷ aktif boyut. Fark, bandın ve kapasitenin nereden geldiğidir.</text>
+</svg>

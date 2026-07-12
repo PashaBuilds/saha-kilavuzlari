@@ -1,0 +1,53 @@
+<svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Parametrelerin ağırlık matrislerinde saklanması ve 7 milyar sayının ölçeği</title>
+
+  <text x="440" y="26" class="tc tb">"7B parametre" ne demek? 7 milyar öğrenilmiş sayı</text>
+
+  <!-- Sol: matris dilimi -->
+  <text x="150" y="62" class="tc ts tb">Bir ağırlık matrisinin köşesi</text>
+  <g>
+    <rect x="40" y="75" width="220" height="150" rx="8" class="bx"/>
+    <!-- 8x5 hücre -->
+    <g class="mono" style="font-size:10px">
+      <text x="58" y="98" class="tm">0.031</text><text x="112" y="98" class="tm">-1.20</text><text x="166" y="98" class="tm">0.442</text><text x="220" y="98" class="tm">-0.07</text>
+      <text x="58" y="120" class="tm">0.958</text><text x="112" y="120" class="ta">-0.37</text><text x="166" y="120" class="tm">0.006</text><text x="220" y="120" class="tm">1.882</text>
+      <text x="58" y="142" class="tm">-0.51</text><text x="112" y="142" class="tm">0.244</text><text x="166" y="142" class="tm">-0.99</text><text x="220" y="142" class="tm">0.113</text>
+      <text x="58" y="164" class="tm">0.007</text><text x="112" y="164" class="tm">0.615</text><text x="166" y="164" class="tm">-2.04</text><text x="220" y="164" class="tm">0.358</text>
+      <text x="58" y="186" class="tm">…</text><text x="112" y="186" class="tm">…</text><text x="166" y="186" class="tm">…</text><text x="220" y="186" class="tm">…</text>
+    </g>
+    <rect x="100" y="106" width="52" height="18" rx="4" fill="none" class="ln-a"/>
+  </g>
+  <text x="150" y="250" class="tc txs tm">her hücre bir parametre: eğitimde</text>
+  <text x="150" y="263" class="tc txs tm">ayarlanmış tek bir ondalıklı sayı</text>
+
+  <path d="M270 150 H 306" class="ln" marker-end="url(#ar)"/>
+
+  <!-- Orta: katman = matris paketi -->
+  <text x="435" y="62" class="tc ts tb">Katman = matris paketi</text>
+  <g>
+    <rect x="330" y="90" width="180" height="26" rx="6" class="bx-a"/>
+    <text x="420" y="107" class="tc txs">attention matrisleri</text>
+    <rect x="330" y="122" width="180" height="26" rx="6" class="bx-g"/>
+    <text x="420" y="139" class="tc txs">MLP matrisleri</text>
+    <rect x="330" y="154" width="180" height="26" rx="6" class="bx-t"/>
+    <text x="420" y="171" class="tc txs">norm/embedding</text>
+  </g>
+  <text x="420" y="205" class="tc txs tm">bu paket her katmanda tekrar eder;</text>
+  <text x="420" y="218" class="tc txs tm">tipik bir 7B modelde ~30 katman,</text>
+  <text x="420" y="231" class="tc txs tm">bir 70B modelde ~80 katman vardır</text>
+
+  <path d="M520 150 H 556" class="ln" marker-end="url(#ar)"/>
+
+  <!-- Sağ: ölçek -->
+  <text x="705" y="62" class="tc ts tb">Ölçek duygusu</text>
+  <rect x="580" y="75" width="250" height="170" rx="8" class="bx-0"/>
+  <text x="705" y="108" class="tc mono ta" style="font-size:20px">7B = 7 000 000 000</text>
+  <text x="705" y="128" class="tc txs tm">öğrenilmiş sayı</text>
+  <path d="M600 142 H 810" class="ln thin dash"/>
+  <text x="705" y="165" class="tc ts">saniyede 2 sayı okusan</text>
+  <text x="705" y="183" class="tc ts tb tg">~110 yıl sürer</text>
+  <text x="705" y="212" class="tc ts">FP16'da her sayı 2 byte:</text>
+  <text x="705" y="230" class="tc ts tb tg">7B × 2 B ≈ 14 GB dosya</text>
+
+  <text x="440" y="295" class="tc txs tm">Modelin "bildiği" her şey — dil bilgisi, dünya bilgisi, üslup — bu sayıların değerlerine dağılmış hâlde durur; tek tek hiçbirinin anlamı yoktur.</text>
+</svg>

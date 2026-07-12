@@ -1,0 +1,64 @@
+<svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>GGUF dosya adının parçalara ayrılmış anatomisi</title>
+
+  <text x="440" y="30" class="tc tb">Bir GGUF dosya adını sökmek</text>
+
+  <!-- dosya adı parçaları, orta şerit y=150 -->
+  <g style="font-size:15px" class="mono">
+    <rect x="40" y="130" width="132" height="40" rx="8" class="bx-a"/>
+    <text x="106" y="155" class="tc mono" style="font-size:14px">Qwen3.6</text>
+
+    <text x="180" y="156" class="tm">-</text>
+
+    <rect x="190" y="130" width="66" height="40" rx="8" class="bx-g"/>
+    <text x="223" y="155" class="tc mono" style="font-size:14px">27B</text>
+
+    <text x="264" y="156" class="tm">-</text>
+
+    <rect x="274" y="130" width="128" height="40" rx="8" class="bx-t"/>
+    <text x="338" y="155" class="tc mono" style="font-size:14px">Instruct</text>
+
+    <text x="410" y="156" class="tm">-</text>
+
+    <rect x="420" y="130" width="118" height="40" rx="8" class="bx-r"/>
+    <text x="479" y="155" class="tc mono" style="font-size:14px">Q4_K_M</text>
+
+    <rect x="548" y="130" width="90" height="40" rx="8" class="bx"/>
+    <text x="593" y="155" class="tc mono" style="font-size:14px">.gguf</text>
+  </g>
+
+  <!-- üst açıklamalar -->
+  <path d="M106 126 V 92" class="ln-a thin" marker-end="url(#ar-a)"/>
+  <text x="106" y="76" class="tc ts ta tb">aile + nesil</text>
+  <text x="106" y="60" class="tc txs tm">Alibaba Qwen, sürüm 3.6</text>
+
+  <path d="M338 126 V 92" class="ln-t thin" marker-end="url(#ar-t)"/>
+  <text x="338" y="76" class="tc ts tt tb">eğitim aşaması</text>
+  <text x="338" y="60" class="tc txs tm">talimat/sohbet için ayarlı (Bölüm 9)</text>
+
+  <path d="M593 126 V 92" class="ln thin" marker-end="url(#ar)"/>
+  <text x="593" y="76" class="tc ts tb">kapsayıcı format</text>
+  <text x="593" y="60" class="tc txs tm">ağırlıklar + tokenizer + ayarlar, tek dosya</text>
+
+  <!-- alt açıklamalar -->
+  <path d="M223 174 V 208" class="ln-g thin" marker-end="url(#ar-g)"/>
+  <text x="223" y="228" class="tc ts tg tb">boyut: 27 milyar parametre</text>
+  <text x="223" y="244" class="tc txs tm">MoE olsaydı: 35B-A3B gibi</text>
+
+  <path d="M479 174 V 208" class="ln-r thin" marker-end="url(#ar-r)"/>
+  <text x="479" y="228" class="tc ts tr tb">quantization düzeyi</text>
+
+  <!-- Q4_K_M ayrıntı kutusu -->
+  <rect x="330" y="258" width="300" height="76" rx="10" class="bx-0"/>
+  <text x="350" y="282" class="mono ts"><tspan class="tr tb">Q4</tspan> → ağırlık başına ~4 bit</text>
+  <text x="350" y="302" class="mono ts"><tspan class="tr tb">K</tspan>  → k-quant: blok bazlı akıllı yuvarlama</text>
+  <text x="350" y="322" class="mono ts"><tspan class="tr tb">M</tspan>  → medium: kritik katmanlara ekstra bit</text>
+
+  <text x="106" y="300" class="tc txs tm">Aynı model için S/M/L (small/</text>
+  <text x="106" y="314" class="tc txs tm">medium/large) karışımları ve</text>
+  <text x="106" y="328" class="tc txs tm">Q2→Q8 düzeyleri ayrı dosyalardır.</text>
+
+  <text x="750" y="300" class="tc txs tm">Boyutu Bölüm 4 formülüyle</text>
+  <text x="750" y="314" class="tc txs tm">tahmin et: 27B × 4,5/8 × 1,1</text>
+  <text x="750" y="328" class="tc txs tm">≈ 17 GB</text>
+</svg>

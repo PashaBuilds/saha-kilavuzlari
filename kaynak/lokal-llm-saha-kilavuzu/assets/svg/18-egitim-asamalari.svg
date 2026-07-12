@@ -1,0 +1,60 @@
+<svg viewBox="0 0 880 380" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Base, Instruct ve Reasoning modellerinin eğitim aşamaları şeridi</title>
+
+  <text x="440" y="26" class="tc tb">Aynı gövde, üç eğitim aşaması</text>
+
+  <!-- Aşama 1 -->
+  <rect x="30" y="60" width="240" height="120" rx="12" class="bx-g"/>
+  <text x="150" y="88" class="tc ts tb tg">1 · Pretraining (ön eğitim)</text>
+  <text x="150" y="112" class="tc txs tm">trilyonlarca token ham metin/kod:</text>
+  <text x="150" y="126" class="tc txs tm">"sıradaki token'ı tahmin et"</text>
+  <text x="150" y="150" class="tc txs tm">aylar süren, milyonlarca dolarlık</text>
+  <text x="150" y="164" class="tc txs tm">asıl büyük emek</text>
+
+  <path d="M150 184 V 214" class="ln-g" marker-end="url(#ar-g)"/>
+
+  <rect x="30" y="218" width="240" height="120" rx="12" class="bx-0"/>
+  <text x="150" y="244" class="tc ts tb">BASE model</text>
+  <text x="150" y="264" class="tc txs tm">tamamlama makinesi; soruya cevap</text>
+  <text x="150" y="278" class="tc txs tm">vermez, metni "sürdürür"</text>
+  <rect x="48" y="290" width="204" height="36" rx="6" class="bx"/>
+  <text x="150" y="304" class="tc txs mono">«Başkent neresi?» →</text>
+  <text x="150" y="318" class="tc txs mono tm">«sorusu sınavlarda sık çıkar…»</text>
+
+  <!-- Aşama 2 -->
+  <rect x="320" y="60" width="240" height="120" rx="12" class="bx-a"/>
+  <text x="440" y="88" class="tc ts tb ta">2 · SFT (supervised fine-tuning)</text>
+  <text x="440" y="112" class="tc txs tm">on binlerce örnek diyalog:</text>
+  <text x="440" y="126" class="tc txs tm">"soruya BÖYLE cevap verilir"</text>
+  <text x="440" y="150" class="tc txs tm">+ RLHF: insan tercihiyle inceltme</text>
+  <text x="440" y="164" class="tc txs tm">(iyi cevap ödüllendirilir)</text>
+
+  <path d="M440 184 V 214" class="ln-a" marker-end="url(#ar-a)"/>
+
+  <rect x="320" y="218" width="240" height="120" rx="12" class="bx-0"/>
+  <text x="440" y="244" class="tc ts tb ta">INSTRUCT model</text>
+  <text x="440" y="264" class="tc txs tm">talimat izleyen asistan;</text>
+  <text x="440" y="278" class="tc txs tm">indirdiğin modellerin %95'i bu</text>
+  <rect x="338" y="290" width="204" height="36" rx="6" class="bx"/>
+  <text x="440" y="304" class="tc txs mono">«Başkent neresi?» →</text>
+  <text x="440" y="318" class="tc txs mono ta">«Türkiye'nin başkenti Ankara'dır.»</text>
+
+  <!-- Aşama 3 -->
+  <rect x="610" y="60" width="240" height="120" rx="12" class="bx-t"/>
+  <text x="730" y="88" class="tc ts tb tt">3 · Reasoning RL</text>
+  <text x="730" y="112" class="tc txs tm">doğrulanabilir problemlerle pekiştirme:</text>
+  <text x="730" y="126" class="tc txs tm">"adım adım düşün, sonucu bulunca</text>
+  <text x="730" y="140" class="tc txs tm">ödül al" (matematik, kod, mantık)</text>
+
+  <path d="M730 184 V 214" class="ln-t" marker-end="url(#ar-t)"/>
+
+  <rect x="610" y="218" width="240" height="120" rx="12" class="bx-0"/>
+  <text x="730" y="244" class="tc ts tb tt">REASONING model</text>
+  <text x="730" y="264" class="tc txs tm">cevaptan önce görünür "düşünce"</text>
+  <text x="730" y="278" class="tc txs tm">üretir; yavaş ama zor işte güçlü</text>
+  <rect x="628" y="290" width="204" height="36" rx="6" class="bx"/>
+  <text x="730" y="304" class="tc txs mono tm">&lt;think&gt; önce X'i ele alayım…</text>
+  <text x="730" y="318" class="tc txs mono tt">&lt;/think&gt; Cevap: …</text>
+
+  <text x="440" y="366" class="tc txs tm">Gövde (parametre sayısı, mimari) üç aşamada da aynıdır; değişen davranıştır. Çoğu 2026 modeli, reasoning kipini açıp kapatabilen "hibrit" instruct modelidir.</text>
+</svg>

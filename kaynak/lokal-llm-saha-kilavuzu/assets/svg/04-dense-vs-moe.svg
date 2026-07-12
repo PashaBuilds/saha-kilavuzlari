@@ -1,0 +1,70 @@
+<svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Dense ve MoE mimarilerinin karşılaştırması</title>
+
+  <!-- Sol panel: Dense -->
+  <rect x="15" y="15" width="415" height="370" rx="12" class="bx-0"/>
+  <text x="222" y="44" class="tc tb">Dense (yoğun)</text>
+  <text x="222" y="63" class="tc txs tm">örnek: Qwen3.6-27B</text>
+
+  <circle cx="222" cy="92" r="9" class="fa"/>
+  <text x="240" y="97" class="ts">token</text>
+  <path d="M222 104 V 126" class="ln-a" marker-end="url(#ar-a)"/>
+
+  <rect x="72" y="132" width="300" height="150" rx="10" class="bx-a"/>
+  <g class="fa">
+    <rect x="88" y="148" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="158" y="148" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="228" y="148" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="298" y="148" width="58" height="26" rx="4" opacity="0.85"/>
+    <rect x="88" y="182" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="158" y="182" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="228" y="182" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="298" y="182" width="58" height="26" rx="4" opacity="0.85"/>
+    <rect x="88" y="216" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="158" y="216" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="228" y="216" width="62" height="26" rx="4" opacity="0.85"/>
+    <rect x="298" y="216" width="58" height="26" rx="4" opacity="0.85"/>
+  </g>
+  <text x="222" y="266" class="tc txs" style="fill:var(--bg)"> </text>
+  <text x="222" y="302" class="tc ts">her token <tspan class="tb ta">ağın tamamından</tspan> geçer</text>
+
+  <text x="222" y="340" class="tc ts tm">27B toplam = 27B aktif</text>
+  <text x="222" y="360" class="tc ts tm">her token'da 27B parametre okunur</text>
+
+  <!-- Sağ panel: MoE -->
+  <rect x="450" y="15" width="415" height="370" rx="12" class="bx-0"/>
+  <text x="657" y="44" class="tc tb tt">MoE (Mixture of Experts — uzman karışımı)</text>
+  <text x="657" y="63" class="tc txs tm">örnek: Qwen3.6-35B-A3B</text>
+
+  <circle cx="657" cy="92" r="9" class="ft"/>
+  <text x="675" y="97" class="ts">token</text>
+  <path d="M657 104 V 122" class="ln-t" marker-end="url(#ar-t)"/>
+
+  <rect x="592" y="128" width="130" height="34" rx="8" class="bx-t"/>
+  <text x="657" y="150" class="tc ts tb tt">Router</text>
+
+  <!-- router'dan expertlere -->
+  <path d="M612 164 L 528 196" class="ln-t" marker-end="url(#ar-t)"/>
+  <path d="M700 164 L 780 196" class="ln-t" marker-end="url(#ar-t)"/>
+
+  <!-- expert satırı: 8 kutu, 2 aktif -->
+  <g>
+    <rect x="500" y="202" width="58" height="72" rx="6" class="bx-t"/>
+    <text x="529" y="234" class="tc txs tb tt">exp 1</text>
+    <text x="529" y="250" class="tc txs tt">AKTİF</text>
+    <rect x="566" y="202" width="58" height="72" rx="6" class="bx-0" opacity="0.55"/>
+    <text x="595" y="242" class="tc txs tm">exp 2</text>
+    <rect x="632" y="202" width="58" height="72" rx="6" class="bx-0" opacity="0.55"/>
+    <text x="661" y="242" class="tc txs tm">exp 3</text>
+    <rect x="698" y="202" width="58" height="72" rx="6" class="bx-0" opacity="0.55"/>
+    <text x="727" y="242" class="tc txs tm">exp 4</text>
+    <rect x="764" y="202" width="58" height="72" rx="6" class="bx-t"/>
+    <text x="793" y="234" class="tc txs tb tt">exp 5</text>
+    <text x="793" y="250" class="tc txs tt">AKTİF</text>
+  </g>
+  <text x="657" y="292" class="tc txs tm">… gerçekte onlarca/yüzlerce expert, katman başına birkaçı seçilir …</text>
+
+  <text x="657" y="322" class="tc ts">her token <tspan class="tb tt">yalnızca seçilen expert'lerden</tspan> geçer</text>
+  <text x="657" y="348" class="tc ts tm">35B toplam, ~3B aktif (A3B)</text>
+  <text x="657" y="366" class="tc ts tm">her token'da yalnızca ~3B parametre okunur</text>
+</svg>

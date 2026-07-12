@@ -1,0 +1,38 @@
+<svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Aynı 7B modelin farklı quantization düzeylerindeki dosya boyutları</title>
+
+  <text x="440" y="26" class="tc tb">Aynı 7B model, beş farklı kılıkta</text>
+
+  <!-- eksen: 0 - 14GB → 0-660px, x başlangıç 150 -->
+  <!-- FP16 14.0 GB -->
+  <text x="140" y="75" class="te ts tb">FP16</text>
+  <rect x="150" y="58" width="660" height="26" rx="5" class="bx-a"/>
+  <text x="480" y="76" class="tc ts tb">14,0 GB</text>
+  <text x="820" y="76" class="te txs tm"> </text>
+
+  <!-- Q8_0 7.7 -->
+  <text x="140" y="123" class="te ts tb">Q8_0</text>
+  <rect x="150" y="106" width="363" height="26" rx="5" class="bx-t"/>
+  <text x="332" y="124" class="tc ts tb">7,7 GB</text>
+  <text x="525" y="124" class="txs tm">fark pratikte hissedilmez</text>
+
+  <!-- Q6_K 5.9 -->
+  <text x="140" y="171" class="te ts tb">Q6_K</text>
+  <rect x="150" y="154" width="278" height="26" rx="5" class="bx-t"/>
+  <text x="289" y="172" class="tc ts tb">5,9 GB</text>
+  <text x="440" y="172" class="txs tm">titiz işler için güvenli bölge</text>
+
+  <!-- Q4_K_M 4.4 -->
+  <text x="140" y="219" class="te ts tb tg">Q4_K_M</text>
+  <rect x="150" y="202" width="207" height="26" rx="5" class="bx-g"/>
+  <text x="253" y="220" class="tc ts tb">4,4 GB</text>
+  <text x="370" y="220" class="txs tg tb">★ tatlı nokta: varsayılan öneri</text>
+
+  <!-- Q2_K 2.8 -->
+  <text x="140" y="267" class="te ts tb tr">Q2_K</text>
+  <rect x="150" y="250" width="132" height="26" rx="5" class="bx-r"/>
+  <text x="216" y="268" class="tc ts tb">2,8 GB</text>
+  <text x="295" y="268" class="txs tm">gözle görülür bilgelik kaybı; ancak sığmıyorsa</text>
+
+  <text x="440" y="315" class="tc txs tm">Q8'den Q4'e inerken dosya %43 küçülür, günlük kullanımda fark zor sezilir; Q4'ten Q2'ye inerken %36 küçülür, fark açıkça hissedilir.</text>
+</svg>

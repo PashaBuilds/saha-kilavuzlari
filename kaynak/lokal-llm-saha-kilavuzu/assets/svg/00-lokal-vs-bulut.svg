@@ -1,0 +1,61 @@
+<svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Bulut tabanlı ve lokal LLM kullanımının karşılaştırması</title>
+
+  <!-- Sol panel: Bulut -->
+  <rect x="10" y="12" width="360" height="306" rx="12" class="bx-0"/>
+  <text x="190" y="40" class="tc tb">Bulut: alışık olduğun düzen</text>
+
+  <!-- laptop -->
+  <rect x="40" y="70" width="120" height="76" rx="8" class="bx"/>
+  <rect x="52" y="82" width="96" height="40" rx="3" class="bx-0"/>
+  <text x="100" y="106" class="tc ts tm">tarayıcı /</text>
+  <text x="100" y="118" class="tc ts tm">uygulama</text>
+  <text x="100" y="166" class="tc ts tm">senin makinen</text>
+
+  <!-- veri merkezi -->
+  <rect x="230" y="60" width="110" height="96" rx="8" class="bx-a"/>
+  <rect x="244" y="74" width="82" height="14" rx="2" class="bx-0"/>
+  <rect x="244" y="92" width="82" height="14" rx="2" class="bx-0"/>
+  <rect x="244" y="110" width="82" height="14" rx="2" class="bx-0"/>
+  <text x="285" y="140" class="tc ts ta">model burada</text>
+  <text x="285" y="176" class="tc ts tm">sağlayıcının</text>
+  <text x="285" y="189" class="tc ts tm">veri merkezi</text>
+
+  <!-- oklar -->
+  <path d="M162 92 H226" class="ln-a" marker-end="url(#ar-a)"/>
+  <text x="194" y="84" class="tc ts ta">prompt + verin</text>
+  <path d="M226 126 H162" class="ln" marker-end="url(#ar)"/>
+  <text x="194" y="142" class="tc ts tm">cevap</text>
+
+  <!-- alt notlar -->
+  <text x="40" y="230" class="ts tm">• internet bağlantısı şart</text>
+  <text x="40" y="252" class="ts tm">• verin başkasının bilgisayarına gider</text>
+  <text x="40" y="274" class="ts tm">• abonelik ya da token başına ücret</text>
+  <text x="40" y="296" class="ts tm">• model seçimi sağlayıcının elinde</text>
+
+  <!-- Sağ panel: Lokal -->
+  <rect x="390" y="12" width="360" height="306" rx="12" class="bx-0"/>
+  <text x="570" y="40" class="tc tb tt">Lokal: bu kılavuzun konusu</text>
+
+  <!-- büyük laptop -->
+  <rect x="430" y="60" width="280" height="130" rx="10" class="bx-t"/>
+  <text x="570" y="82" class="tc ts tt">senin makinen</text>
+
+  <rect x="448" y="94" width="110" height="76" rx="6" class="bx"/>
+  <text x="503" y="118" class="tc mono">model.gguf</text>
+  <text x="503" y="136" class="tc txs tm">milyarlarca sayı,</text>
+  <text x="503" y="148" class="tc txs tm">diskte tek dosya</text>
+
+  <rect x="582" y="94" width="110" height="76" rx="6" class="bx"/>
+  <text x="637" y="118" class="tc ts">çıkarım motoru</text>
+  <text x="637" y="136" class="tc txs tm">Ollama, llama.cpp,</text>
+  <text x="637" y="148" class="tc txs tm">LM Studio…</text>
+
+  <path d="M560 132 H578" class="ln-t" marker-end="url(#ar-t)"/>
+
+  <!-- alt notlar -->
+  <text x="420" y="230" class="ts tt">• prompt da cevap da makineden çıkmaz</text>
+  <text x="420" y="252" class="ts tt">• çevrimdışı çalışır</text>
+  <text x="420" y="274" class="ts tt">• marjinal maliyet: elektrik</text>
+  <text x="420" y="296" class="ts tt">• model, sürüm ve ayarlar senin kontrolünde</text>
+</svg>

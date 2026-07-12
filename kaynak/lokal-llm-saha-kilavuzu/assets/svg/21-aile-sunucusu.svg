@@ -1,0 +1,60 @@
+<svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Ev ağında lokal LLM sunucusu topolojisi</title>
+
+  <text x="440" y="26" class="tc tb">"Kendi ChatGPT'n": tek sunucu, evdeki herkese hizmet</text>
+
+  <!-- ev ağı çerçevesi -->
+  <rect x="30" y="48" width="820" height="310" rx="14" fill="none" class="ln dash"/>
+  <text x="60" y="72" class="ts tm">ev ağı (Wi-Fi / LAN) — internet gerekmez</text>
+
+  <!-- sunucu -->
+  <rect x="60" y="100" width="280" height="220" rx="12" class="bx-t"/>
+  <text x="200" y="128" class="tc ts tb tt">Sunucu makine</text>
+  <text x="200" y="146" class="tc txs tm">(oyuncu PC / Mac / mini PC)</text>
+
+  <rect x="82" y="160" width="236" height="44" rx="8" class="bx"/>
+  <text x="200" y="178" class="tc mono" style="font-size:11.5px">Ollama / llama-server / vLLM</text>
+  <text x="200" y="195" class="tc txs tm">model bellekte, API açık</text>
+
+  <rect x="82" y="212" width="236" height="44" rx="8" class="bx"/>
+  <text x="200" y="230" class="tc mono" style="font-size:11.5px">Open WebUI</text>
+  <text x="200" y="247" class="tc txs tm">sohbet arayüzü + kullanıcı hesapları</text>
+
+  <rect x="82" y="264" width="236" height="40" rx="8" class="bx-g"/>
+  <text x="200" y="281" class="tc mono" style="font-size:11px">http://192.168.1.20:3000</text>
+  <text x="200" y="297" class="tc txs tm">ağa açık adres (0.0.0.0 dinleme)</text>
+
+  <!-- istemciler -->
+  <path d="M348 160 L 470 120" class="ln-t" marker-end="url(#ar-t)"/>
+  <path d="M348 210 H 470" class="ln-t" marker-end="url(#ar-t)"/>
+  <path d="M348 260 L 470 300" class="ln-t" marker-end="url(#ar-t)"/>
+
+  <rect x="480" y="92" width="160" height="56" rx="10" class="bx"/>
+  <text x="560" y="116" class="tc ts">Baba'nın laptopu</text>
+  <text x="560" y="134" class="tc txs tm">tarayıcı → sohbet</text>
+
+  <rect x="480" y="182" width="160" height="56" rx="10" class="bx"/>
+  <text x="560" y="206" class="tc ts">Telefonlar</text>
+  <text x="560" y="224" class="tc txs tm">tarayıcı / uyumlu uygulama</text>
+
+  <rect x="480" y="272" width="160" height="56" rx="10" class="bx"/>
+  <text x="560" y="296" class="tc ts">Çocuğun PC'si</text>
+  <text x="560" y="314" class="tc txs tm">editör eklentisi → kod yardımı</text>
+
+  <!-- notlar -->
+  <rect x="668" y="92" width="164" height="236" rx="10" class="bx-0"/>
+  <text x="750" y="116" class="tc ts tb">Notlar</text>
+  <text x="682" y="140" class="txs">• bir kişi model yönetir,</text>
+  <text x="690" y="154" class="txs">herkes kullanır</text>
+  <text x="682" y="176" class="txs">• sohbetler evden çıkmaz;</text>
+  <text x="690" y="190" class="txs">çocuklar için de gönül rahat</text>
+  <text x="682" y="212" class="txs">• maliyet: sunucunun</text>
+  <text x="690" y="226" class="txs">elektriği, abonelik yok</text>
+  <text x="682" y="248" class="txs tr">• API'yi İNTERNETE açma;</text>
+  <text x="690" y="262" class="txs tr">ev ağında tut, dışarıdan</text>
+  <text x="690" y="276" class="txs tr">erişim gerekirse VPN kullan</text>
+  <text x="682" y="298" class="txs">• eş zamanlı kullanıcı</text>
+  <text x="690" y="312" class="txs">çoksa vLLM düşün (batch)</text>
+
+  <text x="440" y="384" class="tc txs tm">Aynı topoloji ofis/ekip için de geçerlidir: "aile" yerine "takım", Wi-Fi yerine ofis ağı.</text>
+</svg>

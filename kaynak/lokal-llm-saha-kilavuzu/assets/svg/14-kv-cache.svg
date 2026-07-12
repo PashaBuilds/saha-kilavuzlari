@@ -1,0 +1,42 @@
+<svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>KV cache'in context uzadıkça büyümesi</title>
+
+  <text x="440" y="26" class="tc tb">KV cache: context uzadıkça büyüyen ikinci kiracı</text>
+  <text x="440" y="46" class="tc txs tm">örnek: 8B model Q4 (~5 GB) + fp16 KV cache, 8 GB VRAM'li kartta</text>
+
+  <!-- VRAM limit çizgisi: 8GB → bar alanı: 1GB = 30px, taban y=330 -->
+  <path d="M60 90 H 820" class="ln-r dash"/>
+  <text x="826" y="94" class="txs tr">8 GB VRAM sınırı</text>
+
+  <!-- 4K bar -->
+  <g>
+    <rect x="120" y="180" width="120" height="150" rx="6" class="bx-a"/>
+    <text x="180" y="260" class="tc ts">model 5 GB</text>
+    <rect x="120" y="165" width="120" height="15" rx="3" class="bx-t"/>
+    <text x="180" y="152" class="tc txs tt">KV ~0,5 GB</text>
+    <text x="180" y="355" class="tc ts tb">4K context</text>
+    <text x="180" y="373" class="tc txs tt">toplam 5,5 GB ✓</text>
+  </g>
+
+  <!-- 32K bar -->
+  <g>
+    <rect x="380" y="180" width="120" height="150" rx="6" class="bx-a"/>
+    <text x="440" y="260" class="tc ts">model 5 GB</text>
+    <rect x="380" y="138" width="120" height="42" rx="3" class="bx-t"/>
+    <text x="440" y="165" class="tc txs tt">KV ~1,4 GB</text>
+    <text x="440" y="355" class="tc ts tb">32K context</text>
+    <text x="440" y="373" class="tc txs tt">toplam 6,4 GB ✓ (sınıra yakın)</text>
+  </g>
+
+  <!-- 128K bar -->
+  <g>
+    <rect x="640" y="180" width="120" height="150" rx="6" class="bx-a"/>
+    <text x="700" y="260" class="tc ts">model 5 GB</text>
+    <rect x="640" y="12" width="120" height="168" rx="3" class="bx-r"/>
+    <text x="700" y="105" class="tc txs tr tb">KV ~5,6 GB</text>
+    <text x="700" y="355" class="tc ts tb tr">128K context</text>
+    <text x="700" y="373" class="tc txs tr">toplam 10,6 GB ✗ SIĞMADI</text>
+  </g>
+
+  <text x="440" y="395" class="tc txs tm">"Model yüklendi ama uzun prompt'ta patladı"nın açıklaması: bellek planı model + KV toplamıyla yapılır, yalnız modelle değil.</text>
+</svg>

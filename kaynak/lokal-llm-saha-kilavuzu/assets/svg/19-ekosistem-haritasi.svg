@@ -1,0 +1,80 @@
+<svg viewBox="0 0 880 460" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Açık model ekosisteminin Temmuz 2026 haritası</title>
+
+  <text x="440" y="26" class="tc tb">Açık ağırlık ekosistemi — Temmuz 2026 fotoğrafı</text>
+
+  <!-- Çin sütunu -->
+  <rect x="30" y="50" width="270" height="360" rx="12" class="bx-0"/>
+  <text x="165" y="76" class="tc ts tb">Çin laboratuvarları</text>
+  <text x="165" y="93" class="tc txs tm">2026'da açık modelin ağırlık merkezi</text>
+
+  <rect x="48" y="106" width="234" height="52" rx="8" class="bx-t"/>
+  <text x="60" y="126" class="ts tb">Qwen (Alibaba)</text>
+  <text x="60" y="144" class="txs tm">3.5/3.6 · 0,8B→397B · Apache 2.0</text>
+
+  <rect x="48" y="164" width="234" height="52" rx="8" class="bx-t"/>
+  <text x="60" y="184" class="ts tb">DeepSeek</text>
+  <text x="60" y="202" class="txs tm">V4 Pro/Flash · 284B→1,6T · MIT</text>
+
+  <rect x="48" y="222" width="234" height="52" rx="8" class="bx-t"/>
+  <text x="60" y="242" class="ts tb">GLM (Zhipu/Z.ai)</text>
+  <text x="60" y="260" class="txs tm">5.2 (744B) + 4.7-Flash (30B) · MIT</text>
+
+  <rect x="48" y="280" width="234" height="52" rx="8" class="bx-t"/>
+  <text x="60" y="300" class="ts tb">Kimi (Moonshot)</text>
+  <text x="60" y="318" class="txs tm">K2.5→K2.7 · 1T-A32B · Mod. MIT</text>
+
+  <rect x="48" y="338" width="234" height="52" rx="8" class="bx-t"/>
+  <text x="60" y="358" class="ts tb">MiniMax · Hunyuan · ERNIE…</text>
+  <text x="60" y="376" class="txs tm">M2.5 (230B) · Hy3 (295B) · geniş saha</text>
+
+  <!-- ABD sütunu -->
+  <rect x="315" y="50" width="270" height="360" rx="12" class="bx-0"/>
+  <text x="450" y="76" class="tc ts tb">ABD</text>
+  <text x="450" y="93" class="tc txs tm">seçici açıklık; Meta sahneden çekildi</text>
+
+  <rect x="333" y="106" width="234" height="52" rx="8" class="bx-a"/>
+  <text x="345" y="126" class="ts tb">Gemma (Google)</text>
+  <text x="345" y="144" class="txs tm">4 serisi · 2B→31B · artık Apache 2.0</text>
+
+  <rect x="333" y="164" width="234" height="52" rx="8" class="bx-a"/>
+  <text x="345" y="184" class="ts tb">GPT-OSS (OpenAI)</text>
+  <text x="345" y="202" class="txs tm">20B / 120B (2025'ten) · Apache 2.0</text>
+
+  <rect x="333" y="222" width="234" height="52" rx="8" class="bx-a"/>
+  <text x="345" y="242" class="ts tb">Nemotron (NVIDIA) · Granite (IBM)</text>
+  <text x="345" y="260" class="txs tm">120B-A12B, 1M ctx · 3-30B kurumsal</text>
+
+  <rect x="333" y="280" width="234" height="52" rx="8" class="bx-a"/>
+  <text x="345" y="300" class="ts tb">Phi (Microsoft)</text>
+  <text x="345" y="318" class="txs tm">Phi-4 varyantları · 3,8-15B · MIT</text>
+
+  <rect x="333" y="338" width="234" height="52" rx="8" class="bx-r"/>
+  <text x="345" y="358" class="ts tb tr">Llama (Meta) — çekiliyor</text>
+  <text x="345" y="376" class="txs tm">son açık: Llama 4 (2025); yenisi kapalı</text>
+
+  <!-- Avrupa sütunu -->
+  <rect x="600" y="50" width="250" height="360" rx="12" class="bx-0"/>
+  <text x="725" y="76" class="tc ts tb">Avrupa</text>
+  <text x="725" y="93" class="tc txs tm">tek büyük bayrak taşıyıcı</text>
+
+  <rect x="618" y="106" width="214" height="76" rx="8" class="bx-g"/>
+  <text x="630" y="126" class="ts tb">Mistral</text>
+  <text x="630" y="144" class="txs tm">Large 3 · Small 4 (119B-A6B)</text>
+  <text x="630" y="160" class="txs tm">Devstral 2 (kod) · Apache 2.0</text>
+
+  <rect x="618" y="196" width="214" height="120" rx="8" class="bx"/>
+  <text x="725" y="220" class="tc ts tb">Okuma anahtarı</text>
+  <rect x="632" y="234" width="14" height="14" rx="3" class="bx-t"/>
+  <text x="654" y="245" class="txs">serbest lisans (Apache/MIT)</text>
+  <rect x="632" y="258" width="14" height="14" rx="3" class="bx-a"/>
+  <text x="654" y="269" class="txs">serbest ama tek/az sürüm</text>
+  <rect x="632" y="282" width="14" height="14" rx="3" class="bx-r"/>
+  <text x="654" y="293" class="txs">kapanan kapı</text>
+
+  <text x="725" y="345" class="tc txs tm">Bu şema bir dönem fotoğrafıdır</text>
+  <text x="725" y="361" class="tc txs tm">(Temmuz 2026); oyuncular kalıcı,</text>
+  <text x="725" y="377" class="tc txs tm">sürüm adları dönemseldir.</text>
+
+  <text x="440" y="442" class="tc txs tm">Genel örüntü: en geniş boyut yelpazesi ve en agresif açıklık Çin'de; ABD seçici (küçük-orta model + tek seferlik jestler); Avrupa'da Mistral yalnız ama üretken.</text>
+</svg>

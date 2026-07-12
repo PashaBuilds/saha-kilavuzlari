@@ -1,0 +1,38 @@
+<svg viewBox="0 0 880 400" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Bellek hiyerarşisi ve modelin yerleşebileceği katmanlar</title>
+
+  <text x="440" y="28" class="tc tb">Model nereye sığarsa oradan akar — ve o yerin hızında çalışır</text>
+
+  <!-- VRAM -->
+  <rect x="60" y="60" width="760" height="70" rx="10" class="bx-a"/>
+  <text x="90" y="88" class="tb ta">VRAM</text>
+  <text x="90" y="108" class="txs tm">ayrık GPU'nun kendi belleği</text>
+  <text x="480" y="88" class="ts">kapasite: 8–32 GB (tüketici)</text>
+  <text x="480" y="108" class="ts tb ta">bant: ~300–1.800 GB/s</text>
+  <text x="810" y="98" class="te ts tt tb">en hızlı</text>
+
+  <!-- Unified -->
+  <rect x="60" y="142" width="760" height="70" rx="10" class="bx-t"/>
+  <text x="90" y="170" class="tb tt">Unified Memory</text>
+  <text x="90" y="190" class="txs tm">Apple Silicon, Strix Halo: CPU+GPU ortak havuz</text>
+  <text x="480" y="170" class="ts">kapasite: 16–512 GB</text>
+  <text x="480" y="190" class="ts tb tt">bant: ~120–800 GB/s</text>
+  <text x="810" y="180" class="te ts tt">hızlı + geniş</text>
+
+  <!-- RAM -->
+  <rect x="60" y="224" width="760" height="70" rx="10" class="bx-g"/>
+  <text x="90" y="252" class="tb tg">Sistem RAM</text>
+  <text x="90" y="272" class="txs tm">sıradan PC belleği; CPU çıkarımı buradan beslenir</text>
+  <text x="480" y="252" class="ts">kapasite: 16–256 GB</text>
+  <text x="480" y="272" class="ts tb tg">bant: ~50–120 GB/s</text>
+  <text x="810" y="262" class="te ts tg">yavaş ama geniş</text>
+
+  <!-- Disk -->
+  <rect x="60" y="306" width="760" height="58" rx="10" class="bx-r"/>
+  <text x="90" y="330" class="tb tr">Disk (SSD)</text>
+  <text x="90" y="348" class="txs tm">model buradan "taşarak" çalışırsa: swap</text>
+  <text x="480" y="330" class="ts">kapasite: bol</text>
+  <text x="480" y="348" class="ts tb tr">bant: ~2–7 GB/s → kullanılamaz yavaşlık</text>
+
+  <text x="440" y="390" class="tc txs tm">Kural: modelin (+ context'in) TAMAMI hangi katmana sığıyorsa, hız o katmanın bant genişliğiyle sınırlanır. Tek satır bile alta taşarsa hız alttaki katmana düşer.</text>
+</svg>

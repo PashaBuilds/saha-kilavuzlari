@@ -1,0 +1,78 @@
+<svg viewBox="0 0 880 430" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Popüler cihazların bellek kapasitesi ve bant genişliği düzleminde konumlanışı</title>
+
+  <text x="440" y="24" class="tc tb">Cihaz haritası: bellek (yatay) × bant genişliği (dikey) × fiyat (etiket)</text>
+
+  <!-- eksenler -->
+  <path d="M60 340 H 840" class="ln"/>
+  <path d="M60 340 V 50" class="ln"/>
+  <text x="450" y="378" class="tc ts tm">kullanılabilir bellek (GB, log ölçek) →</text>
+  <text x="30" y="200" class="ts tm" transform="rotate(-90 30 200)" style="text-anchor:middle">bant genişliği (GB/s) →</text>
+
+  <!-- x etiketleri -->
+  <text x="134" y="358" class="tc txs tm">12</text>
+  <text x="187" y="358" class="tc txs tm">16</text>
+  <text x="261" y="358" class="tc txs tm">24</text>
+  <text x="314" y="358" class="tc txs tm">32</text>
+  <text x="441" y="358" class="tc txs tm">64</text>
+  <text x="568" y="358" class="tc txs tm">128</text>
+  <text x="822" y="358" class="tc txs tm">512</text>
+
+  <!-- y kılavuz çizgileri -->
+  <path d="M60 276 H 840" class="ln thin dash" opacity="0.35"/>
+  <text x="66" y="271" class="txs tm">400</text>
+  <path d="M60 210 H 840" class="ln thin dash" opacity="0.35"/>
+  <text x="66" y="205" class="txs tm">800</text>
+  <path d="M60 78 H 840" class="ln thin dash" opacity="0.35"/>
+  <text x="66" y="73" class="txs tm">1.600</text>
+
+  <!-- GPU noktaları (accent) -->
+  <circle cx="134" cy="276" r="7" class="fa"/>
+  <text x="134" y="296" class="tc txs">RTX 3060 · ~$300²</text>
+
+  <circle cx="187" cy="263" r="7" class="fa"/>
+  <text x="187" y="247" class="tc txs">5060 Ti · ~$500</text>
+
+  <circle cx="261" cy="262" r="7" class="fa"/>
+  <text x="272" y="282" class="tc txs">Arc B60 · ~$650</text>
+
+  <circle cx="261" cy="190" r="9" class="fa"/>
+  <text x="261" y="172" class="tc txs tb ta">RTX 3090² · ~$700 ★</text>
+
+  <circle cx="261" cy="179" r="7" class="fa" opacity="0.55"/>
+  <text x="322" y="196" class="tc txs tm">4090² · ~$2.300</text>
+
+  <circle cx="314" cy="61" r="7" class="fa"/>
+  <text x="314" y="45" class="tc txs">RTX 5090 · ~$4.300</text>
+
+  <!-- Unified (teal) -->
+  <circle cx="441" cy="289" r="7" class="ft"/>
+  <text x="441" y="309" class="tc txs">M4 Pro 64GB · ~$2.200</text>
+
+  <circle cx="568" cy="292" r="9" class="ft"/>
+  <text x="620" y="313" class="tc txs tb tt">Strix Halo 128GB · ~$2.000 ★</text>
+
+  <circle cx="580" cy="289" r="7" class="ft" opacity="0.6"/>
+  <text x="668" y="284" class="tc txs tm">DGX Spark 128GB · $4.700</text>
+
+  <circle cx="568" cy="248" r="7" class="ft"/>
+  <text x="568" y="231" class="tc txs">M4 Max 128GB · ~$4.000</text>
+
+  <circle cx="515" cy="207" r="7" class="ft"/>
+  <text x="500" y="190" class="tc txs">M3 Ultra 96GB · ~$4.500</text>
+
+  <!-- CPU (gold) -->
+  <circle cx="515" cy="317" r="7" class="fg"/>
+  <text x="430" y="334" class="tc txs">DDR5 PC 96GB · ~$1.000</text>
+
+  <!-- lejant -->
+  <rect x="640" y="60" width="196" height="86" rx="8" class="bx-0"/>
+  <circle cx="658" cy="82" r="6" class="fa"/>
+  <text x="672" y="86" class="txs">ayrık GPU (VRAM)</text>
+  <circle cx="658" cy="106" r="6" class="ft"/>
+  <text x="672" y="110" class="txs">unified memory</text>
+  <circle cx="658" cy="130" r="6" class="fg"/>
+  <text x="672" y="134" class="txs">CPU-only (RAM)</text>
+
+  <text x="440" y="412" class="tc txs tm">² = ikinci el. Fiyatlar Temmuz 2026 ABD sokak fiyatı; bellek krizi nedeniyle oynak. Sağ üst köşeye yaklaştıkça "hem büyük hem hızlı" — ve pahalı.</text>
+</svg>

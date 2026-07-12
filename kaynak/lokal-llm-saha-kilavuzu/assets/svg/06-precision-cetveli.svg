@@ -1,0 +1,54 @@
+<svg viewBox="0 0 880 350" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Precision cetveli: FP32'den Q2'ye parametre başına byte ve kalite sezgisi</title>
+
+  <text x="440" y="26" class="tc tb">Bir parametre kaç byte tutar? Hassasiyet indikçe dosya küçülür</text>
+
+  <!-- taban çizgisi -->
+  <path d="M60 250 H 830" class="ln"/>
+
+  <!-- FP32 -->
+  <rect x="80" y="70" width="110" height="180" rx="6" class="bx-a"/>
+  <text x="135" y="100" class="tc tb">FP32</text>
+  <text x="135" y="120" class="tc ts ta tb">4 byte</text>
+  <text x="135" y="270" class="tc ts tb">eğitim dünyası</text>
+  <text x="135" y="287" class="tc txs tm">tam hassasiyet;</text>
+  <text x="135" y="300" class="tc txs tm">çıkarımda gereksiz</text>
+
+  <!-- FP16 -->
+  <rect x="230" y="160" width="110" height="90" rx="6" class="bx-a"/>
+  <text x="285" y="188" class="tc tb">FP16/BF16</text>
+  <text x="285" y="208" class="tc ts ta tb">2 byte</text>
+  <text x="285" y="270" class="tc ts tb">dağıtım standardı</text>
+  <text x="285" y="287" class="tc txs tm">model kartındaki</text>
+  <text x="285" y="300" class="tc txs tm">"orijinal" ağırlıklar</text>
+
+  <!-- Q8 -->
+  <rect x="380" y="205" width="110" height="45" rx="6" class="bx-t"/>
+  <text x="435" y="224" class="tc tb">INT8 / Q8</text>
+  <text x="435" y="242" class="tc ts tt tb">~1 byte</text>
+  <text x="435" y="270" class="tc ts tb">fark hissedilmez</text>
+  <text x="435" y="287" class="tc txs tm">pratikte kayıpsıza</text>
+  <text x="435" y="300" class="tc txs tm">en yakın seviye</text>
+
+  <!-- Q4 -->
+  <rect x="530" y="221" width="110" height="29" rx="6" class="bx-g"/>
+  <text x="585" y="241" class="tc tb tg">Q4</text>
+  <text x="585" y="270" class="tc ts tb tg">tatlı nokta</text>
+  <text x="585" y="287" class="tc txs tm">~0,57 byte; lokal</text>
+  <text x="585" y="300" class="tc txs tm">dünyanın varsayılanı</text>
+
+  <!-- Q2 -->
+  <rect x="680" y="234" width="110" height="16" rx="5" class="bx-r"/>
+  <text x="735" y="228" class="tc tb tr">Q2</text>
+  <text x="735" y="270" class="tc ts tb tr">son çare</text>
+  <text x="735" y="287" class="tc txs tm">~0,3 byte; belirgin</text>
+  <text x="735" y="300" class="tc txs tm">kalite kaybı</text>
+
+  <!-- oklar -->
+  <path d="M195 155 L 225 195" class="ln thin" marker-end="url(#ar)"/>
+  <path d="M345 200 L 375 220" class="ln thin" marker-end="url(#ar)"/>
+  <path d="M495 222 L 525 230" class="ln thin" marker-end="url(#ar)"/>
+  <path d="M645 236 L 675 240" class="ln thin" marker-end="url(#ar)"/>
+
+  <text x="440" y="335" class="tc txs tm">Kutu yüksekliği parametre başına byte ile orantılı. Quantization = aynı sayıları daha az bitle temsil etmek; sayı hafifçe yuvarlanır, model küçülür.</text>
+</svg>

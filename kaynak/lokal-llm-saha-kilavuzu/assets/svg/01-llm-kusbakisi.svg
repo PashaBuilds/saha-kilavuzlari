@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>LLM'in kuşbakışı çalışması: prompt'tan sonraki token'a uzanan döngü</title>
+
+  <text x="450" y="28" class="tc tb">Bir LLM tek şey yapar: sıradaki token'ı tahmin eder — tekrar tekrar</text>
+
+  <!-- 1. Prompt -->
+  <rect x="15" y="80" width="140" height="110" rx="10" class="bx"/>
+  <text x="85" y="105" class="tc ts tb">Prompt</text>
+  <text x="85" y="130" class="tc mono">«Bugün hava</text>
+  <text x="85" y="146" class="tc mono">çok»</text>
+  <text x="85" y="176" class="tc txs tm">şimdiye kadarki metin</text>
+
+  <!-- ok -->
+  <path d="M158 135 H182" class="ln" marker-end="url(#ar)"/>
+
+  <!-- 2. Tokenizer -->
+  <rect x="186" y="80" width="125" height="110" rx="10" class="bx-g"/>
+  <text x="248" y="105" class="tc ts tb tg">Tokenizer</text>
+  <text x="248" y="130" class="tc txs tm">metni sayılara</text>
+  <text x="248" y="143" class="tc txs tm">(token ID) çevirir</text>
+  <text x="248" y="172" class="tc mono">[2044, 512, 87]</text>
+
+  <path d="M314 135 H338" class="ln" marker-end="url(#ar)"/>
+
+  <!-- 3. Transformer -->
+  <rect x="342" y="80" width="170" height="110" rx="10" class="bx-a"/>
+  <text x="427" y="101" class="tc ts tb ta">Transformer</text>
+  <rect x="362" y="112" width="130" height="13" rx="3" class="bx-0"/>
+  <text x="427" y="122" class="tc txs tm">katman 1</text>
+  <rect x="362" y="129" width="130" height="13" rx="3" class="bx-0"/>
+  <text x="427" y="139" class="tc txs tm">katman 2</text>
+  <rect x="362" y="146" width="130" height="13" rx="3" class="bx-0"/>
+  <text x="427" y="156" class="tc txs tm">… katman N</text>
+  <text x="427" y="178" class="tc txs tm">milyarlarca parametre</text>
+
+  <path d="M515 135 H539" class="ln" marker-end="url(#ar)"/>
+
+  <!-- 4. Olasılık dağılımı -->
+  <rect x="543" y="80" width="185" height="110" rx="10" class="bx"/>
+  <text x="635" y="101" class="tc ts tb">Olasılık dağılımı</text>
+  <text x="562" y="122" class="mono">güzel</text>
+  <rect x="614" y="113" width="78" height="9" rx="2" class="fa"/>
+  <text x="698" y="122" class="txs tm">%38</text>
+  <text x="562" y="140" class="mono">sıcak</text>
+  <rect x="614" y="131" width="44" height="9" rx="2" class="fa" opacity="0.7"/>
+  <text x="664" y="140" class="txs tm">%21</text>
+  <text x="562" y="158" class="mono">soğuk</text>
+  <rect x="614" y="149" width="20" height="9" rx="2" class="fa" opacity="0.45"/>
+  <text x="640" y="158" class="txs tm">%9</text>
+  <text x="562" y="176" class="mono">iyi</text>
+  <rect x="614" y="167" width="15" height="9" rx="2" class="fa" opacity="0.35"/>
+  <text x="635" y="176" class="txs tm">%7 …</text>
+
+  <path d="M731 135 H755" class="ln" marker-end="url(#ar)"/>
+
+  <!-- 5. Seçilen token -->
+  <rect x="759" y="80" width="128" height="110" rx="10" class="bx-t"/>
+  <text x="823" y="105" class="tc ts tb tt">Sonraki token</text>
+  <text x="823" y="140" class="tc mono" style="font-size:16px">«güzel»</text>
+  <text x="823" y="168" class="tc txs tm">olasılıklardan</text>
+  <text x="823" y="180" class="tc txs tm">biri örneklenir</text>
+
+  <!-- döngü -->
+  <path d="M823 193 V 255 H 85 V 197" class="ln-t dash" marker-end="url(#ar-t)"/>
+  <text x="454" y="273" class="tc ts tt">seçilen token metnin sonuna eklenir, süreç baştan başlar — cevap bitene kadar token token</text>
+
+  <text x="454" y="305" class="tc txs tm">Çıktıdaki her kelime bu döngünün bir (ya da birkaç) turudur; model hiçbir zaman «cümle» üretmez, hep tek token üretir.</text>
+</svg>

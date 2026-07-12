@@ -1,0 +1,47 @@
+<svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>MoE bellek/hız paradoksu: toplam parametre belleği, aktif parametre hızı belirler</title>
+
+  <text x="440" y="28" class="tc tb">MoE'nin altın kuralı — örnek: 35B-A3B</text>
+
+  <!-- Üst satır: bellek -->
+  <rect x="30" y="55" width="820" height="115" rx="12" class="bx-0"/>
+  <rect x="50" y="75" width="170" height="75" rx="8" class="bx-g"/>
+  <text x="135" y="105" class="tc tb tg" style="font-size:17px">35B toplam</text>
+  <text x="135" y="128" class="tc txs tm">tüm expert'ler</text>
+
+  <path d="M228 112 H 268" class="ln-g" marker-end="url(#ar-g)"/>
+  <text x="248" y="100" class="tc txs tm">belirler</text>
+
+  <rect x="272" y="75" width="250" height="75" rx="8" class="bx"/>
+  <text x="397" y="103" class="tc ts tb">BELLEK İHTİYACINI</text>
+  <text x="397" y="126" class="tc txs tm">hepsi bellekte hazır beklemek zorunda:</text>
+  <text x="397" y="140" class="tc txs tm">router her an herhangi birini çağırabilir</text>
+
+  <text x="560" y="118" class="tc" style="font-size:22px">≈</text>
+
+  <rect x="590" y="75" width="240" height="75" rx="8" class="bx-g"/>
+  <text x="710" y="105" class="tc tb tg" style="font-size:16px">Q4'te ~22 GB</text>
+  <text x="710" y="128" class="tc txs tm">35B × ~0,6 GB/B — Bölüm 4 formülü</text>
+
+  <!-- Alt satır: hız -->
+  <rect x="30" y="185" width="820" height="115" rx="12" class="bx-0"/>
+  <rect x="50" y="205" width="170" height="75" rx="8" class="bx-t"/>
+  <text x="135" y="235" class="tc tb tt" style="font-size:17px">~3B aktif</text>
+  <text x="135" y="258" class="tc txs tm">token başına seçilenler</text>
+
+  <path d="M228 242 H 268" class="ln-t" marker-end="url(#ar-t)"/>
+  <text x="248" y="230" class="tc txs tm">belirler</text>
+
+  <rect x="272" y="205" width="250" height="75" rx="8" class="bx"/>
+  <text x="397" y="233" class="tc ts tb">ÜRETİM HIZINI</text>
+  <text x="397" y="256" class="tc txs tm">her token'da yalnızca aktif dilim okunur;</text>
+  <text x="397" y="270" class="tc txs tm">okunan veri az = token/s yüksek (Bölüm 5)</text>
+
+  <text x="560" y="248" class="tc" style="font-size:22px">≈</text>
+
+  <rect x="590" y="205" width="240" height="75" rx="8" class="bx-t"/>
+  <text x="710" y="235" class="tc tb tt" style="font-size:16px">3-4B dense hızı</text>
+  <text x="710" y="258" class="tc txs tm">35B bilgeliği, küçük model akıcılığı</text>
+
+  <text x="440" y="322" class="tc ts tm tb">Bellekten TOPLAM kadar yer ister, bellekten TOKEN BAŞINA yalnızca AKTİF kadar okur.</text>
+</svg>

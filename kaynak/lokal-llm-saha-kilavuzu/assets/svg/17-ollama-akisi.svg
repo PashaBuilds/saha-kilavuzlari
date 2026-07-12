@@ -1,0 +1,44 @@
+<svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Ollama'nın indirmeden API'ye çalışma akışı</title>
+
+  <text x="440" y="26" class="tc tb">Ollama akışı: iki komutla dosyadan API'ye</text>
+
+  <!-- pull -->
+  <rect x="30" y="60" width="200" height="64" rx="10" class="bx-a"/>
+  <text x="130" y="87" class="tc mono ta" style="font-size:13px">ollama pull …</text>
+  <text x="130" y="108" class="tc txs tm">modeli kayıt deposundan indirir</text>
+
+  <path d="M130 128 V 156" class="ln-a" marker-end="url(#ar-a)"/>
+
+  <!-- blob store -->
+  <rect x="30" y="160" width="200" height="74" rx="10" class="bx"/>
+  <text x="130" y="184" class="tc ts tb">Blob deposu</text>
+  <text x="130" y="204" class="tc mono" style="font-size:10.5px">~/.ollama/models</text>
+  <text x="130" y="222" class="tc txs tm">GGUF katmanları, tekrar inmez</text>
+
+  <!-- run -->
+  <path d="M234 197 H 292" class="ln" marker-end="url(#ar)"/>
+  <rect x="296" y="160" width="200" height="74" rx="10" class="bx-t"/>
+  <text x="396" y="186" class="tc mono tt" style="font-size:13px">ollama run …</text>
+  <text x="396" y="206" class="tc txs tm">modeli belleğe yükler,</text>
+  <text x="396" y="220" class="tc txs tm">terminalde sohbet açar</text>
+
+  <!-- server -->
+  <path d="M500 197 H 558" class="ln" marker-end="url(#ar)"/>
+  <rect x="562" y="146" width="288" height="102" rx="10" class="bx-g"/>
+  <text x="706" y="172" class="tc ts tb tg">Yerleşik sunucu</text>
+  <text x="706" y="196" class="tc mono" style="font-size:13px">http://localhost:11434</text>
+  <text x="706" y="218" class="tc txs tm">arka planda hep hazır; hem Ollama API'si</text>
+  <text x="706" y="232" class="tc txs tm">hem OpenAI-uyumlu /v1 uçları</text>
+
+  <!-- istemciler -->
+  <path d="M640 252 V 282" class="ln thin" marker-end="url(#ar)"/>
+  <path d="M706 252 V 282" class="ln thin" marker-end="url(#ar)"/>
+  <path d="M772 252 V 282" class="ln thin" marker-end="url(#ar)"/>
+  <text x="596" y="302" class="tc txs">curl / kod</text>
+  <text x="706" y="302" class="tc txs">Open WebUI</text>
+  <text x="798" y="302" class="tc txs">editör eklentisi</text>
+
+  <text x="290" y="86" class="ts tm">← indirme bir kez yapılır;</text>
+  <text x="290" y="104" class="ts tm">sonrası tamamen çevrimdışı</text>
+</svg>

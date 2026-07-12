@@ -1,0 +1,81 @@
+<svg viewBox="0 0 880 500" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Model seçimi karar ağacı</title>
+
+  <text x="440" y="26" class="tc tb">Karar ağacı: hangi model? (Temmuz 2026 önerileriyle)</text>
+
+  <!-- kök -->
+  <rect x="290" y="44" width="300" height="46" rx="10" class="bx-a"/>
+  <text x="440" y="63" class="tc ts tb ta">1. Kullanılabilir belleğin kaç GB?</text>
+  <text x="440" y="81" class="tc txs tm">(Bölüm 5 hesabı: VRAM−1 / Mac×0,7 / RAM−6)</text>
+
+  <!-- dallar -->
+  <path d="M340 92 L 130 128" class="ln" marker-end="url(#ar)"/>
+  <path d="M405 92 L 335 128" class="ln" marker-end="url(#ar)"/>
+  <path d="M475 92 L 545 128" class="ln" marker-end="url(#ar)"/>
+  <path d="M540 92 L 750 128" class="ln" marker-end="url(#ar)"/>
+
+  <!-- sütun 1: ≤16 -->
+  <rect x="30" y="132" width="200" height="40" rx="8" class="bx"/>
+  <text x="130" y="157" class="tc ts tb">≤ 16 GB</text>
+
+  <rect x="30" y="184" width="200" height="74" rx="8" class="bx-t"/>
+  <text x="42" y="204" class="txs tb tt">genel iş / sohbet</text>
+  <text x="42" y="222" class="txs">Gemma 4 12B · Qwen3.5-9B</text>
+  <text x="42" y="238" class="txs tm">8 GB'de: Phi-4-mini, E4B</text>
+
+  <rect x="30" y="266" width="200" height="74" rx="8" class="bx-g"/>
+  <text x="42" y="286" class="txs tb tg">kod / reasoning</text>
+  <text x="42" y="304" class="txs">gpt-oss-20b (16 GB'de)</text>
+  <text x="42" y="320" class="txs tm">altında: Qwen3.5-4B/9B</text>
+
+  <!-- sütun 2: 24-32 -->
+  <rect x="235" y="132" width="200" height="40" rx="8" class="bx"/>
+  <text x="335" y="157" class="tc ts tb">24–32 GB</text>
+
+  <rect x="235" y="184" width="200" height="74" rx="8" class="bx-t"/>
+  <text x="247" y="204" class="txs tb tt">genel iş / sohbet</text>
+  <text x="247" y="222" class="txs">Qwen3.6-27B (tatlı nokta)</text>
+  <text x="247" y="238" class="txs tm">hız istersen: Gemma 26B-A4B</text>
+
+  <rect x="235" y="266" width="200" height="74" rx="8" class="bx-g"/>
+  <text x="247" y="286" class="txs tb tg">kod / ajan</text>
+  <text x="247" y="304" class="txs">GLM-4.7-Flash · Devstral 2</text>
+  <text x="247" y="320" class="txs tm">denge: Qwen3.6-35B-A3B</text>
+
+  <!-- sütun 3: 48-64 -->
+  <rect x="445" y="132" width="200" height="40" rx="8" class="bx"/>
+  <text x="545" y="157" class="tc ts tb">48–64 GB</text>
+
+  <rect x="445" y="184" width="200" height="74" rx="8" class="bx-t"/>
+  <text x="457" y="204" class="txs tb tt">genel iş / sohbet</text>
+  <text x="457" y="222" class="txs">Qwen3.6-35B-A3B (hızlı)</text>
+  <text x="457" y="238" class="txs tm">+ 27B dense'i yan yana dene</text>
+
+  <rect x="445" y="266" width="200" height="74" rx="8" class="bx-g"/>
+  <text x="457" y="286" class="txs tb tg">kod / uzun context</text>
+  <text x="457" y="304" class="txs">GLM-4.7-Flash + 64K ctx</text>
+  <text x="457" y="320" class="txs tm">KV bütçesini hesapla (B7)</text>
+
+  <!-- sütun 4: 96+ -->
+  <rect x="650" y="132" width="200" height="40" rx="8" class="bx"/>
+  <text x="750" y="157" class="tc ts tb">96 GB +</text>
+
+  <rect x="650" y="184" width="200" height="74" rx="8" class="bx-t"/>
+  <text x="662" y="204" class="txs tb tt">genel iş / sohbet</text>
+  <text x="662" y="222" class="txs">gpt-oss-120b (standart)</text>
+  <text x="662" y="238" class="txs tm">Qwen3.5-122B · Mistral S4</text>
+
+  <rect x="650" y="266" width="200" height="74" rx="8" class="bx-g"/>
+  <text x="662" y="286" class="txs tb tg">kod / ajan / 1M ctx</text>
+  <text x="662" y="304" class="txs">Nemotron 3 Super 120B</text>
+  <text x="662" y="320" class="txs tm">256GB+: DeepSeek V4-Flash</text>
+
+  <!-- alt kontroller -->
+  <rect x="30" y="366" width="820" height="60" rx="10" class="bx-0"/>
+  <text x="50" y="390" class="ts tb">2. Son iki kontrol:</text>
+  <text x="50" y="412" class="txs">• <tspan class="tb">Dil:</tspan> Türkçe işte Qwen/Gemma önde — kendi metninle dene (B2 testi)</text>
+  <text x="470" y="412" class="txs">• <tspan class="tb">Lisans:</tspan> ticari işte lisans metnini oku (B10) — Apache/MIT rahat</text>
+
+  <text x="440" y="454" class="tc txs tm">Model adları Temmuz 2026 fotoğrafıdır; ağacın soruları (bellek → amaç → dil → lisans) kalıcıdır.</text>
+  <text x="440" y="472" class="tc txs tm">Kararsız kaldığında: iki adayı indir, aynı 5 gerçek işi ikisine ver, çıktıyı yan yana koy — 20 dakikalık test, bütün tartışmaları bitirir.</text>
+</svg>

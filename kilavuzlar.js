@@ -18,9 +18,9 @@
 //   guncelleme  : ISO tarih — guncelle.py otomatik günceller
 //   yol         : Karttan açılacak dosya (file:// uyumu için açık index.html)
 //   renk        : Kart vurgu tonu, 0-360 arası hue açısı
-//                 (kullanılanlar: 285 mor/RF, 160 turkuaz/Ethernet —
-//                  yeni kılavuzda boş bir açı seç: 25 amber, 210 mavi, 340 gül)
-//   motif       : Kart arka plan deseni: "analog" | "digital" | "varsayilan"
+//                 (kullanılanlar: 285 mor/RF, 160 turkuaz/Ethernet,
+//                  25 amber/Lokal-LLM — boşta: 210 mavi, 340 gül)
+//   motif       : Kart deseni: "analog" | "digital" | "sinir" | "varsayilan"
 // ============================================================================
 
 window.KILAVUZLAR = [
@@ -63,5 +63,25 @@ window.KILAVUZLAR = [
     yol: "kilavuzlar/ethernet/index.html",
     renk: 160,
     motif: "digital",
+  },
+  {
+    sira: 3,
+    slug: "lokal-llm",
+    baslik: "Lokal LLM Dünyası",
+    aciklama:
+      "Model kartındaki \"70B, MoE, Q4_K_M, 128K context\" ifadesini söküp " +
+      "kendi donanımında hangi modelin kaç token/s koşacağını öngörmek için: " +
+      "mimariler, quantization, bellek hesabı, Ollama/LM Studio ve lokal API " +
+      "ekosistemi — modeli kendi makinesinde koşturmak isteyen teknik meraklı için.",
+    etiketler: ["Quantization", "MoE & Mimariler", "VRAM Hesabı", "Ollama & LM Studio", "Lokal API"],
+    bolum: "14 bölüm + sözlük & referans",
+    bolumSayi: 16,
+    sema: 23,
+    kelime: 15910,
+    boyut: "255 KB",
+    guncelleme: "2026-07-12",
+    yol: "kilavuzlar/lokal-llm/index.html",
+    renk: 25,
+    motif: "sinir",
   },
 ];
