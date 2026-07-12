@@ -1,0 +1,63 @@
+<svg viewBox="0 0 860 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s02">
+<title id="t-s02">Enkapsülasyon: HTTP verisinin TCP segmentine, IP paketine ve Ethernet frame'ine katman katman sarılması</title>
+<defs>
+<marker id="ok02" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/>
+</marker>
+</defs>
+
+<!-- satır 1: uygulama verisi -->
+<text x="30" y="66" class="s-metin">Uygulama</text>
+<text x="30" y="84" class="s-metin2">HTTP mesajı</text>
+<rect x="490" y="48" width="290" height="44" rx="6" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.4"/>
+<text x="635" y="74" class="s-mono" text-anchor="middle">HTTP verisi</text>
+
+<line x1="450" y1="98" x2="450" y2="126" stroke="var(--ink-2)" marker-end="url(#ok02)"/>
+
+<!-- satır 2: TCP segment -->
+<text x="30" y="156" class="s-metin">Taşıma</text>
+<text x="30" y="174" class="s-metin2">TCP segment</text>
+<rect x="400" y="138" width="90" height="44" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="445" y="157" class="s-mono2" text-anchor="middle">TCP</text>
+<text x="445" y="173" class="s-mono2" text-anchor="middle">header</text>
+<rect x="490" y="138" width="290" height="44" rx="6" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.4"/>
+<text x="635" y="164" class="s-mono" text-anchor="middle">HTTP verisi</text>
+<text x="798" y="164" class="s-mono2">20B+</text>
+
+<line x1="450" y1="188" x2="450" y2="216" stroke="var(--ink-2)" marker-end="url(#ok02)"/>
+
+<!-- satır 3: IP paket -->
+<text x="30" y="246" class="s-metin">Ağ</text>
+<text x="30" y="264" class="s-metin2">IP paket</text>
+<rect x="310" y="228" width="90" height="44" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4"/>
+<text x="355" y="247" class="s-mono2" text-anchor="middle">IP</text>
+<text x="355" y="263" class="s-mono2" text-anchor="middle">header</text>
+<rect x="400" y="228" width="90" height="44" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="445" y="253" class="s-mono2" text-anchor="middle">TCP</text>
+<rect x="490" y="228" width="290" height="44" rx="6" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.4"/>
+<text x="635" y="254" class="s-mono" text-anchor="middle">HTTP verisi</text>
+<text x="798" y="254" class="s-mono2">20B+</text>
+
+<line x1="450" y1="278" x2="450" y2="306" stroke="var(--ink-2)" marker-end="url(#ok02)"/>
+
+<!-- satır 4: Ethernet frame -->
+<text x="30" y="336" class="s-metin">Veri bağı</text>
+<text x="30" y="354" class="s-metin2">Ethernet frame</text>
+<rect x="196" y="318" width="114" height="44" rx="6" fill="var(--dia-blok-2)" stroke="var(--ink-2)" stroke-width="1.4"/>
+<text x="253" y="337" class="s-mono2" text-anchor="middle">Ethernet</text>
+<text x="253" y="353" class="s-mono2" text-anchor="middle">header · 14B</text>
+<rect x="310" y="318" width="90" height="44" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4"/>
+<text x="355" y="343" class="s-mono2" text-anchor="middle">IP</text>
+<rect x="400" y="318" width="90" height="44" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="445" y="343" class="s-mono2" text-anchor="middle">TCP</text>
+<rect x="490" y="318" width="290" height="44" rx="6" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.4"/>
+<text x="635" y="344" class="s-mono" text-anchor="middle">HTTP verisi</text>
+<rect x="780" y="318" width="56" height="44" rx="6" fill="var(--red-soft)" stroke="var(--red)" stroke-width="1.4"/>
+<text x="808" y="337" class="s-mono2" text-anchor="middle">FCS</text>
+<text x="808" y="353" class="s-mono2" text-anchor="middle">4B</text>
+
+<!-- alt açıklama -->
+<path d="M196 380 L836 380" stroke="var(--line-2)"/>
+<text x="196" y="404" class="s-metin2">Her katman kendi header'ını (başlığını) öne ekler; Ethernet ayrıca sona FCS (hata kontrol) ekler.</text>
+<text x="196" y="422" class="s-metin2">Alıcı tarafta aynı zarflar ters sırayla, katman katman açılır (de-enkapsülasyon).</text>
+</svg>

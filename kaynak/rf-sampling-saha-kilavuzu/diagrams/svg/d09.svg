@@ -1,0 +1,122 @@
+<svg viewBox="0 0 960 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Superheterodyne, zero-IF ve direct RF sampling mimarilerinin karşılaştırması">
+  <!-- ================= 1) SUPERHETERODYNE ================= -->
+  <text class="lbl-b" x="20" y="34">1 · Superheterodyne</text>
+  <text class="not" x="958" y="34" text-anchor="end">+ seçicilik, olgunluk   − imaj filtresi, çok parça, esneklik düşük</text>
+
+  <line class="w-ince" x1="34" y1="80" x2="34" y2="106"/>
+  <path class="w-ince" d="M22 68 L46 68 L34 86 Z"/>
+
+  <rect class="blk" x="58" y="62" width="70" height="36" rx="6"/>
+  <text class="lbl-s" x="93" y="85" text-anchor="middle">LNA</text>
+  <path class="w-ince" d="M34 80 L58 80" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk" x="146" y="62" width="86" height="36" rx="6"/>
+  <text class="lbl-s" x="189" y="79" text-anchor="middle">imaj-red</text>
+  <text class="lbl-s" x="189" y="93" text-anchor="middle">filtresi</text>
+  <path class="w-ince" d="M128 80 L146 80" marker-end="url(#arw-ince)"/>
+
+  <circle class="blk" cx="272" cy="80" r="18"/>
+  <text class="lbl" x="272" y="86" text-anchor="middle">×</text>
+  <path class="w-ince" d="M232 80 L254 80" marker-end="url(#arw-ince)"/>
+  <path class="w-clk" d="M272 134 L272 98" marker-end="url(#arw-clk)"/>
+  <rect class="blk blk-clk" x="244" y="134" width="56" height="30" rx="6"/>
+  <text class="lbl-s" x="272" y="154" text-anchor="middle">LO</text>
+
+  <rect class="blk" x="316" y="62" width="86" height="36" rx="6"/>
+  <text class="lbl-s" x="359" y="79" text-anchor="middle">IF filtre</text>
+  <text class="lbl-s" x="359" y="93" text-anchor="middle">(SAW)</text>
+  <path class="w-ince" d="M290 80 L316 80" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk" x="428" y="62" width="80" height="36" rx="6"/>
+  <text class="lbl-s" x="468" y="85" text-anchor="middle">IF ADC</text>
+  <path class="w-ince" d="M402 80 L428 80" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk" x="534" y="62" width="64" height="36" rx="6"/>
+  <text class="lbl-s" x="566" y="85" text-anchor="middle">DSP</text>
+  <path class="w-data" d="M508 80 L534 80" marker-end="url(#arw-data)"/>
+
+  <text class="not" x="640" y="72">RF → IF'e indir, IF'te örnekle;</text>
+  <text class="not" x="640" y="88">bant değişimi = donanım değişimi</text>
+
+  <!-- ================= 2) ZERO-IF ================= -->
+  <text class="lbl-b" x="20" y="204">2 · Zero-IF (direct conversion)</text>
+  <text class="not" x="958" y="204" text-anchor="end">+ az parça, entegrasyon   − DC offset, LO kaçağı, I/Q dengesizliği</text>
+
+  <line class="w-ince" x1="34" y1="250" x2="34" y2="276"/>
+  <path class="w-ince" d="M22 238 L46 238 L34 256 Z"/>
+
+  <rect class="blk" x="58" y="232" width="70" height="36" rx="6"/>
+  <text class="lbl-s" x="93" y="255" text-anchor="middle">LNA</text>
+  <path class="w-ince" d="M34 250 L58 250" marker-end="url(#arw-ince)"/>
+
+  <circle class="blk" cx="200" cy="232" r="16"/>
+  <text class="lbl" x="200" y="238" text-anchor="middle">×</text>
+  <circle class="blk" cx="200" cy="286" r="16"/>
+  <text class="lbl" x="200" y="292" text-anchor="middle">×</text>
+  <path class="w-ince" d="M128 250 L160 250 L160 232 L184 232" marker-end="url(#arw-ince)"/>
+  <path class="w-ince" d="M160 250 L160 286 L184 286" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk blk-clk" x="160" y="330" width="80" height="30" rx="6"/>
+  <text class="lbl-s" x="200" y="350" text-anchor="middle">LO 0°/90°</text>
+  <path class="w-clk" d="M200 330 L200 302" marker-end="url(#arw-clk)"/>
+
+  <rect class="blk" x="248" y="214" width="70" height="36" rx="6"/>
+  <text class="lbl-s" x="283" y="237" text-anchor="middle">LPF (I)</text>
+  <path class="w-ince" d="M216 232 L248 232" marker-end="url(#arw-ince)"/>
+  <rect class="blk" x="248" y="268" width="70" height="36" rx="6"/>
+  <text class="lbl-s" x="283" y="291" text-anchor="middle">LPF (Q)</text>
+  <path class="w-ince" d="M216 286 L248 286" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk" x="344" y="214" width="70" height="36" rx="6"/>
+  <text class="lbl-s" x="379" y="237" text-anchor="middle">ADC (I)</text>
+  <path class="w-ince" d="M318 232 L344 232" marker-end="url(#arw-ince)"/>
+  <rect class="blk" x="344" y="268" width="70" height="36" rx="6"/>
+  <text class="lbl-s" x="379" y="291" text-anchor="middle">ADC (Q)</text>
+  <path class="w-ince" d="M318 286 L344 286" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk" x="446" y="240" width="64" height="40" rx="6"/>
+  <text class="lbl-s" x="478" y="264" text-anchor="middle">DSP</text>
+  <path class="w-data" d="M414 232 L430 232 L430 252 L446 252" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M414 286 L430 286 L430 268 L446 268" marker-end="url(#arw-data)"/>
+
+  <text class="not" x="560" y="248">RF'i tek adımda DC etrafına indir;</text>
+  <text class="not" x="560" y="264">ADC'ler yavaş ama analog kusurlar</text>
+  <text class="not" x="560" y="280">(DC, I/Q) dijitalde düzeltilmek zorunda</text>
+
+  <!-- ================= 3) DIRECT RF SAMPLING ================= -->
+  <text class="lbl-b" x="20" y="398">3 · Direct RF sampling</text>
+  <text class="not" x="958" y="398" text-anchor="end">+ esneklik, çok kanal koherens   − ADC güç/hız, clock kalitesi talebi</text>
+
+  <line class="w-ince" x1="34" y1="440" x2="34" y2="466"/>
+  <path class="w-ince" d="M22 428 L46 428 L34 446 Z"/>
+
+  <rect class="blk" x="58" y="422" width="70" height="36" rx="6"/>
+  <text class="lbl-s" x="93" y="445" text-anchor="middle">LNA</text>
+  <path class="w-ince" d="M34 440 L58 440" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk" x="146" y="422" width="86" height="36" rx="6"/>
+  <text class="lbl-s" x="189" y="439" text-anchor="middle">ön seçici</text>
+  <text class="lbl-s" x="189" y="453" text-anchor="middle">filtre</text>
+  <path class="w-ince" d="M128 440 L146 440" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk" x="250" y="422" width="60" height="36" rx="6"/>
+  <text class="lbl-s" x="280" y="445" text-anchor="middle">DSA</text>
+  <path class="w-ince" d="M232 440 L250 440" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk blk-sysref" x="328" y="416" width="110" height="48" rx="6"/>
+  <text class="lbl-s" x="383" y="436" text-anchor="middle">RF ADC</text>
+  <text class="lbl-s" x="383" y="452" text-anchor="middle">(GS/s sınıfı)</text>
+  <path class="w-ince" d="M310 440 L328 440" marker-end="url(#arw-ince)"/>
+
+  <rect class="blk" x="464" y="416" width="110" height="48" rx="6"/>
+  <text class="lbl-s" x="519" y="436" text-anchor="middle">DDC / NCO</text>
+  <text class="lbl-s" x="519" y="452" text-anchor="middle">(çip içinde)</text>
+  <path class="w-data" d="M438 440 L464 440" marker-end="url(#arw-data)"/>
+
+  <rect class="blk" x="600" y="422" width="64" height="36" rx="6"/>
+  <text class="lbl-s" x="632" y="445" text-anchor="middle">DSP</text>
+  <path class="w-data" d="M574 440 L600 440" marker-end="url(#arw-data)"/>
+
+  <text class="not" x="700" y="432">mixer yok, LO yok, IF yok:</text>
+  <text class="not" x="700" y="448">"bant seçimi" artık yazılımın işi (§3)</text>
+</svg>

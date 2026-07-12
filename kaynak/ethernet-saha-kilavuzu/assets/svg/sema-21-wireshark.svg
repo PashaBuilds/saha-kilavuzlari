@@ -1,0 +1,62 @@
+<svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s21">
+<title id="t-s21">Wireshark ekranının üç paneli: paket listesi, katman katman detay ağacı ve ham hex görünümü; detay ağacındaki her satırın hangi katmana denk geldiği işaretli</title>
+<defs>
+<marker id="ok21" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+</defs>
+
+<!-- pencere -->
+<rect x="30" y="30" width="620" height="470" rx="10" fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.4"/>
+<rect x="30" y="30" width="620" height="34" rx="10" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="46" y="52" class="s-mono2">Wireshark — eth0</text>
+
+<!-- filtre çubuğu -->
+<rect x="46" y="74" width="588" height="28" rx="6" fill="var(--dia-panel)" stroke="var(--accent)"/>
+<text x="58" y="93" class="s-mono2 s-vurgu">tcp.port == 5001</text>
+<text x="660" y="93" class="s-metin2">← display filter</text>
+
+<!-- 1: paket listesi -->
+<rect x="46" y="112" width="588" height="116" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+<text x="58" y="132" class="s-mono2">No.  Time     Source          Destination     Proto  Info</text>
+<text x="58" y="152" class="s-mono2">41   0.0021   192.168.1.20    192.168.1.130   TCP    52814→5001 [SYN]</text>
+<rect x="52" y="160" width="576" height="20" rx="3" fill="var(--accent-soft)"/>
+<text x="58" y="174" class="s-mono2 s-vurgu">42   0.0022   192.168.1.130   192.168.1.20    TCP    5001→52814 [SYN,ACK]</text>
+<text x="58" y="196" class="s-mono2">43   0.0023   192.168.1.20    192.168.1.130   TCP    52814→5001 [ACK]</text>
+<text x="58" y="216" class="s-mono2">44   0.0031   192.168.1.20    192.168.1.130   TCP    veri, 64 byte</text>
+<text x="660" y="150" class="s-metin">1 · Paket listesi</text>
+<text x="660" y="170" class="s-metin2">akışın kuşbakışı;</text>
+<text x="660" y="188" class="s-metin2">seçili satırın detayı</text>
+<text x="660" y="206" class="s-metin2">aşağıda açılır</text>
+
+<!-- 2: detay ağacı -->
+<rect x="46" y="238" width="588" height="168" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+<text x="58" y="260" class="s-mono2">▸ Frame 42: 74 bytes on wire</text>
+<text x="58" y="284" class="s-mono2">▾ Ethernet II, Src: d8:3a:dd:…, Dst: aa:bb:cc:…</text>
+<text x="58" y="304" class="s-mono2">    Type: IPv4 (0x0800)</text>
+<text x="58" y="328" class="s-mono2">▸ Internet Protocol, Src: 192.168.1.130, Dst: 192.168.1.20</text>
+<text x="58" y="352" class="s-mono2">▸ Transmission Control Protocol, [SYN, ACK], Seq=0 Ack=1</text>
+<text x="58" y="376" class="s-mono2">   (uygulama verisi olsaydı: ▸ Data / HTTP / …)</text>
+
+<text x="660" y="262" class="s-metin">2 · Detay ağacı</text>
+<text x="660" y="282" class="s-metin2">= enkapsülasyon</text>
+<text x="660" y="300" class="s-metin2">(Şekil 2'nin canlısı)</text>
+<g class="s-mono2">
+<text x="600" y="284" class="s-vurgu">← L2</text>
+<text x="600" y="328" class="s-vurgu">← L3</text>
+<text x="600" y="352" class="s-vurgu">← L4</text>
+<text x="600" y="376" class="s-vurgu">← L7</text>
+</g>
+
+<!-- 3: hex -->
+<rect x="46" y="416" width="588" height="70" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+<text x="58" y="438" class="s-mono2">0000  aa bb cc 11 22 33 d8 3a  dd 4f a2 1c 08 00 45 00</text>
+<text x="58" y="458" class="s-mono2">0010  00 3c 00 00 40 00 40 06  b6 7d c0 a8 01 82 c0 a8</text>
+<text x="58" y="478" class="s-mono2">0020  01 14 13 89 ce 4e …</text>
+<text x="660" y="440" class="s-metin">3 · Ham byte'lar</text>
+<text x="660" y="460" class="s-metin2">ağaçta seçtiğin alan</text>
+<text x="660" y="478" class="s-metin2">burada vurgulanır</text>
+
+<!-- ok: ağaç-hex bağlantısı -->
+<line x1="120" y1="284" x2="90" y2="430" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#ok21)"/>
+</svg>

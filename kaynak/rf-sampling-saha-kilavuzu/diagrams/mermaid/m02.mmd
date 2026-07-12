@@ -1,0 +1,12 @@
+flowchart TD
+    A["Link kurulmuyor / bozuk"] --> B{"GT PLL kilitli mi?<br/>refclk geliyor mu?"}
+    B -- hayır --> B1["Clock zinciri: chip kilitleri,<br/>refclk yerleşimi (§14), kablo"]
+    B -- evet --> C{"C: SH lock var mı?<br/>B: CGS geçiyor mu?"}
+    C -- hayır --> C1["PHY katmanı: polarite, eşitleme,<br/>near-end loopback (3-4), IBERT/eye (§16.2)"]
+    C -- evet --> D{"C: EMB lock var mı?<br/>B: ILAS tamam mı?"}
+    D -- hayır --> D1["Çerçeve/senkron: SYSREF frekans kuralı (§9),<br/>K/E-F uyumu, SYSREF Always politikası"]
+    D -- evet --> E{"CRC / kod hatası<br/>sayaçları artıyor mu?"}
+    E -- evet --> E1["Sinyal bütünlüğü: eye scan,<br/>far-end loopback (5-6), sıcaklık testi"]
+    E -- hayır --> F{"Veri kayık / kanal<br/>karışık / faz tutarsız mı?"}
+    F -- evet --> F1["Transport: parametre birebir mi (§5.3)?<br/>ILAS/konfig karşılaştır; SYSREF hizası (§10)"]
+    F -- hayır --> G["Link sağlıklı → uygulama<br/>katmanına bak (DMA, DSP)"]

@@ -1,0 +1,17 @@
+// W03 — JESD204C sync header stream: blok / multiblock / EMB hiyerarşisi
+// Üst şerit mikro ölçek (bit düzeyi), alt şeritler makro ölçek (blok düzeyi).
+{
+  signal: [
+    { name: 'bit akışı (mikro ölçek)', wave: 'x45..45..x',
+      data: ['01', '64-bit payload', '10', '64-bit payload'] },
+    {},
+    {},
+    { name: 'blok sırası (makro ölçek)', wave: 'x==========x',
+      data: ['26', '27', '28', '29', '30', '31', '0', '1', '2', '3'] },
+    { name: 'sync-word biti',            wave: 'x3333334444x',
+      data: ['1', '0', '0', '0', '0', '1', 'p', 'p', 'p', 'p'] },
+    { name: 'EMB sınırı',                wave: '0......10...' },
+  ],
+  config: { hscale: 2 },
+  head: { text: 'Mikro: her 66-bit blok = 2 SH biti + 64 bit veri. Makro: her hücre 1 blok; EoEMB deseni (100001) EMB sınırını işaretler.' },
+}

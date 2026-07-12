@@ -1,0 +1,11 @@
+stateDiagram-v2
+    direction TB
+    [*] --> SH_ARAMA : link enable / reset
+    SH_ARAMA : SH lock arama — 66-bit hizası kayarak denenir
+    SH_ARAMA --> EOEMB_ARAMA : 64 ardışık geçerli blok → SH lock
+    EOEMB_ARAMA : sync-word bitlerinde EoEMB (100001) aranır
+    EOEMB_ARAMA --> EMB_KILIT : 4 ardışık geçerli dizi → EMB lock
+    EMB_KILIT : LEMC hizası kuruldu, buffer release beklenir
+    EMB_KILIT --> DATA : release anı (§10)
+    DATA : DATA — veri akışı + CRC/FEC izleme
+    DATA --> SH_ARAMA : SH kilidi kaybı

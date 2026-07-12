@@ -1,0 +1,88 @@
+<svg viewBox="0 0 860 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s22">
+<title id="t-s22">Ağ arızası teşhis karar ağacı: link LED'den başlayıp gateway ping'i, hedef ping'i, DNS ve port testine inen sıralı kontrol zinciri</title>
+<defs>
+<marker id="ok22" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/>
+</marker>
+<marker id="ok22r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--red)"/>
+</marker>
+<marker id="ok22g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--green)"/>
+</marker>
+</defs>
+
+<rect x="140" y="24" width="240" height="40" rx="20" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/>
+<text x="260" y="49" class="s-metin" text-anchor="middle">“Bağlanamıyorum”</text>
+<line x1="260" y1="64" x2="260" y2="92" stroke="var(--ink-2)" marker-end="url(#ok22)"/>
+
+<!-- S1 -->
+<rect x="100" y="96" width="320" height="52" rx="10" fill="var(--dia-blok)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="260" y="118" class="s-metin" text-anchor="middle">1 · Link LED yanıyor mu?</text>
+<text x="260" y="138" class="s-mono2" text-anchor="middle">(gömülüde: BMSR link biti)</text>
+<line x1="420" y1="122" x2="486" y2="122" stroke="var(--red)" stroke-width="1.6" marker-end="url(#ok22r)"/>
+<text x="452" y="112" class="s-metin2 s-kirmizi" text-anchor="middle">hayır</text>
+<rect x="490" y="96" width="340" height="52" rx="10" fill="var(--red-soft)" stroke="var(--red)"/>
+<text x="506" y="118" class="s-metin2">Katman 1: kablo, konnektör, PHY reset,</text>
+<text x="506" y="138" class="s-metin2">RGMII delay, switch portu kapalı mı?</text>
+<line x1="260" y1="148" x2="260" y2="184" stroke="var(--green)" stroke-width="1.6" marker-end="url(#ok22g)"/>
+<text x="278" y="172" class="s-metin2 s-yesil">evet</text>
+
+<!-- S2 -->
+<rect x="100" y="188" width="320" height="52" rx="10" fill="var(--dia-blok)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="260" y="210" class="s-metin" text-anchor="middle">2 · Gateway'e ping gidiyor mu?</text>
+<text x="260" y="230" class="s-mono2" text-anchor="middle">ping 192.168.1.1 (+ arp -a dolu mu?)</text>
+<line x1="420" y1="214" x2="486" y2="214" stroke="var(--red)" stroke-width="1.6" marker-end="url(#ok22r)"/>
+<text x="452" y="204" class="s-metin2 s-kirmizi" text-anchor="middle">hayır</text>
+<rect x="490" y="188" width="340" height="52" rx="10" fill="var(--red-soft)" stroke="var(--red)"/>
+<text x="506" y="210" class="s-metin2">Yerel ağ: IP/mask aynı subnet mi? VLAN?</text>
+<text x="506" y="230" class="s-metin2">ARP cevabı var mı? duplicate IP? (B.5, 7)</text>
+<line x1="260" y1="240" x2="260" y2="276" stroke="var(--green)" stroke-width="1.6" marker-end="url(#ok22g)"/>
+<text x="278" y="264" class="s-metin2 s-yesil">evet</text>
+
+<!-- S3 -->
+<rect x="100" y="280" width="320" height="52" rx="10" fill="var(--dia-blok)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="260" y="302" class="s-metin" text-anchor="middle">3 · Hedef IP'ye ping gidiyor mu?</text>
+<text x="260" y="322" class="s-mono2" text-anchor="middle">ping 8.8.8.8 / ping 192.168.1.130</text>
+<line x1="420" y1="306" x2="486" y2="306" stroke="var(--red)" stroke-width="1.6" marker-end="url(#ok22r)"/>
+<text x="452" y="296" class="s-metin2 s-kirmizi" text-anchor="middle">hayır</text>
+<rect x="490" y="280" width="340" height="52" rx="10" fill="var(--red-soft)" stroke="var(--red)"/>
+<text x="506" y="302" class="s-metin2">Yönlendirme: gateway tanımlı mı? tracert</text>
+<text x="506" y="322" class="s-metin2">nerede kesiliyor? hedef/FW ping'i yutuyor mu?</text>
+<line x1="260" y1="332" x2="260" y2="368" stroke="var(--green)" stroke-width="1.6" marker-end="url(#ok22g)"/>
+<text x="278" y="356" class="s-metin2 s-yesil">evet</text>
+
+<!-- S4 -->
+<rect x="100" y="372" width="320" height="52" rx="10" fill="var(--dia-blok)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="260" y="394" class="s-metin" text-anchor="middle">4 · İsim çözülüyor mu?</text>
+<text x="260" y="414" class="s-mono2" text-anchor="middle">nslookup hedef-adi</text>
+<line x1="420" y1="398" x2="486" y2="398" stroke="var(--red)" stroke-width="1.6" marker-end="url(#ok22r)"/>
+<text x="452" y="388" class="s-metin2 s-kirmizi" text-anchor="middle">hayır</text>
+<rect x="490" y="372" width="340" height="52" rx="10" fill="var(--red-soft)" stroke="var(--red)"/>
+<text x="506" y="394" class="s-metin2">DNS: resolver doğru mu? 8.8.8.8'e sorunca</text>
+<text x="506" y="414" class="s-metin2">çözüyor mu? hosts'ta bayat satır? (B.10)</text>
+<line x1="260" y1="424" x2="260" y2="460" stroke="var(--green)" stroke-width="1.6" marker-end="url(#ok22g)"/>
+<text x="278" y="448" class="s-metin2 s-yesil">evet</text>
+
+<!-- S5 -->
+<rect x="100" y="464" width="320" height="52" rx="10" fill="var(--dia-blok)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="260" y="486" class="s-metin" text-anchor="middle">5 · Port açık mı?</text>
+<text x="260" y="506" class="s-mono2" text-anchor="middle">telnet hedef 5001 / Test-NetConnection</text>
+<line x1="420" y1="490" x2="486" y2="490" stroke="var(--red)" stroke-width="1.6" marker-end="url(#ok22r)"/>
+<text x="452" y="480" class="s-metin2 s-kirmizi" text-anchor="middle">hayır</text>
+<rect x="490" y="464" width="340" height="52" rx="10" fill="var(--red-soft)" stroke="var(--red)"/>
+<text x="506" y="486" class="s-metin2">refused → dinleyen yok (netstat/ss ile bak)</text>
+<text x="506" y="506" class="s-metin2">timeout → firewall / NAT yolda yutuyor</text>
+<line x1="260" y1="516" x2="260" y2="552" stroke="var(--green)" stroke-width="1.6" marker-end="url(#ok22g)"/>
+<text x="278" y="540" class="s-metin2 s-yesil">evet</text>
+
+<!-- sonuç -->
+<rect x="100" y="556" width="320" height="56" rx="10" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.5"/>
+<text x="260" y="580" class="s-metin s-yesil" text-anchor="middle">Ağ temiz → sorun uygulama katmanında:</text>
+<text x="260" y="600" class="s-mono2" text-anchor="middle">protokol, veri formatı, timeout (Wireshark!)</text>
+
+<text x="490" y="580" class="s-metin2">Her “hayır” dalı, arızayı TEK katmana</text>
+<text x="490" y="600" class="s-metin2">hapseder; iki katmanda birden arama yapma.</text>
+
+<text x="100" y="656" class="s-metin2">Sıra önemli: alt katman aklanmadan üst katmana geçme. (B.n = ilgili bölüm)</text>
+</svg>

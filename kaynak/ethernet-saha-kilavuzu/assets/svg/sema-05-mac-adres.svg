@@ -1,0 +1,59 @@
+<svg viewBox="0 0 860 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s05">
+<title id="t-s05">MAC adresinin yapısı: ilk üç byte üretici kodu OUI, son üç byte cihaza özel numara; broadcast adresi FF:FF:FF:FF:FF:FF</title>
+
+<text x="60" y="40" class="s-baslik">48 bit MAC adresi = 6 byte</text>
+
+<!-- örnek adres -->
+<g stroke-width="1.4" text-anchor="middle">
+<rect x="60"  y="60" width="110" height="56" rx="6" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<rect x="180" y="60" width="110" height="56" rx="6" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<rect x="300" y="60" width="110" height="56" rx="6" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<rect x="430" y="60" width="110" height="56" rx="6" fill="var(--green-soft)" stroke="var(--green)"/>
+<rect x="550" y="60" width="110" height="56" rx="6" fill="var(--green-soft)" stroke="var(--green)"/>
+<rect x="670" y="60" width="110" height="56" rx="6" fill="var(--green-soft)" stroke="var(--green)"/>
+<text x="115" y="95" class="s-mono" font-size="17">D8</text>
+<text x="235" y="95" class="s-mono" font-size="17">3A</text>
+<text x="355" y="95" class="s-mono" font-size="17">DD</text>
+<text x="485" y="95" class="s-mono" font-size="17">4F</text>
+<text x="605" y="95" class="s-mono" font-size="17">A2</text>
+<text x="725" y="95" class="s-mono" font-size="17">1C</text>
+</g>
+
+<!-- ayraçlar -->
+<path d="M60 132 L410 132" stroke="var(--accent)" stroke-width="1.6"/>
+<path d="M430 132 L780 132" stroke="var(--green)" stroke-width="1.6"/>
+<text x="235" y="156" class="s-metin" text-anchor="middle">OUI — üretici kodu</text>
+<text x="235" y="175" class="s-metin2" text-anchor="middle">IEEE dağıtır; D8:3A:DD = Raspberry Pi</text>
+<text x="605" y="156" class="s-metin" text-anchor="middle">Cihaza özel kısım</text>
+<text x="605" y="175" class="s-metin2" text-anchor="middle">üretici, her karta benzersiz verir</text>
+
+<!-- ilk byte'ın bitleri -->
+<text x="60" y="224" class="s-metin">İlk byte'ın son iki biti özel anlam taşır:</text>
+<g stroke-width="1.2" text-anchor="middle">
+<rect x="60"  y="238" width="44" height="40" rx="4" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<rect x="104" y="238" width="44" height="40" rx="4" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<rect x="148" y="238" width="44" height="40" rx="4" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<rect x="192" y="238" width="44" height="40" rx="4" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<rect x="236" y="238" width="44" height="40" rx="4" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<rect x="280" y="238" width="44" height="40" rx="4" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<rect x="324" y="238" width="44" height="40" rx="4" fill="var(--gold-soft)" stroke="var(--gold)"/>
+<rect x="368" y="238" width="44" height="40" rx="4" fill="var(--red-soft)" stroke="var(--red)"/>
+<text x="82"  y="263" class="s-mono">1</text>
+<text x="126" y="263" class="s-mono">1</text>
+<text x="170" y="263" class="s-mono">0</text>
+<text x="214" y="263" class="s-mono">1</text>
+<text x="258" y="263" class="s-mono">1</text>
+<text x="302" y="263" class="s-mono">0</text>
+<text x="346" y="263" class="s-mono">0</text>
+<text x="390" y="263" class="s-mono">0</text>
+</g>
+<text x="346" y="300" class="s-metin2" text-anchor="middle">U/L</text>
+<text x="390" y="300" class="s-metin2" text-anchor="middle">I/G</text>
+<text x="440" y="250" class="s-metin2">U/L: 0 = küresel (üretici verdi), 1 = yerel/yazılımla atandı</text>
+<text x="440" y="270" class="s-metin2">I/G: 0 = unicast (tek alıcı), 1 = multicast (grup)</text>
+
+<!-- broadcast -->
+<rect x="60" y="322" width="720" height="40" rx="8" fill="var(--gold-soft)" stroke="var(--gold)"/>
+<text x="78" y="347" class="s-mono">FF:FF:FF:FF:FF:FF</text>
+<text x="260" y="347" class="s-metin2">= broadcast (tüm ağa yayın) — 48 bitin hepsi 1; segmentteki herkes bu frame'i işler</text>
+</svg>

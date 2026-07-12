@@ -1,0 +1,99 @@
+<svg viewBox="0 0 860 1040" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s23">
+<title id="t-s23">Tarayıcıya URL yazıldığı andan sayfanın gelişine kadar uçtan uca zincir: ARP, DNS, TCP el sıkışması, TLS ve HTTP tek zaman çizgisinde</title>
+<defs>
+<marker id="ok23a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+<marker id="ok23g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/>
+</marker>
+<marker id="ok23y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--green)"/>
+</marker>
+</defs>
+
+<!-- başlık -->
+<text x="430" y="36" class="s-baslik" text-anchor="middle">https://example.com — adres çubuğundan sayfaya</text>
+
+<!-- yaşam çizgileri -->
+<g text-anchor="middle">
+<rect x="60" y="56" width="150" height="40" rx="8" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/>
+<text x="135" y="81" class="s-metin">Senin makinen</text>
+<rect x="330" y="56" width="130" height="40" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="395" y="81" class="s-metin">Gateway</text>
+<rect x="510" y="56" width="130" height="40" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="575" y="81" class="s-metin">DNS resolver</text>
+<rect x="680" y="56" width="160" height="40" rx="8" fill="var(--dia-blok)" stroke="var(--gold)"/>
+<text x="760" y="76" class="s-metin">example.com</text>
+<text x="760" y="91" class="s-mono2">93.184.216.34:443</text>
+</g>
+<g stroke="var(--line-2)" stroke-dasharray="3 6">
+<line x1="135" y1="96" x2="135" y2="990"/>
+<line x1="395" y1="96" x2="395" y2="330"/>
+<line x1="575" y1="96" x2="575" y2="330"/>
+<line x1="760" y1="96" x2="760" y2="990"/>
+</g>
+
+<!-- FAZ 0 -->
+<rect x="40" y="112" width="800" height="56" rx="8" fill="var(--dia-panel)" stroke="var(--line)"/>
+<text x="56" y="136" class="s-metin">0 · Kablosuz adımlar: URL ayrıştırılır; tarayıcı + OS cache'leri yoklanır</text>
+<text x="56" y="156" class="s-mono2">DNS cache? boş · ARP cache? boş  →  her şey sıfırdan (en kötü/en öğretici durum)</text>
+
+<!-- FAZ 1: ARP -->
+<rect x="40" y="184" width="800" height="118" rx="8" fill="var(--gold-soft)" opacity="0.5"/>
+<text x="56" y="208" class="s-metin s-altin">1 · ARP — “kapıyı bulmak”  (B.7)</text>
+<text x="700" y="208" class="s-mono2">katman: L2</text>
+<line x1="135" y1="234" x2="389" y2="234" stroke="var(--gold)" stroke-width="1.8" stroke-dasharray="7 4" marker-end="url(#ok23g)"/>
+<text x="262" y="224" class="s-mono2" text-anchor="middle">“Who has 192.168.1.1?” — BROADCAST</text>
+<line x1="395" y1="268" x2="141" y2="268" stroke="var(--gold)" stroke-width="1.8" marker-end="url(#ok23g)"/>
+<text x="262" y="258" class="s-mono2" text-anchor="middle">“is at 44:d9:e7:…” — artık frame yazabiliriz</text>
+<text x="56" y="292" class="s-mono2">DNS de sunucu da uzak → her dış paketin frame'i gateway'in MAC'ine gidecek (B.5-6)</text>
+
+<!-- FAZ 2: DNS -->
+<rect x="40" y="318" width="800" height="112" rx="8" fill="var(--accent-soft)" opacity="0.5"/>
+<text x="56" y="342" class="s-metin s-vurgu">2 · DNS — “ismi adrese çevirmek”  (B.10)</text>
+<text x="700" y="342" class="s-mono2">L7 / UDP 53</text>
+<line x1="135" y1="370" x2="569" y2="370" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok23a)"/>
+<text x="352" y="360" class="s-mono2" text-anchor="middle">A? example.com   (IP hedefi: resolver — MAC hedefi: gateway!)</text>
+<line x1="575" y1="404" x2="141" y2="404" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok23a)"/>
+<text x="352" y="394" class="s-mono2" text-anchor="middle">cevap: 93.184.216.34  (TTL ile cache'e)</text>
+
+<!-- FAZ 3: TCP -->
+<rect x="40" y="446" width="800" height="146" rx="8" fill="var(--green-soft)" opacity="0.5"/>
+<text x="56" y="470" class="s-metin s-yesil">3 · TCP — “güvenilir hattı kurmak”  (B.9)</text>
+<text x="700" y="470" class="s-mono2">L4 / :443</text>
+<line x1="135" y1="498" x2="754" y2="498" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok23y)"/>
+<text x="445" y="488" class="s-mono2" text-anchor="middle">SYN  (yolda: NAT kaynak adresi çevirdi — B.12; her hop'ta frame yenilendi — B.6)</text>
+<line x1="760" y1="532" x2="141" y2="532" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok23y)"/>
+<text x="445" y="522" class="s-mono2" text-anchor="middle">SYN+ACK</text>
+<line x1="135" y1="566" x2="754" y2="566" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok23y)"/>
+<text x="445" y="556" class="s-mono2" text-anchor="middle">ACK  →  soket dörtlüsü canlı: (192.168.1.20:52814 ↔ 93.184.216.34:443)</text>
+
+<!-- FAZ 4: TLS -->
+<rect x="40" y="608" width="800" height="146" rx="8" fill="var(--accent-soft)" opacity="0.5"/>
+<text x="56" y="632" class="s-metin s-vurgu">4 · TLS — “tüneli mühürlemek”  (B.11)</text>
+<text x="700" y="632" class="s-mono2">L7 güvenlik</text>
+<line x1="135" y1="660" x2="754" y2="660" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok23a)"/>
+<text x="445" y="650" class="s-mono2" text-anchor="middle">ClientHello</text>
+<line x1="760" y1="694" x2="141" y2="694" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok23a)"/>
+<text x="445" y="684" class="s-mono2" text-anchor="middle">ServerHello + sertifika  (zincir → güvenilen kök?)</text>
+<line x1="135" y1="728" x2="754" y2="728" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok23a)"/>
+<text x="445" y="718" class="s-mono2" text-anchor="middle">anahtar anlaşması → simetrik anahtar hazır, tünel kuruldu</text>
+
+<!-- FAZ 5: HTTP -->
+<rect x="40" y="770" width="800" height="112" rx="8" fill="var(--green-soft)" opacity="0.5"/>
+<text x="56" y="794" class="s-metin s-yesil">5 · HTTP — “asıl işi yapmak”  (B.11)</text>
+<text x="700" y="794" class="s-mono2">L7, tünel içinde</text>
+<line x1="135" y1="822" x2="754" y2="822" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok23y)"/>
+<text x="445" y="812" class="s-mono2" text-anchor="middle">GET / HTTP/1.1 + Host: example.com  (dışarıdan görünmez — tünelde)</text>
+<line x1="760" y1="856" x2="141" y2="856" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok23y)"/>
+<text x="445" y="846" class="s-mono2" text-anchor="middle">200 OK + HTML  (büyükse: MTU'luk parçalar, seq/ACK ile — B.3, 9)</text>
+
+<!-- SONUÇ -->
+<rect x="40" y="898" width="800" height="60" rx="10" fill="var(--dia-blok-2)" stroke="var(--green)" stroke-width="1.5"/>
+<text x="56" y="922" class="s-metin s-yesil">Sayfa çiziliyor. Toplam: ~yüz milisaniye, ~5 gidiş-dönüş, dört protokol, beş katman.</text>
+<text x="56" y="944" class="s-mono2">Sonraki tıklama çok daha hızlı: DNS + ARP cache dolu, TCP+TLS bağlantısı zaten açık.</text>
+
+<text x="56" y="990" class="s-metin2">Her ok tek bir IP paketi; her paket, her segmentte o segmentin MAC'leriyle yeni bir frame'e sarıldı (B.1).</text>
+<text x="56" y="1012" class="s-metin2">(B.n = ilgili bölüm)</text>
+</svg>

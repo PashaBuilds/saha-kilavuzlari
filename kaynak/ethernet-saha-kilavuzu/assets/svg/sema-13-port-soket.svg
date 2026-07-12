@@ -1,0 +1,45 @@
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s13">
+<title id="t-s13">Port kavramı: tek IP adresinde birden çok uygulama, her biri bir port dinler; bağlantıyı dört değerli soket kimliği ayırt eder</title>
+<defs>
+<marker id="ok13" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+</defs>
+
+<!-- istemci -->
+<rect x="40" y="120" width="200" height="110" rx="10" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="140" y="148" class="s-metin" text-anchor="middle">PC — istemci</text>
+<text x="140" y="170" class="s-mono2" text-anchor="middle">192.168.1.20</text>
+<rect x="60" y="184" width="160" height="30" rx="6" fill="var(--dia-blok-2)" stroke="var(--accent)"/>
+<text x="140" y="204" class="s-mono2" text-anchor="middle">Python scripti :52814</text>
+
+<!-- sunucu / kart -->
+<rect x="560" y="48" width="260" height="304" rx="10" fill="var(--dia-blok)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="690" y="76" class="s-metin" text-anchor="middle">FPGA kartı — tek IP</text>
+<text x="690" y="98" class="s-mono2" text-anchor="middle">192.168.1.130</text>
+
+<g>
+<rect x="580" y="116" width="220" height="40" rx="6" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="596" y="141" class="s-mono2">:22   SSH / konsol</text>
+<rect x="580" y="166" width="220" height="40" rx="6" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="596" y="191" class="s-mono2">:80   web arayüzü</text>
+<rect x="580" y="216" width="220" height="40" rx="6" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.4"/>
+<text x="596" y="241" class="s-mono2">:5001 telemetri sunucusu</text>
+<rect x="580" y="266" width="220" height="40" rx="6" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="596" y="291" class="s-mono2">:502  Modbus/TCP</text>
+</g>
+<text x="690" y="334" class="s-metin2" text-anchor="middle">port = uygulamanın kapı numarası</text>
+
+<!-- bağlantı -->
+<line x1="240" y1="199" x2="554" y2="238" stroke="var(--accent)" stroke-width="2" marker-end="url(#ok13)"/>
+<text x="390" y="200" class="s-metin2" text-anchor="middle">TCP bağlantısı</text>
+
+<!-- soket dörtlüsü -->
+<rect x="40" y="272" width="460" height="96" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<text x="58" y="300" class="s-metin s-vurgu">Bağlantının kimliği — soket dörtlüsü:</text>
+<text x="58" y="326" class="s-mono2">(192.168.1.20 : 52814  ↔  192.168.1.130 : 5001)</text>
+<text x="58" y="352" class="s-metin2">Dördü birden benzersizdir; stack gelen segmenti bu dörtlüyle eşler.</text>
+
+<text x="140" y="106" class="s-metin2" text-anchor="middle">52814: OS'un o an verdiği</text>
+<text x="140" y="86" class="s-metin2" text-anchor="middle">geçici (ephemeral) port</text>
+</svg>

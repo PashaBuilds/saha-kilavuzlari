@@ -1,0 +1,78 @@
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s06">
+<title id="t-s06">Aynı topolojide hub, switch ve router davranışı: hub herkese kopyalar, switch yalnızca hedef porta iletir, router ağları ayırır ve broadcast'i durdurur</title>
+<defs>
+<marker id="ok06a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--red)"/>
+</marker>
+<marker id="ok06b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--green)"/>
+</marker>
+<marker id="ok06c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+</defs>
+
+<!-- ===================== PANEL 1: HUB ===================== -->
+<text x="160" y="36" class="s-baslik" text-anchor="middle">Hub (L1)</text>
+<rect x="120" y="150" width="80" height="44" rx="8" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/>
+<text x="160" y="177" class="s-metin" text-anchor="middle">hub</text>
+
+<g class="s-mono2" text-anchor="middle">
+<rect x="40" y="64" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="62" y="86">A</text>
+<rect x="236" y="64" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="258" y="86">C</text>
+<rect x="40" y="250" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="62" y="272">B</text>
+<rect x="236" y="250" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="258" y="272">D</text>
+</g>
+
+<line x1="70" y1="98" x2="132" y2="150" stroke="var(--red)" stroke-width="1.8" marker-end="url(#ok06a)"/>
+<line x1="188" y1="150" x2="250" y2="100" stroke="var(--red)" stroke-width="1.8" marker-end="url(#ok06a)"/>
+<line x1="132" y1="194" x2="72" y2="248" stroke="var(--red)" stroke-width="1.8" marker-end="url(#ok06a)"/>
+<line x1="188" y1="194" x2="248" y2="248" stroke="var(--red)" stroke-width="1.8" marker-end="url(#ok06a)"/>
+<text x="160" y="316" class="s-metin2" text-anchor="middle">A→C frame'i HERKESE kopyalanır</text>
+<text x="160" y="336" class="s-metin2" text-anchor="middle">tek collision domain,</text>
+<text x="160" y="354" class="s-metin2" text-anchor="middle">tek broadcast domain</text>
+
+<!-- ===================== PANEL 2: SWITCH ===================== -->
+<text x="440" y="36" class="s-baslik" text-anchor="middle">Switch (L2)</text>
+<rect x="400" y="150" width="80" height="44" rx="8" fill="var(--dia-blok-2)" stroke="var(--green)" stroke-width="1.6"/>
+<text x="440" y="177" class="s-metin" text-anchor="middle">switch</text>
+
+<g class="s-mono2" text-anchor="middle">
+<rect x="320" y="64" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="342" y="86">A</text>
+<rect x="516" y="64" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="538" y="86">C</text>
+<rect x="320" y="250" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="342" y="272">B</text>
+<rect x="516" y="250" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="538" y="272">D</text>
+</g>
+
+<line x1="350" y1="98" x2="412" y2="150" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok06b)"/>
+<line x1="468" y1="150" x2="530" y2="100" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok06b)"/>
+<line x1="412" y1="194" x2="352" y2="248" stroke="var(--line-2)" stroke-dasharray="3 4"/>
+<line x1="468" y1="194" x2="528" y2="248" stroke="var(--line-2)" stroke-dasharray="3 4"/>
+<text x="440" y="316" class="s-metin2" text-anchor="middle">MAC tablosuna bakar: yalnız C'ye</text>
+<text x="440" y="336" class="s-metin2" text-anchor="middle">port başına collision domain,</text>
+<text x="440" y="354" class="s-metin2" text-anchor="middle">broadcast domain hâlâ TEK</text>
+
+<!-- ===================== PANEL 3: ROUTER ===================== -->
+<text x="720" y="36" class="s-baslik" text-anchor="middle">Router (L3)</text>
+<rect x="680" y="150" width="80" height="44" rx="8" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.6"/>
+<text x="720" y="177" class="s-metin" text-anchor="middle">router</text>
+
+<g class="s-mono2" text-anchor="middle">
+<rect x="600" y="64" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="622" y="86">A</text>
+<rect x="796" y="64" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="818" y="86">C</text>
+<rect x="600" y="250" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="622" y="272">B</text>
+<rect x="796" y="250" width="44" height="34" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="818" y="272">D</text>
+</g>
+
+<line x1="630" y1="98" x2="692" y2="150" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok06c)"/>
+<line x1="748" y1="150" x2="810" y2="100" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok06c)"/>
+<line x1="692" y1="194" x2="632" y2="248" stroke="var(--line-2)"/>
+<line x1="748" y1="194" x2="808" y2="248" stroke="var(--line-2)"/>
+
+<text x="622" y="120" class="s-mono2" text-anchor="middle">192.168.1.0/24</text>
+<text x="818" y="120" class="s-mono2" text-anchor="middle">10.0.0.0/24</text>
+
+<text x="720" y="316" class="s-metin2" text-anchor="middle">IP'ye bakıp AĞLAR ARASI yönlendirir</text>
+<text x="720" y="336" class="s-metin2" text-anchor="middle">her bacağı ayrı broadcast domain:</text>
+<text x="720" y="354" class="s-metin2" text-anchor="middle">broadcast router'ı GEÇEMEZ</text>
+</svg>

@@ -1,0 +1,58 @@
+<svg viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s03">
+<title id="t-s03">Twisted pair kablonun içindeki dört bükülü çift ve iki PHY arasındaki auto-negotiation ile link kurulumu</title>
+<defs>
+<marker id="ok03" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+</defs>
+
+<!-- SOL PANEL: kablonun içi -->
+<text x="40" y="44" class="s-baslik">Cat5e/6 kablonun içi: 4 bükülü çift</text>
+<rect x="40" y="62" width="360" height="252" rx="10" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+
+<g stroke-width="2" fill="none">
+  <path d="M70 100 q15 -12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="var(--accent)"/>
+  <path d="M70 100 q15 12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="var(--accent)" opacity="0.45"/>
+  <path d="M70 156 q15 -12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="var(--green)"/>
+  <path d="M70 156 q15 12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="var(--green)" opacity="0.45"/>
+  <path d="M70 212 q15 -12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="var(--gold)"/>
+  <path d="M70 212 q15 12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="var(--gold)" opacity="0.45"/>
+  <path d="M70 268 q15 -12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="var(--red)"/>
+  <path d="M70 268 q15 12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="var(--red)" opacity="0.45"/>
+</g>
+<text x="330" y="93" class="s-mono2">çift 1</text>
+<text x="330" y="149" class="s-mono2">çift 2</text>
+<text x="330" y="205" class="s-mono2">çift 3</text>
+<text x="330" y="261" class="s-mono2">çift 4</text>
+
+<text x="40" y="344" class="s-metin2">Bükülme, iki tele aynı gürültüyü bindirir; alıcı farkı</text>
+<text x="40" y="362" class="s-metin2">okuduğu için gürültü birbirini götürür (diferansiyel çift).</text>
+<text x="40" y="392" class="s-metin2">100BASE-TX: 2 çift · 1000BASE-T: 4 çiftin hepsi, iki yönlü.</text>
+
+<!-- SAĞ PANEL: auto-negotiation -->
+<text x="460" y="44" class="s-baslik">Link kurulumu: auto-negotiation</text>
+
+<rect x="460" y="70" width="120" height="70" rx="8" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/>
+<text x="520" y="100" class="s-metin" text-anchor="middle">Kart</text>
+<text x="520" y="120" class="s-mono2" text-anchor="middle">PHY</text>
+
+<rect x="720" y="70" width="120" height="70" rx="8" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/>
+<text x="780" y="100" class="s-metin" text-anchor="middle">Switch</text>
+<text x="780" y="120" class="s-mono2" text-anchor="middle">PHY</text>
+
+<line x1="586" y1="90" x2="714" y2="90" stroke="var(--accent)" stroke-dasharray="5 4" marker-end="url(#ok03)"/>
+<line x1="714" y1="120" x2="586" y2="120" stroke="var(--accent)" stroke-dasharray="5 4" marker-end="url(#ok03)"/>
+<text x="650" y="80" class="s-metin2" text-anchor="middle">“ben şunları yaparım”</text>
+<text x="650" y="140" class="s-metin2" text-anchor="middle">yetenek listeleri (FLP)</text>
+
+<rect x="460" y="176" width="380" height="88" rx="8" fill="var(--green-soft)" stroke="var(--green)"/>
+<text x="478" y="206" class="s-metin">Anlaşma: iki tarafın da yapabildiği en iyi mod</text>
+<text x="478" y="230" class="s-mono">1000 Mb/s · full-duplex</text>
+<text x="478" y="252" class="s-metin2">→ link LED yanar: “aynı dili konuşmayı kabul ettik”</text>
+
+<rect x="460" y="288" width="380" height="104" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="478" y="316" class="s-metin">Link LED'in söylediği ve söylemediği:</text>
+<text x="478" y="340" class="s-metin2">✓ PHY'ler birbirini gördü, hız/duplex anlaşıldı (L1 tamam)</text>
+<text x="478" y="362" class="s-metin2">✗ IP ayarın doğru mu, ping gider mi — hiçbir garanti yok</text>
+<text x="478" y="384" class="s-metin2">(L2 ve üstü ayrı dertler — Bölüm 16'daki ağacın ilk dalı)</text>
+</svg>

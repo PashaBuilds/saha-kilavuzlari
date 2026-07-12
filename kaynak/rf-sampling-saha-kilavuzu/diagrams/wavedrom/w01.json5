@@ -1,0 +1,15 @@
+// W01 — SYSREF'in device clock ile yakalanması ve LMFC/LEMC faz reset'i
+{
+  signal: [
+    { name: 'device clock',      wave: 'p...........' },
+    { name: 'SYSREF',            wave: '0....1.....0', node: '.....a' },
+    { name: 'yakalanan SYSREF',  wave: '0.....1....0', node: '......b' },
+    {},
+    { name: 'LMFC/LEMC sayacı',  wave: '============',
+      data: ['…', '8', '9', '10', '11', '12', '0', '1', '2', '3', '4', '5'] },
+    { name: 'LMFC/LEMC kenarı',  wave: '0.....10....' },
+  ],
+  edge: ['a~>b device clock kenarında, setup/hold penceresi içinde örneklenir; sayaç fazı sıfırlanır'],
+  config: { hscale: 2 },
+  head: { text: "SYSREF: device clock'a göre örneklenen, LMFC/LEMC sayacının fazını sıfırlayan sinyal" },
+}

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doğrudan RF Örnekleme ve Ön Uç Tasarımı — Saha Kılavuzu</title>
+<meta name="description" content="AFE7900/AD9084 sınıfı RF-sampling entegreleri, JESD204B/C, clocking ve SYSREF: gömülü yazılımcı için saha kılavuzu.">
+<script>
+// FOUC önleme: tema tercihini CSS'ten önce uygula
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('tema'); } catch (e) {}
+  if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+<style>
+/* ================================================================== TEMEL */
+:root {
+  /* ışık teması: sıcak kâğıt */
+  --bg: #faf8f4;
+  --bg-2: #f1ede4;
+  --bg-3: #e9e4d8;
+  --ink: #22252c;
+  --ink-2: #4d5160;
+  --ink-3: #83879a;
+  --line: #ddd7c9;
+  --line-2: #cbc4b2;
+
+  /* sinyal renk kodu — şemalarla BİREBİR aynı anlam */
+  --clk: #b45309;        /* vurgu-1: device clock yolları  */
+  --clk-soft: #f6e3c8;
+  --sysref: #0e7490;     /* vurgu-2: SYSREF yolları        */
+  --sysref-soft: #d3ecf2;
+  --data: #22252c;       /* veri (SerDes): nötr kalın      */
+  --ctrl: #83879a;       /* kontrol (SPI vb.): kesikli     */
+
+  --link: #0e7490;
+  --mark: #f6e3c8;
+  --dia-panel: #fefdfb;
+  --dia-blok: #f4f1e9;
+  --co-not-bg: #eef0f4;    --co-not-bd: #6b7280;
+  --co-dikkat-bg: #f9e8e3; --co-dikkat-bd: #b3401e;
+  --co-saha-bg: #e2eff2;   --co-saha-bd: #0e7490;
+  --co-pasa-bg: #f8efdd;   --co-pasa-bd: #b45309;
+  --co-ogren-bg: #f3f1ea;  --co-ogren-bd: #a8a290;
+
+  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --toc-w: 300px;
+  --measure: 72ch;
+}
+html[data-theme="dark"] {
+  --bg: #14161c;
+  --bg-2: #1b1e26;
+  --bg-3: #23262f;
+  --ink: #e6e4dd;
+  --ink-2: #b0aea6;
+  --ink-3: #7d7c76;
+  --line: #2e313b;
+  --line-2: #3d414d;
+
+  --clk: #e8a04c;
+  --clk-soft: #3a2d1a;
+  --sysref: #4fc3dd;
+  --sysref-soft: #143038;
+  --data: #e6e4dd;
+  --ctrl: #7d7c76;
+
+  --link: #4fc3dd;
+  --mark: #3a2d1a;
+  --dia-panel: #1b1e26;
+  --dia-blok: #23262f;
+  --co-not-bg: #1e222c;    --co-not-bd: #6b7280;
+  --co-dikkat-bg: #2c1c17; --co-dikkat-bd: #d96f47;
+  --co-saha-bg: #12262c;   --co-saha-bd: #4fc3dd;
+  --co-pasa-bg: #2b2213;   --co-pasa-bd: #e8a04c;
+  --co-ogren-bg: #1d1f26;  --co-ogren-bd: #55524a;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.75;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--mark); }
+
+/* ============================================================ İLERLEME + TEMA */
+#progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--clk), var(--sysref));
+  z-index: 50;
+}
+#tema-dugme {
+  position: fixed; top: 14px; right: 16px; z-index: 40;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line-2); background: var(--bg-2); color: var(--ink-2);
+  cursor: pointer; display: grid; place-items: center;
+}
+#tema-dugme:hover { color: var(--clk); border-color: var(--clk); }
+#tema-dugme svg { width: 18px; height: 18px; }
+html[data-theme="light"] #tema-dugme .ay { display: block; }
+html[data-theme="light"] #tema-dugme .gunes { display: none; }
+html[data-theme="dark"] #tema-dugme .ay { display: none; }
+html[data-theme="dark"] #tema-dugme .gunes { display: block; }
+
+.only-dark { display: none; }
+html[data-theme="dark"] .only-dark { display: block; }
+html[data-theme="dark"] .only-light { display: none; }
+
+
+/* ================================================================== YERLEŞİM */
+.layout { display: grid; grid-template-columns: var(--toc-w) minmax(0, 1fr); }
+main { min-width: 0; padding: 0 clamp(20px, 5vw, 72px) 8rem; }
+.icerik { max-width: var(--measure); margin: 0 auto; }
+
+/* ------------------------------------------------------------------ TOC */
+.toc-kolon {
+  border-right: 1px solid var(--line);
+  background: var(--bg-2);
+}
+.toc-ic {
+  position: sticky; top: 0; max-height: 100vh; overflow-y: auto;
+  padding: 28px 20px 40px 24px;
+  font-size: 13.5px; line-height: 1.5;
+  scrollbar-width: thin;
+}
+.toc-baslik {
+  font-family: var(--serif); font-size: 15px; font-weight: 600;
+  margin: 0 0 4px; color: var(--ink);
+}
+.toc-seri { font-size: 11px; letter-spacing: 0.14em; color: var(--clk); margin: 0 0 20px; }
+.toc p.toc-kisim {
+  margin: 20px 0 6px; font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+}
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc a {
+  display: block; padding: 3px 8px; border-radius: 6px;
+  color: var(--ink-2); text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.toc a:hover { color: var(--ink); background: var(--bg-3); }
+.toc li.toc-h1 > a.aktif {
+  color: var(--clk); border-left-color: var(--clk); background: var(--bg-3);
+  font-weight: 600;
+}
+.toc .toc-sub { display: none; margin: 2px 0 6px 10px; border-left: 1px solid var(--line-2); }
+.toc li.toc-h1.acik > .toc-sub { display: block; }
+.toc .toc-sub a { font-size: 12.5px; padding: 2px 8px; color: var(--ink-3); }
+.toc .toc-sub a.aktif { color: var(--sysref); font-weight: 600; }
+#toc-ac { display: none; }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .toc-kolon { display: none; }
+  .toc-kolon.acik {
+    display: block; position: fixed; inset: 0; z-index: 45;
+    overflow-y: auto; border-right: none;
+  }
+  #toc-ac {
+    display: grid; place-items: center;
+    position: fixed; bottom: 18px; right: 16px; z-index: 46;
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 1px solid var(--line-2); background: var(--bg-2); color: var(--ink);
+    cursor: pointer; font-size: 20px;
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.18);
+  }
+}
+
+/* ================================================================== HERO */
+header.hero {
+  padding: clamp(48px, 9vh, 96px) 0 0;
+  margin-bottom: 4rem;
+}
+.hero .seri {
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--clk); margin: 0 0 18px;
+}
+.hero h1.doc-title {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(34px, 5.4vw, 54px); line-height: 1.12;
+  letter-spacing: -0.012em; margin: 0 0 18px; border: none; padding: 0;
+}
+.hero .alt {
+  font-size: 18px; color: var(--ink-2); max-width: 58ch; margin: 0 0 30px;
+}
+.hero .imza { font-size: 13px; color: var(--ink-3); margin: 0 0 26px; }
+.hero .dalga { width: 100%; height: 64px; display: block; margin-bottom: 8px; }
+.hero .dalga .iz-clk { stroke: var(--clk); }
+.hero .dalga .iz-sysref { stroke: var(--sysref); }
+.hero .dalga .iz-eksen { stroke: var(--line-2); }
+.hero .lejant { display: flex; gap: 22px; font-size: 12px; color: var(--ink-3); padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.hero .lejant .oge::before {
+  content: ''; display: inline-block; width: 22px; height: 3px;
+  border-radius: 2px; margin-right: 7px; vertical-align: middle;
+}
+.hero .lejant .oge.l-clk::before { background: var(--clk); }
+.hero .lejant .oge.l-sysref::before { background: var(--sysref); }
+
+/* ================================================================ TİPOGRAFİ */
+h1, h2, h3, h4 { font-family: var(--serif); color: var(--ink); scroll-margin-top: 24px; }
+h1.sec-title {
+  font-size: clamp(28px, 3.6vw, 38px); line-height: 1.18; font-weight: 600;
+  margin: 5.5rem 0 1.4rem; padding-top: 2.8rem;
+  border-top: 3px solid var(--ink);
+}
+h1.sec-title .sec-kicker {
+  display: block; font-family: var(--sans); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--clk);
+  margin-bottom: 10px;
+}
+h2 { font-size: 24px; font-weight: 600; margin: 3rem 0 0.9rem; line-height: 1.25; }
+h2 .h2-num { color: var(--clk); font-variant-numeric: tabular-nums; margin-right: 2px; }
+h3 { font-family: var(--sans); font-size: 17.5px; font-weight: 650; margin: 2.2rem 0 0.6rem; }
+h4 { font-family: var(--sans); font-size: 15.5px; font-weight: 650; margin: 1.8rem 0 0.5rem; color: var(--ink-2); }
+p { margin: 0 0 1.15em; }
+strong { font-weight: 650; }
+a { color: var(--link); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2.5px; text-decoration-color: color-mix(in srgb, var(--link) 45%, transparent); }
+a:hover { text-decoration-color: var(--link); }
+a.figref, a.secref { font-variant-numeric: tabular-nums; white-space: nowrap; }
+hr { border: none; border-top: 1px solid var(--line); margin: 3rem auto; width: 40%; }
+ul, ol { padding-left: 1.5em; margin: 0 0 1.15em; }
+li { margin-bottom: 0.35em; }
+li::marker { color: var(--ink-3); }
+li.gorev { list-style: none; position: relative; }
+li.gorev::before {
+  content: ''; position: absolute; left: -1.45em; top: 0.42em;
+  width: 0.75em; height: 0.75em; border: 1.5px solid var(--clk);
+  border-radius: 3px;
+}
+mark { background: var(--mark); color: inherit; padding: 0 3px; border-radius: 3px; }
+.brokenref { background: #c0392b; color: #fff; padding: 0 6px; border-radius: 4px; font-family: var(--mono); font-size: 0.85em; }
+
+blockquote {
+  margin: 1.4em 0; padding: 0.2em 1.3em;
+  border-left: 3px solid var(--line-2); color: var(--ink-2);
+  font-style: italic;
+}
+
+/* kod */
+code {
+  font-family: var(--mono); font-size: 0.86em;
+  background: var(--bg-3); border-radius: 4px; padding: 0.1em 0.35em;
+}
+pre { margin: 1.4em 0; }
+pre.shiki {
+  padding: 16px 18px; border-radius: 10px; border: 1px solid var(--line);
+  overflow-x: auto; font-size: 13.5px; line-height: 1.6;
+  background: var(--bg-2) !important;
+}
+pre.shiki code { background: none; padding: 0; font-size: inherit; }
+html[data-theme="dark"] .shiki, html[data-theme="dark"] .shiki span {
+  color: var(--shiki-dark) !important;
+}
+
+/* tablolar */
+table {
+  border-collapse: collapse; margin: 1.6em 0; font-size: 14.5px;
+  display: block; overflow-x: auto; max-width: 100%;
+}
+th, td { padding: 8px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th {
+  font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-2); border-bottom: 2px solid var(--line-2);
+  font-weight: 650; white-space: nowrap;
+}
+tbody tr:hover { background: var(--bg-2); }
+td code { white-space: nowrap; }
+
+/* ================================================================ CALLOUT */
+.callout {
+  margin: 1.8em 0; padding: 14px 20px 6px;
+  border-radius: 0 10px 10px 0; border-left: 3px solid;
+  font-size: 15.5px; line-height: 1.7;
+}
+.callout .co-title {
+  font-family: var(--sans); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  margin: 0 0 6px;
+}
+.co-not    { background: var(--co-not-bg);    border-color: var(--co-not-bd); }
+.co-not    .co-title { color: var(--co-not-bd); }
+.co-dikkat { background: var(--co-dikkat-bg); border-color: var(--co-dikkat-bd); }
+.co-dikkat .co-title { color: var(--co-dikkat-bd); }
+.co-saha   { background: var(--co-saha-bg);   border-color: var(--co-saha-bd); }
+.co-saha   .co-title { color: var(--co-saha-bd); }
+.co-pasa   {
+  background: var(--co-pasa-bg); border: 1.5px dashed var(--co-pasa-bd);
+  border-radius: 10px;
+}
+.co-pasa   .co-title { color: var(--co-pasa-bd); }
+.co-pasa   .co-title::before { content: '■ '; font-size: 8px; vertical-align: 2px; }
+.co-ogren  {
+  background: var(--co-ogren-bg); border: 1px solid var(--co-ogren-bd);
+  border-left: 3px solid var(--clk); border-radius: 0 10px 10px 0;
+}
+.co-ogren  .co-title { color: var(--ink-2); font-family: var(--serif); font-style: italic; text-transform: none; letter-spacing: 0.02em; font-size: 14px; font-weight: 600; }
+.co-ogren  ul { margin-bottom: 0.6em; }
+
+/* ================================================================== ŞEKİL */
+figure.dia {
+  margin: 2.2em 0; padding: 0;
+}
+figure.dia .dia-body {
+  background: var(--dia-panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 18px; overflow-x: auto;
+  scrollbar-width: thin; scrollbar-color: var(--line-2) transparent;
+}
+figure.dia .dia-body svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+@media screen {
+  /* timing diyagramları ve geniş şemalar doğal boyutta kalır, gerekirse yatay kayar */
+  figure.dia-wavedrom .dia-body svg,
+  figure.dia-wide .dia-body svg { max-width: none; }
+}
+figure.dia figcaption {
+  margin-top: 10px; font-size: 13.5px; color: var(--ink-2); line-height: 1.55;
+  padding: 0 6px;
+}
+figure.dia .fig-label {
+  font-weight: 700; font-size: 11.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--clk);
+}
+:target { scroll-margin-top: 28px; }
+figure.dia:target .dia-body { border-color: var(--clk); }
+
+/* --------------------------- elle çizilmiş SVG şema tasarım sistemi ------ */
+.dia-svg svg text { font-family: var(--sans); fill: var(--ink); }
+.dia-svg svg .blk { fill: var(--dia-blok); stroke: var(--ink-2); stroke-width: 1.3; rx: 8; }
+.dia-svg svg .blk-clk { fill: var(--clk-soft); stroke: var(--clk); stroke-width: 1.4; }
+.dia-svg svg .blk-sysref { fill: var(--sysref-soft); stroke: var(--sysref); stroke-width: 1.4; }
+.dia-svg svg .blk-dis { fill: none; stroke: var(--ink-3); stroke-dasharray: 6 4; stroke-width: 1.1; }
+.dia-svg svg .lbl { font-size: 13px; font-weight: 600; }
+.dia-svg svg .lbl-s { font-size: 11px; fill: var(--ink-2); }
+.dia-svg svg .lbl-b { font-size: 15px; font-weight: 700; }
+.dia-svg svg .pin { font-family: var(--mono); font-size: 10px; fill: var(--ink-2); }
+.dia-svg svg .pin-clk { fill: var(--clk); }
+.dia-svg svg .pin-sysref { fill: var(--sysref); }
+.dia-svg svg .w-clk { stroke: var(--clk); stroke-width: 2; fill: none; }
+.dia-svg svg .w-sysref { stroke: var(--sysref); stroke-width: 2; fill: none; }
+.dia-svg svg .w-data { stroke: var(--data); stroke-width: 2.6; fill: none; }
+.dia-svg svg .w-ctrl { stroke: var(--ctrl); stroke-width: 1.3; stroke-dasharray: 5 4; fill: none; }
+.dia-svg svg .w-ince { stroke: var(--ink-2); stroke-width: 1.2; fill: none; }
+.dia-svg svg .mk-clk { fill: var(--clk); }
+.dia-svg svg .mk-sysref { fill: var(--sysref); }
+.dia-svg svg .mk-data { fill: var(--data); }
+.dia-svg svg .mk-ctrl { fill: var(--ctrl); }
+.dia-svg svg .mk-ince { fill: var(--ink-2); }
+.dia-svg svg .alan { fill: var(--bg-3); opacity: 0.55; }
+.dia-svg svg .not { font-size: 10.5px; font-style: italic; fill: var(--ink-3); }
+
+/* ============================================================== KAYNAKLAR */
+.icerik details.kaynaklar {
+  margin: 2.2em 0 0; border-top: 1px solid var(--line); padding-top: 0.8em;
+  font-size: 14px; color: var(--ink-2);
+}
+.icerik details.kaynaklar summary {
+  cursor: pointer; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 600;
+}
+.icerik details.kaynaklar summary:hover { color: var(--ink); }
+
+/* ================================================================== YAZDIR */
+@media print {
+  :root, html[data-theme="dark"] {
+    --bg: #fff; --bg-2: #fff; --bg-3: #f2f2f2;
+    --ink: #000; --ink-2: #333; --ink-3: #555;
+    --line: #bbb; --line-2: #999;
+    --clk: #8a4207; --clk-soft: #f2e4cf;
+    --sysref: #0b5a70; --sysref-soft: #ddeef3;
+    --data: #000; --ctrl: #555;
+    --link: #000; --dia-panel: #fff; --dia-blok: #f4f4f4; --mark: #eee;
+    --co-not-bg: #eef0f4;    --co-not-bd: #6b7280;
+    --co-dikkat-bg: #f9e8e3; --co-dikkat-bd: #b3401e;
+    --co-saha-bg: #e2eff2;   --co-saha-bd: #0e7490;
+    --co-pasa-bg: #f8efdd;   --co-pasa-bd: #b45309;
+    --co-ogren-bg: #f3f1ea;  --co-ogren-bd: #a8a290;
+  }
+  #progress, #tema-dugme, #toc-ac, .toc-kolon { display: none !important; }
+  .layout { display: block; }
+  main { padding: 0; }
+  body { font-size: 10.5pt; line-height: 1.55; }
+  h1.sec-title { break-before: page; margin-top: 0; padding-top: 0.5cm; }
+  figure.dia, pre.shiki, .callout, table { break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+  .hero .dalga, .hero .lejant { display: none; }
+  html[data-theme="dark"] .dia-wavedrom .dia-body svg { filter: none; }
+  html[data-theme="dark"] .only-dark { display: none; }
+  html[data-theme="dark"] .only-light { display: block; }
+  pre.shiki { border: 1px solid #ccc; }
+  .shiki, .shiki span { color: var(--shiki-light, #24292e) !important; background: #fff !important; }
+}
+</style>
+</head>
+<body>
+<div id="progress" role="presentation"></div>
+<button id="tema-dugme" type="button" aria-label="Tema değiştir">
+  <svg class="ay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+  <svg class="gunes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+</button>
+<button id="toc-ac" type="button" aria-label="İçindekiler">☰</button>
+
+<div class="layout">
+  <div class="toc-kolon" id="toc-kolon">
+    <div class="toc-ic">
+      <p class="toc-baslik">Doğrudan RF Örnekleme ve Ön Uç Tasarımı</p>
+      <p class="toc-seri">SAHA KILAVUZU</p>
+      <!--{TOC}-->
+    </div>
+  </div>
+
+  <main>
+    <!-- ortak ok uçları: tüm elle çizilmiş şemalar bunları url(#...) ile kullanır -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <marker id="arw-clk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-clk" d="M0 0.5 L10 5 L0 9.5 z"/></marker>
+        <marker id="arw-sysref" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-sysref" d="M0 0.5 L10 5 L0 9.5 z"/></marker>
+        <marker id="arw-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="mk-data" d="M0 0.5 L10 5 L0 9.5 z"/></marker>
+        <marker id="arw-ctrl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-ctrl" d="M0 0.5 L10 5 L0 9.5 z"/></marker>
+        <marker id="arw-ince" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-ince" d="M0 0.5 L10 5 L0 9.5 z"/></marker>
+      </defs>
+    </svg>
+
+    <div class="icerik">
+      <header class="hero">
+        <p class="seri">Saha Kılavuzu Serisi · No. 02</p>
+        <h1 class="doc-title">Doğrudan RF Örnekleme ve Ön Uç Tasarımı</h1>
+        <p class="alt">Antenden bit'e: RF-sampling AFE'ler, JESD204B/C, clocking ve SYSREF — link ayağa kaldırmak, register yazmak ve debug etmek zorunda olan gömülü yazılımcı için.</p>
+        <p class="imza"><!--{BUILD_INFO}--></p>
+        <svg class="dalga" viewBox="0 0 720 64" preserveAspectRatio="none" aria-hidden="true">
+          <line class="iz-eksen" x1="0" y1="32" x2="720" y2="32" stroke-width="1"/>
+          <path class="iz-clk" fill="none" stroke-width="2"
+            d="M0 44 L18 44 L18 20 L36 20 L36 44 L54 44 L54 20 L72 20 L72 44 L90 44 L90 20 L108 20 L108 44 L126 44 L126 20 L144 20 L144 44 L162 44 L162 20 L180 20 L180 44 L198 44 L198 20 L216 20 L216 44 L234 44 L234 20 L252 20 L252 44 L270 44 L270 20 L288 20 L288 44 L306 44 L306 20 L324 20 L324 44 L342 44 L342 20 L360 20 L360 44 L378 44 L378 20 L396 20 L396 44 L414 44 L414 20 L432 20 L432 44 L450 44 L450 20 L468 20 L468 44 L486 44 L486 20 L504 20 L504 44 L522 44 L522 20 L540 20 L540 44 L558 44 L558 20 L576 20 L576 44 L594 44 L594 20 L612 20 L612 44 L630 44 L630 20 L648 20 L648 44 L666 44 L666 20 L684 20 L684 44 L702 44 L702 20 L720 20"/>
+          <path class="iz-sysref" fill="none" stroke-width="2.4"
+            d="M0 58 L126 58 L126 8 L162 8 L162 58 L414 58 L414 8 L450 8 L450 58 L702 58 L702 8 L720 8"/>
+        </svg>
+        <p class="lejant">
+          <span class="oge l-clk">device clock</span>
+          <span class="oge l-sysref">SYSREF</span>
+        </p>
+      </header>
+
+      <!--{CONTENT}-->
+
+      <footer style="margin-top:6rem;padding-top:2rem;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)">
+        <p>Saha Kılavuzu Serisi · Doğrudan RF Örnekleme ve Ön Uç Tasarımı.
+        Tek dosya, çevrimdışı çalışır; yazdırma için tarayıcının PDF çıktısı yeterlidir.</p>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script>
+// tema düğmesi
+document.getElementById('tema-dugme').addEventListener('click', function () {
+  var h = document.documentElement;
+  var t = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  h.setAttribute('data-theme', t);
+  try { localStorage.setItem('tema', t); } catch (e) {}
+});
+
+// okuma ilerlemesi
+(function () {
+  var bar = document.getElementById('progress');
+  var tik = false;
+  function guncelle() {
+    var d = document.documentElement;
+    var oran = d.scrollTop / (d.scrollHeight - d.clientHeight || 1);
+    bar.style.width = (oran * 100).toFixed(2) + '%';
+    tik = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!tik) { tik = true; requestAnimationFrame(guncelle); }
+  }, { passive: true });
+  guncelle();
+})();
+
+// mobil TOC
+(function () {
+  var kolon = document.getElementById('toc-kolon');
+  var dugme = document.getElementById('toc-ac');
+  dugme.addEventListener('click', function () {
+    var acik = kolon.classList.toggle('acik');
+    dugme.textContent = acik ? '✕' : '☰';
+  });
+  kolon.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') { kolon.classList.remove('acik'); dugme.textContent = '☰'; }
+  });
+})();
+
+// scrollspy: aktif bölüm ve alt başlık
+(function () {
+  var basliklar = Array.prototype.slice.call(document.querySelectorAll('h1.sec-title[id], h2[id]'));
+  var tocLinkler = {};
+  document.querySelectorAll('.toc a').forEach(function (a) {
+    tocLinkler[a.getAttribute('href').slice(1)] = a;
+  });
+  var aktifH1 = null, aktifH2 = null;
+  function isaretle() {
+    var y = window.scrollY + 120;
+    var h1 = null, h2 = null;
+    for (var i = 0; i < basliklar.length; i++) {
+      var b = basliklar[i];
+      if (b.offsetTop > y) break;
+      if (b.tagName === 'H1') { h1 = b; h2 = null; } else { h2 = b; }
+    }
+    if (h1 !== aktifH1) {
+      document.querySelectorAll('.toc li.toc-h1').forEach(function (li) {
+        li.classList.remove('acik');
+        li.querySelector(':scope > a').classList.remove('aktif');
+      });
+      if (h1 && tocLinkler[h1.id]) {
+        var a = tocLinkler[h1.id];
+        a.classList.add('aktif');
+        a.parentElement.classList.add('acik');
+        var kutu = document.querySelector('.toc-ic');
+        var ao = a.getBoundingClientRect().top - kutu.getBoundingClientRect().top;
+        if (ao < 60 || ao > kutu.clientHeight - 120) a.scrollIntoView({ block: 'center' });
+      }
+      aktifH1 = h1;
+    }
+    if (h2 !== aktifH2) {
+      document.querySelectorAll('.toc .toc-sub a').forEach(function (a) { a.classList.remove('aktif'); });
+      if (h2 && tocLinkler[h2.id]) tocLinkler[h2.id].classList.add('aktif');
+      aktifH2 = h2;
+    }
+  }
+  var tik = false;
+  window.addEventListener('scroll', function () {
+    if (!tik) { tik = true; requestAnimationFrame(function () { isaretle(); tik = false; }); }
+  }, { passive: true });
+  window.addEventListener('load', isaretle);
+  isaretle();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="JESD204 katman modeli: TX ve RX ayna yapısı">
+  <!-- TX tarafı -->
+  <text class="lbl-b" x="230" y="36" text-anchor="middle">TX cihazı (ör. AFE'nin ADC yolu)</text>
+  <rect class="blk blk-dis" x="60" y="50" width="340" height="420" rx="10"/>
+
+  <rect class="blk" x="84" y="70" width="292" height="64" rx="8"/>
+  <text class="lbl" x="230" y="96" text-anchor="middle">converter örnekleri</text>
+  <text class="lbl-s" x="230" y="116" text-anchor="middle">M converter × S örnek/frame (§2–3)</text>
+
+  <rect class="blk" x="84" y="158" width="292" height="72" rx="8"/>
+  <text class="lbl" x="230" y="182" text-anchor="middle">transport katmanı</text>
+  <text class="lbl-s" x="230" y="200" text-anchor="middle">örnekleri oktetlere/frame'lere yerleştirir</text>
+  <text class="lbl-s" x="230" y="216" text-anchor="middle">parametreler: M, S, N′, F, CS, CF, HD</text>
+  <path class="w-data" d="M230 134 L230 158" marker-end="url(#arw-data)"/>
+
+  <rect class="blk" x="84" y="254" width="292" height="56" rx="8"/>
+  <text class="lbl" x="230" y="278" text-anchor="middle">scrambler</text>
+  <text class="lbl-s" x="230" y="296" text-anchor="middle">204B: opsiyonel · 204C: her zaman açık</text>
+  <path class="w-data" d="M230 230 L230 254" marker-end="url(#arw-data)"/>
+
+  <rect class="blk" x="84" y="334" width="292" height="72" rx="8"/>
+  <text class="lbl" x="230" y="358" text-anchor="middle">data link katmanı</text>
+  <text class="lbl-s" x="230" y="376" text-anchor="middle">204B: CGS + ILAS + 8b/10b (§6)</text>
+  <text class="lbl-s" x="230" y="392" text-anchor="middle">204C: sync header + multiblock + CRC (§7)</text>
+  <path class="w-data" d="M230 310 L230 334" marker-end="url(#arw-data)"/>
+
+  <rect class="blk" x="84" y="430" width="292" height="56" rx="8"/>
+  <text class="lbl" x="230" y="452" text-anchor="middle">PHY (SerDes TX)</text>
+  <text class="lbl-s" x="230" y="470" text-anchor="middle">serializer + CML sürücü (§4)</text>
+  <path class="w-data" d="M230 406 L230 430" marker-end="url(#arw-data)"/>
+
+  <!-- RX tarafı (ayna) -->
+  <text class="lbl-b" x="730" y="36" text-anchor="middle">RX cihazı (ör. FPGA JESD204 IP)</text>
+  <rect class="blk blk-dis" x="560" y="50" width="340" height="420" rx="10"/>
+
+  <rect class="blk" x="584" y="70" width="292" height="64" rx="8"/>
+  <text class="lbl" x="730" y="96" text-anchor="middle">kullanıcı lojiği</text>
+  <text class="lbl-s" x="730" y="116" text-anchor="middle">örnek akışı → DSP / DMA (§14)</text>
+
+  <rect class="blk" x="584" y="158" width="292" height="72" rx="8"/>
+  <text class="lbl" x="730" y="182" text-anchor="middle">transport katmanı</text>
+  <text class="lbl-s" x="730" y="200" text-anchor="middle">frame'lerden örnekleri geri çıkarır</text>
+  <text class="lbl-s" x="730" y="216" text-anchor="middle">aynı parametreler — iki uçta birebir eşit</text>
+  <path class="w-data" d="M730 230 L730 158" marker-end="url(#arw-data)"/>
+
+  <rect class="blk" x="584" y="254" width="292" height="56" rx="8"/>
+  <text class="lbl" x="730" y="278" text-anchor="middle">descrambler</text>
+  <text class="lbl-s" x="730" y="296" text-anchor="middle">self-synchronous: hizalama gerektirmez</text>
+  <path class="w-data" d="M730 310 L730 254" marker-end="url(#arw-data)"/>
+
+  <rect class="blk" x="584" y="334" width="292" height="72" rx="8"/>
+  <text class="lbl" x="730" y="358" text-anchor="middle">data link katmanı</text>
+  <text class="lbl-s" x="730" y="376" text-anchor="middle">204B: CGS izleme + lane hizalama (§6)</text>
+  <text class="lbl-s" x="730" y="392" text-anchor="middle">204C: SH/EMB lock + CRC kontrol (§7)</text>
+  <path class="w-data" d="M730 406 L730 334" marker-end="url(#arw-data)"/>
+
+  <rect class="blk" x="584" y="430" width="292" height="56" rx="8"/>
+  <text class="lbl" x="730" y="452" text-anchor="middle">PHY (SerDes RX)</text>
+  <text class="lbl-s" x="730" y="470" text-anchor="middle">CDR + eşitleme + deserializer (§4)</text>
+
+  <!-- lane'ler -->
+  <path class="w-data" d="M376 444 L560 444" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M376 460 L560 460" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M376 476 L560 476" marker-end="url(#arw-data)"/>
+  <text class="pin" x="468" y="432" text-anchor="middle">L lane (seri, diferansiyel)</text>
+
+  <!-- debug ipuçları -->
+  <text class="not" x="480" y="516" text-anchor="middle">Debug pusulası: CDR kilitlenmiyor → PHY (§4/§16) · CGS'de veya SH lock'ta takılı → data link (§6–7)</text>
+  <text class="not" x="480" y="534" text-anchor="middle">link kalkıyor ama veri kayık/yanlış kanalda → transport parametre uyuşmazlığı (§5.3)</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s11">
+<title id="t-s11">ARP tablosunun kullanımı: yerel hedefin frame'i kendi MAC'ine, uzak hedefin frame'i gateway'in MAC'ine gider</title>
+<defs>
+<marker id="ok11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/>
+</marker>
+</defs>
+
+<!-- ARP cache -->
+<text x="40" y="40" class="s-baslik">PC'nin ARP tablosu (arp -a)</text>
+<rect x="40" y="56" width="420" height="96" rx="10" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="60" y="84" class="s-mono2">İnternet Adresi     Fiziksel Adres</text>
+<text x="60" y="110" class="s-mono2"><tspan class="s-altin">192.168.1.1</tspan>       <tspan class="s-altin">44:d9:e7:0a:71:5e</tspan>  ← gateway</text>
+<text x="60" y="134" class="s-mono2"><tspan class="s-yesil">192.168.1.130</tspan>     <tspan class="s-yesil">d8:3a:dd:4f:a2:1c</tspan>  ← FPGA kartı</text>
+
+<!-- senaryo 1: yerel -->
+<rect x="40" y="196" width="390" height="176" rx="10" fill="var(--dia-panel)" stroke="var(--green)" stroke-width="1.4"/>
+<text x="58" y="224" class="s-metin s-yesil">Hedef yerel: 192.168.1.130'a paket</text>
+<text x="58" y="248" class="s-metin2">karar: aynı subnet → kendi MAC'ine</text>
+<g>
+<rect x="58" y="264" width="150" height="44" rx="6" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="133" y="282" class="s-mono2" text-anchor="middle">dst MAC:</text>
+<text x="133" y="298" class="s-mono2 s-yesil" text-anchor="middle">d8:3a:dd:4f:a2:1c</text>
+<rect x="208" y="264" width="150" height="44" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="283" y="282" class="s-mono2" text-anchor="middle">dst IP:</text>
+<text x="283" y="298" class="s-mono2" text-anchor="middle">192.168.1.130</text>
+</g>
+<line x1="180" y1="322" x2="180" y2="348" stroke="var(--green)" marker-end="url(#ok11)"/>
+<text x="200" y="342" class="s-metin2">frame doğrudan karta gider</text>
+
+<!-- senaryo 2: uzak -->
+<rect x="450" y="196" width="390" height="176" rx="10" fill="var(--dia-panel)" stroke="var(--gold)" stroke-width="1.4"/>
+<text x="468" y="224" class="s-metin s-altin">Hedef uzak: 172.217.17.14'e paket</text>
+<text x="468" y="248" class="s-metin2">karar: farklı subnet → GATEWAY'İN MAC'ine</text>
+<g>
+<rect x="468" y="264" width="150" height="44" rx="6" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="543" y="282" class="s-mono2" text-anchor="middle">dst MAC:</text>
+<text x="543" y="298" class="s-mono2 s-altin" text-anchor="middle">44:d9:e7:0a:71:5e</text>
+<rect x="618" y="264" width="150" height="44" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="693" y="282" class="s-mono2" text-anchor="middle">dst IP:</text>
+<text x="693" y="298" class="s-mono2" text-anchor="middle">172.217.17.14</text>
+</g>
+<line x1="590" y1="322" x2="590" y2="348" stroke="var(--gold)" marker-end="url(#ok11)"/>
+<text x="610" y="342" class="s-metin2">MAC yerel kapıyı, IP nihai</text>
+<text x="610" y="360" class="s-metin2">hedefi gösterir — çelişki değil</text>
+
+<!-- orta not -->
+<text x="470" y="110" class="s-metin2">ARP yalnızca YEREL adresler için çalışır:</text>
+<text x="470" y="130" class="s-metin2">uzak IP hiçbir zaman ARP'lanmaz —</text>
+<text x="470" y="150" class="s-metin2">onun yerine gateway'in MAC'i sorulur.</text>
+</svg>

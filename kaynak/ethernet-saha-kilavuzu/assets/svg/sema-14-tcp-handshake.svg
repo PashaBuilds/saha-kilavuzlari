@@ -1,0 +1,53 @@
+<svg viewBox="0 0 860 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s14">
+<title id="t-s14">TCP yaşam döngüsü: üçlü el sıkışma, sıra numaralı veri alışverişi ve FIN ile kapanış</title>
+<defs>
+<marker id="ok14a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+<marker id="ok14g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--green)"/>
+</marker>
+<marker id="ok14k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/>
+</marker>
+</defs>
+
+<g text-anchor="middle">
+<rect x="120" y="30" width="160" height="44" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="200" y="57" class="s-metin">İstemci</text>
+<rect x="580" y="30" width="160" height="44" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="660" y="57" class="s-metin">Sunucu</text>
+</g>
+<g stroke="var(--line-2)" stroke-dasharray="3 5">
+<line x1="200" y1="74" x2="200" y2="520"/>
+<line x1="660" y1="74" x2="660" y2="520"/>
+</g>
+
+<!-- el sıkışma -->
+<text x="60" y="112" class="s-metin s-vurgu">KURULUM</text>
+<line x1="200" y1="128" x2="654" y2="128" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok14a)"/>
+<text x="430" y="118" class="s-mono2" text-anchor="middle">SYN  seq=1000  “bağlanalım; ben 1000'den sayarım”</text>
+<line x1="660" y1="170" x2="206" y2="170" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok14a)"/>
+<text x="430" y="160" class="s-mono2" text-anchor="middle">SYN+ACK  seq=7000, ack=1001  “kabul; ben 7000'den”</text>
+<line x1="200" y1="212" x2="654" y2="212" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok14a)"/>
+<text x="430" y="202" class="s-mono2" text-anchor="middle">ACK  ack=7001  → bağlantı KURULDU</text>
+
+<!-- veri -->
+<text x="60" y="266" class="s-metin s-yesil">VERİ</text>
+<line x1="200" y1="282" x2="654" y2="282" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok14g)"/>
+<text x="430" y="272" class="s-mono2" text-anchor="middle">100 byte veri  seq=1001…1100</text>
+<line x1="660" y1="324" x2="206" y2="324" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok14g)"/>
+<text x="430" y="314" class="s-mono2" text-anchor="middle">ACK  ack=1101  “1101'e kadar hepsi bende”</text>
+<text x="430" y="352" class="s-metin2" text-anchor="middle">her byte sayılır; ACK gelmeyen veri yeniden gönderilir</text>
+
+<!-- kapanış -->
+<text x="60" y="404" class="s-metin">KAPANIŞ</text>
+<line x1="200" y1="420" x2="654" y2="420" stroke="var(--ink-2)" stroke-width="1.6" marker-end="url(#ok14k)"/>
+<text x="430" y="410" class="s-mono2" text-anchor="middle">FIN  “benden bu kadar”</text>
+<line x1="660" y1="456" x2="206" y2="456" stroke="var(--ink-2)" stroke-width="1.6" marker-end="url(#ok14k)"/>
+<text x="430" y="446" class="s-mono2" text-anchor="middle">ACK  (+ kendi FIN'i)</text>
+<line x1="200" y1="492" x2="654" y2="492" stroke="var(--ink-2)" stroke-width="1.6" marker-end="url(#ok14k)"/>
+<text x="430" y="482" class="s-mono2" text-anchor="middle">ACK  → iki yön de kapandı</text>
+
+<text x="430" y="540" class="s-metin2" text-anchor="middle">RST ise acil fren: “bu bağlantıyı tanımıyorum / kapalı port” — el sıkışmasız, tek pakette kesilir.</text>
+</svg>

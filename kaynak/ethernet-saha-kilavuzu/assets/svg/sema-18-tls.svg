@@ -1,0 +1,51 @@
+<svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s18">
+<title id="t-s18">Basitleştirilmiş TLS el sıkışması ve ardından kurulan şifreli tünelin içinde akan HTTP trafiği</title>
+<defs>
+<marker id="ok18a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+<marker id="ok18g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--green)"/>
+</marker>
+</defs>
+
+<g text-anchor="middle">
+<rect x="120" y="30" width="170" height="44" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="205" y="57" class="s-metin">Tarayıcı / istemci</text>
+<rect x="570" y="30" width="170" height="44" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="655" y="57" class="s-metin">Sunucu</text>
+</g>
+<g stroke="var(--line-2)" stroke-dasharray="3 5">
+<line x1="205" y1="74" x2="205" y2="500"/>
+<line x1="655" y1="74" x2="655" y2="500"/>
+</g>
+
+<line x1="205" y1="116" x2="649" y2="116" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok18a)"/>
+<text x="430" y="106" class="s-mono2" text-anchor="middle">1 · ClientHello — “şu şifre takımlarını bilirim” + rastgele sayı</text>
+
+<line x1="655" y1="160" x2="211" y2="160" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok18a)"/>
+<text x="430" y="150" class="s-mono2" text-anchor="middle">2 · ServerHello + SERTİFİKA (içinde sunucunun public key'i)</text>
+
+<rect x="60" y="184" width="290" height="86" rx="8" fill="var(--gold-soft)" stroke="var(--gold)"/>
+<text x="76" y="208" class="s-metin s-altin">3 · Sertifika doğrulama:</text>
+<text x="76" y="230" class="s-metin2">imza zinciri güvenilen köke (CA)</text>
+<text x="76" y="248" class="s-metin2">çıkıyor mu? isim uyuyor mu?</text>
+<text x="76" y="266" class="s-metin2">tarihi geçerli mi?</text>
+
+<line x1="205" y1="300" x2="649" y2="300" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok18a)"/>
+<text x="430" y="290" class="s-mono2" text-anchor="middle">4 · Anahtar anlaşması (key exchange)</text>
+
+<rect x="430" y="316" width="360" height="44" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="446" y="336" class="s-metin2">İki taraf da aynı SİMETRİK anahtarı türetir —</text>
+<text x="446" y="354" class="s-metin2">anahtar kablodan hiç geçmeden.</text>
+
+<!-- tünel -->
+<rect x="120" y="392" width="620" height="108" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+<text x="430" y="418" class="s-metin s-vurgu" text-anchor="middle">ŞİFRELİ TÜNEL — dışarıdan yalnız anlamsız byte'lar görünür</text>
+<line x1="235" y1="446" x2="619" y2="446" stroke="var(--green)" stroke-width="1.7" marker-end="url(#ok18g)"/>
+<text x="430" y="438" class="s-mono2" text-anchor="middle">GET /index.html HTTP/1.1</text>
+<line x1="625" y1="478" x2="241" y2="478" stroke="var(--green)" stroke-width="1.7" marker-end="url(#ok18g)"/>
+<text x="430" y="470" class="s-mono2" text-anchor="middle">HTTP/1.1 200 OK + sayfa</text>
+
+<text x="430" y="526" class="s-metin2" text-anchor="middle">HTTPS = aynı HTTP, bu tünelin içinde. Wireshark tünel kurulumunu görür, içini göremez.</text>
+</svg>

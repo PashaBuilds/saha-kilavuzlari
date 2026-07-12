@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saha Kılavuzları — Gömülü sistemler için teknik literatür</title>
+<meta name="description" content="Gömülü yazılımcı için tek dosyalık, bağımlılıksız, çevrimdışı çalışan Türkçe teknik saha kılavuzları serisi.">
+<meta name="theme-color" content="#05070d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='%230a1220' stroke='%2367e8f9' stroke-opacity='.65' stroke-width='2.5'/%3E%3Ctext x='32' y='42' font-family='Menlo,monospace' font-size='25' font-weight='700' fill='%23e8f4ff' text-anchor='middle'%3ESK%3C/text%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   SAHA KILAVUZLARI · sıvı cam hub
+   Kısıtlar: CDN yok, harici font yok, fetch yok — file:// üzerinde çalışır.
+   ========================================================================== */
+
+:root {
+  --murekkep: #05070d;          /* zemin: gece petrolü */
+  --kagit:    #eaf0fb;          /* birincil metin */
+  --sis:      #93a3c0;          /* ikincil metin */
+  --pus:      #5c6b8a;          /* üçüncül metin */
+  --cizgi:    rgba(255,255,255,.09);
+  --cam:      rgba(255,255,255,.045);
+  --sans:  -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --mono:  ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  --serif: ui-serif, "New York", Georgia, "Times New Roman", serif;
+  --gecis: cubic-bezier(.16, 1, .3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--murekkep);
+  color: var(--kagit);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::selection { background: hsla(195, 95%, 65%, .28); color: #fff; }
+
+/* İnce, karanlığa gömülü kaydırma çubuğu */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 5px; border: 2px solid var(--murekkep); }
+::-webkit-scrollbar-track { background: transparent; }
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid hsla(195, 90%, 70%, .9);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   SAHNE — yaşayan arka plan: aurora + tayf süpürmesi + gratikül + gren
+   ========================================================================== */
+
+.sahne {
+  position: fixed; inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora {
+  position: absolute;
+  width: 58vmax; height: 58vmax;
+  border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+}
+
+.aurora.a1 {
+  top: -22vmax; left: -12vmax;
+  background: radial-gradient(closest-side, hsla(196, 95%, 58%, .20), transparent 70%);
+  animation: suzul-1 34s ease-in-out infinite alternate;
+}
+
+.aurora.a2 {
+  top: -10vmax; right: -20vmax;
+  background: radial-gradient(closest-side, hsla(281, 90%, 62%, .17), transparent 70%);
+  animation: suzul-2 41s ease-in-out infinite alternate;
+}
+
+.aurora.a3 {
+  bottom: -30vmax; left: 12vmax;
+  background: radial-gradient(closest-side, hsla(32, 95%, 58%, .10), transparent 70%);
+  animation: suzul-3 47s ease-in-out infinite alternate;
+}
+
+@keyframes suzul-1 {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(14vw, 12vh, 0) scale(1.25); }
+}
+@keyframes suzul-2 {
+  from { transform: translate3d(0, 0, 0) scale(1.1); }
+  to   { transform: translate3d(-16vw, 18vh, 0) scale(.9); }
+}
+@keyframes suzul-3 {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(10vw, -14vh, 0) scale(1.2); }
+}
+
+/* Çok soluk, dev bir spektrum süpürmesi — camın içindeki ışık kırılması */
+.tayf {
+  position: absolute;
+  top: -60vmax; left: 50%;
+  width: 160vmax; height: 160vmax;
+  margin-left: -80vmax;
+  background: conic-gradient(from 0deg,
+    transparent 0deg,
+    hsla(200, 90%, 70%, .045) 40deg,
+    transparent 80deg,
+    transparent 150deg,
+    hsla(285, 90%, 70%, .04) 200deg,
+    transparent 250deg,
+    transparent 360deg);
+  animation: tayf-don 90s linear infinite;
+  will-change: transform;
+}
+
+@keyframes tayf-don { to { transform: rotate(360deg); } }
+
+/* Gratikül: mühendislik kağıdı; kenarlara doğru erir, imleçle hafif kayar */
+.izgara {
+  position: absolute; inset: -80px;
+  background-image:
+    repeating-linear-gradient(0deg,   rgba(163,190,231,.05) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(90deg,  rgba(163,190,231,.05) 0 1px, transparent 1px 56px);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 34%, #000 0%, transparent 78%);
+          mask-image: radial-gradient(ellipse 90% 70% at 50% 34%, #000 0%, transparent 78%);
+  transform: translate3d(calc(var(--px, 0) * 14px), calc(var(--py, 0) * 10px), 0);
+  transition: transform .35s var(--gecis);
+}
+
+/* İmleci izleyen kostik ışık — camdan süzülen huzme */
+.kostik {
+  position: fixed;
+  top: 0; left: 0;
+  width: 640px; height: 640px;
+  margin: -320px 0 0 -320px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    hsla(202, 100%, 76%, .085),
+    hsla(202, 100%, 76%, .035) 38%,
+    transparent 70%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity .8s ease;
+  will-change: transform;
+}
+
+body.isik-var .kostik { opacity: 1; }
+
+/* Film greni — cilalı yüzeye doku */
+.gren {
+  position: fixed; inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ==========================================================================
+   ÜST BAR — kaydırınca camlaşır
+   ========================================================================== */
+
+.ust {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px clamp(20px, 4vw, 44px);
+  transition: background .4s ease, border-color .4s ease, backdrop-filter .4s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.ust.kaydi {
+  background: rgba(6, 9, 16, .55);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+          backdrop-filter: blur(18px) saturate(1.6);
+  border-bottom-color: var(--cizgi);
+}
+
+.marka {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.marka-rozet {
+  display: grid;
+  place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 11px;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: #dff3ff;
+  background:
+    linear-gradient(150deg, rgba(255,255,255,.14), rgba(255,255,255,.03)) padding-box,
+    linear-gradient(150deg, hsla(196,90%,75%,.55), hsla(281,85%,70%,.25) 55%, hsla(196,90%,75%,.4)) border-box;
+  border: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 8px 20px -8px rgba(0,0,0,.8);
+}
+
+.marka-ad {
+  font-weight: 650;
+  font-size: 15px;
+  letter-spacing: -.01em;
+}
+
+.ust-not {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .04em;
+  color: var(--pus);
+}
+
+.ust-not b { color: var(--sis); font-weight: 600; }
+
+/* ==========================================================================
+   KAHRAMAN
+   ========================================================================== */
+
+main {
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 44px);
+}
+
+.kahraman {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 96px;
+}
+
+.gozkasi {
+  font-family: var(--mono);
+  font-size: clamp(11px, 1.2vw, 13px);
+  letter-spacing: .34em;
+  color: hsla(196, 85%, 72%, .85);
+  text-transform: uppercase;
+  margin-bottom: 26px;
+}
+
+.gozkasi::before {
+  content: "";
+  display: inline-block;
+  width: 34px; height: 1px;
+  background: linear-gradient(90deg, hsla(196,90%,70%,.9), transparent);
+  vertical-align: middle;
+  margin-right: 14px;
+}
+
+.baslik {
+  font-size: clamp(3.2rem, 10.5vw, 7.6rem);
+  font-weight: 750;
+  letter-spacing: -.045em;
+  line-height: .98;
+  margin-bottom: 30px;
+}
+
+/* çift katman: akan cam parıltısı + çelik mürekkep.
+   Kırpma kelime span'inde durur — beliren animasyonunun filter/transform'u
+   ayrı katman açtığından ebeveynde dursa metin boş kalırdı. */
+.baslik .b-kelime {
+  display: inline-block;
+  background:
+    linear-gradient(110deg, transparent 42%, rgba(255,255,255,.75) 50%, transparent 58%) no-repeat,
+    linear-gradient(180deg, #ffffff 15%, #b9c8e4 62%, #7789ad 100%);
+  background-size: 260% 100%, 100% 100%;
+  background-position: -160% 0, 0 0;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  animation: parilti 7.5s ease-in-out 2.4s infinite;
+}
+
+.baslik .b-kelime:nth-child(2) { animation-delay: 2.62s; }
+
+@keyframes parilti {
+  0%      { background-position: -160% 0, 0 0; }
+  32%     { background-position: 160% 0, 0 0; }
+  100%    { background-position: 160% 0, 0 0; }
+}
+
+.manset {
+  max-width: 620px;
+  font-size: clamp(1.05rem, 1.7vw, 1.28rem);
+  line-height: 1.65;
+  color: var(--sis);
+  margin-bottom: 44px;
+}
+
+.manset em {
+  font-family: var(--serif);
+  font-style: italic;
+  color: #d7e3f8;
+  letter-spacing: .01em;
+}
+
+.manset .sabit { color: #cfdaf0; font-weight: 560; }
+
+/* Ölçüm şeridi — enstrüman göstergeleri */
+.olcum {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.olcum-cip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 13px 20px 11px;
+  border-radius: 16px;
+  border: 1px solid var(--cizgi);
+  background: linear-gradient(160deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+          backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 14px 34px -18px rgba(0,0,0,.75);
+}
+
+.olcum-deger {
+  font-family: var(--mono);
+  font-size: clamp(1.3rem, 2.4vw, 1.72rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+  color: #f2f7ff;
+}
+
+.olcum-deger .birim { font-size: .62em; color: var(--sis); font-weight: 500; margin-left: 2px; }
+
+.olcum-adi {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--pus);
+}
+
+/* ==========================================================================
+   BÖLÜMLER
+   ========================================================================== */
+
+.bolum { padding: clamp(56px, 9vh, 110px) 0; }
+
+.bolum-bas {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-bottom: 34px;
+}
+
+.bolum-bas h2 {
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -.03em;
+}
+
+.bolum-bas h2::before {
+  content: attr(data-no);
+  font-family: var(--mono);
+  font-size: .5em;
+  font-weight: 500;
+  color: hsla(196, 85%, 72%, .75);
+  letter-spacing: .1em;
+  vertical-align: .55em;
+  margin-right: 14px;
+}
+
+.bolum-bas p {
+  font-size: 14.5px;
+  color: var(--pus);
+  max-width: 460px;
+}
+
+/* ==========================================================================
+   KARTLAR — camdan kesilmiş levhalar
+   ========================================================================== */
+
+.kartlar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
+  gap: 22px;
+}
+
+.kart {
+  --hue: 200;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 30px;
+  min-height: 348px;
+  padding: 30px 30px 26px;
+  border-radius: 26px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(160deg,
+      hsla(var(--hue), 60%, 72%, .075),
+      rgba(255,255,255,.02) 42%,
+      hsla(var(--hue), 55%, 62%, .05)) padding-box,
+    linear-gradient(160deg,
+      hsla(var(--hue), 85%, 80%, .38),
+      hsla(var(--hue), 70%, 60%, .07) 38%,
+      rgba(255,255,255,.10) 62%,
+      hsla(var(--hue), 85%, 75%, .3)) border-box;
+  -webkit-backdrop-filter: blur(22px) saturate(1.65);
+          backdrop-filter: blur(22px) saturate(1.65);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 30px 70px -32px rgba(0,0,0,.85);
+  overflow: hidden;
+  transform: perspective(950px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px));
+  transition: transform .45s var(--gecis), box-shadow .45s var(--gecis);
+  will-change: transform;
+}
+
+.kart:hover {
+  --ty: -7px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    0 44px 90px -34px rgba(0,0,0,.9),
+    0 0 60px -18px hsla(var(--hue), 90%, 60%, .28);
+}
+
+/* parıltı süpürmesi: camın üstünden geçen ışık şeridi */
+.kart::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg,
+    transparent 42%,
+    rgba(255,255,255,.075) 49%,
+    hsla(var(--hue), 95%, 82%, .12) 52%,
+    transparent 60%);
+  background-size: 320% 100%;
+  background-position: 130% 0;
+  transition: background-position 1.1s var(--gecis);
+  pointer-events: none;
+}
+
+.kart:hover::before { background-position: -130% 0; }
+
+/* imleci izleyen iç ışık */
+.kart::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 40%),
+    hsla(var(--hue), 95%, 76%, .15), transparent 65%);
+  opacity: 0;
+  transition: opacity .4s ease;
+  pointer-events: none;
+}
+
+.kart:hover::after { opacity: 1; }
+
+/* sol vurgu huzmesi */
+.kart-isin {
+  position: absolute;
+  left: 0; top: 18%;
+  width: 2px; height: 58%;
+  border-radius: 2px;
+  background: linear-gradient(180deg,
+    transparent,
+    hsla(var(--hue), 92%, 70%, .95) 30%,
+    hsla(var(--hue), 92%, 70%, .95) 70%,
+    transparent);
+  box-shadow: 0 0 26px 3px hsla(var(--hue), 92%, 62%, .5);
+  transition: top .5s var(--gecis), height .5s var(--gecis);
+}
+
+.kart:hover .kart-isin { top: 10%; height: 76%; }
+
+/* konu motifi — camın derinliğindeki devre izi */
+.kart-motif {
+  position: absolute;
+  right: -4%; bottom: -7%;
+  width: 64%;
+  color: hsl(var(--hue) 85% 72%);
+  opacity: .085;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  -webkit-mask-image: linear-gradient(100deg, transparent 14%, #000 62%);
+          mask-image: linear-gradient(100deg, transparent 14%, #000 62%);
+  transition: opacity .5s ease, transform .8s var(--gecis);
+  pointer-events: none;
+}
+
+.kart:hover .kart-motif { opacity: .17; transform: translateX(-7px); }
+
+.kart-ust { position: relative; }
+
+.kart-gozkasi {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: hsla(var(--hue), 80%, 74%, .95);
+  margin-bottom: 15px;
+}
+
+.kart-baslik {
+  font-size: clamp(1.42rem, 2.5vw, 1.78rem);
+  font-weight: 700;
+  letter-spacing: -.028em;
+  line-height: 1.16;
+  margin-bottom: 13px;
+  color: #f4f8ff;
+}
+
+.kart-aciklama {
+  font-size: 14.2px;
+  line-height: 1.66;
+  color: var(--sis);
+  max-width: 46ch;
+}
+
+.kart-alt {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.kart-etiketler {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.kart-etiketler span {
+  font-family: var(--mono);
+  font-size: 10.8px;
+  letter-spacing: .03em;
+  color: hsla(var(--hue), 70%, 82%, .92);
+  padding: 4.5px 11px;
+  border-radius: 999px;
+  border: 1px solid hsla(var(--hue), 75%, 70%, .22);
+  background: hsla(var(--hue), 75%, 65%, .07);
+}
+
+.kart-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: rgba(206, 219, 240, .68);
+  letter-spacing: .02em;
+}
+
+.kart-meta i {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .55;
+}
+
+.kart-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13.5px;
+  font-weight: 620;
+  color: hsl(var(--hue) 90% 80%);
+}
+
+.kart-cta svg {
+  width: 15px; height: 15px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  fill: none;
+  transition: transform .4s var(--gecis);
+}
+
+.kart:hover .kart-cta svg { transform: translateX(5px); }
+
+/* hayalet kart — sıradaki kılavuzun yeri hazır */
+.kart-hayalet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  min-height: 348px;
+  padding: 30px;
+  border-radius: 26px;
+  border: 1.5px dashed rgba(255,255,255,.14);
+  background: rgba(255,255,255,.014);
+  color: var(--pus);
+  transition: border-color .5s ease, background .5s ease;
+}
+
+.kart-hayalet:hover {
+  border-color: rgba(255,255,255,.26);
+  background: rgba(255,255,255,.03);
+}
+
+.hayalet-arti {
+  display: grid;
+  place-items: center;
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  border: 1px solid var(--cizgi);
+  background: linear-gradient(150deg, rgba(255,255,255,.07), rgba(255,255,255,.015));
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--sis);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
+}
+
+.hayalet-baslik { font-size: 15.5px; font-weight: 640; color: var(--sis); }
+
+.hayalet-not {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .05em;
+  line-height: 1.8;
+  max-width: 34ch;
+}
+
+/* ==========================================================================
+   MANİFESTO
+   ========================================================================== */
+
+.alinti {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.7rem, 4.4vw, 2.9rem);
+  font-weight: 500;
+  letter-spacing: -.01em;
+  line-height: 1.25;
+  text-align: center;
+  max-width: 21ch;
+  margin: 0 auto clamp(48px, 8vh, 84px);
+  background: linear-gradient(180deg, #f6f9ff 30%, #93a8cf);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+.alinti::before, .alinti::after {
+  font-family: var(--serif);
+  color: hsla(196, 80%, 70%, .55);
+  -webkit-text-fill-color: hsla(196, 80%, 70%, .55);
+}
+
+.alinti::before { content: "“"; margin-right: .08em; }
+.alinti::after  { content: "”"; margin-left: .08em; }
+
+.ilkeler {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 16px;
+}
+
+.ilke {
+  padding: 26px 24px;
+  border-radius: 20px;
+  border: 1px solid var(--cizgi);
+  background: linear-gradient(165deg, rgba(255,255,255,.04), rgba(255,255,255,.012));
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+  transition: transform .5s var(--gecis), border-color .5s ease;
+}
+
+.ilke:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.18); }
+
+.ilke-no {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .22em;
+  color: hsla(196, 85%, 72%, .8);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.ilke h3 {
+  font-size: 16.5px;
+  font-weight: 680;
+  letter-spacing: -.015em;
+  margin-bottom: 8px;
+}
+
+.ilke p { font-size: 13.5px; line-height: 1.62; color: var(--sis); }
+
+/* ==========================================================================
+   ALT — işleyiş ve imza
+   ========================================================================== */
+
+.alt {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--cizgi);
+  background: linear-gradient(180deg, transparent, rgba(3, 5, 10, .75));
+  padding: clamp(44px, 7vh, 72px) clamp(20px, 4vw, 44px) 40px;
+  margin-top: 30px;
+}
+
+.alt-ic { max-width: 1120px; margin: 0 auto; }
+
+.akis {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin-bottom: 30px;
+}
+
+.akis-adim {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11.8px;
+  letter-spacing: .03em;
+  color: var(--sis);
+  padding: 9px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--cizgi);
+  background: rgba(255,255,255,.028);
+}
+
+.akis-adim b {
+  font-weight: 700;
+  color: hsla(196, 85%, 72%, .9);
+}
+
+.akis-ok { color: var(--pus); font-family: var(--mono); font-size: 13px; }
+
+.komut {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: #b6e5c9;
+  background: rgba(6, 12, 9, .72);
+  border: 1px solid rgba(120, 220, 160, .16);
+  border-radius: 12px;
+  padding: 11px 17px;
+  margin-bottom: 34px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.komut::before { content: "$"; color: #5d8a6f; }
+
+.komut .yorum { color: #58705f; }
+
+.imza {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--pus);
+}
+
+/* ==========================================================================
+   GİRİŞ KOREOGRAFİSİ + KAYDIRMA BELİRMELERİ
+   ========================================================================== */
+
+.beliren {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(7px);
+  transition:
+    opacity .85s var(--gecis) var(--d, 0ms),
+    transform .85s var(--gecis) var(--d, 0ms),
+    filter .85s var(--gecis) var(--d, 0ms);
+}
+
+.beliren.geldi {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+/* ==========================================================================
+   ERİŞİLEBİLİRLİK + KÜÇÜK EKRAN
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .kahraman { min-height: 86vh; }
+  .kart { min-height: 0; }
+  .kart-hayalet { min-height: 0; padding: 36px 24px; }
+  .ust-not { display: none; }
+  .olcum-cip { padding: 10px 14px 9px; border-radius: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .aurora, .tayf, .baslik { animation: none !important; }
+  .kostik { display: none; }
+  .izgara { transform: none; }
+  .beliren {
+    opacity: 1; transform: none; filter: none;
+    transition: none;
+  }
+  .kart { transform: none !important; transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="sahne" aria-hidden="true">
+  <div class="aurora a1"></div>
+  <div class="aurora a2"></div>
+  <div class="aurora a3"></div>
+  <div class="tayf"></div>
+  <div class="izgara" id="izgara"></div>
+</div>
+<div class="kostik" id="kostik" aria-hidden="true"></div>
+<div class="gren" aria-hidden="true"></div>
+
+<header class="ust" id="ust">
+  <a class="marka" href="#">
+    <span class="marka-rozet">SK</span>
+    <span class="marka-ad">Saha Kılavuzları</span>
+  </a>
+  <span class="ust-not"><b id="ust-sayi">—</b> kılavuz · %100 çevrimdışı · tek dosya</span>
+</header>
+
+<main>
+
+  <section class="kahraman">
+    <p class="gozkasi beliren" style="--d:60ms">Gömülü sistemler için teknik literatür</p>
+    <h1 class="baslik">
+      <span class="b-kelime beliren" style="--d:140ms">Saha</span>
+      <span class="b-kelime beliren" style="--d:240ms">Kılavuzları</span>
+    </h1>
+    <p class="manset beliren" style="--d:360ms">
+      Register yazan mühendis için, <em>sahada işe yarayan derinlikte</em> Türkçe kılavuzlar.
+      Her biri <span class="sabit">tek bir HTML dosyası</span> — CDN yok, bağımlılık yok.
+      USB'ye kopyala, kapalı ağa gir, oku.
+    </p>
+    <div class="olcum beliren" id="olcum" style="--d:480ms"></div>
+  </section>
+
+  <section class="bolum" id="kilavuzlar">
+    <div class="bolum-bas beliren">
+      <h2 data-no="01">Kılavuzlar</h2>
+      <p>Her kılavuz kendi reposunda yazılır ve derlenir; bu rafa yalnızca son sürümü düşer.</p>
+    </div>
+    <div class="kartlar" id="kartlar"></div>
+    <noscript>
+      <ul style="line-height:2.2; padding-left:20px">
+        <li><a href="kilavuzlar/rf-sampling/index.html" style="text-decoration:underline">Doğrudan RF Örnekleme ve Ön Uç Tasarımı — Saha Kılavuzu</a></li>
+        <li><a href="kilavuzlar/ethernet/index.html" style="text-decoration:underline">Ethernet ve Ağ İletişimi — Saha Kılavuzu</a></li>
+      </ul>
+    </noscript>
+  </section>
+
+  <section class="bolum" id="neden">
+    <blockquote class="alinti beliren">Sahada yanında taşıdığın literatür.</blockquote>
+    <div class="ilkeler">
+      <article class="ilke beliren" style="--d:0ms">
+        <span class="ilke-no">İLKE · 01</span>
+        <h3>Derinlik</h3>
+        <p>Her kılavuz, konusunda tek başına literatür oluşturacak kapsamda yazılır. Özet değil; baştan sona anlatı.</p>
+      </article>
+      <article class="ilke beliren" style="--d:90ms">
+        <span class="ilke-no">İLKE · 02</span>
+        <h3>Pedagoji</h3>
+        <p>Her kavram, ona ihtiyaç duyan kavramdan önce anlatılır; her soyutluk gerçek GHz, fs ve Gbps değerleriyle somutlanır.</p>
+      </article>
+      <article class="ilke beliren" style="--d:180ms">
+        <span class="ilke-no">İLKE · 03</span>
+        <h3>Saha gerçeği</h3>
+        <p>Teori değil mesai: init sırası, status register, hata görünümü. Donanımın yazılıma dokunduğu her yer işaretli.</p>
+      </article>
+      <article class="ilke beliren" style="--d:270ms">
+        <span class="ilke-no">İLKE · 04</span>
+        <h3>Taşınabilirlik</h3>
+        <p>Tek dosya, sıfır bağımlılık, çift tema. Tarayıcı olan her yerde — air-gapped lab dahil — aynı şekilde açılır.</p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<footer class="alt">
+  <div class="alt-ic">
+    <div class="akis beliren">
+      <span class="akis-adim"><b>1</b> kılavuz kendi reposunda derlenir</span>
+      <span class="akis-ok">→</span>
+      <span class="akis-adim"><b>2</b> dist/index.html bu rafa kopyalanır</span>
+      <span class="akis-ok">→</span>
+      <span class="akis-adim"><b>3</b> karttan tek tıkla açılır</span>
+    </div>
+    <div class="komut beliren">python3 guncelle.py <span class="yorum"># son sürümleri raftaki yerine koyar</span></div>
+    <p class="imza">
+      <span>SAHA KILAVUZLARI · GÖMÜLÜ SİSTEMLER SERİSİ</span>
+      <span>SON DERLEME · <span id="imza-tarih">—</span></span>
+    </p>
+  </div>
+</footer>
+
+<script src="kilavuzlar.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var K = (window.KILAVUZLAR || []).slice().sort(function (a, b) { return a.sira - b.sira; });
+
+  var tarihFmt = new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "short", year: "numeric" });
+  function tarih(iso) { return tarihFmt.format(new Date(iso + "T00:00:00")); }
+  function sayi(n) { return n.toLocaleString("tr-TR"); }
+
+  /* ---- konu motifleri: kartın camında yatan devre izleri ---- */
+  var MOTIF = {
+    /* kare dalga + hayalet izi: dijital hat */
+    digital:
+      '<path d="M0 118 h30 v-76 h28 v76 h24 v-76 h36 v76 h28 v-76 h24 v76 h38 v-76 h30 v76 h28 v-76 h26" />' +
+      '<path d="M0 128 h38 v-56 h30 v56 h30 v-56 h30 v56 h34 v-56 h30 v56 h32 v-56 h30 v56 h36" opacity=".45" />',
+    /* sinüs + harmonik çubuklar: analog spektrum */
+    analog:
+      '<path d="M0 92 C 16 44, 40 44, 56 92 S 96 140, 112 92 S 152 44, 168 92 S 208 140, 224 92 S 264 44, 280 92 S 316 126, 320 100" />' +
+      '<path d="M204 146 v-38 M228 146 v-64 M252 146 v-26 M276 146 v-50 M300 146 v-18" opacity=".6" />' +
+      '<path d="M0 112 C 16 84, 40 84, 56 112 S 96 140, 112 112" opacity=".35" />',
+    /* nötr desen */
+    varsayilan:
+      '<path d="M20 40 h40 M40 20 v40 M120 40 h40 M140 20 v40 M220 40 h40 M240 20 v40 M70 110 h40 M90 90 v40 M170 110 h40 M190 90 v40 M270 110 h40 M290 90 v40" opacity=".7" />'
+  };
+
+  var OK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+
+  /* ---- kartları çiz ---- */
+  var kartlarEl = document.getElementById("kartlar");
+  var html = K.map(function (k, i) {
+    return (
+      '<a class="kart beliren" style="--hue:' + k.renk + ';--d:' + (i * 100) + 'ms" href="' + k.yol + '">' +
+        '<span class="kart-isin" aria-hidden="true"></span>' +
+        '<svg class="kart-motif" viewBox="0 0 320 160" aria-hidden="true">' + (MOTIF[k.motif] || MOTIF.varsayilan) + "</svg>" +
+        '<div class="kart-ust">' +
+          '<span class="kart-gozkasi">Saha Kılavuzu · SK-' + String(k.sira).padStart(2, "0") + "</span>" +
+          '<h3 class="kart-baslik">' + k.baslik + "</h3>" +
+          '<p class="kart-aciklama">' + k.aciklama + "</p>" +
+        "</div>" +
+        '<div class="kart-alt">' +
+          '<div class="kart-etiketler">' + k.etiketler.map(function (t) { return "<span>" + t + "</span>"; }).join("") + "</div>" +
+          '<div class="kart-meta">' +
+            "<span>" + k.bolum + "</span><i></i>" +
+            "<span>" + k.sema + " şema</span><i></i>" +
+            "<span>" + k.boyut + "</span><i></i>" +
+            "<span>" + tarih(k.guncelleme) + "</span>" +
+          "</div>" +
+          '<span class="kart-cta">Kılavuzu aç ' + OK_SVG + "</span>" +
+        "</div>" +
+      "</a>"
+    );
+  }).join("");
+
+  html +=
+    '<div class="kart-hayalet beliren" style="--d:' + (K.length * 100) + 'ms" aria-hidden="true">' +
+      '<span class="hayalet-arti">+</span>' +
+      '<span class="hayalet-baslik">Sıradaki kılavuz</span>' +
+      '<span class="hayalet-not">seri büyümeye devam ediyor — yeni kılavuz eklendiğinde bu rafta belirecek</span>' +
+    "</div>";
+
+  kartlarEl.innerHTML = html;
+
+  /* ---- ölçüm şeridi: kayıtlardan gerçek toplamlar ---- */
+  var toplam = K.reduce(function (t, k) {
+    t.bolum += k.bolumSayi; t.sema += k.sema; t.kelime += k.kelime; return t;
+  }, { bolum: 0, sema: 0, kelime: 0 });
+
+  var OLCUMLER = [
+    { deger: K.length,        adi: "kılavuz" },
+    { deger: toplam.bolum,    adi: "bölüm" },
+    { deger: toplam.sema,     adi: "şema" },
+    { deger: toplam.kelime,   adi: "kelime", birim: "+" },
+    { deger: 0,               adi: "harici bağımlılık" }
+  ];
+
+  document.getElementById("olcum").innerHTML = OLCUMLER.map(function (o) {
+    return (
+      '<div class="olcum-cip">' +
+        '<span class="olcum-deger" data-hedef="' + o.deger + '">0' + (o.birim ? '<span class="birim">' + o.birim + "</span>" : "") + "</span>" +
+        '<span class="olcum-adi">' + o.adi + "</span>" +
+      "</div>"
+    );
+  }).join("");
+
+  document.getElementById("ust-sayi").textContent = K.length;
+
+  var sonTarih = K.reduce(function (t, k) { return k.guncelleme > t ? k.guncelleme : t; }, "0000");
+  document.getElementById("imza-tarih").textContent = sonTarih !== "0000" ? tarih(sonTarih).toUpperCase() : "—";
+
+  /* ---- sayaçlar: göründüğünde yumuşak sayım ---- */
+  var azHareket = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function say(el) {
+    var hedef = parseInt(el.getAttribute("data-hedef"), 10) || 0;
+    var birim = el.querySelector(".birim");
+    var ek = birim ? birim.outerHTML : "";
+    if (azHareket || hedef === 0) { el.innerHTML = sayi(hedef) + ek; return; }
+    var t0 = null, sure = 1100;
+    function adim(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / sure, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      el.innerHTML = sayi(Math.round(hedef * e)) + ek;
+      if (p < 1) requestAnimationFrame(adim);
+    }
+    requestAnimationFrame(adim);
+  }
+
+  /* ---- kaydırma belirmeleri ----
+     Gizli sekmede geçiş saati donar (Chrome render'ı durdurur); koreografi
+     sayfa ilk kez GÖRÜNÜR olduğunda başlar ki arka planda açılan sekmede
+     içerik boş kalmasın. */
+  function belirmeleriBaslat() {
+    var io = new IntersectionObserver(function (girisler) {
+      girisler.forEach(function (g) {
+        if (!g.isIntersecting) return;
+        g.target.classList.add("geldi");
+        g.target.querySelectorAll(".olcum-deger[data-hedef]").forEach(say);
+        io.unobserve(g.target);
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".beliren").forEach(function (el) { io.observe(el); });
+  }
+
+  /* ?anlik → koreografiyi atla, son hali anında bas (yazdırma/otomasyon) */
+  if (/[?&]anlik/.test(location.search)) {
+    var stil = document.createElement("style");
+    stil.textContent =
+      ".beliren{transition:none!important}" +
+      ".kahraman{min-height:auto;padding:150px 0 60px}";
+    document.head.appendChild(stil);
+    document.querySelectorAll(".beliren").forEach(function (el) { el.classList.add("geldi"); });
+    document.querySelectorAll(".olcum-deger[data-hedef]").forEach(function (el) {
+      var birim = el.querySelector(".birim");
+      el.innerHTML = sayi(parseInt(el.getAttribute("data-hedef"), 10) || 0) + (birim ? birim.outerHTML : "");
+    });
+  } else if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(".beliren").forEach(function (el) {
+      el.classList.add("geldi");
+      el.querySelectorAll(".olcum-deger[data-hedef]").forEach(say);
+    });
+  } else if (document.visibilityState === "hidden") {
+    document.addEventListener("visibilitychange", function tek() {
+      if (document.visibilityState !== "visible") return;
+      document.removeEventListener("visibilitychange", tek);
+      belirmeleriBaslat();
+    });
+  } else {
+    belirmeleriBaslat();
+  }
+
+  /* ---- üst bar camlaşması ---- */
+  var ust = document.getElementById("ust");
+  function kaydirma() { ust.classList.toggle("kaydi", window.scrollY > 8); }
+  window.addEventListener("scroll", kaydirma, { passive: true });
+  kaydirma();
+
+  /* ---- işaretçi efektleri: kostik ışık, gratikül paralaksı, kart eğimi ---- */
+  var isaretciVar = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (isaretciVar && !azHareket) {
+    var kostik = document.getElementById("kostik");
+    var izgara = document.getElementById("izgara");
+    var hx = innerWidth / 2, hy = innerHeight / 3;  // hedef
+    var gx = hx, gy = hy;                            // geçerli (lerp)
+    var canli = false;
+
+    document.addEventListener("pointermove", function (e) {
+      hx = e.clientX; hy = e.clientY;
+      if (!canli) { canli = true; document.body.classList.add("isik-var"); dongu(); }
+      izgara.style.setProperty("--px", (e.clientX / innerWidth - 0.5).toFixed(3));
+      izgara.style.setProperty("--py", (e.clientY / innerHeight - 0.5).toFixed(3));
+    }, { passive: true });
+
+    function dongu() {
+      gx += (hx - gx) * 0.09;
+      gy += (hy - gy) * 0.09;
+      kostik.style.transform = "translate3d(" + gx.toFixed(1) + "px," + gy.toFixed(1) + "px,0)";
+      requestAnimationFrame(dongu);
+    }
+
+    /* kart eğimi + iç ışık koordinatları */
+    kartlarEl.addEventListener("pointermove", function (e) {
+      var kart = e.target.closest(".kart");
+      if (!kart) return;
+      var r = kart.getBoundingClientRect();
+      var x = e.clientX - r.left, y = e.clientY - r.top;
+      kart.style.setProperty("--mx", (x / r.width * 100).toFixed(2) + "%");
+      kart.style.setProperty("--my", (y / r.height * 100).toFixed(2) + "%");
+      kart.style.setProperty("--ry", ((x / r.width - 0.5) * 4.5).toFixed(2) + "deg");
+      kart.style.setProperty("--rx", ((0.5 - y / r.height) * 3.5).toFixed(2) + "deg");
+    });
+
+    kartlarEl.addEventListener("pointerleave", function (e) {
+      var kart = e.target.closest ? e.target.closest(".kart") : null;
+      if (!kart) return;
+      kart.style.setProperty("--rx", "0deg");
+      kart.style.setProperty("--ry", "0deg");
+    }, true);
+  }
+})();
+</script>
+</body>
+</html>

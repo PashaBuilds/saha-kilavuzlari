@@ -1,0 +1,69 @@
+<svg viewBox="0 0 860 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s17">
+<title id="t-s17">DNS çözümleme zinciri: istemci cache'lerden sonra resolver'a sorar; resolver root, TLD ve authoritative sunucuları sırayla dolaşıp cevabı döndürür</title>
+<defs>
+<marker id="ok17" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+<marker id="ok17g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--green)"/>
+</marker>
+</defs>
+
+<text x="40" y="38" class="s-baslik">“www.example.com kim?” — tam zincir (hiçbir cache'te yokken)</text>
+
+<!-- istemci -->
+<rect x="40" y="150" width="170" height="120" rx="10" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="125" y="178" class="s-metin" text-anchor="middle">Senin makinen</text>
+<text x="125" y="202" class="s-metin2" text-anchor="middle">1. OS cache?  yok</text>
+<text x="125" y="222" class="s-metin2" text-anchor="middle">2. hosts dosyası?  yok</text>
+<text x="125" y="242" class="s-metin2" text-anchor="middle">→ resolver'a sor</text>
+
+<!-- resolver -->
+<rect x="330" y="150" width="180" height="120" rx="10" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="420" y="178" class="s-metin" text-anchor="middle">Resolver</text>
+<text x="420" y="200" class="s-metin2" text-anchor="middle">ISS'in / kurumun</text>
+<text x="420" y="220" class="s-metin2" text-anchor="middle">DNS sunucusu</text>
+<text x="420" y="244" class="s-mono2" text-anchor="middle">örn. 8.8.8.8</text>
+
+<!-- sağ sütun -->
+<rect x="640" y="60" width="180" height="76" rx="10" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="730" y="88" class="s-metin" text-anchor="middle">Root sunucular</text>
+<text x="730" y="112" class="s-mono2" text-anchor="middle">“ . ” — 13 küme</text>
+
+<rect x="640" y="196" width="180" height="76" rx="10" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="730" y="224" class="s-metin" text-anchor="middle">TLD sunucuları</text>
+<text x="730" y="248" class="s-mono2" text-anchor="middle">.com  .org  .tr …</text>
+
+<rect x="640" y="332" width="180" height="76" rx="10" fill="var(--dia-blok)" stroke="var(--gold)"/>
+<text x="730" y="360" class="s-metin" text-anchor="middle">Authoritative</text>
+<text x="730" y="384" class="s-mono2" text-anchor="middle">example.com'un sahibi</text>
+
+<!-- oklar -->
+<line x1="210" y1="196" x2="324" y2="196" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok17)"/>
+<text x="267" y="186" class="s-mono2" text-anchor="middle">3 · A?</text>
+
+<line x1="510" y1="170" x2="634" y2="106" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ok17)"/>
+<text x="556" y="122" class="s-mono2">4</text>
+<line x1="634" y1="126" x2="512" y2="186" stroke="var(--line-2)" stroke-width="1.4" marker-end="url(#ok17)"/>
+<text x="590" y="166" class="s-metin2">“.com'u şunlara sor”</text>
+
+<line x1="510" y1="216" x2="634" y2="226" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ok17)"/>
+<text x="560" y="212" class="s-mono2">5</text>
+<line x1="634" y1="246" x2="512" y2="238" stroke="var(--line-2)" stroke-width="1.4" marker-end="url(#ok17)"/>
+<text x="556" y="266" class="s-metin2">“example.com'u şuna sor”</text>
+
+<line x1="510" y1="256" x2="634" y2="352" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ok17)"/>
+<text x="548" y="308" class="s-mono2">6</text>
+<line x1="634" y1="372" x2="512" y2="266" stroke="var(--gold)" stroke-width="1.6" marker-end="url(#ok17g)"/>
+<text x="600" y="342" class="s-mono2 s-altin">7 · 93.184.216.34</text>
+
+<line x1="330" y1="240" x2="216" y2="240" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok17g)"/>
+<text x="267" y="258" class="s-mono2 s-yesil" text-anchor="middle">8 · cevap + TTL</text>
+
+<!-- alt not -->
+<rect x="40" y="330" width="470" height="100" rx="10" fill="var(--green-soft)" stroke="var(--green)"/>
+<text x="58" y="358" class="s-metin s-yesil">Cache her katta:</text>
+<text x="58" y="382" class="s-metin2">Cevap; TTL süresi boyunca hem resolver'da hem senin</text>
+<text x="58" y="402" class="s-metin2">makinende saklanır. İkinci soru zinciri hiç yürümez —</text>
+<text x="58" y="422" class="s-metin2">bu yüzden ilk açılış yavaş, sonrakiler anındadır.</text>
+</svg>

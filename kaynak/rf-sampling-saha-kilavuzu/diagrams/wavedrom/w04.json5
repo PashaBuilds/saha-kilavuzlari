@@ -1,0 +1,18 @@
+// W04 — Elastic buffer release ve deterministic latency (RBD)
+{
+  signal: [
+    { name: 'RX LMFC',            wave: '0.10......10......10....', node: '..l' },
+    {},
+    { name: 'lane 0 varış',       wave: 'x...4...................', data: ['erken varış'], node: '....c' },
+    { name: 'lane 1 varış',       wave: 'x......4................', data: ['geç varış'], node: '.......d' },
+    {},
+    { name: 'buffer release anı', wave: '0........10.............', node: '.........r' },
+    { name: 'hizalı çıkış',       wave: 'x........5..............', data: ['birlikte'] },
+  ],
+  edge: [
+    'l~>r RBD frame sonra',
+    'c~>r bekler', 'd~>r bekler',
+  ],
+  config: { hscale: 1 },
+  head: { text: "Lane'ler farklı anlarda varır; okuma hepsinde birden LMFC + RBD anında başlar → gecikme deterministik" },
+}

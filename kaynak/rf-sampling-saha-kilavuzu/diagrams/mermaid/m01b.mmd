@@ -1,0 +1,11 @@
+stateDiagram-v2
+    direction TB
+    [*] --> CGS : link enable / reset
+    CGS : CGS — RX SYNC~'i düşük tutar, TX K28.5 basar
+    CGS --> ILAS_BEKLE : ardışık geçerli /K/ → SYNC~ bırakılır
+    ILAS_BEKLE : TX, sonraki LMFC kenarını bekler
+    ILAS_BEKLE --> ILAS : LMFC kenarı
+    ILAS : ILAS — 4 multiframe, 2.'de /Q/+konfig
+    ILAS --> DATA : son /A/ karakteri
+    DATA : DATA — veri akışı + /F/ ve /A/ izleme
+    DATA --> CGS : kod hatası eşiği / SYNC~ yeniden düşük

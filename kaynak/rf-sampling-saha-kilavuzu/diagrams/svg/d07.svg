@@ -1,0 +1,79 @@
+<svg viewBox="0 0 1000 560" width="1000" data-wide="1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Versal GT quad yapısı ve JESD204C IP clock bağlantıları">
+  <text class="lbl-b" x="20" y="30">Versal GTY quad'ı ve JESD204C IP — clock bağlantıları (AM002 / PG242 terimleriyle)</text>
+
+  <!-- ============ GT QUAD ============ -->
+  <rect class="blk blk-dis" x="40" y="60" width="380" height="420" rx="12"/>
+  <text class="lbl" x="230" y="88" text-anchor="middle">GTY Quad (GTYE5_QUAD)</text>
+
+  <!-- 4 kanal -->
+  <rect class="blk" x="60" y="110" width="150" height="70" rx="8"/>
+  <text class="lbl-s" x="135" y="138" text-anchor="middle">CH0 (TX+RX)</text>
+  <text class="lbl-s" x="135" y="156" text-anchor="middle">SerDes + CDR</text>
+  <rect class="blk" x="60" y="190" width="150" height="70" rx="8"/>
+  <text class="lbl-s" x="135" y="218" text-anchor="middle">CH1 (TX+RX)</text>
+  <rect class="blk" x="60" y="290" width="150" height="70" rx="8"/>
+  <text class="lbl-s" x="135" y="318" text-anchor="middle">CH2 (TX+RX)</text>
+  <rect class="blk" x="60" y="370" width="150" height="70" rx="8"/>
+  <text class="lbl-s" x="135" y="398" text-anchor="middle">CH3 (TX+RX)</text>
+
+  <!-- HSCLK blokları -->
+  <rect class="blk blk-clk" x="250" y="110" width="150" height="150" rx="8"/>
+  <text class="lbl-s" x="325" y="134" text-anchor="middle">HSCLK0</text>
+  <text class="lbl-s" x="325" y="156" text-anchor="middle">LCPLL (LC tank)</text>
+  <text class="lbl-s" x="325" y="174" text-anchor="middle">RPLL (ring)</text>
+  <text class="lbl-s" x="325" y="196" text-anchor="middle">→ CH0/CH1</text>
+  <rect class="blk blk-clk" x="250" y="290" width="150" height="150" rx="8"/>
+  <text class="lbl-s" x="325" y="314" text-anchor="middle">HSCLK1</text>
+  <text class="lbl-s" x="325" y="336" text-anchor="middle">LCPLL (LC tank)</text>
+  <text class="lbl-s" x="325" y="354" text-anchor="middle">RPLL (ring)</text>
+  <text class="lbl-s" x="325" y="376" text-anchor="middle">→ CH2/CH3</text>
+
+  <path class="w-clk" d="M250 160 L210 145" marker-end="url(#arw-clk)"/>
+  <path class="w-clk" d="M250 190 L210 225" marker-end="url(#arw-clk)"/>
+  <path class="w-clk" d="M250 340 L210 325" marker-end="url(#arw-clk)"/>
+  <path class="w-clk" d="M250 370 L210 405" marker-end="url(#arw-clk)"/>
+
+  <!-- refclk girişleri -->
+  <path class="w-clk" d="M540 150 L470 150 L470 160 L400 160" marker-end="url(#arw-clk)"/>
+  <path class="w-clk" d="M470 160 L470 340 L400 340" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="478" y="142">GTREFCLK0/1 (quad başına 2 çift)</text>
+
+  <!-- lane'ler -->
+  <path class="w-data" d="M20 145 L60 145" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M20 225 L60 225" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M20 325 L60 325" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M20 405 L60 405" marker-end="url(#arw-data)"/>
+  <text class="pin" x="14" y="280" text-anchor="middle" transform="rotate(-90 14 280)">AFE'den 4 lane</text>
+
+  <!-- ============ CLOCK CHIP ============ -->
+  <rect class="blk blk-clk" x="540" y="110" width="180" height="80" rx="10"/>
+  <text class="lbl-s" x="630" y="138" text-anchor="middle">clock chip (§11–12)</text>
+  <text class="lbl-s" x="630" y="158" text-anchor="middle">DCLK/SYSREF çiftleri</text>
+  <text class="pin pin-clk" x="630" y="178" text-anchor="middle">ör. 368.64 MHz refclk</text>
+
+  <!-- SYSREF -->
+  <path class="w-sysref" d="M630 190 L630 250 L820 250 L820 300" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="640" y="240">SYSREF (bank girişi üzerinden)</text>
+
+  <!-- ============ JESD204C IP ============ -->
+  <rect class="blk" x="560" y="300" width="400" height="180" rx="12"/>
+  <text class="lbl" x="760" y="328" text-anchor="middle">JESD204C IP (PG242)</text>
+  <text class="lbl-s" x="760" y="350" text-anchor="middle">transport + 64B/66B link katmanı</text>
+  <text class="pin" x="826" y="316" text-anchor="start">tx/rx_sysref</text>
+  <text class="lbl-s" x="580" y="380" text-anchor="start">core clock = lane rate / 66</text>
+  <text class="lbl-s" x="580" y="398" text-anchor="start">(ör. 12.16512 Gb/s → 184.32 MHz)</text>
+  <text class="lbl-s" x="580" y="426" text-anchor="start">register: AXI4-Lite · veri: AXI4-Stream</text>
+  <text class="lbl-s" x="580" y="444" text-anchor="start">SYSREF, core clock'a senkron örneklenir</text>
+
+  <!-- GT ↔ IP veri -->
+  <path class="w-data" d="M420 240 L500 240 L500 390 L560 390" marker-end="url(#arw-data)"/>
+  <text class="pin" x="452" y="230" text-anchor="middle">GT Wizard</text>
+  <text class="pin" x="452" y="256" text-anchor="middle">(PG331)</text>
+
+  <!-- core clock kaynağı -->
+  <text class="not" x="760" y="500" text-anchor="middle">core clock kaynağı: GT çıkış clock'u veya kart üstü clock (LOGICLK) — §14.3 hesabıyla</text>
+
+  <!-- kurallar kutusu -->
+  <text class="not" x="40" y="516">Refclk kuralları (AM002): quad başına 2 özel refclk çifti; komşu ±2 quad'dan ödünç alınabilir (aynı SLR içinde);</text>
+  <text class="not" x="40" y="536">16.375 Gb/s ÜSTÜ lane hızlarında paylaşım yasak — refclk, quad'ın kendi pinlerinden gelmek zorunda.</text>
+</svg>

@@ -1,0 +1,23 @@
+{
+  "name": "rf-sampling-saha-kilavuzu",
+  "version": "0.1.0",
+  "description": "Doğrudan RF Örnekleme ve Ön Uç Tasarımı — Saha Kılavuzu (tek dosya HTML)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "verify": "node scripts/verify.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "^11.4.2",
+    "json5": "^2.2.3",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "markdown-it-container": "^4.0.0",
+    "shiki": "^1.24.0",
+    "wavedrom": "^3.5.0"
+  }
+}

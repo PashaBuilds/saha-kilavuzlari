@@ -1,0 +1,90 @@
+<svg viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s07">
+<title id="t-s07">Switch'in MAC öğrenme süreci üç adımda: bilinmeyen hedefe flood, cevaptan öğrenme, sonrasında yalnızca doğru porta iletim</title>
+<defs>
+<marker id="ok07" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+<marker id="ok07s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/>
+</marker>
+</defs>
+
+<!-- ============ KARE 1 ============ -->
+<text x="150" y="34" class="s-baslik" text-anchor="middle">1 · A → B: hedef bilinmiyor</text>
+
+<rect x="60" y="120" width="180" height="120" rx="10" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/>
+<text x="150" y="145" class="s-metin2" text-anchor="middle">switch</text>
+<g class="s-mono2">
+<text x="72" y="186">p1</text><text x="210" y="186">p3</text><text x="72" y="228">p2</text><text x="210" y="228">p4</text>
+</g>
+
+<g class="s-mono2" text-anchor="middle">
+<rect x="10" y="160" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--accent)"/><text x="28" y="180">A</text>
+<rect x="254" y="160" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="272" y="180">B</text>
+<rect x="10" y="204" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="28" y="224">C</text>
+<rect x="254" y="204" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="272" y="224">D</text>
+</g>
+
+<line x1="46" y1="175" x2="60" y2="175" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok07)"/>
+<line x1="240" y1="175" x2="254" y2="175" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok07)"/>
+<line x1="60" y1="219" x2="46" y2="219" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok07)"/>
+<line x1="240" y1="219" x2="254" y2="219" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok07)"/>
+
+<rect x="60" y="268" width="180" height="66" rx="8" fill="var(--dia-panel)" stroke="var(--line-2)"/>
+<text x="74" y="290" class="s-mono2">MAC tablosu:</text>
+<text x="74" y="312" class="s-mono2 s-vurgu">A → p1   (öğrenildi!)</text>
+<text x="150" y="368" class="s-metin2" text-anchor="middle">B'yi bilmiyor →</text>
+<text x="150" y="386" class="s-metin2" text-anchor="middle">A hariç HER porta (flood)</text>
+
+<!-- ============ KARE 2 ============ -->
+<text x="435" y="34" class="s-baslik" text-anchor="middle">2 · B cevap verir</text>
+
+<rect x="345" y="120" width="180" height="120" rx="10" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/>
+<text x="435" y="145" class="s-metin2" text-anchor="middle">switch</text>
+<g class="s-mono2">
+<text x="357" y="186">p1</text><text x="495" y="186">p3</text><text x="357" y="228">p2</text><text x="495" y="228">p4</text>
+</g>
+
+<g class="s-mono2" text-anchor="middle">
+<rect x="295" y="160" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="313" y="180">A</text>
+<rect x="539" y="160" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--accent)"/><text x="557" y="180">B</text>
+<rect x="295" y="204" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="313" y="224">C</text>
+<rect x="539" y="204" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="557" y="224">D</text>
+</g>
+
+<line x1="539" y1="175" x2="525" y2="175" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok07)"/>
+<line x1="345" y1="175" x2="331" y2="175" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok07)"/>
+
+<rect x="345" y="268" width="180" height="66" rx="8" fill="var(--dia-panel)" stroke="var(--line-2)"/>
+<text x="359" y="290" class="s-mono2">MAC tablosu:</text>
+<text x="359" y="308" class="s-mono2">A → p1</text>
+<text x="359" y="326" class="s-mono2 s-vurgu">B → p3   (öğrenildi!)</text>
+<text x="435" y="368" class="s-metin2" text-anchor="middle">A'yı zaten biliyor →</text>
+<text x="435" y="386" class="s-metin2" text-anchor="middle">flood YOK, yalnız p1'e</text>
+
+<!-- ============ KARE 3 ============ -->
+<text x="720" y="34" class="s-baslik" text-anchor="middle">3 · Artık ezbere</text>
+
+<rect x="630" y="120" width="180" height="120" rx="10" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/>
+<text x="720" y="145" class="s-metin2" text-anchor="middle">switch</text>
+<g class="s-mono2">
+<text x="642" y="186">p1</text><text x="780" y="186">p3</text><text x="642" y="228">p2</text><text x="780" y="228">p4</text>
+</g>
+
+<g class="s-mono2" text-anchor="middle">
+<rect x="580" y="160" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--accent)"/><text x="598" y="180">A</text>
+<rect x="824" y="160" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--accent)"/><text x="842" y="180">B</text>
+<rect x="580" y="204" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="598" y="224">C</text>
+<rect x="824" y="204" width="36" height="30" rx="5" fill="var(--dia-blok)" stroke="var(--line-2)"/><text x="842" y="224">D</text>
+</g>
+
+<line x1="616" y1="175" x2="630" y2="175" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok07)"/>
+<line x1="810" y1="175" x2="824" y2="175" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok07)"/>
+
+<rect x="630" y="268" width="180" height="66" rx="8" fill="var(--dia-panel)" stroke="var(--line-2)"/>
+<text x="644" y="290" class="s-mono2">MAC tablosu:</text>
+<text x="644" y="308" class="s-mono2">A → p1</text>
+<text x="644" y="326" class="s-mono2">B → p3</text>
+<text x="720" y="368" class="s-metin2" text-anchor="middle">C ve D bu trafiği</text>
+<text x="720" y="386" class="s-metin2" text-anchor="middle">hiç görmez</text>
+</svg>

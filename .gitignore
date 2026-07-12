@@ -1,0 +1,8 @@
+.DS_Store
+.claude/
+
+# Klonda kaynak/ içinde alınan build'ler rafa guncelle.py ile taşınır;
+# kaynak kopyalarının kendi dist/node_modules artıkları repoya girmez.
+kaynak/*/dist/
+kaynak/*/node_modules/
+kaynak/*/.cache/

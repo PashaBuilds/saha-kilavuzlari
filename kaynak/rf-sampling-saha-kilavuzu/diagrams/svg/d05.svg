@@ -1,0 +1,64 @@
+<svg viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ADC yolu: analog girişten SerDes lane'lerine">
+  <text class="lbl-b" x="20" y="32">ADC (alıcı) yolu — tek kanal</text>
+
+  <!-- analog giriş -->
+  <text class="lbl-s" x="30" y="120" text-anchor="middle">analog</text>
+  <text class="lbl-s" x="30" y="136" text-anchor="middle">giriş</text>
+
+  <!-- ADC core -->
+  <rect class="blk blk-sysref" x="70" y="90" width="110" height="60" rx="8"/>
+  <text class="lbl" x="125" y="116" text-anchor="middle">ADC core</text>
+  <text class="lbl-s" x="125" y="136" text-anchor="middle">fs'te örnekler</text>
+  <path class="w-ince" d="M52 120 L70 120" marker-end="url(#arw-ince)"/>
+
+  <!-- DDC -->
+  <rect class="blk" x="226" y="78" width="180" height="84" rx="8"/>
+  <text class="lbl" x="316" y="102" text-anchor="middle">DDC</text>
+  <text class="lbl-s" x="316" y="122" text-anchor="middle">NCO + mixer</text>
+  <text class="lbl-s" x="316" y="140" text-anchor="middle">decimation filtreleri (÷D)</text>
+  <path class="w-data" d="M180 120 L226 120" marker-end="url(#arw-data)"/>
+
+  <!-- transport -->
+  <rect class="blk" x="452" y="90" width="130" height="60" rx="8"/>
+  <text class="lbl" x="517" y="114" text-anchor="middle">transport</text>
+  <text class="lbl-s" x="517" y="134" text-anchor="middle">örnek → frame</text>
+  <path class="w-data" d="M406 120 L452 120" marker-end="url(#arw-data)"/>
+
+  <!-- link -->
+  <rect class="blk" x="628" y="90" width="140" height="60" rx="8"/>
+  <text class="lbl" x="698" y="110" text-anchor="middle">link katmanı</text>
+  <text class="lbl-s" x="698" y="127" text-anchor="middle">scrambler +</text>
+  <text class="lbl-s" x="698" y="141" text-anchor="middle">8b/10b ya da 64b/66b</text>
+  <path class="w-data" d="M582 120 L628 120" marker-end="url(#arw-data)"/>
+
+  <!-- serdes -->
+  <rect class="blk" x="814" y="90" width="110" height="60" rx="8"/>
+  <text class="lbl" x="869" y="114" text-anchor="middle">SerDes</text>
+  <text class="lbl-s" x="869" y="134" text-anchor="middle">PHY (TX)</text>
+  <path class="w-data" d="M768 120 L814 120" marker-end="url(#arw-data)"/>
+
+  <!-- lane çıkışları -->
+  <path class="w-data" d="M924 108 L952 108" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M924 132 L952 132" marker-end="url(#arw-data)"/>
+  <text class="pin" x="938" y="98" text-anchor="middle">L lane</text>
+
+  <!-- hız etiketi şeridi -->
+  <text class="pin" x="203" y="176" text-anchor="middle">2.94912 GS/s</text>
+  <text class="pin" x="203" y="190" text-anchor="middle">× 16 bit (gerçek)</text>
+  <text class="pin" x="429" y="176" text-anchor="middle">368.64 MSPS</text>
+  <text class="pin" x="429" y="190" text-anchor="middle">× 32 bit (I+Q)</text>
+  <text class="pin" x="605" y="176" text-anchor="middle">frame akışı</text>
+  <text class="pin" x="605" y="190" text-anchor="middle">(F oktet/frame)</text>
+  <text class="pin" x="791" y="176" text-anchor="middle">kodlanmış</text>
+  <text class="pin" x="791" y="190" text-anchor="middle">bit akışı</text>
+  <text class="pin" x="920" y="176" text-anchor="middle">lane başına</text>
+  <text class="pin" x="920" y="190" text-anchor="middle">~6.08 Gb/s (L=2)</text>
+
+  <!-- clock girişleri -->
+  <path class="w-clk" d="M125 250 L125 150" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="125" y="268" text-anchor="middle">device clock (fs)</text>
+  <path class="w-sysref" d="M698 250 L698 150" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="698" y="268" text-anchor="middle">SYSREF → LMFC/LEMC fazı (§9)</text>
+
+  <text class="not" x="480" y="304" text-anchor="middle">Veri hacmi soldan sağa önce DDC'de erir (÷D), sonra kodlamayla hafifçe şişer (×10/8 veya ×66/64). Hesap: §3.5</text>
+</svg>

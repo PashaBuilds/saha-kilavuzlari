@@ -1,0 +1,107 @@
+<svg viewBox="0 0 1160 690" width="1160" data-wide="1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TI zinciri clock tree: LMK04832 + LMX1204 + AFE7900 + Versal">
+  <text class="lbl-b" x="20" y="30">TI zinciri clock tree — örnek frekans planıyla (2 AFE gösterildi; CLKOUT2/3 ile 4'e ölçeklenir)</text>
+
+  <!-- ========== REFERANS + VCXO ========== -->
+  <rect class="blk" x="20" y="120" width="120" height="50" rx="8"/>
+  <text class="lbl-s" x="80" y="141" text-anchor="middle">sistem referansı</text>
+  <text class="lbl-s" x="80" y="158" text-anchor="middle">ör. 10 MHz OCXO</text>
+
+  <rect class="blk" x="20" y="230" width="120" height="50" rx="8"/>
+  <text class="lbl-s" x="80" y="251" text-anchor="middle">VCXO</text>
+  <text class="lbl-s" x="80" y="268" text-anchor="middle">ör. 122.88 MHz</text>
+
+  <!-- ========== LMK04832 ========== -->
+  <rect class="blk blk-clk" x="200" y="90" width="240" height="330" rx="10"/>
+  <text class="lbl" x="320" y="118" text-anchor="middle">LMK04832</text>
+  <text class="lbl-s" x="320" y="136" text-anchor="middle">dual-loop jitter cleaner</text>
+
+  <rect class="blk" x="220" y="152" width="90" height="40" rx="6"/>
+  <text class="lbl-s" x="265" y="169" text-anchor="middle">PLL1</text>
+  <text class="lbl-s" x="265" y="184" text-anchor="middle">(temizlik)</text>
+  <rect class="blk" x="330" y="152" width="90" height="40" rx="6"/>
+  <text class="lbl-s" x="375" y="169" text-anchor="middle">PLL2 + VCO1</text>
+  <text class="lbl-s" x="375" y="184" text-anchor="middle">2949.12 MHz</text>
+  <path class="w-clk" d="M310 172 L330 172" marker-end="url(#arw-clk)"/>
+
+  <text class="lbl-s" x="320" y="222" text-anchor="middle">çıkış bölücüleri (CLKout çiftleri)</text>
+
+  <!-- LMK giriş pinleri -->
+  <path class="w-ince" d="M140 145 L200 145" marker-end="url(#arw-ince)"/>
+  <text class="pin" x="205" y="149" text-anchor="start">CLKin0</text>
+  <path class="w-clk" d="M140 255 L170 255 L170 200 L200 200" marker-end="url(#arw-clk)"/>
+  <text class="pin" x="205" y="204" text-anchor="start">OSCin</text>
+
+  <!-- LMK çıkışları -->
+  <path class="w-clk" d="M440 250 L560 250" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="446" y="242">DCLKout0 · 2949.12 MHz</text>
+  <path class="w-sysref" d="M440 290 L560 290" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="446" y="282">SDCLKout1 · SYSREF 1.44 MHz</text>
+
+  <path class="w-clk" d="M440 340 L520 340 L520 402 L900 402 L900 480 L940 480" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="446" y="332">DCLKout8 · 368.64 MHz</text>
+  <path class="w-sysref" d="M440 380 L496 380 L496 420 L872 420 L872 520 L940 520" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="446" y="372">SDCLKout9 · SYSREF 1.44 MHz</text>
+
+  <!-- ========== LMX1204 ========== -->
+  <rect class="blk blk-clk" x="560" y="200" width="200" height="180" rx="10"/>
+  <text class="lbl" x="660" y="226" text-anchor="middle">LMX1204</text>
+  <text class="pin" x="566" y="258" text-anchor="start">CLKIN_P/N</text>
+  <text class="lbl-s" x="700" y="258" text-anchor="middle">÷1 (buffer)</text>
+  <text class="pin" x="566" y="298" text-anchor="start">SYSREFREQ_P/N</text>
+  <text class="lbl-s" x="660" y="326" text-anchor="middle">SYSREF repeater</text>
+  <text class="lbl-s" x="660" y="342" text-anchor="middle">(re-time + gecikme)</text>
+  <text class="lbl-s" x="660" y="368" text-anchor="middle">clock dağıtıcı (÷/×)</text>
+
+  <!-- LMX çıkışları → AFE'ler -->
+  <path class="w-clk" d="M760 240 L820 240 L820 130 L860 130" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="766" y="230">CLKOUT0_P/N</text>
+  <path class="w-sysref" d="M760 280 L840 280 L840 170 L860 170" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="766" y="270">SYSREFOUT0_P/N</text>
+
+  <path class="w-clk" d="M760 320 L820 320 L820 250 L860 250" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="766" y="336">CLKOUT1_P/N</text>
+  <path class="w-sysref" d="M760 360 L840 360 L840 290 L860 290" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="766" y="376">SYSREFOUT1_P/N</text>
+
+  <!-- LOGICLK → FPGA core clock (üçlünün üçüncüsü) -->
+  <path class="w-clk" d="M724 380 L724 440" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="718" y="400" text-anchor="end">LOGICLKOUT_P/N</text>
+  <text class="pin pin-clk" x="718" y="414" text-anchor="end">→ core clock (§14)</text>
+
+  <!-- ========== AFE'ler ========== -->
+  <rect class="blk" x="860" y="100" width="140" height="100" rx="10"/>
+  <text class="lbl" x="930" y="128" text-anchor="middle">AFE7900 #1</text>
+  <text class="pin" x="866" y="136" text-anchor="start">CLK+/−</text>
+  <text class="pin" x="866" y="176" text-anchor="start">SYSREF+/−</text>
+  <text class="lbl-s" x="930" y="192" text-anchor="middle">2.94912 GS/s ADC</text>
+
+  <rect class="blk" x="860" y="220" width="140" height="100" rx="10"/>
+  <text class="lbl" x="930" y="248" text-anchor="middle">AFE7900 #2</text>
+  <text class="pin" x="866" y="256" text-anchor="start">CLK+/−</text>
+  <text class="pin" x="866" y="296" text-anchor="start">SYSREF+/−</text>
+
+  <!-- SerDes lane'leri FPGA'ya -->
+  <path class="w-data" d="M1000 150 L1080 150 L1080 470 L940 470"/>
+  <path class="w-data" d="M1000 270 L1060 270 L1060 458 L940 458"/>
+  <text class="pin" x="1096 " y="240" text-anchor="start" transform="rotate(90 1096 240)">STX/SRX lane'leri (8×/AFE)</text>
+
+  <!-- ========== VERSAL ========== -->
+  <rect class="blk" x="700" y="440" width="240" height="150" rx="10"/>
+  <text class="lbl" x="790" y="468" text-anchor="middle">Versal FPGA</text>
+  <text class="pin" x="934" y="462" text-anchor="end">GT ← lane'ler</text>
+  <text class="pin" x="934" y="484" text-anchor="end">GT refclk</text>
+  <text class="pin" x="934" y="524" text-anchor="end">SYSREF girişi</text>
+  <text class="lbl-s" x="820" y="552" text-anchor="middle">JESD204C IP + GT quad (§14) · tx/rx_sysref</text>
+  <text class="pin" x="706" y="578" text-anchor="start">PS/CPU: SPI master</text>
+
+  <!-- SPI kontrol -->
+  <path class="w-ctrl" d="M820 590 L820 618 L60 618 L60 420 L200 420" marker-end="url(#arw-ctrl)"/>
+  <path class="w-ctrl" d="M320 618 L320 420" marker-end="url(#arw-ctrl)"/>
+  <path class="w-ctrl" d="M660 618 L660 380" marker-end="url(#arw-ctrl)"/>
+  <path class="w-ctrl" d="M960 618 L960 320" marker-end="url(#arw-ctrl)"/>
+  <text class="pin" x="490" y="610" text-anchor="middle">SPI (SCK/SDI/CS# · SPICLK/SPISDIO/SPISEN)</text>
+
+  <!-- notlar -->
+  <text class="not" x="20" y="654">Frekans planı örneği: VCO1 = 2949.12 MHz → AFE CLK 2949.12 MHz (÷1) · FPGA refclk 368.64 MHz (÷8) · SYSREF 1.44 MHz (÷2048, aralık 8–8191).</text>
+  <text class="not" x="20" y="674">Fiziksel pinler CLKoutX/CLKoutX*; DCLKout/SDCLKout blok şemasındaki işlevsel adlardır. AFE tam pinout'u public değildir; CLK+/−, SYSREF+/− public tablolardan.</text>
+</svg>

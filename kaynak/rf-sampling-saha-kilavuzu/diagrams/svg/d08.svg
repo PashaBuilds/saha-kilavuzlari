@@ -1,0 +1,90 @@
+<svg viewBox="0 0 1040 520" width="1040" data-wide="1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Loopback noktaları haritası: AFE'den FPGA'ya numaralı test noktaları">
+  <text class="lbl-b" x="20" y="30">Loopback haritası — her numara, zincirin farklı bir dilimini test eder (tablo: §16.1)</text>
+
+  <!-- ============ AFE ============ -->
+  <rect class="blk blk-dis" x="30" y="70" width="330" height="330" rx="12"/>
+  <text class="lbl" x="195" y="98" text-anchor="middle">AFE (TI/ADI)</text>
+
+  <rect class="blk" x="50" y="120" width="120" height="56" rx="8"/>
+  <text class="lbl-s" x="110" y="143" text-anchor="middle">DUC + DAC</text>
+  <text class="lbl-s" x="110" y="161" text-anchor="middle">verici yolu</text>
+
+  <rect class="blk" x="50" y="300" width="120" height="56" rx="8"/>
+  <text class="lbl-s" x="110" y="323" text-anchor="middle">ADC + DDC</text>
+  <text class="lbl-s" x="110" y="341" text-anchor="middle">alıcı yolu</text>
+
+  <rect class="blk" x="210" y="120" width="130" height="56" rx="8"/>
+  <text class="lbl-s" x="275" y="143" text-anchor="middle">JESD RX</text>
+  <text class="lbl-s" x="275" y="161" text-anchor="middle">(FPGA→AFE)</text>
+
+  <rect class="blk" x="210" y="300" width="130" height="56" rx="8"/>
+  <text class="lbl-s" x="275" y="323" text-anchor="middle">JESD TX</text>
+  <text class="lbl-s" x="275" y="341" text-anchor="middle">(AFE→FPGA)</text>
+
+  <!-- 1: AFE dijital loopback (DUC->DDC) -->
+  <path class="w-ince" d="M110 176 L110 300" marker-end="url(#arw-ince)"/>
+  <circle class="blk blk-sysref" cx="110" cy="238" r="16"/>
+  <text class="lbl" x="110" y="244" text-anchor="middle">1</text>
+
+  <!-- 2: AFE JESD dijital loopback (JESD RX->JESD TX) -->
+  <path class="w-ince" d="M275 176 L275 300" marker-end="url(#arw-ince)"/>
+  <circle class="blk blk-sysref" cx="275" cy="238" r="16"/>
+  <text class="lbl" x="275" y="244" text-anchor="middle">2</text>
+
+  <!-- lane'ler -->
+  <path class="w-data" d="M340 328 L560 328" marker-end="url(#arw-data)"/>
+  <text class="pin" x="450" y="318" text-anchor="middle">AFE → FPGA lane'leri</text>
+  <path class="w-data" d="M560 148 L340 148" marker-end="url(#arw-data)"/>
+  <text class="pin" x="450" y="138" text-anchor="middle">FPGA → AFE lane'leri</text>
+
+  <!-- ============ FPGA GT ============ -->
+  <rect class="blk blk-dis" x="560" y="70" width="440" height="330" rx="12"/>
+  <text class="lbl" x="780" y="98" text-anchor="middle">Versal GT kanalı + JESD204C IP</text>
+
+  <rect class="blk" x="580" y="120" width="110" height="56" rx="8"/>
+  <text class="lbl-s" x="635" y="143" text-anchor="middle">GT TX</text>
+  <text class="lbl-s" x="635" y="161" text-anchor="middle">PMA ← PCS</text>
+
+  <rect class="blk" x="580" y="300" width="110" height="56" rx="8"/>
+  <text class="lbl-s" x="635" y="323" text-anchor="middle">GT RX</text>
+  <text class="lbl-s" x="635" y="341" text-anchor="middle">PMA → PCS</text>
+
+  <rect class="blk" x="850" y="120" width="130" height="56" rx="8"/>
+  <text class="lbl-s" x="915" y="143" text-anchor="middle">JESD204C IP TX</text>
+  <rect class="blk" x="850" y="300" width="130" height="56" rx="8"/>
+  <text class="lbl-s" x="915" y="323" text-anchor="middle">JESD204C IP RX</text>
+  <path class="w-data" d="M850 148 L690 148" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M690 328 L850 328" marker-end="url(#arw-data)"/>
+
+  <!-- 3: near-end PCS (TX PCS -> RX PCS, çip içi) -->
+  <path class="w-ince" d="M760 176 L760 300" marker-end="url(#arw-ince)"/>
+  <circle class="blk blk-sysref" cx="760" cy="238" r="16"/>
+  <text class="lbl" x="760" y="244" text-anchor="middle">3</text>
+  <text class="pin" x="782" y="216" text-anchor="start">Near-End PCS (001)</text>
+
+  <!-- 4: near-end PMA -->
+  <path class="w-ince" d="M700 176 L700 300" marker-end="url(#arw-ince)"/>
+  <circle class="blk blk-sysref" cx="700" cy="238" r="16"/>
+  <text class="lbl" x="700" y="244" text-anchor="middle">4</text>
+  <text class="pin" x="700" y="272" text-anchor="middle">N-E PMA (010)</text>
+
+  <!-- 5: far-end PMA (RX->TX geri) -->
+  <path class="w-ince" d="M612 300 L612 176" marker-end="url(#arw-ince)"/>
+  <circle class="blk blk-sysref" cx="612" cy="238" r="16"/>
+  <text class="lbl" x="612" y="244" text-anchor="middle">5</text>
+  <text class="pin" x="612" y="204" text-anchor="middle">F-E PMA (100)</text>
+
+  <!-- 6: far-end PCS -->
+  <path class="w-ince" d="M668 300 L668 176" marker-end="url(#arw-ince)"/>
+  <circle class="blk blk-sysref" cx="668" cy="238" r="16"/>
+  <text class="lbl" x="668" y="244" text-anchor="middle">6</text>
+  <text class="pin" x="668" y="288" text-anchor="middle">F-E PCS (110)</text>
+
+  <!-- IBERT notu -->
+  <text class="not" x="780" y="382" text-anchor="middle">GT loopback portu: CH[x]_LOOPBACK[2:0] (AM002 kodlarıyla); IBERT/eye scan aynı GT'de (§16.2)</text>
+
+  <!-- alt not -->
+  <text class="not" x="20" y="446">1 · AFE dijital loopback (DUC→DDC): AFE'nin analog-dijital çekirdeğini JESD'siz test eder.   2 · AFE JESD loopback: AFE'nin link katmanını test eder.</text>
+  <text class="not" x="20" y="466">3–4 · Near-end (FPGA içi TX→RX): FPGA'nın kendi PCS/PMA'sını kablo olmadan test eder.   5–6 · Far-end (RX→TX geri yansıtma): kablo + AFE tarafını FPGA'dan test eder.</text>
+  <text class="not" x="20" y="486">Kural: en içteki halkadan dışa doğru ilerle — 3 → 4 → (kablo tak) → 5/6 → 2 → 1 → gerçek veri. Hangi halkada bozuluyorsa hata o dilimdedir.</text>
+</svg>

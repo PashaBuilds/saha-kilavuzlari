@@ -1,0 +1,15 @@
+// W05 — Multi-device sync: iki AFE'nin (ve FPGA'nın) LEMC hizalanması
+{
+  signal: [
+    { name: 'SYSREF (ortak)', wave: '0......1.0..............', node: '.......s' },
+    {},
+    { name: 'AFE A LEMC',     wave: '0.10............10......', node: '.................x' },
+    { name: 'AFE B LEMC',     wave: '0....10.........10......' },
+    { name: 'FPGA LEMC',      wave: '0...10..........10......' },
+    {},
+    { name: '',               wave: 'x.......2.......5.......', data: ['fazlar rastgele', 'aynı fazda'] },
+  ],
+  edge: ['s~>x yakalanan SYSREF kenarı tüm sayaçları aynı âna sıfırlar'],
+  config: { hscale: 1 },
+  head: { text: 'SYSREF öncesi her cihazın LEMC/LMFC fazı kendi reset anına bağlı (rastgele); SYSREF sonrası hepsi hizalı' },
+}

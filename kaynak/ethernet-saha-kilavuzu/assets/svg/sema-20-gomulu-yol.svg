@@ -1,0 +1,85 @@
+<svg viewBox="0 0 860 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s20">
+<title id="t-s20">Gömülü Ethernet veri yolu: kablodan PHY'ye, RGMII üzerinden MAC'e, DMA ile RAM'e ve yazılım stack'ine uzanan zincir; MDIO kontrol hattı ayrı</title>
+<defs>
+<marker id="ok20" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+<marker id="ok20k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/>
+</marker>
+</defs>
+
+<!-- bölge etiketleri -->
+<rect x="30" y="40" width="330" height="190" rx="12" fill="var(--dia-panel)" stroke="var(--line-2)" stroke-dasharray="6 5"/>
+<text x="50" y="66" class="s-metin2">Kart üstünde (analog dünya)</text>
+<rect x="380" y="40" width="450" height="190" rx="12" fill="var(--dia-panel)" stroke="var(--line-2)" stroke-dasharray="6 5"/>
+<text x="400" y="66" class="s-metin2">SoC / FPGA içinde (dijital dünya)</text>
+
+<!-- donanım zinciri -->
+<rect x="50" y="100" width="90" height="80" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="95" y="130" class="s-metin" text-anchor="middle">RJ45 +</text>
+<text x="95" y="150" class="s-metin" text-anchor="middle">trafo</text>
+<text x="95" y="170" class="s-mono2" text-anchor="middle">(magnetics)</text>
+
+<rect x="200" y="100" width="130" height="80" rx="8" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="265" y="130" class="s-metin" text-anchor="middle">PHY</text>
+<text x="265" y="150" class="s-mono2" text-anchor="middle">analog ↔ dijital</text>
+<text x="265" y="168" class="s-mono2" text-anchor="middle">autoneg burada</text>
+
+<rect x="400" y="100" width="130" height="80" rx="8" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="465" y="130" class="s-metin" text-anchor="middle">MAC</text>
+<text x="465" y="150" class="s-mono2" text-anchor="middle">frame + FCS,</text>
+<text x="465" y="168" class="s-mono2" text-anchor="middle">filtre (Zynq: GEM)</text>
+
+<rect x="580" y="100" width="100" height="80" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="630" y="136" class="s-metin" text-anchor="middle">DMA</text>
+<text x="630" y="158" class="s-mono2" text-anchor="middle">descriptor'lar</text>
+
+<rect x="720" y="100" width="90" height="80" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="765" y="136" class="s-metin" text-anchor="middle">RAM</text>
+<text x="765" y="158" class="s-mono2" text-anchor="middle">rx/tx buffer</text>
+
+<!-- bağlantılar -->
+<line x1="140" y1="140" x2="194" y2="140" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok20)" marker-start="url(#ok20)"/>
+<text x="167" y="126" class="s-mono2" text-anchor="middle">MDI</text>
+<line x1="330" y1="140" x2="394" y2="140" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok20)" marker-start="url(#ok20)"/>
+<text x="362" y="126" class="s-mono2" text-anchor="middle">(R)(G)MII</text>
+<line x1="530" y1="140" x2="574" y2="140" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok20)" marker-start="url(#ok20)"/>
+<line x1="680" y1="140" x2="714" y2="140" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok20)" marker-start="url(#ok20)"/>
+<text x="697" y="126" class="s-mono2" text-anchor="middle">bus</text>
+
+<!-- MDIO -->
+<path d="M465 180 L465 208 L265 208 L265 180" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#ok20k)"/>
+<text x="365" y="224" class="s-mono2 s-altin" text-anchor="middle">MDIO/MDC — PHY register erişimi (link durumu, autoneg sonucu buradan okunur)</text>
+
+<!-- yazılım katmanı -->
+<rect x="30" y="260" width="800" height="150" rx="12" fill="var(--dia-panel)" stroke="var(--line-2)"/>
+<text x="50" y="286" class="s-metin2">Yazılım</text>
+
+<rect x="60" y="300" width="160" height="80" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="140" y="330" class="s-metin" text-anchor="middle">Sürücü</text>
+<text x="140" y="352" class="s-mono2" text-anchor="middle">kesme + descriptor</text>
+<text x="140" y="368" class="s-mono2" text-anchor="middle">yönetimi</text>
+
+<rect x="280" y="300" width="180" height="80" rx="8" fill="var(--dia-blok-2)" stroke="var(--green)" stroke-width="1.5"/>
+<text x="370" y="330" class="s-metin" text-anchor="middle">Stack: lwIP / OS</text>
+<text x="370" y="352" class="s-mono2" text-anchor="middle">ARP·IP·ICMP·TCP·UDP</text>
+<text x="370" y="368" class="s-mono2" text-anchor="middle">(Bölüm 5–9'un kodu)</text>
+
+<rect x="520" y="300" width="130" height="80" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="585" y="330" class="s-metin" text-anchor="middle">API</text>
+<text x="585" y="352" class="s-mono2" text-anchor="middle">raw / netconn /</text>
+<text x="585" y="368" class="s-mono2" text-anchor="middle">socket</text>
+
+<rect x="710" y="300" width="100" height="80" rx="8" fill="var(--green-soft)" stroke="var(--green)"/>
+<text x="760" y="336" class="s-metin" text-anchor="middle">Senin</text>
+<text x="760" y="356" class="s-metin" text-anchor="middle">uygulaman</text>
+
+<line x1="220" y1="340" x2="274" y2="340" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok20)" marker-start="url(#ok20)"/>
+<line x1="460" y1="340" x2="514" y2="340" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok20)" marker-start="url(#ok20)"/>
+<line x1="650" y1="340" x2="704" y2="340" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok20)" marker-start="url(#ok20)"/>
+
+<!-- RAM'den sürücüye -->
+<path d="M765 180 L765 240 L140 240 L140 294" fill="none" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ok20)"/>
+<text x="452" y="254" class="s-mono2" text-anchor="middle">paket RAM'de; sürücü descriptor'dan haber alır</text>
+</svg>

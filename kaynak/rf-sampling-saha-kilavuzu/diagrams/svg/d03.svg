@@ -1,0 +1,94 @@
+<svg viewBox="0 0 1160 690" width="1160" data-wide="1" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ADI Apollo zinciri clock tree: HMC7044 + ADF4382 + AD9084 + Versal">
+  <text class="lbl-b" x="20" y="30">ADI Apollo zinciri clock tree — EVAL-AD9084 clock ağacından uyarlanmış örnek topoloji</text>
+
+  <!-- ========== REFERANS ========== -->
+  <rect class="blk" x="20" y="120" width="120" height="50" rx="8"/>
+  <text class="lbl-s" x="80" y="141" text-anchor="middle">referans</text>
+  <text class="lbl-s" x="80" y="158" text-anchor="middle">ör. 125 MHz VCXO</text>
+
+  <rect class="blk" x="20" y="230" width="120" height="50" rx="8"/>
+  <text class="lbl-s" x="80" y="251" text-anchor="middle">ref. dağıtımı</text>
+  <text class="lbl-s" x="80" y="268" text-anchor="middle">(ör. LTC6955)</text>
+  <path class="w-ince" d="M80 170 L80 230" marker-end="url(#arw-ince)"/>
+
+  <!-- ========== HMC7044 ========== -->
+  <rect class="blk blk-clk" x="200" y="90" width="240" height="330" rx="10"/>
+  <text class="lbl" x="320" y="118" text-anchor="middle">HMC7044</text>
+  <text class="lbl-s" x="320" y="136" text-anchor="middle">dual-loop jitter attenuator</text>
+
+  <rect class="blk" x="220" y="152" width="90" height="40" rx="6"/>
+  <text class="lbl-s" x="265" y="169" text-anchor="middle">PLL1</text>
+  <text class="lbl-s" x="265" y="184" text-anchor="middle">(temizlik)</text>
+  <rect class="blk" x="330" y="152" width="90" height="40" rx="6"/>
+  <text class="lbl-s" x="375" y="169" text-anchor="middle">PLL2 + VCO</text>
+  <text class="lbl-s" x="375" y="184" text-anchor="middle">2.4–3.2 GHz</text>
+  <path class="w-clk" d="M310 172 L330 172" marker-end="url(#arw-clk)"/>
+
+  <text class="lbl-s" x="320" y="222" text-anchor="middle">çıkış bölücüleri (CLKOUT/SCLKOUT)</text>
+
+  <!-- HMC girişleri -->
+  <path class="w-ince" d="M140 255 L164 255 L164 145 L200 145" marker-end="url(#arw-ince)"/>
+  <text class="pin" x="205" y="149" text-anchor="start">CLKIN3</text>
+  <path class="w-clk" d="M140 275 L176 275 L176 200 L200 200" marker-end="url(#arw-clk)"/>
+  <text class="pin" x="205" y="204" text-anchor="start">OSCIN (VCXO)</text>
+  <text class="pin" x="205" y="404" text-anchor="start">SYNC · CLKIN0/RFSYNCIN</text>
+
+  <!-- HMC çıkışları -->
+  <path class="w-clk" d="M440 250 L544 250 L544 158 L860 158" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="446" y="242">CLKOUT0 → PLL REFCLK</text>
+  <path class="w-sysref" d="M440 290 L820 290 L820 176 L860 176" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="446" y="282">SCLKOUT1 · SYSREF</text>
+
+  <path class="w-clk" d="M440 340 L520 340 L520 402 L900 402 L900 480 L940 480" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="446" y="332">CLKOUT8 · FPGA refclk</text>
+  <path class="w-sysref" d="M440 380 L496 380 L496 420 L872 420 L872 520 L940 520" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="446" y="372">SCLKOUT3 · SYSREF (FPGA)</text>
+
+  <!-- ========== ADF4382 ========== -->
+  <rect class="blk blk-clk" x="560" y="200" width="200" height="130" rx="10"/>
+  <text class="lbl" x="660" y="228" text-anchor="middle">ADF4382</text>
+  <text class="lbl-s" x="660" y="246" text-anchor="middle">sentezleyici (PLL + VCO)</text>
+  <text class="pin" x="566" y="258" text-anchor="start">REFP/N</text>
+  <text class="lbl-s" x="660" y="278" text-anchor="middle">687.5 MHz – 22 GHz</text>
+  <text class="lbl-s" x="660" y="296" text-anchor="middle">20 fs sınıfı jitter</text>
+  <text class="pin" x="754" y="318" text-anchor="end">RFOUT1P/N</text>
+
+  <!-- referansın ADF'ye de gitmesi -->
+  <path class="w-ince" d="M140 265 L556 265" marker-end="url(#arw-ince)"/>
+
+  <!-- ADF çıkışı → AD9084 CLKC -->
+  <path class="w-clk" d="M760 240 L820 240 L820 136 L860 136" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="766" y="230">RFOUT1P/N · CLKC yolu</text>
+
+  <!-- ========== AD9084 ========== -->
+  <rect class="blk" x="860" y="96" width="140" height="120" rx="10"/>
+  <text class="lbl" x="930" y="122" text-anchor="middle">AD9084</text>
+  <text class="pin" x="866" y="142" text-anchor="start">CLKC±</text>
+  <text class="pin" x="866" y="162" text-anchor="start">PLL REFCLK</text>
+  <text class="pin" x="866" y="182" text-anchor="start">SYSREF±</text>
+  <text class="lbl-s" x="930" y="204" text-anchor="middle">4T4R MxFE</text>
+
+  <!-- SerDes lane'leri FPGA'ya -->
+  <path class="w-data" d="M1000 156 L1080 156 L1080 470 L940 470"/>
+  <text class="pin" x="1096" y="240" text-anchor="start" transform="rotate(90 1096 240)">JESD204C lane'leri (≤48; örnekte 8)</text>
+
+  <!-- ========== VERSAL ========== -->
+  <rect class="blk" x="700" y="440" width="240" height="150" rx="10"/>
+  <text class="lbl" x="790" y="468" text-anchor="middle">Versal FPGA</text>
+  <text class="pin" x="934" y="462" text-anchor="end">GT ← lane'ler</text>
+  <text class="pin" x="934" y="484" text-anchor="end">GT refclk</text>
+  <text class="pin" x="934" y="524" text-anchor="end">SYSREF girişi</text>
+  <text class="lbl-s" x="820" y="552" text-anchor="middle">JESD204C IP + GT quad (§14) · tx/rx_sysref</text>
+  <text class="pin" x="706" y="578" text-anchor="start">PS/CPU: SPI master</text>
+
+  <!-- SPI kontrol -->
+  <path class="w-ctrl" d="M820 590 L820 618 L60 618 L60 420 L200 420" marker-end="url(#arw-ctrl)"/>
+  <path class="w-ctrl" d="M320 618 L320 420" marker-end="url(#arw-ctrl)"/>
+  <path class="w-ctrl" d="M660 618 L660 330" marker-end="url(#arw-ctrl)"/>
+  <path class="w-ctrl" d="M960 618 L960 216" marker-end="url(#arw-ctrl)"/>
+  <text class="pin" x="490" y="610" text-anchor="middle">SPI (HMC7044 · ADF4382 · AD9084)</text>
+
+  <!-- notlar -->
+  <text class="not" x="20" y="654">İki device-clock yolu: (a) ADF4382 → CLKC± (harici çok GHz clock, en düşük jitter) veya (b) HMC7044 CLKOUT0 → PLL REFCLK ile on-chip clock multiplier.</text>
+  <text class="not" x="20" y="674">Kanallar mantıksal özdeştir: CLKOUTx/SCLKOUTx varsayılan DCLK/SYSREF profilleridir. Çok çipli sistemde her AD9084'e bir ADF4382 + ortak SYSREF verilir.</text>
+</svg>

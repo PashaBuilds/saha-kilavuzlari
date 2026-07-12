@@ -1,0 +1,70 @@
+<svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s04">
+<title id="t-s04">Ethernet frame anatomisi: preamble, SFD, hedef ve kaynak MAC, EtherType, payload ve FCS alanları byte ölçekli</title>
+
+<text x="54" y="40" class="s-baslik">Ethernet II frame — kablodaki dizilişiyle</text>
+
+<!-- byte sayıları (üst) -->
+<g text-anchor="middle">
+<text x="99"  y="82" class="s-mono2">7B</text>
+<text x="155" y="82" class="s-mono2">1B</text>
+<text x="221" y="82" class="s-mono2">6B</text>
+<text x="331" y="82" class="s-mono2">6B</text>
+<text x="416" y="82" class="s-mono2">2B</text>
+<text x="596" y="82" class="s-mono2">46–1500B</text>
+<text x="776" y="82" class="s-mono2">4B</text>
+</g>
+
+<!-- alan kutuları -->
+<g stroke-width="1.4">
+<rect x="54"  y="92" width="90"  height="64" fill="var(--dia-blok)" stroke="var(--line-2)" stroke-dasharray="5 4"/>
+<rect x="144" y="92" width="22"  height="64" fill="var(--dia-blok)" stroke="var(--line-2)" stroke-dasharray="5 4"/>
+<rect x="166" y="92" width="110" height="64" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<rect x="276" y="92" width="110" height="64" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<rect x="386" y="92" width="60"  height="64" fill="var(--gold-soft)" stroke="var(--gold)"/>
+<rect x="446" y="92" width="300" height="64" fill="var(--green-soft)" stroke="var(--green)"/>
+<rect x="746" y="92" width="60"  height="64" fill="var(--red-soft)" stroke="var(--red)"/>
+</g>
+
+<!-- payload değişken uzunluk zigzagı -->
+<path d="M666 92 l6 16 l-12 16 l12 16 l-6 16" fill="none" stroke="var(--green)" stroke-width="1.4"/>
+
+<!-- alan içi yazılar -->
+<g text-anchor="middle">
+<text x="99"  y="120" class="s-mono2">Preamble</text>
+<text x="99"  y="138" class="s-mono2">10101010…</text>
+<text x="155" y="128" class="s-mono2">S F D</text>
+<text x="221" y="118" class="s-mono2">Hedef</text>
+<text x="221" y="134" class="s-mono2">MAC</text>
+<text x="221" y="150" class="s-mono2">(destination)</text>
+<text x="331" y="118" class="s-mono2">Kaynak</text>
+<text x="331" y="134" class="s-mono2">MAC</text>
+<text x="331" y="150" class="s-mono2">(source)</text>
+<text x="416" y="122" class="s-mono2">Ether</text>
+<text x="416" y="138" class="s-mono2">Type</text>
+<text x="560" y="122" class="s-mono2">Payload (yük)</text>
+<text x="560" y="140" class="s-mono2">IP paketi buraya biner</text>
+<text x="776" y="122" class="s-mono2">FCS</text>
+<text x="776" y="138" class="s-mono2">CRC-32</text>
+</g>
+
+<!-- senkron notu -->
+<path d="M54 176 L166 176" stroke="var(--line-2)"/>
+<text x="54" y="196" class="s-metin2">Senkronizasyon — alıcı PHY saati kilitler;</text>
+<text x="54" y="213" class="s-metin2">frame'in parçası sayılmaz, Wireshark'ta görünmez</text>
+
+<!-- ethertype örnekleri -->
+<path d="M416 156 L416 236" stroke="var(--gold)" stroke-dasharray="4 3"/>
+<rect x="330" y="236" width="240" height="82" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="346" y="260" class="s-mono2">0x0800 → IPv4</text>
+<text x="346" y="280" class="s-mono2">0x0806 → ARP</text>
+<text x="346" y="300" class="s-mono2">0x86DD → IPv6</text>
+<text x="466" y="260" class="s-metin2">“payload'ın içinde</text>
+<text x="466" y="280" class="s-metin2">hangi protokol var?”</text>
+
+<!-- FCS notu -->
+<path d="M776 156 L776 236" stroke="var(--red)" stroke-dasharray="4 3"/>
+<rect x="606" y="236" width="234" height="82" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="622" y="260" class="s-metin2">Alıcı CRC'yi yeniden hesaplar;</text>
+<text x="622" y="280" class="s-metin2">tutmazsa frame sessizce çöpe.</text>
+<text x="622" y="300" class="s-metin2">Bozuk frame üst katmana çıkmaz.</text>
+</svg>

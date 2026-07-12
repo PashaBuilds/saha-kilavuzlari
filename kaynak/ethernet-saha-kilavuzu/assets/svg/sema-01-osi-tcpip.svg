@@ -1,0 +1,76 @@
+<svg viewBox="0 0 860 496" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s01">
+<title id="t-s01">OSI yedi katman modeli ile pratik beş katmanlı TCP/IP modelinin karşılaştırması ve her katmandaki örnek protokoller</title>
+<defs>
+<marker id="ok01" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/>
+</marker>
+</defs>
+
+<text x="170" y="42" class="s-baslik" text-anchor="middle">OSI modeli (7 katman)</text>
+<text x="480" y="42" class="s-baslik" text-anchor="middle">TCP/IP — pratik 5 katman</text>
+<text x="730" y="42" class="s-baslik" text-anchor="middle">Örnek protokoller</text>
+
+<!-- OSI sütunu -->
+<g>
+  <g><rect x="60" y="64" width="220" height="50" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+     <text x="78" y="94" class="s-metin">7 · Application <tspan class="s-metin2">(uygulama)</tspan></text></g>
+  <g><rect x="60" y="118" width="220" height="50" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+     <text x="78" y="148" class="s-metin">6 · Presentation <tspan class="s-metin2">(sunum)</tspan></text></g>
+  <g><rect x="60" y="172" width="220" height="50" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+     <text x="78" y="202" class="s-metin">5 · Session <tspan class="s-metin2">(oturum)</tspan></text></g>
+  <g><rect x="60" y="226" width="220" height="50" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+     <text x="78" y="256" class="s-metin">4 · Transport <tspan class="s-metin2">(taşıma)</tspan></text></g>
+  <g><rect x="60" y="280" width="220" height="50" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+     <text x="78" y="310" class="s-metin">3 · Network <tspan class="s-metin2">(ağ)</tspan></text></g>
+  <g><rect x="60" y="334" width="220" height="50" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+     <text x="78" y="364" class="s-metin">2 · Data Link <tspan class="s-metin2">(veri bağı)</tspan></text></g>
+  <g><rect x="60" y="388" width="220" height="50" rx="6" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+     <text x="78" y="418" class="s-metin">1 · Physical <tspan class="s-metin2">(fiziksel)</tspan></text></g>
+</g>
+
+<!-- eşleme çizgileri -->
+<g stroke="var(--line-2)" stroke-dasharray="4 4">
+  <line x1="284" y1="172" x2="376" y2="120" />
+  <line x1="284" y1="226" x2="376" y2="226" />
+  <line x1="284" y1="280" x2="376" y2="280" />
+  <line x1="284" y1="334" x2="376" y2="334" />
+  <line x1="284" y1="388" x2="376" y2="388" />
+  <line x1="284" y1="442" x2="376" y2="442" />
+</g>
+
+<!-- TCP/IP sütunu (bu kılavuzun zihinsel modeli) -->
+<g>
+  <g><rect x="380" y="64" width="200" height="158" rx="6" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.6"/>
+     <text x="398" y="134" class="s-metin">Uygulama</text>
+     <text x="398" y="154" class="s-mono2">Application</text></g>
+  <g><rect x="380" y="226" width="200" height="50" rx="6" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.6"/>
+     <text x="398" y="256" class="s-metin">Taşıma <tspan class="s-mono2">Transport</tspan></text></g>
+  <g><rect x="380" y="280" width="200" height="50" rx="6" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.6"/>
+     <text x="398" y="310" class="s-metin">Ağ <tspan class="s-mono2">Internet</tspan></text></g>
+  <g><rect x="380" y="334" width="200" height="50" rx="6" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.6"/>
+     <text x="398" y="364" class="s-metin">Veri bağı <tspan class="s-mono2">Link</tspan></text></g>
+  <g><rect x="380" y="388" width="200" height="50" rx="6" fill="var(--dia-blok-2)" stroke="var(--accent)" stroke-width="1.6"/>
+     <text x="398" y="418" class="s-metin">Fiziksel <tspan class="s-mono2">Physical</tspan></text></g>
+</g>
+
+<!-- protokoller -->
+<g>
+  <g><rect x="620" y="64" width="220" height="158" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+     <text x="638" y="106" class="s-mono">HTTP · TLS · DNS</text>
+     <text x="638" y="130" class="s-mono">DHCP · MQTT · NTP</text>
+     <text x="638" y="166" class="s-metin2">“veriyi anlamlandıran”</text></g>
+  <g><rect x="620" y="226" width="220" height="50" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+     <text x="638" y="256" class="s-mono">TCP · UDP</text></g>
+  <g><rect x="620" y="280" width="220" height="50" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+     <text x="638" y="310" class="s-mono">IP · ICMP</text></g>
+  <g><rect x="620" y="334" width="220" height="50" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+     <text x="638" y="364" class="s-mono">Ethernet · ARP · 802.1Q</text></g>
+  <g><rect x="620" y="388" width="220" height="50" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+     <text x="638" y="412" class="s-mono2">Cat6 kablo · fiber · PHY</text>
+     <text x="638" y="430" class="s-mono2">RJ45 · 1000BASE-T</text></g>
+</g>
+
+<!-- alt not -->
+<line x1="60" y1="462" x2="280" y2="462" stroke="var(--ink-2)" marker-end="url(#ok01)"/>
+<text x="300" y="466" class="s-metin2">OSI 5-6-7, pratikte tek “uygulama” katmanına düşer — bu kılavuz sağdaki 5 katmanı kullanır.</text>
+</svg>

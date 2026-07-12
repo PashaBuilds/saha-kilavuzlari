@@ -1,0 +1,62 @@
+<svg viewBox="0 0 860 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s19">
+<title id="t-s19">NAT çeviri tablosu: router giden paketin kaynak adresini kendi dış adresiyle değiştirir, dönen cevabı tablodan bulup içerideki cihaza geri çevirir</title>
+<defs>
+<marker id="ok19g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--green)"/>
+</marker>
+<marker id="ok19a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+</marker>
+</defs>
+
+<!-- iç ağ -->
+<rect x="30" y="60" width="200" height="130" rx="10" fill="var(--dia-panel)" stroke="var(--line-2)" stroke-dasharray="6 5"/>
+<text x="130" y="86" class="s-metin2" text-anchor="middle">İç ağ (private)</text>
+<rect x="50" y="100" width="160" height="70" rx="8" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="130" y="126" class="s-metin" text-anchor="middle">PC</text>
+<text x="130" y="150" class="s-mono2" text-anchor="middle">192.168.1.20</text>
+
+<!-- router -->
+<rect x="300" y="52" width="280" height="150" rx="10" fill="var(--dia-blok-2)" stroke="var(--gold)" stroke-width="1.6"/>
+<text x="440" y="80" class="s-metin" text-anchor="middle">Router + NAT</text>
+<text x="370" y="104" class="s-mono2" text-anchor="middle">LAN: 192.168.1.1</text>
+<text x="512" y="104" class="s-mono2" text-anchor="middle">WAN: 85.102.7.44</text>
+
+<rect x="320" y="118" width="240" height="66" rx="6" fill="var(--dia-panel)" stroke="var(--line)"/>
+<text x="336" y="140" class="s-mono2 s-altin">NAT tablosu</text>
+<text x="336" y="160" class="s-mono2">içerisi 192.168.1.20:52814</text>
+<text x="336" y="176" class="s-mono2">dışarısı 85.102.7.44:40001</text>
+
+<!-- sunucu -->
+<rect x="660" y="60" width="170" height="130" rx="10" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<text x="745" y="90" class="s-metin" text-anchor="middle">Web sunucusu</text>
+<text x="745" y="114" class="s-mono2" text-anchor="middle">142.250.187.110</text>
+<text x="745" y="146" class="s-metin2" text-anchor="middle">Onun gördüğü tek şey:</text>
+<text x="745" y="166" class="s-mono2" text-anchor="middle">85.102.7.44:40001</text>
+
+<!-- giden akış -->
+<line x1="230" y1="222" x2="294" y2="222" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok19g)"/>
+<rect x="30" y="238" width="200" height="52" rx="6" fill="var(--green-soft)" stroke="var(--green)"/>
+<text x="46" y="260" class="s-mono2">src 192.168.1.20:52814</text>
+<text x="46" y="278" class="s-mono2">dst 142.250.187.110:443</text>
+
+<line x1="580" y1="222" x2="654" y2="222" stroke="var(--green)" stroke-width="1.8" marker-end="url(#ok19g)"/>
+<rect x="320" y="238" width="240" height="52" rx="6" fill="var(--green-soft)" stroke="var(--green)"/>
+<text x="336" y="260" class="s-mono2">src <tspan class="s-altin">85.102.7.44:40001</tspan>  ← değişti!</text>
+<text x="336" y="278" class="s-mono2">dst 142.250.187.110:443</text>
+<text x="300" y="316" class="s-metin2">GİDEN: router kaynak adresi/portu kendi dış kimliğiyle değiştirir, eşlemeyi tabloya yazar.</text>
+
+<!-- dönen akış -->
+<line x1="654" y1="352" x2="580" y2="352" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok19a)"/>
+<rect x="320" y="368" width="240" height="52" rx="6" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<text x="336" y="390" class="s-mono2">dst <tspan class="s-altin">85.102.7.44:40001</tspan></text>
+<text x="336" y="408" class="s-mono2">→ tabloda var: içeri çevir</text>
+
+<line x1="294" y1="352" x2="230" y2="352" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#ok19a)"/>
+<rect x="30" y="368" width="200" height="52" rx="6" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<text x="46" y="390" class="s-mono2">dst 192.168.1.20:52814</text>
+<text x="46" y="408" class="s-mono2">→ PC'ye teslim</text>
+
+<text x="660" y="390" class="s-metin2">DÖNEN: tabloda eşleşme</text>
+<text x="660" y="408" class="s-metin2">yoksa paket ÇÖPE gider.</text>
+</svg>

@@ -1,0 +1,15 @@
+// W02 — JESD204B link kalkışı: CGS → ILAS → kullanıcı verisi (subclass 1)
+{
+  signal: [
+    { name: 'SYNC~ (RX→TX)', wave: '1.0...1...................',
+      node: '......a' },
+    { name: 'lane verisi',   wave: 'x.4.....3...3...3...3...9..',
+      data: ['K28.5 K28.5 K28.5 …', 'ILAS MF1', 'MF2: /Q/+konfig', 'MF3', 'MF4', 'veri'] },
+    {},
+    { name: 'LMFC',          wave: '0...10..10..10..10..10..10.',
+      node: '........b' },
+  ],
+  edge: ['a~>b ILAS, SYNC~ bırakıldıktan sonraki LMFC kenarında başlar'],
+  config: { hscale: 1 },
+  head: { text: 'CGS (K28.5 yağmuru)          →          ILAS (4 multiframe)          →          veri' },
+}

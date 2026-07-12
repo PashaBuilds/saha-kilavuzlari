@@ -1,0 +1,57 @@
+<svg viewBox="0 0 860 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-s08">
+<title id="t-s08">IP adresi ile subnet mask'in bit düzeyinde AND işlemi ve hedefin yerel mi uzak mı olduğuna karar verilmesi</title>
+
+<text x="40" y="40" class="s-baslik">Ağ mı, host mu? Maske karar verir</text>
+
+<!-- network / host arka planları -->
+<rect x="242" y="66" width="240" height="164" rx="6" fill="var(--accent-soft)"/>
+<rect x="490" y="66" width="76" height="164" rx="6" fill="var(--green-soft)"/>
+<text x="362" y="252" class="s-metin2 s-vurgu" text-anchor="middle">ağ kısmı (ilk 24 bit)</text>
+<text x="528" y="252" class="s-metin2 s-yesil" text-anchor="middle">host kısmı</text>
+
+<!-- IP satırı -->
+<text x="40" y="100" class="s-metin">IP adresi</text>
+<text x="40" y="118" class="s-mono2">192.168.1.130</text>
+<g class="s-mono" font-size="14">
+<text x="250" y="106">11000000</text>
+<text x="332" y="106">10101000</text>
+<text x="414" y="106">00000001</text>
+<text x="496" y="106">10000010</text>
+</g>
+
+<!-- mask satırı -->
+<text x="40" y="156" class="s-metin">Subnet mask</text>
+<text x="40" y="174" class="s-mono2">255.255.255.0 = /24</text>
+<g class="s-mono" font-size="14">
+<text x="250" y="162">11111111</text>
+<text x="332" y="162">11111111</text>
+<text x="414" y="162">11111111</text>
+<text x="496" y="162">00000000</text>
+</g>
+
+<line x1="242" y1="180" x2="566" y2="180" stroke="var(--ink-2)"/>
+<text x="580" y="184" class="s-metin2">bit bit AND</text>
+
+<!-- sonuç satırı -->
+<text x="40" y="212" class="s-metin">Ağ adresi</text>
+<text x="40" y="230" class="s-mono2 s-vurgu">192.168.1.0</text>
+<g class="s-mono s-vurgu" font-size="14">
+<text x="250" y="218">11000000</text>
+<text x="332" y="218">10101000</text>
+<text x="414" y="218">00000001</text>
+<text x="496" y="218">00000000</text>
+</g>
+
+<!-- karar panelleri -->
+<rect x="40" y="284" width="380" height="112" rx="10" fill="var(--dia-blok)" stroke="var(--green)" stroke-width="1.4"/>
+<text x="58" y="312" class="s-metin">Hedef: <tspan class="s-mono">192.168.1.57</tspan></text>
+<text x="58" y="336" class="s-mono2">AND(hedef, mask) = 192.168.1.0 → AYNI ağ</text>
+<text x="58" y="362" class="s-metin s-yesil">YEREL → ARP ile MAC'ini bul,</text>
+<text x="58" y="382" class="s-metin s-yesil">frame'i doğrudan ona gönder</text>
+
+<rect x="440" y="284" width="380" height="112" rx="10" fill="var(--dia-blok)" stroke="var(--gold)" stroke-width="1.4"/>
+<text x="458" y="312" class="s-metin">Hedef: <tspan class="s-mono">172.217.17.14</tspan></text>
+<text x="458" y="336" class="s-mono2">AND(hedef, mask) = 172.217.17.0 → FARKLI ağ</text>
+<text x="458" y="362" class="s-metin s-altin">UZAK → frame'i default gateway'in</text>
+<text x="458" y="382" class="s-metin s-altin">MAC'ine gönder (Bölüm 6)</text>
+</svg>

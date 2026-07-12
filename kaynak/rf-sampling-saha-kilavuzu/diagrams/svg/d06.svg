@@ -1,0 +1,59 @@
+<svg viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DAC yolu: SerDes lane'lerinden analog çıkışa">
+  <text class="lbl-b" x="20" y="32">DAC (verici) yolu — tek kanal, D05'in aynası</text>
+
+  <!-- lane girişleri -->
+  <path class="w-data" d="M8 108 L36 108" marker-end="url(#arw-data)"/>
+  <path class="w-data" d="M8 132 L36 132" marker-end="url(#arw-data)"/>
+  <text class="pin" x="22" y="98" text-anchor="middle">L lane</text>
+
+  <!-- serdes -->
+  <rect class="blk" x="36" y="90" width="110" height="60" rx="8"/>
+  <text class="lbl" x="91" y="114" text-anchor="middle">SerDes</text>
+  <text class="lbl-s" x="91" y="134" text-anchor="middle">PHY (RX) + CDR</text>
+
+  <!-- link -->
+  <rect class="blk" x="192" y="90" width="140" height="60" rx="8"/>
+  <text class="lbl" x="262" y="110" text-anchor="middle">link katmanı</text>
+  <text class="lbl-s" x="262" y="127" text-anchor="middle">decoder +</text>
+  <text class="lbl-s" x="262" y="141" text-anchor="middle">descrambler</text>
+  <path class="w-data" d="M146 120 L192 120" marker-end="url(#arw-data)"/>
+
+  <!-- transport -->
+  <rect class="blk" x="378" y="90" width="130" height="60" rx="8"/>
+  <text class="lbl" x="443" y="114" text-anchor="middle">transport</text>
+  <text class="lbl-s" x="443" y="134" text-anchor="middle">frame → örnek</text>
+  <path class="w-data" d="M332 120 L378 120" marker-end="url(#arw-data)"/>
+
+  <!-- DUC -->
+  <rect class="blk" x="554" y="78" width="180" height="84" rx="8"/>
+  <text class="lbl" x="644" y="102" text-anchor="middle">DUC</text>
+  <text class="lbl-s" x="644" y="122" text-anchor="middle">interpolation filtreleri (×D)</text>
+  <text class="lbl-s" x="644" y="140" text-anchor="middle">NCO + mixer</text>
+  <path class="w-data" d="M508 120 L554 120" marker-end="url(#arw-data)"/>
+
+  <!-- DAC core -->
+  <rect class="blk blk-sysref" x="780" y="90" width="110" height="60" rx="8"/>
+  <text class="lbl" x="835" y="112" text-anchor="middle">DAC core</text>
+  <text class="lbl-s" x="835" y="130" text-anchor="middle">NRZ / mix-mode</text>
+  <text class="lbl-s" x="835" y="144" text-anchor="middle">(§2.6)</text>
+  <path class="w-data" d="M734 120 L780 120" marker-end="url(#arw-data)"/>
+
+  <!-- analog çıkış + filtre -->
+  <path class="w-ince" d="M890 120 L916 120" marker-end="url(#arw-ince)"/>
+  <text class="lbl-s" x="936" y="112" text-anchor="middle">rekons.</text>
+  <text class="lbl-s" x="936" y="128" text-anchor="middle">filtre</text>
+
+  <!-- hız etiketi şeridi -->
+  <text class="pin" x="169" y="176" text-anchor="middle">kodlanmış bit akışı</text>
+  <text class="pin" x="355" y="176" text-anchor="middle">frame akışı</text>
+  <text class="pin" x="531" y="176" text-anchor="middle">368.64 MSPS × 32 bit (I+Q)</text>
+  <text class="pin" x="757" y="176" text-anchor="middle">2.94912 GS/s</text>
+
+  <!-- clock girişleri -->
+  <path class="w-clk" d="M835 250 L835 150" marker-end="url(#arw-clk)"/>
+  <text class="pin pin-clk" x="835" y="268" text-anchor="middle">device clock (fs)</text>
+  <path class="w-sysref" d="M262 250 L262 150" marker-end="url(#arw-sysref)"/>
+  <text class="pin pin-sysref" x="262" y="268" text-anchor="middle">SYSREF → LMFC/LEMC fazı (§9)</text>
+
+  <text class="not" x="480" y="304" text-anchor="middle">Alıcının tersi: veri FPGA'dan gelir, DUC örnek hızını fs'e çıkarır, DAC analog dünyaya döndürür.</text>
+</svg>

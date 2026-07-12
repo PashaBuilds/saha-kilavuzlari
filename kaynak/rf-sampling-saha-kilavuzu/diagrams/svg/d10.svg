@@ -1,0 +1,62 @@
+<svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nyquist bölgeleri ve spektrum katlanması">
+  <!-- eksen: 0 .. 3fs/2, 1 bölge = 240px, başlangıç x=80 -->
+
+  <!-- bölge zeminleri -->
+  <rect class="alan" x="80" y="60" width="240" height="220"/>
+  <rect x="320" y="60" width="240" height="220" fill="none"/>
+  <rect class="alan" x="560" y="60" width="240" height="220"/>
+
+  <!-- bölge etiketleri -->
+  <text class="lbl" x="200" y="86" text-anchor="middle">1. bölge</text>
+  <text class="lbl-s" x="200" y="104" text-anchor="middle">(düz spektrum)</text>
+  <text class="lbl" x="440" y="86" text-anchor="middle">2. bölge</text>
+  <text class="lbl-s" x="440" y="104" text-anchor="middle">(spektrum aynalanır)</text>
+  <text class="lbl" x="680" y="86" text-anchor="middle">3. bölge</text>
+  <text class="lbl-s" x="680" y="104" text-anchor="middle">(yine düz)</text>
+
+  <!-- frekans ekseni -->
+  <path class="w-ince" d="M80 280 L820 280" marker-end="url(#arw-ince)"/>
+  <text class="lbl-s" x="836" y="284">f</text>
+
+  <!-- eksen işaretleri -->
+  <line class="w-ince" x1="80" y1="280" x2="80" y2="288"/>
+  <text class="pin" x="80" y="304" text-anchor="middle">0</text>
+  <line class="w-ctrl" x1="320" y1="60" x2="320" y2="288"/>
+  <text class="pin" x="320" y="304" text-anchor="middle">fs/2</text>
+  <line class="w-ctrl" x1="560" y1="60" x2="560" y2="288"/>
+  <text class="pin" x="560" y="304" text-anchor="middle">fs</text>
+  <line class="w-ctrl" x1="800" y1="60" x2="800" y2="288"/>
+  <text class="pin" x="800" y="304" text-anchor="middle">3fs/2</text>
+
+  <!-- gerçek sinyal: 2. bölgede (ör. 0.55fs..0.75fs → x=344..440) -->
+  <path class="w-sysref" d="M364 276 L376 216 L428 216 L440 276 Z" fill="none"/>
+  <text class="pin pin-sysref" x="402" y="206" text-anchor="middle">gerçek RF bandı</text>
+  <!-- bandın "yönü" için işaret: alçak kenar A, yüksek kenar B -->
+  <text class="pin" x="370" y="264" text-anchor="middle">A</text>
+  <text class="pin" x="434" y="264" text-anchor="middle">B</text>
+
+  <!-- katlama oku: fs/2 etrafında aynala -->
+  <path class="w-ince" d="M402 232 C 340 150, 260 150, 218 224" marker-end="url(#arw-ince)"/>
+  <text class="lbl-s" x="308" y="150" text-anchor="middle">fs/2 etrafında katlanır</text>
+  <text class="lbl-s" x="308" y="166" text-anchor="middle">(aynalanmış kopya)</text>
+
+  <!-- görünen imaj: 1. bölgede, TERS (0.25fs..0.45fs → x=140..236) -->
+  <path class="w-clk" d="M140 276 L152 216 L204 216 L216 276 Z" fill="none"/>
+  <text class="pin pin-clk" x="178" y="206" text-anchor="middle">ADC çıkışında görünen</text>
+  <!-- ters yön: B solda, A sağda -->
+  <text class="pin" x="146" y="264" text-anchor="middle">B</text>
+  <text class="pin" x="210" y="264" text-anchor="middle">A</text>
+
+  <!-- 3. bölgedeki periyodik kopya (düz) -->
+  <path class="w-ince" d="M604 276 L616 216 L668 216 L680 276 Z" fill="none" stroke-dasharray="4 3"/>
+  <text class="pin" x="642" y="206" text-anchor="middle">fs + f'teki kopya</text>
+  <text class="pin" x="610" y="264" text-anchor="middle">A</text>
+  <text class="pin" x="674" y="264" text-anchor="middle">B</text>
+
+  <!-- alt açıklama -->
+  <text class="not" x="450" y="344" text-anchor="middle">Örnekleme, spektrumu fs'in katları etrafında sonsuz kez kopyalar; ADC çıkışında yalnızca 0..fs/2 penceresini görürsün.</text>
+  <text class="not" x="450" y="362" text-anchor="middle">Çift numaralı bölgelerden gelen kopyalar AYNALANMIŞTIR (A–B kenarları yer değiştirir); frekans planlama §1.6'da.</text>
+
+  <!-- n. bölge formülü -->
+  <text class="lbl-s" x="80" y="40">n. Nyquist bölgesi: (n−1)·fs/2 … n·fs/2</text>
+</svg>
