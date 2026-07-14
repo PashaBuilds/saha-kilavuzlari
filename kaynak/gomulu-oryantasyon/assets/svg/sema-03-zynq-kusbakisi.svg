@@ -1,0 +1,77 @@
+<svg viewBox="0 0 740 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s3-baslik">
+  <title id="s3-baslik">Zynq UltraScale+ kuşbakışı: solda sabit işlemci sistemi (PS) — APU ve RPU, sağda programlanabilir lojik (PL) — FPGA fabric ve donanımcının IP'leri, aralarında AXI köprüleri</title>
+
+  <defs>
+    <pattern id="s3-doku" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="var(--cizgi)"/>
+    </pattern>
+    <marker id="s3-ok-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--altin)"/>
+    </marker>
+    <marker id="s3-ok-l" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M10 0 L0 5 L10 10 z" fill="var(--altin)"/>
+    </marker>
+  </defs>
+
+  <text x="370" y="30" text-anchor="middle" class="svg-metin" font-size="14" font-weight="700">Zynq UltraScale+ RFSoC (XCZU28DR) — tek paket, iki dünya</text>
+  <text x="370" y="48" text-anchor="middle" class="svg-soluk" font-size="11">PS: sabit, hep orada · PL: bitstream yüklenene kadar boş fabric</text>
+
+  <rect x="20" y="60" width="700" height="360" rx="16" fill="var(--kart)" stroke="var(--cizgi)" stroke-width="2"/>
+
+  <!-- PS blok -->
+  <rect x="40" y="80" width="300" height="320" rx="10" fill="var(--vurgu-soluk)" stroke="var(--vurgu)" stroke-width="2"/>
+  <text x="190" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="var(--vurgu)">PS — Processing System</text>
+  <text x="190" y="120" text-anchor="middle" class="svg-soluk" font-size="10">silikonda sabit, hep orada</text>
+
+  <rect x="60" y="140" width="260" height="60" rx="8" class="svg-kutu" stroke="var(--vurgu)"/>
+  <text x="190" y="163" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">APU</text>
+  <text x="190" y="182" text-anchor="middle" class="svg-soluk" font-size="11">4× Arm Cortex-A53</text>
+
+  <rect x="60" y="215" width="260" height="60" rx="8" class="svg-kutu" stroke="var(--vurgu)"/>
+  <text x="190" y="238" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">RPU</text>
+  <text x="190" y="257" text-anchor="middle" class="svg-soluk" font-size="11">2× Arm Cortex-R5F</text>
+
+  <!-- sabit çevre birimleri satırı -->
+  <g font-size="9.5" font-weight="700">
+    <rect x="64" y="294" width="44" height="40" rx="5" class="svg-kutu"/>
+    <text x="86" y="317" text-anchor="middle" class="svg-metin">UART</text>
+
+    <rect x="116" y="294" width="44" height="40" rx="5" class="svg-kutu"/>
+    <text x="138" y="317" text-anchor="middle" class="svg-metin">I2C</text>
+
+    <rect x="168" y="294" width="44" height="40" rx="5" class="svg-kutu"/>
+    <text x="190" y="317" text-anchor="middle" class="svg-metin">SPI</text>
+
+    <rect x="220" y="294" width="44" height="40" rx="5" class="svg-kutu"/>
+    <text x="242" y="317" text-anchor="middle" class="svg-metin">GPIO</text>
+
+    <rect x="272" y="294" width="48" height="40" rx="5" class="svg-kutu"/>
+    <text x="296" y="317" text-anchor="middle" class="svg-metin">DDR</text>
+  </g>
+  <text x="190" y="354" text-anchor="middle" class="svg-soluk" font-size="9.5" font-style="italic">→ dışarı MIO pinleri üzerinden çıkar</text>
+
+  <!-- PL blok -->
+  <rect x="400" y="80" width="300" height="320" rx="10" fill="var(--yesil-soluk)" stroke="var(--yesil)" stroke-width="2"/>
+  <text x="550" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="var(--yesil)">PL — Programmable Logic</text>
+  <text x="550" y="120" text-anchor="middle" class="svg-soluk" font-size="10">bitstream yüklenene kadar boş fabric</text>
+
+  <rect x="415" y="135" width="270" height="250" fill="url(#s3-doku)"/>
+
+  <rect x="430" y="160" width="110" height="50" rx="8" fill="var(--kart)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="485" y="190" text-anchor="middle" class="svg-metin" font-size="11" font-weight="700">AXI GPIO</text>
+
+  <rect x="560" y="230" width="125" height="50" rx="8" fill="var(--kart)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="622" y="252" text-anchor="middle" class="svg-metin" font-size="10" font-weight="700">Sinyal İşleme</text>
+  <text x="622" y="266" text-anchor="middle" class="svg-metin" font-size="10" font-weight="700">IP</text>
+
+  <rect x="430" y="300" width="125" height="50" rx="8" fill="var(--kart)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="492" y="322" text-anchor="middle" class="svg-metin" font-size="10" font-weight="700">Motor Kontrol</text>
+  <text x="492" y="336" text-anchor="middle" class="svg-metin" font-size="10" font-weight="700">IP</text>
+
+  <text x="550" y="375" text-anchor="middle" class="svg-soluk" font-size="9.5" font-style="italic">donanımcının IP'leri burada yaşar</text>
+
+  <!-- AXI köprüleri: çift yönlü -->
+  <path d="M340 180 L400 180" fill="none" stroke="var(--altin)" stroke-width="3" marker-start="url(#s3-ok-l)" marker-end="url(#s3-ok-r)"/>
+  <path d="M340 280 L400 280" fill="none" stroke="var(--altin)" stroke-width="3" marker-start="url(#s3-ok-l)" marker-end="url(#s3-ok-r)"/>
+  <text x="370" y="230" text-anchor="middle" font-size="11" font-weight="700" fill="var(--altin)" transform="rotate(-90 370 230)">AXI köprüleri</text>
+</svg>

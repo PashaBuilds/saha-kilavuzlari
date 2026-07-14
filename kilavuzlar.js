@@ -1,29 +1,70 @@
 // ============================================================================
 // SAHA KILAVUZLARI — KAYIT DOSYASI
 // ----------------------------------------------------------------------------
-// Hub sayfası (index.html) kartları bu listeden üretir. Yeni bir kılavuz
-// eklemek için bu listeye bir kayıt ekle; tasarıma dokunmana gerek yok.
+// Hub sayfası (index.html) kartları ve "Buradan başla" bandını bu listeden
+// üretir. Yeni bir belge eklemek için bu listeye kayıt ekle; tasarıma dokunma.
 //
-// Alanlar:
-//   sira        : Kartların diziliş/numara sırası (SK-01, SK-02, ...)
-//   slug        : kilavuzlar/<slug>/index.html klasör adı
-//   baslik      : Kart başlığı
+// İki tür vardır:
+//   tur: "kilavuz"  (varsayılan) → referans eseri; alttaki kart ızgarasında.
+//   tur: "yolculuk"               → rehberli müfredat; üstteki "Buradan başla"
+//                                   bandında, kendi sıcak tasarımıyla render edilir.
+//
+// Ortak alanlar:
+//   sira        : Diziliş/numara sırası (kılavuzlar SK-01, SK-02, ...)
+//   slug        : kilavuzlar/<slug>/index.html hedef klasör adı
+//   kaynak      : Besleyen repo klasör adı (varsayılan "<slug>-saha-kilavuzu").
+//                 guncelle.py hangi repodan besleneceğini buradan bilir; son eki
+//                 taşımayan repolar (ör. gomulu-oryantasyon) bunu açıkça yazar.
+//   baslik      : Başlık
 //   aciklama    : 2-3 cümlelik tanıtım (kim için, ne anlatıyor)
 //   etiketler   : 4-6 kısa teknik etiket
 //   bolum       : İnsan-okur bölüm özeti ("17 bölüm + 2 ek" gibi)
-//   bolumSayi   : Sayısal bölüm adedi (hero istatistikleri toplar)
-//   sema        : Sayısal şema/figür adedi (hero istatistikleri toplar)
-//   kelime      : Yaklaşık kelime sayısı (sayısal, hero toplar)
+//   bolumSayi   : Sayısal bölüm adedi (hero istatistikleri yalnızca kılavuzları toplar)
+//   sema        : Sayısal şema/figür adedi
+//   kelime      : Yaklaşık kelime sayısı (sayısal)
 //   boyut       : Dosya boyutu — guncelle.py otomatik günceller
 //   guncelleme  : ISO tarih — guncelle.py otomatik günceller
 //   yol         : Karttan açılacak dosya (file:// uyumu için açık index.html)
-//   renk        : Kart vurgu tonu, 0-360 arası hue açısı
+//   renk        : Vurgu tonu, 0-360 arası hue açısı
 //                 (kullanılanlar: 285 mor/RF, 160 turkuaz/Ethernet,
-//                  25 amber/Lokal-LLM — boşta: 210 mavi, 340 gül)
+//                  25 amber/Lokal-LLM, 40 altın/Oryantasyon — boşta: 210, 340)
 //   motif       : Kart deseni: "analog" | "digital" | "sinir" | "varsayilan"
+//
+// Yalnızca "yolculuk" türüne özel alanlar:
+//   altBaslik   : Başlığın altındaki serif alt-başlık
+//   lab         : Uygulamalı lab sayısı
+//   final       : Bitirme görevi etiketi ("Mezuniyet Görevi" gibi)
+//   rota        : Yolculuğun durakları (bant altındaki rota rayı bundan çizilir)
 // ============================================================================
 
 window.KILAVUZLAR = [
+  {
+    tur: "yolculuk",
+    sira: 0,
+    slug: "oryantasyon",
+    kaynak: "gomulu-oryantasyon",
+    baslik: "Gömülü Sistemlere Giriş",
+    altBaslik: "Ekip Oryantasyon Yolculuğu",
+    aciklama:
+      "Üniversiteden yeni mezun, ekibe ilk gün katılan mühendis için elinden " +
+      "tutan bir müfredat. Masasında bir ZCU111 kartı var; okuma bölümleriyle " +
+      "elde-kart yapılan lablar dönüşümlü ilerler — Zynq PS/PL ayrımından " +
+      "register programlamaya, interrupt'tan I2C/SPI'a, FreeRTOS'tan Vitis " +
+      "debug'a. Referans değil; iki haftada \"ben bu kartla iş yapıyorum\" " +
+      "rahatlığına götüren bir yolculuk.",
+    etiketler: ["Zynq · ZCU111", "Bare-metal C", "Register & Interrupt", "I2C · SPI · UART", "FreeRTOS", "Vitis Debug"],
+    rota: ["Hoş geldin", "LED", "UART", "Kesme", "Timer", "I2C", "AXI GPIO", "FreeRTOS", "Kuyruk", "Bug avı", "Mezuniyet"],
+    bolum: "17 bölüm",
+    bolumSayi: 17,
+    lab: 10,
+    sema: 25,
+    kelime: 25433,
+    final: "Mezuniyet Görevi",
+    boyut: "566 KB",
+    guncelleme: "2026-07-14",
+    yol: "kilavuzlar/oryantasyon/index.html",
+    renk: 40,
+  },
   {
     sira: 1,
     slug: "rf-sampling",

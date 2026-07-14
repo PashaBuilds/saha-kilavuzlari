@@ -1,0 +1,48 @@
+<svg viewBox="0 0 740 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s10-baslik">
+  <title id="s10-baslik">volatile'ın hikâyesi: aynı optimizasyon adımı, volatile'sız kodda okumayı siliyor, volatile'lı kodda her turda yeniden okutuyor</title>
+
+  <!-- SOL PANEL: volatile YOK -->
+  <text x="185" y="26" text-anchor="middle" class="svg-metin" font-size="14" font-weight="600">volatile YOK</text>
+
+  <rect x="30" y="42" width="310" height="56" rx="8" class="svg-kutu"/>
+  <text x="46" y="64" class="svg-kod" font-size="12">u32 bayrak;</text>
+  <text x="46" y="84" class="svg-kod" font-size="12">while (!bayrak) { }</text>
+
+  <path d="M 185 104 L 185 132" stroke="var(--metin-soluk)" stroke-width="2" fill="none" marker-end="url(#s10-ok)"/>
+  <text x="196" y="122" class="svg-soluk" font-size="11">derleyici optimize eder (-O2)</text>
+
+  <rect x="30" y="140" width="310" height="126" rx="8" class="svg-kutu"/>
+  <text x="46" y="162" class="svg-kod" font-size="12">LDR r0,[bayrak]  ; BİR KEZ</text>
+  <text x="46" y="182" class="svg-kod" font-size="12">dongu:</text>
+  <text x="46" y="202" class="svg-kod" font-size="12">  B  dongu        ; sonsuz döngü</text>
+  <rect x="46" y="216" width="278" height="34" rx="6" class="svg-kutu" style="fill: var(--kirmizi-soluk); stroke: var(--kirmizi)"/>
+  <text x="185" y="233" text-anchor="middle" font-size="11" style="fill: var(--kirmizi); font-family: inherit">okuma silindi —</text>
+  <text x="185" y="246" text-anchor="middle" font-size="11" style="fill: var(--kirmizi); font-family: inherit">bayrak bir daha asla okunmuyor</text>
+
+  <!-- SAĞ PANEL: volatile VAR -->
+  <text x="555" y="26" text-anchor="middle" class="svg-metin" font-size="14" font-weight="600">volatile VAR</text>
+
+  <rect x="400" y="42" width="310" height="56" rx="8" class="svg-kutu"/>
+  <text x="416" y="64" class="svg-kod" font-size="12">volatile u32 bayrak;</text>
+  <text x="416" y="84" class="svg-kod" font-size="12">while (!bayrak) { }</text>
+
+  <path d="M 555 104 L 555 132" stroke="var(--metin-soluk)" stroke-width="2" fill="none" marker-end="url(#s10-ok)"/>
+  <text x="566" y="122" class="svg-soluk" font-size="11">derleyici optimize eder (-O2)</text>
+
+  <rect x="400" y="140" width="310" height="126" rx="8" class="svg-kutu"/>
+  <text x="416" y="162" class="svg-kod" font-size="12">dongu:</text>
+  <text x="416" y="182" class="svg-kod" font-size="12">  LDR r0,[bayrak] ; HER turda</text>
+  <text x="416" y="202" class="svg-kod" font-size="12">  CBZ r0,dongu    ; hâlâ 0 mı?</text>
+  <rect x="416" y="216" width="278" height="34" rx="6" class="svg-kutu" style="fill: var(--yesil-soluk); stroke: var(--yesil)"/>
+  <text x="555" y="233" text-anchor="middle" font-size="11" style="fill: var(--yesil); font-family: inherit">her turda yeniden okuma —</text>
+  <text x="555" y="246" text-anchor="middle" font-size="11" style="fill: var(--yesil); font-family: inherit">donanım/ISR değişikliği görülür</text>
+
+  <text x="370" y="292" text-anchor="middle" class="svg-soluk" font-size="11">İkisi de aynı -O2 kuralını uyguluyor: "değeri kod içinde kimse değiştirmiyorsa tekrar okuma".</text>
+  <text x="370" y="308" text-anchor="middle" class="svg-soluk" font-size="11">Fark, volatile'ın derleyiciye "bu kural burada geçmez" demesinde.</text>
+
+  <defs>
+    <marker id="s10-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--metin-soluk)"/>
+    </marker>
+  </defs>
+</svg>

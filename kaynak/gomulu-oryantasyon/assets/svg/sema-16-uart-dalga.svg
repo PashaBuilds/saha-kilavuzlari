@@ -1,0 +1,66 @@
+<svg viewBox="0 0 740 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s16-baslik">
+  <title id="s16-baslik">UART kare dalga: idle-yüksek hat, start biti, 8 veri biti (LSB önce, örnek bayt 'A' = 0x41), stop biti; bit süresi 115200 baud örneğiyle</title>
+
+  <text x="20" y="20" class="svg-metin" font-size="12" font-weight="700">Örnek bayt: 'A' = 0x41 = 0100 0001₂ — LSB önce gönderilir (D0 → D7)</text>
+
+  <!-- arka plan vurgu bölgeleri -->
+  <rect x="90"  y="68" width="55"  height="74" fill="var(--kirmizi-soluk)"/>
+  <rect x="145" y="68" width="440" height="74" fill="var(--vurgu-soluk)"/>
+  <rect x="585" y="68" width="55"  height="74" fill="var(--yesil-soluk)"/>
+
+  <!-- bit sınırı kılavuz çizgileri -->
+  <g class="svg-cizgi" stroke-dasharray="2 3">
+    <line x1="90"  y1="65" x2="90"  y2="145"/>
+    <line x1="145" y1="65" x2="145" y2="145"/>
+    <line x1="200" y1="65" x2="200" y2="145"/>
+    <line x1="255" y1="65" x2="255" y2="145"/>
+    <line x1="310" y1="65" x2="310" y2="145"/>
+    <line x1="365" y1="65" x2="365" y2="145"/>
+    <line x1="420" y1="65" x2="420" y2="145"/>
+    <line x1="475" y1="65" x2="475" y2="145"/>
+    <line x1="530" y1="65" x2="530" y2="145"/>
+    <line x1="585" y1="65" x2="585" y2="145"/>
+    <line x1="640" y1="65" x2="640" y2="145"/>
+  </g>
+
+  <!-- referans seviye etiketleri -->
+  <text x="14" y="83" text-anchor="end" class="svg-soluk" font-size="10">1</text>
+  <text x="14" y="134" text-anchor="end" class="svg-soluk" font-size="10">0</text>
+
+  <!-- kare dalga -->
+  <path d="M20,80 L90,80 L90,130 L145,130 L145,80 L200,80 L200,130 L475,130 L475,80 L530,80 L530,130 L585,130 L585,80 L640,80 L700,80"
+        fill="none" stroke="var(--vurgu)" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- alt etiketler -->
+  <g class="svg-soluk" font-size="9" text-anchor="middle">
+    <text x="55"   y="158">idle</text>
+    <text x="117"  y="158" fill="var(--kirmizi)">start</text>
+    <text x="117"  y="169" fill="var(--kirmizi)">(0)</text>
+    <text x="172"  y="158">D0=1</text>
+    <text x="227"  y="158">D1=0</text>
+    <text x="282"  y="158">D2=0</text>
+    <text x="337"  y="158">D3=0</text>
+    <text x="392"  y="158">D4=0</text>
+    <text x="447"  y="158">D5=0</text>
+    <text x="502"  y="158">D6=1</text>
+    <text x="557"  y="158">D7=0</text>
+    <text x="612"  y="158" fill="var(--yesil)">stop</text>
+    <text x="612"  y="169" fill="var(--yesil)">(1)</text>
+    <text x="670"  y="158">idle</text>
+  </g>
+
+  <text x="365" y="52" text-anchor="middle" class="svg-soluk" font-size="10">8 veri biti (LSB → MSB gönderim sırası)</text>
+
+  <!-- bit süresi çift ok -->
+  <path d="M200 184 L255 184" stroke="var(--altin)" stroke-width="1.5" marker-start="url(#s16-ok-sol)" marker-end="url(#s16-ok-sag)"/>
+  <text x="265" y="188" text-anchor="start" fill="var(--altin)" font-size="11" font-weight="600">bit süresi = 1 / baud ≈ 8.68 µs @ 115200 baud</text>
+
+  <defs>
+    <marker id="s16-ok-sag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--altin)"/>
+    </marker>
+    <marker id="s16-ok-sol" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M10 0 L0 5 L10 10 z" fill="var(--altin)"/>
+    </marker>
+  </defs>
+</svg>

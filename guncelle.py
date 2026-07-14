@@ -2,23 +2,27 @@
 """
 guncelle.py — Saha Kılavuzları raf güncelleyici
 ================================================
-İki katmanı senkronlar:
+Kayıt-güdümlü: `kilavuzlar.js`teki her belge için kaynağını bulur, iki katmanı
+senkronlar ve boyut/tarih alanlarını tazeler.
 
-  kilavuzlar/<slug>/index.html   ← derlenmiş kılavuz (okuma rafı)
-  kaynak/<repo-adı>/             ← kılavuzun TAM kaynak yansısı (düzenleme)
+  <yol>              ← derlenmiş belge, kartın açtığı dosya (okuma katmanı)
+  kaynak/<kaynak>/   ← belgenin TAM kaynak yansısı (düzenleme katmanı)
 
-Kaynak repoları iki yerde arar (öncelik sırasıyla):
+Her kayıt `kaynak` (repo klasör adı) ve `yol` alanlarını taşır; `kaynak`
+yoksa "<slug>-saha-kilavuzu" varsayılır. Kaynak repo iki yerde aranır
+(öncelik sırasıyla):
 
-  1. Üst dizindeki kardeş repolar: ../*-saha-kilavuzu   (yazar makinesi)
-  2. Repo içindeki yansılar:       kaynak/*-saha-kilavuzu (klonlanmış makine)
+  1. Üst dizindeki kardeş repo: ../<kaynak>        (yazar makinesi)
+  2. Repo içindeki yansı:       kaynak/<kaynak>     (klonlanmış makine)
 
-Yazar makinesinde her kardeş repo için dist kopyalanır VE kaynak ağacı
-(kaynak/ altına, .git/node_modules/dist hariç) yansıtılır. Klonda ise
-kaynak/ içindeki kopya düzenlenip build alındıktan sonra bu script yeni
-dist'i rafa taşır. `kilavuzlar.js`teki boyut/guncelleme alanları tazelenir.
+Kardeş repo varsa dist kopyalanır VE kaynak ağacı (kaynak/ altına;
+.git/node_modules/dist/_önekli-scratch hariç) yansıtılır. Klonda ise kaynak/
+içindeki kopya düzenlenip build alındıktan sonra bu script dist'i rafa taşır.
 
-Kayıtlı olmayan yeni bir kılavuz bulunursa dosyaları yine kopyalanır ve
-`kilavuzlar.js`e yapıştırılmaya hazır bir kayıt taslağı basılır.
+Kayıtsız yeni bir "*-saha-kilavuzu" reposu görülürse dosyaları yine kopyalanır
+ve kilavuzlar.js'e yapıştırılacak kayıt taslağı basılır. (Son eki taşımayan
+repolar — ör. gomulu-oryantasyon — otomatik keşfedilemez; kaydı elle eklenir,
+sonra bu script onu da senkronlar.)
 
 Kullanım:  python3 guncelle.py
 Bağımlılık: yok (stdlib). Ağ erişimi: yok.
@@ -33,12 +37,13 @@ from pathlib import Path
 HUB = Path(__file__).resolve().parent
 UST_DIZIN = HUB.parent
 KAYIT_DOSYASI = HUB / "kilavuzlar.js"
-RAF = HUB / "kilavuzlar"
 KAYNAK = HUB / "kaynak"
 SON_EK = "-saha-kilavuzu"
 
-# Kaynak yansısına girmeyecekler: sürüm geçmişi, üretilebilir/dev artıkları.
-YANSI_HARICLERI = (".git", "node_modules", "dist", ".DS_Store", ".cache", ".claude")
+# Kaynak yansısına girmeyecekler: sürüm geçmişi, üretilebilir/dev artıkları,
+# ve "_" ile başlayan yazar-scratch dosyaları (araştırma, stil, görev-zinciri —
+# build'ler bunları zaten atlar).
+YANSI_HARICLERI = (".git", "node_modules", "dist", ".DS_Store", ".cache", ".claude", "_*")
 
 
 def insan_boyut(bayt: int) -> str:
@@ -65,28 +70,57 @@ def build_ipucu(repo: Path) -> str:
     return "(repo içindeki build talimatına bak)"
 
 
-def kayit_guncelle(js: str, slug: str, boyut: str, tarih: str):
-    """kilavuzlar.js içinde ilgili slug bloğunun boyut/guncelleme alanlarını yazar.
-    Döndürür: (yeni_metin, bulundu_mu)"""
+def kayitlari_oku(js: str):
+    """kilavuzlar.js'teki her { ... } bloğundan slug/kaynak/yol çıkarır.
+    (Girişler iç içe süslü parantez içermez; array alanları [] kullanır.)"""
+    kayitlar = []
+    for blok in re.finditer(r"\{[^{}]*\}", js, re.S):
+        t = blok.group(0)
+        m_slug = re.search(r"slug:\s*\"([^\"]+)\"", t)
+        if not m_slug:
+            continue
+        slug = m_slug.group(1)
+        m_kaynak = re.search(r"kaynak:\s*\"([^\"]+)\"", t)
+        m_yol = re.search(r"yol:\s*\"([^\"]+)\"", t)
+        kayitlar.append({
+            "slug": slug,
+            "kaynak": m_kaynak.group(1) if m_kaynak else f"{slug}{SON_EK}",
+            "yol": m_yol.group(1) if m_yol else f"kilavuzlar/{slug}/index.html",
+        })
+    return kayitlar
+
+
+def kayit_guncelle(js: str, slug: str, boyut: str, tarih: str) -> str:
+    """İlgili slug bloğunun boyut/guncelleme alanlarını yazar."""
     blok = re.search(r"\{[^{}]*?slug:\s*\"" + re.escape(slug) + r"\"[^{}]*?\}", js, re.S)
     if not blok:
-        return js, False
+        return js
     eski = blok.group(0)
     yeni = re.sub(r"(boyut:\s*\")[^\"]*(\")", r"\g<1>" + boyut + r"\g<2>", eski)
     yeni = re.sub(r"(guncelleme:\s*\")[^\"]*(\")", r"\g<1>" + tarih + r"\g<2>", yeni)
-    return js.replace(eski, yeni), True
+    return js.replace(eski, yeni)
 
 
-def kaynak_yansit(repo: Path) -> Path:
+def kaynak_yansit(repo: Path):
     """Kaynak repoyu kaynak/<ad> altına tam (ama temiz) yansıtır."""
     hedef = KAYNAK / repo.name
     if hedef.exists():
         shutil.rmtree(hedef)
     shutil.copytree(repo, hedef, ignore=shutil.ignore_patterns(*YANSI_HARICLERI))
-    return hedef
 
 
-def taslak_bas(slug: str, baslik: str, boyut: str, tarih: str):
+def kaynak_bul(kaynak_ad: str):
+    """(köken, repo_yolu) döndürür; kardeş öncelikli, kaynak/ yansısı yedek."""
+    kardes = UST_DIZIN / kaynak_ad
+    if kardes.is_dir() and kardes.resolve() != HUB:
+        return "kardeş", kardes
+    yansi = KAYNAK / kaynak_ad
+    if yansi.is_dir():
+        return "kaynak/", yansi
+    return None, None
+
+
+def taslak_bas(slug: str, kaynak_ad: str, baslik: str, boyut: str, tarih: str):
     print(f"""
   ┌─ YENİ KILAVUZ: {slug} ─ kilavuzlar.js'e kayıt gerekiyor ─────────────
   │ Dosyaları kopyalandı ama rafta kartı yok. Aşağıdaki taslağı
@@ -96,6 +130,7 @@ def taslak_bas(slug: str, baslik: str, boyut: str, tarih: str):
   {{
     sira: <SIRADAKI-NUMARA>,
     slug: "{slug}",
+    kaynak: "{kaynak_ad}",
     baslik: "{baslik.replace(' — Saha Kılavuzu', '')}",
     aciklama: "<2-3 cümlelik tanıtım — kim için, ne anlatıyor>",
     etiketler: ["<etiket>", "<etiket>", "<etiket>", "<etiket>", "<etiket>"],
@@ -118,38 +153,31 @@ def main() -> int:
         return 1
 
     js = KAYIT_DOSYASI.read_text(encoding="utf-8")
-
-    # Adaylar: kardeş repolar (yazar) öncelikli, kaynak/ yansıları (klon) yedek.
-    adaylar: dict[str, tuple[str, Path]] = {}
-    for d in sorted(UST_DIZIN.glob(f"*{SON_EK}")):
-        if d.is_dir() and d.resolve() != HUB:
-            adaylar[d.name] = ("kardeş", d)
-    if KAYNAK.exists():
-        for d in sorted(KAYNAK.glob(f"*{SON_EK}")):
-            if d.is_dir():
-                adaylar.setdefault(d.name, ("kaynak/", d))
-
-    if not adaylar:
-        print(f"Uyarı: ne {UST_DIZIN} altında kardeş repo ne de {KAYNAK} altında yansı var.")
-        return 1
+    kayitlar = kayitlari_oku(js)
 
     print(f"Raf: {HUB}\n")
 
-    yeni_var = False
-    for ad, (koken, repo) in adaylar.items():
-        slug = ad.removesuffix(SON_EK)
-        dist = repo / "dist" / "index.html"
+    # 1) Kayıtlı belgeleri senkronla.
+    kayitli_kaynaklar = set()
+    for kayit in kayitlar:
+        slug, kaynak_ad, yol = kayit["slug"], kayit["kaynak"], kayit["yol"]
+        kayitli_kaynaklar.add(kaynak_ad)
+        koken, repo = kaynak_bul(kaynak_ad)
 
-        if not dist.exists():
-            print(f"  ⚠ {ad} [{koken}]: dist/index.html yok — atlandı.")
-            print(f"      build almak için: cd {repo} && {build_ipucu(repo)}")
+        if repo is None:
+            print(f"  ⚠ {slug:<13} kaynak yok (ne ../{kaynak_ad} ne kaynak/{kaynak_ad}) — atlandı.")
             continue
 
-        hedef = RAF / slug / "index.html"
+        dist = repo / "dist" / "index.html"
+        if not dist.exists():
+            print(f"  ⚠ {slug:<13} [{koken}] dist/index.html yok — atlandı.")
+            print(f"      build: cd {repo} && {build_ipucu(repo)}")
+            continue
+
+        hedef = HUB / yol
         hedef.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(dist, hedef)
 
-        # Yazar makinesindeysek kaynak ağacını da yansıt.
         yansi_notu = ""
         if koken == "kardeş":
             kaynak_yansit(repo)
@@ -157,23 +185,30 @@ def main() -> int:
 
         boyut = insan_boyut(dist.stat().st_size)
         tarih = datetime.fromtimestamp(dist.stat().st_mtime).strftime("%Y-%m-%d")
+        js = kayit_guncelle(js, slug, boyut, tarih)
+        print(f"  ✓ {slug:<13} {boyut:>8}  {tarih}  [{koken}] raf güncellendi{yansi_notu}")
 
-        js, kayitli = kayit_guncelle(js, slug, boyut, tarih)
-        durum = "kayıt tazelendi" if kayitli else "KAYIT YOK → taslak aşağıda"
-        print(f"  ✓ {slug:<14} {boyut:>8}  {tarih}  [{koken}] raf güncellendi{yansi_notu}, {durum}")
-
-        if not kayitli:
-            yeni_var = True
-            taslak_bas(slug, dist_basligi(dist), boyut, tarih)
+    # 2) Kayıtsız yeni "*-saha-kilavuzu" repolarını keşfet.
+    yeni_var = False
+    for repo in sorted(UST_DIZIN.glob(f"*{SON_EK}")):
+        if not repo.is_dir() or repo.resolve() == HUB or repo.name in kayitli_kaynaklar:
+            continue
+        dist = repo / "dist" / "index.html"
+        if not dist.exists():
+            print(f"  ⚠ {repo.name}: kayıtsız ve dist/index.html yok — atlandı.")
+            continue
+        slug = repo.name.removesuffix(SON_EK)
+        hedef = HUB / "kilavuzlar" / slug / "index.html"
+        hedef.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(dist, hedef)
+        kaynak_yansit(repo)
+        yeni_var = True
+        taslak_bas(slug, repo.name,
+                   dist_basligi(dist),
+                   insan_boyut(dist.stat().st_size),
+                   datetime.fromtimestamp(dist.stat().st_mtime).strftime("%Y-%m-%d"))
 
     KAYIT_DOSYASI.write_text(js, encoding="utf-8")
-
-    # Rafta olup artık hiçbir kaynağı olmayan klasörleri haber ver (silmez).
-    if RAF.exists():
-        mevcut = {ad.removesuffix(SON_EK) for ad in adaylar}
-        for eski in sorted(RAF.iterdir()):
-            if eski.is_dir() and eski.name not in mevcut:
-                print(f"  ⚠ rafta '{eski.name}' duruyor ama kaynağı yok (elle karar ver).")
 
     print("\nBitti." + (" Yeni kılavuz kaydını kilavuzlar.js'e eklemeyi unutma!" if yeni_var else ""))
     return 0

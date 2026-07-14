@@ -1,0 +1,83 @@
+<svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s15-baslik">
+  <title id="s15-baslik">Kesme yaşam döngüsü: çevre birimi olayından ana döngünün bayrağı işlemesine altı adım; ISR'nin kısa tutulması gerektiği ve yanlış bir örnek vurgulanır</title>
+
+  <defs>
+    <marker id="s15-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--vurgu)"/>
+    </marker>
+    <marker id="s15-ok-kirmizi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--kirmizi)"/>
+    </marker>
+  </defs>
+
+  <!-- kutu 1: çevre birimi -->
+  <rect x="10" y="60" width="110" height="90" rx="8" class="svg-kutu"/>
+  <text x="65" y="90" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">Çevre birimi</text>
+  <text x="65" y="106" text-anchor="middle" class="svg-soluk" font-size="10">buton / timer /</text>
+  <text x="65" y="118" text-anchor="middle" class="svg-soluk" font-size="10">UART vb.</text>
+  <text x="65" y="136" text-anchor="middle" class="svg-metin" font-size="10">olay üretir</text>
+
+  <path d="M120 105 L134 105" stroke="var(--vurgu)" stroke-width="2" marker-end="url(#s15-ok)"/>
+
+  <!-- kutu 2: GIC -->
+  <rect x="136" y="60" width="110" height="90" rx="8" class="svg-kutu"/>
+  <text x="191" y="90" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">GIC</text>
+  <text x="191" y="106" text-anchor="middle" class="svg-soluk" font-size="10">(GIC-400)</text>
+  <text x="191" y="122" text-anchor="middle" class="svg-soluk" font-size="10">öncelik +</text>
+  <text x="191" y="136" text-anchor="middle" class="svg-soluk" font-size="10">yönlendirme</text>
+
+  <path d="M246 105 L260 105" stroke="var(--vurgu)" stroke-width="2" marker-end="url(#s15-ok)"/>
+
+  <!-- kutu 3: CPU vektörü -->
+  <rect x="262" y="60" width="110" height="90" rx="8" class="svg-kutu"/>
+  <text x="317" y="90" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">CPU</text>
+  <text x="317" y="106" text-anchor="middle" class="svg-soluk" font-size="10">kesme vektörü</text>
+  <text x="317" y="122" text-anchor="middle" class="svg-soluk" font-size="10">(IRQ girişi,</text>
+  <text x="317" y="136" text-anchor="middle" class="svg-soluk" font-size="10">bağlam kaydı)</text>
+
+  <path d="M372 105 L386 105" stroke="var(--vurgu)" stroke-width="2" marker-end="url(#s15-ok)"/>
+
+  <!-- kutu 4: ISR — vurgulu -->
+  <text x="443" y="48" text-anchor="middle" fill="var(--altin)" font-size="11" font-weight="700">KISA TUT!</text>
+  <rect x="388" y="60" width="110" height="90" rx="8" class="svg-kutu" style="stroke:var(--altin); stroke-width:2"/>
+  <text x="443" y="90" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">ISR</text>
+  <text x="443" y="106" text-anchor="middle" class="svg-soluk" font-size="10">bayrak set et</text>
+  <text x="443" y="120" text-anchor="middle" class="svg-soluk" font-size="10">+ kesmeyi ack'le</text>
+  <text x="443" y="136" text-anchor="middle" fill="var(--yesil)" font-size="10">hepsi bu, çık</text>
+
+  <path d="M498 105 L512 105" stroke="var(--vurgu)" stroke-width="2" marker-end="url(#s15-ok)"/>
+
+  <!-- kutu 5: Dönüş -->
+  <rect x="514" y="60" width="110" height="90" rx="8" class="svg-kutu"/>
+  <text x="569" y="90" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">Dönüş</text>
+  <text x="569" y="106" text-anchor="middle" class="svg-soluk" font-size="10">(interrupt</text>
+  <text x="569" y="120" text-anchor="middle" class="svg-soluk" font-size="10">return)</text>
+  <text x="569" y="136" text-anchor="middle" class="svg-soluk" font-size="10">bağlam geri yüklenir</text>
+
+  <path d="M624 105 L638 105" stroke="var(--vurgu)" stroke-width="2" marker-end="url(#s15-ok)"/>
+
+  <!-- kutu 6: Ana döngü -->
+  <rect x="640" y="60" width="110" height="90" rx="8" class="svg-kutu" style="stroke:var(--yesil); stroke-width:2"/>
+  <text x="695" y="90" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">Ana döngü</text>
+  <text x="695" y="106" text-anchor="middle" class="svg-soluk" font-size="10">bayrağı görür,</text>
+  <text x="695" y="120" text-anchor="middle" class="svg-soluk" font-size="10">asıl işi burada</text>
+  <text x="695" y="134" text-anchor="middle" class="svg-soluk" font-size="10">yapar</text>
+
+  <!-- ISR'den yanlış örneğe dikey ok -->
+  <path d="M443 150 L443 200" stroke="var(--kirmizi)" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#s15-ok-kirmizi)"/>
+  <text x="443" y="196" text-anchor="middle" fill="var(--kirmizi)" font-size="10">bundan kaçın</text>
+
+  <!-- yanlış örnek kutusu -->
+  <rect x="303" y="204" width="280" height="86" rx="8" class="svg-kutu" style="stroke:var(--kirmizi); stroke-width:2; fill:var(--kirmizi-soluk)"/>
+  <text x="443" y="226" text-anchor="middle" fill="var(--kirmizi)" font-size="11" font-weight="700">YANLIŞ ÖRNEK</text>
+  <text x="443" y="244" text-anchor="middle" class="svg-kod" font-size="10">ISR içinde: xil_printf(...)</text>
+  <text x="443" y="258" text-anchor="middle" class="svg-kod" font-size="10">+ gecikme döngüsü</text>
+  <text x="443" y="276" text-anchor="middle" fill="var(--kirmizi)" font-size="10">→ diğer kesmeler gecikir, kaçar</text>
+  <!-- çarpı işareti -->
+  <g stroke="var(--kirmizi)" stroke-width="3" stroke-linecap="round">
+    <line x1="565" y1="212" x2="581" y2="228"/>
+    <line x1="581" y1="212" x2="565" y2="228"/>
+  </g>
+
+  <text x="65" y="310" class="svg-soluk" font-size="11">Ana döngü bayrağı işledikten sonra sıfırlar; sistem bir sonraki olaya hazır hale gelir.</text>
+</svg>

@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Vitis / derleme çıktıları (labs kaynakları tutulur, ürünler tutulmaz)
+*.elf
+*.o
+*.d
+Debug/
+Release/
+.metadata/
+_ide/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

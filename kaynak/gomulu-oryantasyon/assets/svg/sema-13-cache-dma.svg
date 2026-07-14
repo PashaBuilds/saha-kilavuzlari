@@ -1,0 +1,53 @@
+<svg viewBox="0 0 740 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s12-baslik">
+  <title id="s12-baslik">Cache hiyerarşisi ve tutarlılık: CPU-cache-DDR-DMA dörtgeni; DMA'nın yazdığı yeni veriyi CPU'nun cache'ten eski okuması ve invalidate ile düzelmesi</title>
+
+  <!-- dört kutu -->
+  <rect x="50" y="50" width="160" height="64" rx="8" class="svg-kutu"/>
+  <text x="130" y="76" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">CPU</text>
+  <text x="130" y="94" text-anchor="middle" class="svg-soluk" font-size="11">APU (A53)</text>
+
+  <rect x="530" y="50" width="160" height="64" rx="8" class="svg-kutu"/>
+  <text x="610" y="76" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">Cache</text>
+  <text x="610" y="94" text-anchor="middle" class="svg-soluk" font-size="11">L1 / L2</text>
+
+  <rect x="50" y="350" width="160" height="64" rx="8" class="svg-kutu"/>
+  <text x="130" y="376" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">DMA</text>
+  <text x="130" y="394" text-anchor="middle" class="svg-soluk" font-size="11">DMA / PL IP</text>
+
+  <rect x="530" y="350" width="160" height="64" rx="8" class="svg-kutu"/>
+  <text x="610" y="376" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">DDR</text>
+  <text x="610" y="394" text-anchor="middle" class="svg-soluk" font-size="11">ana bellek</text>
+
+  <!-- dörtgenin nötr veri yolları -->
+  <line x1="210" y1="82" x2="530" y2="82" class="svg-cizgi" stroke-width="1.5"/>
+  <line x1="610" y1="114" x2="610" y2="350" class="svg-cizgi" stroke-width="1.5"/>
+  <line x1="210" y1="382" x2="530" y2="382" class="svg-cizgi" stroke-width="1.5"/>
+  <line x1="130" y1="114" x2="130" y2="350" class="svg-cizgi" stroke-width="1.5"/>
+  <text x="26" y="232" text-anchor="middle" class="svg-soluk" font-size="11" transform="rotate(-90 26 232)">AXI interconnect (paylaşılan yol)</text>
+
+  <!-- senaryo 1: DMA DDR'a yeni veriyi yazar -->
+  <path d="M 216 396 L 524 396" stroke="var(--vurgu)" stroke-width="2" fill="none" marker-end="url(#s12-ok-vurgu)"/>
+  <circle cx="290" cy="396" r="10" class="svg-kutu" style="fill: var(--vurgu-soluk); stroke: var(--vurgu)"/>
+  <text x="290" y="400" text-anchor="middle" font-size="11" style="fill: var(--vurgu); font-family: inherit">1</text>
+  <text x="370" y="416" text-anchor="middle" class="svg-soluk" font-size="11">DMA, DDR'a yeni veriyi yazar</text>
+
+  <!-- senaryo 2: CPU okur ama cache'ten ESKİ değer döner -->
+  <path d="M 524 68 L 216 68" stroke="var(--kirmizi)" stroke-width="2" fill="none" marker-end="url(#s12-ok-kirmizi)"/>
+  <circle cx="450" cy="68" r="10" class="svg-kutu" style="fill: var(--kirmizi-soluk); stroke: var(--kirmizi)"/>
+  <text x="450" y="72" text-anchor="middle" font-size="11" style="fill: var(--kirmizi); font-family: inherit">2</text>
+  <text x="370" y="40" text-anchor="middle" font-size="11" style="fill: var(--kirmizi); font-family: inherit">cache'ten ESKİ değer döner (DDR'a hiç uğramaz)</text>
+
+  <!-- senaryo 3: invalidate sonrası doğru okuma -->
+  <path d="M 624 344 L 624 96 L 216 96" stroke="var(--yesil)" stroke-width="2" fill="none" marker-end="url(#s12-ok-yesil)"/>
+  <circle cx="624" cy="220" r="10" class="svg-kutu" style="fill: var(--yesil-soluk); stroke: var(--yesil)"/>
+  <text x="624" y="224" text-anchor="middle" font-size="11" style="fill: var(--yesil); font-family: inherit">3</text>
+  <text x="400" y="126" text-anchor="middle" font-size="11" style="fill: var(--yesil); font-family: inherit">invalidate sonrası CPU DDR'dan taze okur</text>
+
+  <defs>
+    <marker id="s12-ok-vurgu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--vurgu)"/></marker>
+    <marker id="s12-ok-kirmizi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--kirmizi)"/></marker>
+    <marker id="s12-ok-yesil" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--yesil)"/></marker>
+  </defs>
+
+  <text x="370" y="444" text-anchor="middle" class="svg-soluk" font-size="11">Cache, CPU'yu hızlandırır ama DMA gibi ikinci bir yazıcı devreye girince "kimin verisi güncel" sorusunu sen çözersin.</text>
+</svg>

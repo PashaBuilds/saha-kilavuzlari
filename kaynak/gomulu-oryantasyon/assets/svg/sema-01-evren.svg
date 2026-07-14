@@ -1,0 +1,79 @@
+<svg viewBox="0 0 740 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s1-baslik">
+  <title id="s1-baslik">Gömülü sistem evreni: merkezde sensör – MCU/SoC – aktüatör zinciri, çevresinde günlük hayattan gömülü cihaz örnekleri</title>
+
+  <defs>
+    <marker id="s1-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--vurgu)"/>
+    </marker>
+  </defs>
+
+  <text x="370" y="16" text-anchor="middle" class="svg-soluk" font-size="11" letter-spacing="0.04em">ÇEVRENDE GÖRDÜĞÜN HER AKILLI CİHAZIN İÇİNDE BU ZİNCİR VAR</text>
+
+  <!-- bağlantı çizgileri: üst sıra -> merkez zincir -->
+  <g class="svg-cizgi" stroke-width="1" stroke-dasharray="3 4" opacity="0.55">
+    <line x1="97.5" y1="98" x2="330" y2="172"/>
+    <line x1="272.5" y1="82" x2="350" y2="172"/>
+    <line x1="467.5" y1="82" x2="390" y2="172"/>
+    <line x1="642.5" y1="98" x2="410" y2="172"/>
+  </g>
+  <!-- bağlantı çizgileri: alt sıra -> merkez zincir -->
+  <g class="svg-cizgi" stroke-width="1" stroke-dasharray="3 4" opacity="0.55">
+    <line x1="97.5" y1="342" x2="330" y2="268"/>
+    <line x1="272.5" y1="358" x2="350" y2="268"/>
+    <line x1="467.5" y1="358" x2="390" y2="268"/>
+    <line x1="642.5" y1="342" x2="410" y2="268"/>
+  </g>
+
+  <!-- çevre düğümleri: üst sıra -->
+  <g>
+    <rect x="20" y="46" width="155" height="52" rx="10" class="svg-kutu"/>
+    <text x="97.5" y="77" text-anchor="middle" class="svg-soluk" font-size="12">Araba ABS</text>
+
+    <rect x="195" y="30" width="155" height="52" rx="10" class="svg-kutu"/>
+    <text x="272.5" y="61" text-anchor="middle" class="svg-soluk" font-size="12">Çamaşır makinesi</text>
+
+    <rect x="390" y="30" width="155" height="52" rx="10" class="svg-kutu"/>
+    <text x="467.5" y="61" text-anchor="middle" class="svg-soluk" font-size="12">Kablosuz kulaklık</text>
+
+    <rect x="565" y="46" width="155" height="52" rx="10" class="svg-kutu"/>
+    <text x="642.5" y="77" text-anchor="middle" class="svg-soluk" font-size="12">Dron</text>
+  </g>
+
+  <!-- çevre düğümleri: alt sıra -->
+  <g>
+    <rect x="20" y="342" width="155" height="52" rx="10" class="svg-kutu"/>
+    <text x="97.5" y="373" text-anchor="middle" class="svg-soluk" font-size="12">Baz istasyonu</text>
+
+    <rect x="195" y="358" width="155" height="52" rx="10" class="svg-kutu"/>
+    <text x="272.5" y="389" text-anchor="middle" class="svg-soluk" font-size="12">Akıllı termostat</text>
+
+    <rect x="390" y="358" width="155" height="52" rx="10" class="svg-kutu"/>
+    <text x="467.5" y="389" text-anchor="middle" class="svg-soluk" font-size="12">İnsülin pompası</text>
+
+    <rect x="565" y="342" width="155" height="52" rx="10" class="svg-kutu"/>
+    <text x="642.5" y="373" text-anchor="middle" class="svg-soluk" font-size="12">POS cihazı</text>
+  </g>
+
+  <!-- merkez zincir: sensör -> MCU/SoC -> aktüatör -->
+  <g>
+    <rect x="25" y="186" width="150" height="68" rx="12" fill="var(--vurgu-soluk)" stroke="var(--vurgu)" stroke-width="2"/>
+    <text x="100" y="214" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">SENSÖR</text>
+    <text x="100" y="234" text-anchor="middle" class="svg-soluk" font-size="10.5">dış dünyayı ölçer</text>
+
+    <rect x="270" y="172" width="200" height="96" rx="14" fill="var(--vurgu-soluk)" stroke="var(--vurgu)" stroke-width="3"/>
+    <text x="370" y="212" text-anchor="middle" class="svg-metin" font-size="15" font-weight="700">MCU / SoC</text>
+    <text x="370" y="236" text-anchor="middle" class="svg-soluk" font-size="11">okur, karar verir</text>
+
+    <rect x="565" y="186" width="150" height="68" rx="12" fill="var(--vurgu-soluk)" stroke="var(--vurgu)" stroke-width="2"/>
+    <text x="640" y="210" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">AKTÜATÖR</text>
+    <text x="640" y="228" text-anchor="middle" class="svg-soluk" font-size="10.5">kararı dünyaya</text>
+    <text x="640" y="242" text-anchor="middle" class="svg-soluk" font-size="10.5">uygular</text>
+  </g>
+
+  <!-- oklar -->
+  <path d="M175 220 L266 220" stroke="var(--vurgu)" stroke-width="2.5" fill="none" marker-end="url(#s1-ok)"/>
+  <text x="220" y="208" text-anchor="middle" font-size="10" fill="var(--vurgu)">ölçüm</text>
+
+  <path d="M470 220 L561 220" stroke="var(--vurgu)" stroke-width="2.5" fill="none" marker-end="url(#s1-ok)"/>
+  <text x="516" y="208" text-anchor="middle" font-size="10" fill="var(--vurgu)">komut</text>
+</svg>

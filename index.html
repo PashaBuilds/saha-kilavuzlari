@@ -649,6 +649,139 @@ main {
 }
 
 /* ==========================================================================
+   YOLCULUK BANDI — "Buradan başla" (rehberli müfredat; kılavuzlardan ayrı tür)
+   Kartların tek-tonluğuna karşılık bant çift-tonlu bir şafak (altın→yeşil):
+   "kılavuz bir ton, yolculuk bir tayf" — tür farkı görsel dile de işler.
+   ========================================================================== */
+
+.yol-kart {
+  --y1: 40;    /* şafak altını */
+  --y2: 152;   /* büyüme yeşili */
+  position: relative;
+  display: block;
+  padding: clamp(26px, 3.6vw, 42px);
+  border-radius: 28px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(150deg, hsla(var(--y1),70%,60%,.10), rgba(255,255,255,.02) 46%, hsla(var(--y2),58%,54%,.09)) padding-box,
+    linear-gradient(118deg, hsla(var(--y1),90%,74%,.55), hsla(var(--y2),80%,60%,.42) 92%) border-box;
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+          backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 34px 82px -36px rgba(0,0,0,.86);
+  overflow: hidden;
+  transition: transform .5s var(--gecis), box-shadow .5s var(--gecis);
+}
+
+.yol-kart:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.18),
+    0 48px 100px -40px rgba(0,0,0,.9),
+    0 0 76px -22px hsla(var(--y1),90%,60%,.32);
+}
+
+/* iki köşeden şafak sızması */
+.yol-kart::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 6% -4%, hsla(var(--y1),95%,68%,.16), transparent 52%),
+    radial-gradient(120% 130% at 104% 108%, hsla(var(--y2),90%,58%,.13), transparent 55%);
+}
+
+/* yükselen yol motifi (sağ üstte, cama gömülü) */
+.yol-motif {
+  position: absolute; right: -2%; top: -14%;
+  width: 46%; max-width: 440px;
+  color: hsl(var(--y2) 80% 66%);
+  opacity: .16; fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  -webkit-mask-image: linear-gradient(232deg, #000, transparent 68%);
+          mask-image: linear-gradient(232deg, #000, transparent 68%);
+  transition: transform .8s var(--gecis), opacity .5s ease;
+  pointer-events: none;
+}
+.yol-kart:hover .yol-motif { opacity: .24; transform: translate(-6px, 4px); }
+
+.yol-ic { position: relative; display: grid; gap: 21px; }
+
+.yol-gozkasi {
+  display: inline-flex; align-items: center; gap: 11px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .26em; text-transform: uppercase;
+  color: hsla(var(--y1), 85%, 74%, .95);
+}
+.yol-gozkasi::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: hsl(var(--y1) 90% 62%);
+  box-shadow: 0 0 12px 2px hsla(var(--y1),90%,60%,.7);
+  animation: nabiz 2.4s ease-in-out infinite;
+}
+@keyframes nabiz { 0%,100% { opacity: .5; transform: scale(.75); } 50% { opacity: 1; transform: scale(1.15); } }
+
+.yol-baslik {
+  font-size: clamp(1.85rem, 3.7vw, 2.75rem);
+  font-weight: 745; letter-spacing: -.032em; line-height: 1.04; color: #f6f9ff;
+}
+.yol-baslik small {
+  display: block; margin-top: 9px;
+  font-family: var(--serif); font-style: italic; font-weight: 500;
+  font-size: .5em; letter-spacing: .01em;
+  color: hsla(var(--y2), 55%, 80%, .95);
+}
+
+.yol-aciklama { max-width: 68ch; font-size: 14.5px; line-height: 1.68; color: var(--sis); }
+
+.yol-etiketler { display: flex; flex-wrap: wrap; gap: 8px; }
+.yol-etiketler span {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .02em;
+  color: hsla(var(--y1), 62%, 85%, .95);
+  padding: 5px 12px; border-radius: 999px;
+  border: 1px solid hsla(var(--y1), 70%, 65%, .24);
+  background: hsla(var(--y1), 70%, 60%, .07);
+}
+
+/* rota rayı: yolculuğun durakları — son durak (Mezuniyet) yeşil parlar */
+.yol-rota { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 0; }
+.yol-durak { display: inline-flex; align-items: center; }
+.yol-nokta {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; white-space: nowrap;
+  color: rgba(206, 219, 240, .74);
+}
+.yol-nokta::before {
+  content: ""; width: 9px; height: 9px; border-radius: 50%;
+  background: hsl(var(--y1) 85% 60%);
+  box-shadow: 0 0 0 3px hsla(var(--y1), 85%, 55%, .13);
+}
+.yol-durak:last-child .yol-nokta {
+  color: hsla(var(--y2), 55%, 82%, .96); font-weight: 600;
+}
+.yol-durak:last-child .yol-nokta::before {
+  background: hsl(var(--y2) 80% 58%);
+  box-shadow: 0 0 0 3px hsla(var(--y2), 80%, 52%, .16), 0 0 14px 2px hsla(var(--y2), 85%, 55%, .55);
+}
+.yol-cizgi {
+  width: clamp(12px, 2.6vw, 34px); height: 2px; margin: 0 9px; flex-shrink: 0; border-radius: 2px;
+  background: linear-gradient(90deg, hsla(var(--y1),70%,60%,.55), hsla(var(--y1),70%,60%,.14));
+}
+
+.yol-alt { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 2px; }
+.yol-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; font-family: var(--mono); font-size: 11.5px; color: rgba(206,219,240,.68); }
+.yol-meta i { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .5; }
+.yol-meta b { color: hsla(var(--y2), 58%, 80%, .96); font-weight: 600; }
+
+.yol-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 670; color: #0a0e12;
+  padding: 12px 22px; border-radius: 14px;
+  background: linear-gradient(118deg, hsl(var(--y1) 92% 66%), hsl(var(--y2) 78% 56%));
+  box-shadow: 0 14px 32px -12px hsla(var(--y1), 90%, 55%, .5);
+  transition: transform .4s var(--gecis), box-shadow .4s var(--gecis);
+}
+.yol-cta svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none; transition: transform .4s var(--gecis); }
+.yol-kart:hover .yol-cta { transform: translateY(-2px); box-shadow: 0 20px 42px -14px hsla(var(--y1), 90%, 55%, .62); }
+.yol-kart:hover .yol-cta svg { transform: translateX(5px); }
+
+/* ==========================================================================
    MANİFESTO
    ========================================================================== */
 
@@ -818,18 +951,21 @@ main {
   .kart-hayalet { min-height: 0; padding: 36px 24px; }
   .ust-not { display: none; }
   .olcum-cip { padding: 10px 14px 9px; border-radius: 13px; }
+  .yol-kart { border-radius: 20px; padding: 24px 20px; }
+  .yol-alt { gap: 14px; }
+  .yol-cta { width: 100%; justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .aurora, .tayf, .baslik { animation: none !important; }
+  .aurora, .tayf, .baslik .b-kelime, .yol-gozkasi::before { animation: none !important; }
   .kostik { display: none; }
   .izgara { transform: none; }
   .beliren {
     opacity: 1; transform: none; filter: none;
     transition: none;
   }
-  .kart { transform: none !important; transition: none; }
+  .kart, .yol-kart { transform: none !important; transition: none; }
 }
 </style>
 </head>
@@ -869,16 +1005,26 @@ main {
     <div class="olcum beliren" id="olcum" style="--d:480ms"></div>
   </section>
 
-  <section class="bolum" id="kilavuzlar">
+  <section class="bolum" id="yolculuk" style="padding-top:clamp(24px,4vh,52px)">
+    <div class="bolum-bas beliren">
+      <h2 data-no="00">Buradan Başla</h2>
+      <p>Sahaya sıfırdan giren için: referans değil, ilk gün elinden tutan bir yolculuk.</p>
+    </div>
+    <div id="yolculuklar"></div>
+  </section>
+
+  <section class="bolum" id="kilavuzlar" style="padding-top:clamp(24px,4vh,52px)">
     <div class="bolum-bas beliren">
       <h2 data-no="01">Kılavuzlar</h2>
-      <p>Her kılavuz kendi reposunda yazılır ve derlenir; bu rafa yalnızca son sürümü düşer.</p>
+      <p>Zaten sahada olan için derinlemesine referans eserleri. Her kılavuz kendi reposunda derlenir; bu rafa son sürümü düşer.</p>
     </div>
     <div class="kartlar" id="kartlar"></div>
     <noscript>
       <ul style="line-height:2.2; padding-left:20px">
+        <li><a href="kilavuzlar/oryantasyon/index.html" style="text-decoration:underline">Gömülü Sistemlere Giriş — Ekip Oryantasyon Yolculuğu</a></li>
         <li><a href="kilavuzlar/rf-sampling/index.html" style="text-decoration:underline">Doğrudan RF Örnekleme ve Ön Uç Tasarımı — Saha Kılavuzu</a></li>
         <li><a href="kilavuzlar/ethernet/index.html" style="text-decoration:underline">Ethernet ve Ağ İletişimi — Saha Kılavuzu</a></li>
+        <li><a href="kilavuzlar/lokal-llm/index.html" style="text-decoration:underline">Lokal LLM Dünyası — Saha Kılavuzu</a></li>
       </ul>
     </noscript>
   </section>
@@ -933,7 +1079,9 @@ main {
 (function () {
   "use strict";
 
-  var K = (window.KILAVUZLAR || []).slice().sort(function (a, b) { return a.sira - b.sira; });
+  var HEP = (window.KILAVUZLAR || []).slice().sort(function (a, b) { return a.sira - b.sira; });
+  var KILAVUZ  = HEP.filter(function (k) { return (k.tur || "kilavuz") === "kilavuz"; });
+  var YOLCULUK = HEP.filter(function (k) { return k.tur === "yolculuk"; });
 
   var tarihFmt = new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "short", year: "numeric" });
   function tarih(iso) { return tarihFmt.format(new Date(iso + "T00:00:00")); }
@@ -964,9 +1112,9 @@ main {
 
   var OK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
 
-  /* ---- kartları çiz ---- */
+  /* ---- kartları çiz (yalnızca kılavuzlar) ---- */
   var kartlarEl = document.getElementById("kartlar");
-  var html = K.map(function (k, i) {
+  var html = KILAVUZ.map(function (k, i) {
     return (
       '<a class="kart beliren" style="--hue:' + k.renk + ';--d:' + (i * 100) + 'ms" href="' + k.yol + '">' +
         '<span class="kart-isin" aria-hidden="true"></span>' +
@@ -991,7 +1139,7 @@ main {
   }).join("");
 
   html +=
-    '<div class="kart-hayalet beliren" style="--d:' + (K.length * 100) + 'ms" aria-hidden="true">' +
+    '<div class="kart-hayalet beliren" style="--d:' + (KILAVUZ.length * 100) + 'ms" aria-hidden="true">' +
       '<span class="hayalet-arti">+</span>' +
       '<span class="hayalet-baslik">Sıradaki kılavuz</span>' +
       '<span class="hayalet-not">seri büyümeye devam ediyor — yeni kılavuz eklendiğinde bu rafta belirecek</span>' +
@@ -999,13 +1147,52 @@ main {
 
   kartlarEl.innerHTML = html;
 
-  /* ---- ölçüm şeridi: kayıtlardan gerçek toplamlar ---- */
-  var toplam = K.reduce(function (t, k) {
+  /* ---- "Buradan başla" bandı (yolculuklar) ---- */
+  var YOL_MOTIF =
+    '<path d="M6 158 C 96 158, 78 100, 158 100 S 242 44, 322 26" />' +
+    '<path d="M6 158 C 96 158, 78 100, 158 100" opacity=".5" />' +
+    '<circle cx="6" cy="158" r="7" /><circle cx="158" cy="100" r="7" /><circle cx="322" cy="26" r="9" />';
+
+  var yolEl = document.getElementById("yolculuklar");
+  if (yolEl) {
+    yolEl.innerHTML = YOLCULUK.map(function (y, i) {
+      var rota = (y.rota || []).map(function (r, j, arr) {
+        var cizgi = j < arr.length - 1 ? '<span class="yol-cizgi" aria-hidden="true"></span>' : "";
+        return '<span class="yol-durak"><span class="yol-nokta">' + r + "</span>" + cizgi + "</span>";
+      }).join("");
+      return (
+        '<a class="yol-kart beliren" style="--d:' + (i * 90) + 'ms" href="' + y.yol + '">' +
+          '<svg class="yol-motif" viewBox="0 0 328 168" aria-hidden="true">' + YOL_MOTIF + "</svg>" +
+          '<div class="yol-ic">' +
+            '<span class="yol-gozkasi">Rehberli Yolculuk · Yeni başlayanlar için</span>' +
+            '<h3 class="yol-baslik">' + y.baslik + "<small>" + (y.altBaslik || "") + "</small></h3>" +
+            '<p class="yol-aciklama">' + y.aciklama + "</p>" +
+            '<div class="yol-etiketler">' + y.etiketler.map(function (t) { return "<span>" + t + "</span>"; }).join("") + "</div>" +
+            '<div class="yol-rota">' + rota + "</div>" +
+            '<div class="yol-alt">' +
+              '<div class="yol-meta">' +
+                "<span><b>" + y.bolum + "</b></span><i></i>" +
+                "<span><b>" + y.lab + " uygulamalı lab</b></span><i></i>" +
+                "<span>" + y.final + "</span><i></i>" +
+                "<span>" + y.boyut + "</span><i></i>" +
+                "<span>" + tarih(y.guncelleme) + "</span>" +
+              "</div>" +
+              '<span class="yol-cta">Yolculuğa başla ' + OK_SVG + "</span>" +
+            "</div>" +
+          "</div>" +
+        "</a>"
+      );
+    }).join("");
+  }
+
+  /* ---- ölçüm şeridi: hero, saha kılavuzu serisinin sayılarını gösterir
+     (yolculuk ayrı bir tür; kendi sayıları bandında durur) ---- */
+  var toplam = KILAVUZ.reduce(function (t, k) {
     t.bolum += k.bolumSayi; t.sema += k.sema; t.kelime += k.kelime; return t;
   }, { bolum: 0, sema: 0, kelime: 0 });
 
   var OLCUMLER = [
-    { deger: K.length,        adi: "kılavuz" },
+    { deger: KILAVUZ.length,  adi: "kılavuz" },
     { deger: toplam.bolum,    adi: "bölüm" },
     { deger: toplam.sema,     adi: "şema" },
     { deger: toplam.kelime,   adi: "kelime", birim: "+" },
@@ -1021,9 +1208,9 @@ main {
     );
   }).join("");
 
-  document.getElementById("ust-sayi").textContent = K.length;
+  document.getElementById("ust-sayi").textContent = KILAVUZ.length;
 
-  var sonTarih = K.reduce(function (t, k) { return k.guncelleme > t ? k.guncelleme : t; }, "0000");
+  var sonTarih = HEP.reduce(function (t, k) { return k.guncelleme > t ? k.guncelleme : t; }, "0000");
   document.getElementById("imza-tarih").textContent = sonTarih !== "0000" ? tarih(sonTarih).toUpperCase() : "—";
 
   /* ---- sayaçlar: göründüğünde yumuşak sayım ---- */

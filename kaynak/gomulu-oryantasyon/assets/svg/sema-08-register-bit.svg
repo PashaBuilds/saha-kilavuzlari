@@ -1,0 +1,106 @@
+<svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s08-baslik">
+  <title id="s08-baslik">32-bit register bit alanı anatomisi: UART SR register'ından TXFULL, TXEMPTY, RXFULL, RXEMPTY bitleri vurgulu, kalan bitler rezerve; altta R/W, RO, W1C erişim tipi rozetleri.</title>
+
+  <rect x="50" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="60" y="44" text-anchor="middle" class="svg-soluk" font-size="11">31</text>
+  <rect x="70" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="80" y="44" text-anchor="middle" class="svg-soluk" font-size="11">30</text>
+  <rect x="90" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="100" y="44" text-anchor="middle" class="svg-soluk" font-size="11">29</text>
+  <rect x="110" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="120" y="44" text-anchor="middle" class="svg-soluk" font-size="11">28</text>
+  <rect x="130" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="140" y="44" text-anchor="middle" class="svg-soluk" font-size="11">27</text>
+  <rect x="150" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="160" y="44" text-anchor="middle" class="svg-soluk" font-size="11">26</text>
+  <rect x="170" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="180" y="44" text-anchor="middle" class="svg-soluk" font-size="11">25</text>
+  <rect x="190" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="200" y="44" text-anchor="middle" class="svg-soluk" font-size="11">24</text>
+  <rect x="210" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="220" y="44" text-anchor="middle" class="svg-soluk" font-size="11">23</text>
+  <rect x="230" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="240" y="44" text-anchor="middle" class="svg-soluk" font-size="11">22</text>
+  <rect x="250" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="260" y="44" text-anchor="middle" class="svg-soluk" font-size="11">21</text>
+  <rect x="270" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="280" y="44" text-anchor="middle" class="svg-soluk" font-size="11">20</text>
+  <rect x="290" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="300" y="44" text-anchor="middle" class="svg-soluk" font-size="11">19</text>
+  <rect x="310" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="320" y="44" text-anchor="middle" class="svg-soluk" font-size="11">18</text>
+  <rect x="330" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="340" y="44" text-anchor="middle" class="svg-soluk" font-size="11">17</text>
+  <rect x="350" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="360" y="44" text-anchor="middle" class="svg-soluk" font-size="11">16</text>
+  <rect x="370" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="380" y="44" text-anchor="middle" class="svg-soluk" font-size="11">15</text>
+  <rect x="390" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="400" y="44" text-anchor="middle" class="svg-soluk" font-size="11">14</text>
+  <rect x="410" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="420" y="44" text-anchor="middle" class="svg-soluk" font-size="11">13</text>
+  <rect x="430" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="440" y="44" text-anchor="middle" class="svg-soluk" font-size="11">12</text>
+  <rect x="450" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="460" y="44" text-anchor="middle" class="svg-soluk" font-size="11">11</text>
+  <rect x="470" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="480" y="44" text-anchor="middle" class="svg-soluk" font-size="11">10</text>
+  <rect x="490" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="500" y="44" text-anchor="middle" class="svg-soluk" font-size="11">9</text>
+  <rect x="510" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="520" y="44" text-anchor="middle" class="svg-soluk" font-size="11">8</text>
+  <rect x="530" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="540" y="44" text-anchor="middle" class="svg-soluk" font-size="11">7</text>
+  <rect x="550" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="560" y="44" text-anchor="middle" class="svg-soluk" font-size="11">6</text>
+  <rect x="570" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="580" y="44" text-anchor="middle" class="svg-soluk" font-size="11">5</text>
+  <rect x="590" y="50" width="20" height="40" style="fill: var(--vurgu)"/>
+  <text x="600" y="44" text-anchor="middle" font-size="11" style="fill: var(--zemin)" font-weight="600">4</text>
+  <rect x="610" y="50" width="20" height="40" style="fill: var(--altin)"/>
+  <text x="620" y="44" text-anchor="middle" font-size="11" style="fill: var(--zemin)" font-weight="600">3</text>
+  <rect x="630" y="50" width="20" height="40" style="fill: var(--yesil)"/>
+  <text x="640" y="44" text-anchor="middle" font-size="11" style="fill: var(--zemin)" font-weight="600">2</text>
+  <rect x="650" y="50" width="20" height="40" style="fill: var(--kirmizi)"/>
+  <text x="660" y="44" text-anchor="middle" font-size="11" style="fill: var(--zemin)" font-weight="600">1</text>
+  <rect x="670" y="50" width="20" height="40" class="svg-kutu"/>
+  <text x="680" y="44" text-anchor="middle" class="svg-soluk" font-size="11">0</text>
+
+  <!-- Vurgulu alanlara açıklama çağrıları (callout) -->
+  <path d="M600 90 L 170 128" class="svg-cizgi" fill="none"/>
+  <text x="170" y="145" text-anchor="middle" font-size="12" style="fill: var(--vurgu)">TXFULL (bit 4)</text>
+  <text x="170" y="160" text-anchor="middle" class="svg-soluk" font-size="11">TX FIFO dolu, RO</text>
+
+  <path d="M620 90 L 340 128" class="svg-cizgi" fill="none"/>
+  <text x="340" y="145" text-anchor="middle" font-size="12" style="fill: var(--altin)">TXEMPTY (bit 3)</text>
+  <text x="340" y="160" text-anchor="middle" class="svg-soluk" font-size="11">TX FIFO boş, RO</text>
+
+  <path d="M640 90 L 510 128" class="svg-cizgi" fill="none"/>
+  <text x="510" y="145" text-anchor="middle" font-size="12" style="fill: var(--yesil)">RXFULL (bit 2)</text>
+  <text x="510" y="160" text-anchor="middle" class="svg-soluk" font-size="11">RX FIFO dolu, RO</text>
+
+  <path d="M660 90 L 660 128" class="svg-cizgi" fill="none"/>
+  <text x="660" y="145" text-anchor="middle" font-size="12" style="fill: var(--kirmizi)">RXEMPTY (bit 1)</text>
+  <text x="660" y="160" text-anchor="middle" class="svg-soluk" font-size="11">RX FIFO boş, RO</text>
+
+  <!-- Erişim tipi rozetleri -->
+  <text x="370" y="205" text-anchor="middle" class="svg-metin" font-size="13">Erişim tipleri</text>
+
+  <rect x="20" y="215" width="220" height="70" rx="6" class="svg-kutu"/>
+  <rect x="20" y="215" width="6" height="70" style="fill: var(--vurgu)"/>
+  <text x="40" y="238" class="svg-metin" font-size="13">R/W (Read/Write)</text>
+  <text x="40" y="256" class="svg-soluk" font-size="11">okunur ve yazılır</text>
+  <text x="40" y="270" class="svg-soluk" font-size="11">örn. CR (0x00)</text>
+
+  <rect x="260" y="215" width="220" height="70" rx="6" class="svg-kutu"/>
+  <rect x="260" y="215" width="6" height="70" style="fill: var(--yesil)"/>
+  <text x="280" y="238" class="svg-metin" font-size="13">RO (Read-Only)</text>
+  <text x="280" y="256" class="svg-soluk" font-size="11">sadece okunur</text>
+  <text x="280" y="270" class="svg-soluk" font-size="11">örn. SR (0x2C)</text>
+
+  <rect x="500" y="215" width="220" height="70" rx="6" class="svg-kutu"/>
+  <rect x="500" y="215" width="6" height="70" style="fill: var(--kirmizi)"/>
+  <text x="520" y="238" class="svg-metin" font-size="13">W1C (Write-1-to-Clear)</text>
+  <text x="520" y="256" class="svg-soluk" font-size="11">1 yazınca temizlenir</text>
+  <text x="520" y="270" class="svg-soluk" font-size="11">örn. ISR (0x14)</text>
+</svg>

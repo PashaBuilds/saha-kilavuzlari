@@ -1,0 +1,84 @@
+<svg viewBox="0 0 740 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s23-baslik">
+  <title id="s23-baslik">Vitis kavram haritası: .xsa'dan doğan platform bileşeni (BSP + donanım tanımı), üzerine kurulan uygulama bileşeni, workspace içinde; sağda JTAG/hw_server üzerinden karta bağlanan debug zinciri; altta IDE panel adları.</title>
+
+  <!-- .xsa girişi -->
+  <rect x="50" y="6" width="150" height="32" rx="6" class="svg-kutu" style="stroke: var(--altin)"/>
+  <text x="125" y="27" text-anchor="middle" class="svg-metin" font-size="12">Vivado — .xsa</text>
+  <path d="M 125 38 L 125 58" stroke="var(--altin)" stroke-width="2" fill="none" marker-end="url(#s23-ok-altin)"/>
+
+  <!-- workspace çerçevesi -->
+  <rect x="20" y="58" width="470" height="320" rx="10" fill="none" class="svg-cizgi" stroke-dasharray="6 5"/>
+  <text x="34" y="80" class="svg-soluk" font-size="12">Workspace</text>
+
+  <!-- platform component -->
+  <rect x="50" y="98" width="200" height="180" rx="8" class="svg-kutu" style="stroke: var(--vurgu)"/>
+  <text x="150" y="120" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">Platform Component</text>
+
+  <rect x="65" y="134" width="170" height="42" rx="6" class="svg-kutu"/>
+  <text x="150" y="152" text-anchor="middle" class="svg-metin" font-size="11">Donanım tanımı</text>
+  <text x="150" y="166" text-anchor="middle" class="svg-soluk" font-size="10">(PS yapılandırması + PL IP'leri)</text>
+
+  <rect x="65" y="184" width="170" height="42" rx="6" class="svg-kutu"/>
+  <text x="150" y="202" text-anchor="middle" class="svg-metin" font-size="11">BSP</text>
+  <text x="150" y="216" text-anchor="middle" class="svg-soluk" font-size="10">(sürücüler + xparameters.h)</text>
+
+  <text x="150" y="260" text-anchor="middle" class="svg-soluk" font-size="10">OS: standalone / freertos10_xilinx</text>
+
+  <!-- ok: platform -> uygulama -->
+  <path d="M 252 188 L 288 188" stroke="var(--vurgu)" stroke-width="2" fill="none" marker-end="url(#s23-ok-vurgu)"/>
+
+  <!-- uygulama component -->
+  <rect x="290" y="98" width="180" height="180" rx="8" class="svg-kutu" style="stroke: var(--yesil)"/>
+  <text x="380" y="120" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">Uygulama Component</text>
+  <text x="380" y="145" text-anchor="middle" class="svg-metin" font-size="11">main.c + kaynaklar</text>
+  <text x="380" y="163" text-anchor="middle" class="svg-soluk" font-size="10">(Görev kodların burada yaşar)</text>
+  <text x="380" y="190" text-anchor="middle" class="svg-soluk" font-size="10">bir platforma bağlıdır,</text>
+  <text x="380" y="204" text-anchor="middle" class="svg-soluk" font-size="10">ayrı derlenir → ELF üretir</text>
+
+  <!-- panel şeridi -->
+  <text x="255" y="312" text-anchor="middle" class="svg-soluk" font-size="10">IDE panelleri</text>
+  <rect x="60" y="322" width="110" height="30" rx="15" class="svg-kutu"/>
+  <text x="115" y="341" text-anchor="middle" class="svg-metin" font-size="11">Explorer</text>
+  <rect x="185" y="322" width="110" height="30" rx="15" class="svg-kutu"/>
+  <text x="240" y="341" text-anchor="middle" class="svg-metin" font-size="11">Console</text>
+  <rect x="310" y="322" width="110" height="30" rx="15" class="svg-kutu"/>
+  <text x="365" y="341" text-anchor="middle" class="svg-metin" font-size="11">Debug</text>
+
+  <!-- ok: uygulama -> debug zinciri -->
+  <path d="M 472 165 C 495 155, 500 140, 522 128" stroke="var(--yesil)" stroke-width="2" fill="none" marker-end="url(#s23-ok-yesil)"/>
+
+  <!-- sağ zincir: debugger -> hw_server -> jtag -> kart -->
+  <rect x="524" y="98" width="190" height="52" rx="8" class="svg-kutu"/>
+  <text x="619" y="128" text-anchor="middle" class="svg-metin" font-size="12">Vitis Debugger</text>
+
+  <path d="M 619 150 L 619 172" stroke="var(--cizgi)" stroke-width="2" fill="none" marker-end="url(#s23-ok-soluk)"/>
+
+  <rect x="524" y="174" width="190" height="52" rx="8" class="svg-kutu"/>
+  <text x="619" y="204" text-anchor="middle" class="svg-metin" font-size="12">hw_server</text>
+
+  <path d="M 619 226 L 619 248" stroke="var(--cizgi)" stroke-width="2" fill="none" marker-end="url(#s23-ok-soluk)"/>
+
+  <rect x="524" y="250" width="190" height="52" rx="8" class="svg-kutu"/>
+  <text x="619" y="273" text-anchor="middle" class="svg-metin" font-size="12">JTAG — J83 kablosu</text>
+  <text x="619" y="290" text-anchor="middle" class="svg-soluk" font-size="10">(FT4232 Port A)</text>
+
+  <path d="M 619 302 L 619 324" stroke="var(--cizgi)" stroke-width="2" fill="none" marker-end="url(#s23-ok-soluk)"/>
+
+  <rect x="524" y="326" width="190" height="52" rx="8" class="svg-kutu" style="stroke: var(--altin)"/>
+  <text x="619" y="356" text-anchor="middle" class="svg-metin" font-size="12">ZCU111 kartı</text>
+
+  <defs>
+    <marker id="s23-ok-altin" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--altin)"/>
+    </marker>
+    <marker id="s23-ok-vurgu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--vurgu)"/>
+    </marker>
+    <marker id="s23-ok-yesil" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--yesil)"/>
+    </marker>
+    <marker id="s23-ok-soluk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--cizgi)"/>
+    </marker>
+  </defs>
+</svg>
