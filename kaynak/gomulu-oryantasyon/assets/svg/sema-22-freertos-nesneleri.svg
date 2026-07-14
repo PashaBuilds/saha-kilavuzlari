@@ -1,27 +1,27 @@
 <svg viewBox="0 0 740 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s22-baslik">
-  <title id="s22-baslik">FreeRTOS çekirdek nesneleri: task durum makinesi ile queue, semaphore, mutex ve ISR'in tetiklediği geçişler</title>
+  <title id="s22-baslik">FreeRTOS kernel objects: the task state machine and the transitions triggered by queues, semaphores, mutexes, and ISRs</title>
 
-  <text x="370" y="24" text-anchor="middle" class="svg-metin" font-size="14" font-weight="700">Task durum makinesi ve onu iten çekirdek nesneleri</text>
+  <text x="370" y="24" text-anchor="middle" class="svg-metin" font-size="14" font-weight="700">Task state machine and the kernel objects that drive it</text>
 
-  <!-- ============ durum makinesi okları (önce, alta gitsin) ============ -->
+  <!-- ============ state machine arrows (first, so they go underneath) ============ -->
   <!-- Ready -> Running -->
   <path d="M196 236 Q 260 150 338 128" fill="none" stroke="var(--vurgu)" stroke-width="1.8" marker-end="url(#s22-ok-vurgu)"/>
-  <text x="205" y="175" class="svg-soluk" font-size="10">scheduler seçti</text>
-  <text x="205" y="188" class="svg-soluk" font-size="10">(en yüksek öncelikli Ready)</text>
+  <text x="205" y="175" class="svg-soluk" font-size="10">selected by scheduler</text>
+  <text x="205" y="188" class="svg-soluk" font-size="10">(highest-priority Ready)</text>
 
   <!-- Running -> Ready -->
   <path d="M336 142 Q 268 220 200 252" fill="none" class="svg-cizgi" stroke-width="1.6" marker-end="url(#s22-ok)"/>
   <text x="222" y="235" class="svg-soluk" font-size="10">preemption /</text>
-  <text x="222" y="248" class="svg-soluk" font-size="10">zaman dilimi doldu</text>
+  <text x="222" y="248" class="svg-soluk" font-size="10">time slice expired</text>
 
   <!-- Running -> Blocked -->
   <path d="M404 128 Q 480 165 536 236" fill="none" class="svg-cizgi" stroke-width="1.6" marker-end="url(#s22-ok)"/>
   <text x="418" y="168" class="svg-soluk" font-size="10">vTaskDelay() /</text>
-  <text x="418" y="181" class="svg-soluk" font-size="10">xQueueReceive() vb. bekle</text>
+  <text x="418" y="181" class="svg-soluk" font-size="10">xQueueReceive(), etc. wait</text>
 
-  <!-- Blocked -> Ready (genel: tick / sinyal) -->
+  <!-- Blocked -> Ready (general: tick / signal) -->
   <path d="M552 314 Q 370 215 200 302" fill="none" stroke="var(--altin)" stroke-width="1.8" marker-end="url(#s22-ok-altin)"/>
-  <text x="300" y="203" text-anchor="middle" class="svg-metin" font-size="10" font-weight="700">tick zaman aşımı / queue-semaphore-mutex sinyali geldi</text>
+  <text x="300" y="203" text-anchor="middle" class="svg-metin" font-size="10" font-weight="700">tick timeout / queue-semaphore-mutex signal received</text>
 
   <!-- Running -> Suspended -->
   <path d="M352 144 L 340 416" fill="none" class="svg-cizgi" stroke-width="1.6" marker-end="url(#s22-ok)"/>
@@ -31,24 +31,24 @@
   <path d="M334 420 Q 250 370 198 312" fill="none" class="svg-cizgi" stroke-width="1.6" marker-end="url(#s22-ok)"/>
   <text x="230" y="400" class="svg-soluk" font-size="10">vTaskResume()</text>
 
-  <!-- ============ durum daireleri ============ -->
+  <!-- ============ state circles ============ -->
   <circle cx="370" cy="100" r="46" class="svg-kutu" stroke="var(--vurgu)" stroke-width="2"/>
   <text x="370" y="96" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">Running</text>
-  <text x="370" y="112" text-anchor="middle" class="svg-soluk" font-size="9">(o an CPU'da)</text>
+  <text x="370" y="112" text-anchor="middle" class="svg-soluk" font-size="9">(currently on CPU)</text>
 
   <circle cx="170" cy="270" r="46" class="svg-kutu"/>
   <text x="170" y="266" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">Ready</text>
-  <text x="170" y="282" text-anchor="middle" class="svg-soluk" font-size="9">(sırada bekliyor)</text>
+  <text x="170" y="282" text-anchor="middle" class="svg-soluk" font-size="9">(waiting in queue)</text>
 
   <circle cx="570" cy="270" r="46" class="svg-kutu"/>
   <text x="570" y="266" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">Blocked</text>
-  <text x="570" y="282" text-anchor="middle" class="svg-soluk" font-size="9">(olay/zaman bekliyor)</text>
+  <text x="570" y="282" text-anchor="middle" class="svg-soluk" font-size="9">(waiting for event/time)</text>
 
   <circle cx="370" cy="460" r="42" class="svg-kutu"/>
   <text x="370" y="456" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">Suspended</text>
-  <text x="370" y="472" text-anchor="middle" class="svg-soluk" font-size="9">(zamanlama dışı)</text>
+  <text x="370" y="472" text-anchor="middle" class="svg-soluk" font-size="9">(out of scheduling)</text>
 
-  <!-- ============ çekirdek nesneleri: Queue / Semaphore / Mutex ============ -->
+  <!-- ============ core objects: Queue / Semaphore / Mutex ============ -->
   <rect x="600" y="118" width="122" height="50" rx="8" fill="var(--vurgu-soluk)" stroke="var(--vurgu)"/>
   <text x="661" y="138" text-anchor="middle" class="svg-metin" font-size="11" font-weight="700">Queue</text>
   <text x="661" y="153" text-anchor="middle" class="svg-soluk svg-kod" font-size="9">xQueueSend/Receive</text>
@@ -62,23 +62,23 @@
   <rect x="600" y="440" width="130" height="60" rx="8" fill="var(--altin-soluk)" stroke="var(--altin)"/>
   <text x="665" y="460" text-anchor="middle" class="svg-metin" font-size="11" font-weight="700">Mutex</text>
   <text x="665" y="475" text-anchor="middle" class="svg-soluk svg-kod" font-size="9">xSemaphoreTake(mutex)</text>
-  <text x="665" y="489" text-anchor="middle" class="svg-soluk" font-size="9">+ öncelik mirası</text>
+  <text x="665" y="489" text-anchor="middle" class="svg-soluk" font-size="9">+ priority inheritance</text>
   <path d="M620 440 L 592 306" fill="none" stroke="var(--altin)" stroke-width="1.6" marker-end="url(#s22-ok-altin)"/>
 
-  <!-- ============ ISR: FromISR (ayrı renk) ============ -->
+  <!-- ============ ISR: FromISR (separate color) ============ -->
   <rect x="30" y="60" width="130" height="50" rx="8" fill="var(--mor-soluk)" stroke="var(--mor)"/>
   <text x="95" y="80" text-anchor="middle" class="svg-metin" font-size="11" font-weight="700">ISR</text>
-  <text x="95" y="95" text-anchor="middle" class="svg-soluk svg-kod" font-size="9">kesme rutini</text>
+  <text x="95" y="95" text-anchor="middle" class="svg-soluk svg-kod" font-size="9">interrupt routine</text>
   <path d="M110 110 Q 130 190 152 232" fill="none" stroke="var(--mor)" stroke-width="2" marker-end="url(#s22-ok-mor)"/>
-  <text x="30" y="140" class="svg-metin" font-size="10" font-weight="700">*FromISR() çağrıları</text>
+  <text x="30" y="140" class="svg-metin" font-size="10" font-weight="700">*FromISR() calls</text>
   <text x="30" y="154" class="svg-soluk svg-kod" font-size="9">xQueueSendFromISR</text>
   <text x="30" y="167" class="svg-soluk svg-kod" font-size="9">xSemaphoreGiveFromISR</text>
   <text x="30" y="180" class="svg-soluk svg-kod" font-size="9">+ portYIELD_FROM_ISR</text>
 
-  <!-- alt açıklama -->
+  <!-- bottom description -->
   <rect x="20" y="540" width="700" height="56" rx="10" fill="var(--kart-2)" class="svg-cizgi"/>
-  <text x="370" y="562" text-anchor="middle" class="svg-metin" font-size="12">Queue/semaphore/mutex bir task'ı Blocked'a düşürür; sinyal geldiğinde Blocked → Ready.</text>
-  <text x="370" y="580" text-anchor="middle" class="svg-metin" font-size="12">ISR aynı işi *FromISR API'leriyle yapar — ISR içinde asla bloklayan (normal) API kullanılmaz.</text>
+  <text x="370" y="562" text-anchor="middle" class="svg-metin" font-size="12">A queue/semaphore/mutex puts a task into Blocked; when the signal arrives, Blocked → Ready.</text>
+  <text x="370" y="580" text-anchor="middle" class="svg-metin" font-size="12">An ISR does the same via *FromISR APIs — a blocking (normal) API is never used inside an ISR.</text>
 
   <defs>
     <marker id="s22-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">

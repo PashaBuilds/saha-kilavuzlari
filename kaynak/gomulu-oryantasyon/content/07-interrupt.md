@@ -1,130 +1,149 @@
-# Bölüm 7 — Interrupt: Olay Geldiğinde Haber Ver
+# Chapter 7 — Interrupts: Notification When an Event Occurs
 
-Görev 3'te SW19'u polling (sürekli sorgulama) ile okudun: ana döngü durmadan
-`buttonRead()`'yu çağırıp "basılı mı, basılı mı, basılı mı" diye sordu.
-Çalıştı, ama bir bedeli vardı — belki fark etmedin çünkü ana döngüde başka
-iş yoktu. Şimdi o bedeli açık edelim ve ondan kurtulmanın yolunu öğrenelim:
-**interrupt (kesme)**.
+In Task 3, you read SW19 via polling: the main loop repeatedly called
+`buttonRead()`, effectively asking "is it pressed, is it pressed, is it
+pressed" without pause. This worked, but it carried a cost — one you may
+not have noticed, since the main loop had no other work to perform. This
+section makes that cost explicit and introduces the mechanism for
+eliminating it: the **interrupt**.
 
-## Polling'in gizli faturası
+## The Hidden Cost of Polling
 
-Görev 3'ün döngüsünü hayal et ama bu sefer ana döngüde gerçek bir iş de
-olsun: bir sensörden veri topluyor, UART'a telemetri basıyor, bir hesap
-yapıyorsun. Butonu da polling ile izlemek istersen iki kötü seçeneğin var:
+Imagine the loop from Task 3, but this time with genuine work in the main
+loop as well: collecting data from a sensor, printing telemetry to the
+UART, performing a calculation. If you also want to monitor the button via
+polling, you face two unfavorable options:
 
-- Döngüye sık sık `buttonRead()` serpiştirirsin — CPU zamanının bir
-  kısmı, olay hiç olmasa bile, "olmuş mu?" diye sormaya gider. Bu, hiç
-  gelmeyecek bir misafiri her on saniyede bir kapıya çıkıp beklemeye
-  benzer: yorucu ve çoğu zaman boşuna.
-- Asıl işini uzun bir bloğun içine yazarsan (örneğin büyük bir hesap veya
-  uzun bir gecikme), o blok bitene kadar butonu hiç sormazsın — basılma
-  anı ile fark ediş anı arasına bir **gecikme** girer.
+- You interleave frequent calls to `buttonRead()` throughout the loop — a
+  portion of CPU time is spent asking "has it happened yet?" even when the
+  event never occurs. This resembles stepping out to the door every ten
+  seconds to check for a guest who is not coming: tiring, and largely
+  wasted effort.
+- If you place your primary work inside a lengthy block (a large
+  calculation or a long delay, for example), you do not query the button
+  at all until that block completes — a **delay** is introduced between
+  the moment of the press and the moment it is noticed.
 
-Sistem büyüdükçe, izlenecek "olay" sayısı arttıkça (buton, zamanlayıcı,
-UART'tan gelen veri, I2C tamamlanması...) polling'in payı da büyür; CPU'nun
-gitgide daha fazla zamanı "sormakla" geçer. {{svg:sema-14-polling-interrupt.svg|Şekil 14 — Polling ve interrupt karşılaştırması: aynı olayı fark etme hızı iki CPU çalışma biçiminde.}}
+As the system grows and the number of "events" to monitor increases
+(button presses, timer ticks, incoming UART data, I2C transaction
+completions, and so on), the share of time spent polling grows
+correspondingly; an increasing proportion of CPU time is consumed by
+"asking." {{svg:sema-14-polling-interrupt.svg|Figure 14 — Polling versus interrupt comparison: the speed of detecting the same event under two CPU operating modes.}}
 
-Şekildeki fark nettir: polling şeridinde CPU olayı ancak bir sonraki
-sorgusunda fark eder — aradaki süre kayıp zamandır. Interrupt şeridinde CPU
-asıl işini yapmaya devam eder; olay geldiği anda donanımın kendisi CPU'yu
-keser, kısa bir sapma yaptırır, sonra CPU kaldığı yerden devam eder.
+The distinction in the figure is clear: in the polling lane, the CPU
+notices the event only at its next query — the intervening time is lost.
+In the interrupt lane, the CPU continues its primary work; the moment the
+event occurs, the hardware itself interrupts the CPU, diverts it briefly,
+and the CPU then resumes where it left off.
 
-:::analoji Kapıda beklemek yerine zil
-Polling, gelecek kargoyu merak edip her birkaç dakikada bir kapıya çıkıp
-bakmaktır. Interrupt, zili olan bir kapıdır: kargo gelene kadar sen işine
-bakarsın, zil çaldığında (donanım seni keser) kapıya gidersin. Zilin kendisi
-bir donanım — bizim dünyamızda bu donanımın adı **GIC**.
+:::analoji A Doorbell Instead of Waiting at the Door
+Polling is stepping out to the door every few minutes to check whether a
+package has arrived. An interrupt is a door equipped with a bell: you
+attend to your own work until the package arrives, and you go to the door
+only when the bell rings (the hardware interrupts you). The bell itself is
+a piece of hardware — in our environment, that hardware is called the
+**GIC**.
 :::
 
-## GIC: kesmelerin trafik polisi
+## The GIC: Traffic Control for Interrupts
 
-ZCU111'in APU'sundaki (Cortex-A53 çekirdekleri) kesme denetleyicisi bir
-**GIC-400** (Generic Interrupt Controller — genel kesme denetleyicisi). Onlarca
-çevre biriminin kesme talebi doğrudan CPU'ya gidemez; hepsi önce GIC'e uğrar.
-GIC üç işi üstlenir:
+The interrupt controller for the ZCU111's APU (the Cortex-A53 cores) is a
+**GIC-400** (Generic Interrupt Controller). Interrupt requests from dozens
+of peripherals cannot go directly to the CPU; each must first pass through
+the GIC. The GIC performs three functions:
 
-1. **Kaynak yönlendirme:** hangi çevre biriminin kesmesi geldi, hangi CPU
-   çekirdeğine gönderilsin?
-2. **Öncelik:** aynı anda birden fazla kesme gelirse hangisi önce işlenir?
-3. **Enable/disable:** her kesme kaynağı ayrı ayrı açılıp kapatılabilir —
-   dinlemediğin bir kesme seni rahatsız etmez.
+1. **Source routing:** which peripheral's interrupt has occurred, and to
+   which CPU core should it be delivered?
+2. **Priority:** if multiple interrupts occur simultaneously, which is
+   serviced first?
+3. **Enable/disable:** each interrupt source can be individually enabled
+   or disabled — an interrupt you are not listening for will not disturb
+   you.
 
-GIC-400'ün iki register bloğu var: **GICD (dağıtıcı — distributor)**
-`0xF901_0000` adresinde, kesme kaynaklarının önceliğini ve hedefini
-yönetir; **GICC (CPU arayüzü)** `0xF902_0000` adresinde, çalışan
-çekirdeğin kesmeyi kabul edip etmeyeceğini yönetir. Xilinx sürücüsü
-(`XScuGic`) bu iki bloğu senin için tek bir nesne arkasında saklar —
-register'ları elle karıştırman gerekmez, ama "GIC bir donanım, o da bir
-register haritası" bilgisi elinde kalsın.
+The GIC-400 has two register blocks: the **GICD (distributor)**, at
+address `0xF901_0000`, manages the priority and destination of interrupt
+sources; the **GICC (CPU interface)**, at address `0xF902_0000`,
+determines whether the running core accepts a given interrupt. The Xilinx
+driver (`XScuGic`) hides both blocks behind a single object — you will not
+need to manipulate the registers directly, but you should retain the
+understanding that the GIC is a piece of hardware with its own register
+map.
 
-Her çevre biriminin GIC'teki kimliği bir **kesme numarasıdır**. Bu
-yolculukta üç tanesiyle çalışacaksın:
+Each peripheral's identity within the GIC is an **interrupt number**. In
+this journey, you will work with three of them:
 
-| Çevre birimi | GIC kesme ID |
+| Peripheral | GIC Interrupt ID |
 |---|---|
-| PS GPIO (SW19 dahil) | **48** |
+| PS GPIO (including SW19) | **48** |
 | UART0 | 53 |
-| TTC0 kanal 0 | **68** |
+| TTC0 channel 0 | **68** |
 
-## ISR: kısa, keskin, sessiz
+## The ISR: Short, Sharp, Silent
 
-Kesme geldiğinde CPU, senin yazdığın bir fonksiyona sıçrar: **ISR**
-(Interrupt Service Routine — kesme işleyicisi). Burada üç katı kural var:
+When an interrupt occurs, the CPU jumps to a function you have written:
+the **ISR** (Interrupt Service Routine). Three strict rules apply here:
 
-- **Kısa tut.** ISR çalışırken (önceliğine göre) başka kesmeler bekler ya
-  da kaçar. ISR'nin işi "bir şey oldu" demek, işin kendisini yapmak değil.
-  Tipik iyi bir ISR: bayrağı set et, donanımın kesme kaynağını **ack'le**
-  (onayla/temizle — yoksa GIC aynı kesmeyi bitmeden tekrar tetikler), çık.
-- **Paylaşılan veriye `volatile`.** ISR'nin yazıp ana döngünün okuduğu her
-  değişken `volatile` olmalı — Bölüm 5'teki dersin tam burada hayat
-  kurtardığı yer. `volatile` olmazsa derleyici ana döngüdeki okumayı
-  önbelleğe alıp bir daha güncellemeyebilir; bayrak hiç değişmemiş gibi
-  görünür.
-- **ISR'de `printf`/`xil_printf` YOK.** UART'a yazmak (Bölüm 4'ü hatırla)
-  TX FIFO dolu olabilir diye beklemeyi içerir — yani ISR içinde UART'a
-  yazmak, ISR'yi FIFO boşalana kadar dondurabilir. Kısa tutulması gereken
-  bir fonksiyonun içine belirsiz süreli bir bekleme koymak, "kısa tut"
-  kuralının doğrudan ihlalidir. Basılacak metni ana döngüye bırak.
+- **Keep it short.** While an ISR is running, other interrupts either wait
+  (depending on priority) or are missed. The ISR's job is to signal that
+  "something happened," not to perform the work itself. A well-formed ISR
+  typically does the following: set a flag, **acknowledge** the hardware's
+  interrupt source (clear it — otherwise the GIC re-triggers the same
+  interrupt before it has finished), and exit.
+- **Mark shared data `volatile`.** Every variable written by the ISR and
+  read by the main loop must be `volatile` — this is exactly where the
+  lesson from Chapter 5 proves essential. Without `volatile`, the compiler
+  may cache the main loop's read and never update it again; the flag will
+  appear never to change.
+- **No `printf`/`xil_printf` within the ISR.** Writing to the UART (recall
+  Chapter 4) involves waiting for the possibility that the TX FIFO is full
+  — meaning that a UART write inside the ISR can stall it until the FIFO
+  drains. Introducing a wait of indeterminate duration into a function
+  that must remain short is a direct violation of the "keep it short"
+  rule. Leave any text to be printed to the main loop.
 
-:::tuzak "Ack'lemeyi unuttum" klasiği
-ISR'de bayrağı set edip donanımın kesme durumunu temizlemeyi (ack)
-unutursan, ISR'den çıkar çıkmaz GIC "kesme hâlâ aktif" der ve seni anında
-tekrar ISR'ye sokar — sonsuz bir kesme fırtınası. Sistem donmuş gibi
-görünür ama aslında saniyede binlerce kez aynı ISR'ye giriyordur. Ack
-satırını unutmak, bu meslekte "neden hiçbir şey ilerlemiyor" sorularının
-klasik köküdür.
+:::tuzak The Classic "I Forgot to Acknowledge" Case
+If you set the flag in the ISR but forget to clear the hardware's
+interrupt status (acknowledge it), the GIC reports "interrupt still
+active" the moment the ISR exits and immediately re-enters it — an
+endless interrupt storm. The system appears to have frozen, but in
+reality it is entering the same ISR thousands of times per second.
+Omitting the acknowledgment is, in this profession, a classic root cause
+behind the question "why isn't anything progressing."
 :::
 
-{{svg:sema-15-interrupt-yasam.svg|Şekil 15 — Kesme yaşam döngüsü: olaydan ana döngünün bayrağı işlemesine altı adım; ISR'nin kısa tutulması gerektiği ve yanlış bir örnek vurgulanır.}}
+{{svg:sema-15-interrupt-yasam.svg|Figure 15 — Interrupt life cycle: six steps from the event to the main loop processing the flag; the requirement to keep the ISR short is highlighted, along with an incorrect example.}}
 
-## Interrupt latency: "anında" ne kadar anında?
+## Interrupt Latency: How "Immediate" Is Immediate?
 
-Interrupt, polling'e göre çok daha hızlı tepki verir ama **sıfır gecikme**
-değildir. Donanımın kesmeyi GIC'e iletmesi, GIC'in önceliklendirmesi, CPU'nun
-o anki işini durdurup bağlamını kaydetmesi, ISR'ye atlaması — hepsi birkaç
-mikrosaniye sürer. Buna **interrupt latency** (kesme gecikmesi) denir. Bizim
-yolculuğumuzda bu süre gözle görülmeyecek kadar küçüktür (polling'in
-saniyelerce sürebilen fark ediş gecikmesiyle kıyaslanmayacak kadar), ama
-gerçek zamanlı sistemlerde bu mikrosaniyeler bile tasarım kararı
-gerektirebilir — RPU'nun (Cortex-R5F) var olma sebeplerinden biri de bu
-gecikmeyi daha öngörülebilir kılmaktır (Bölüm 2'yi hatırla).
+An interrupt responds far more quickly than polling, but it is not **zero
+latency**. The hardware signaling the interrupt to the GIC, the GIC
+prioritizing it, the CPU suspending its current work and saving its
+context, and the jump to the ISR — all of this takes several
+microseconds. This is called **interrupt latency**. In this journey, that
+duration is small enough to be imperceptible (not remotely comparable to
+the detection delay of polling, which can run into seconds), but in
+real-time systems, even these microseconds can drive a design decision —
+one of the reasons the RPU (Cortex-R5F) exists is to make this latency
+more predictable (recall Chapter 2).
 
-## Edge mi, level mi?
+## Edge or Level?
 
-Bir kesme kaynağı CPU'yu iki şekilde tetikleyebilir: **edge (kenar)
-tetikleme** sinyalin değiştiği anı yakalar (örneğin 0'dan 1'e geçiş) — bir
-kez tetikler, sinyal yüksekte kalsa bile tekrar tetiklemez. **Level
-(seviye) tetikleme** sinyal belirli bir seviyedeyken sürekli tetikler —
-sen o seviyeyi kaldırana kadar (bayrağı temizleyene kadar) GIC ısrarla
-kesme gönderir. Buton gibi "bir kez oldu" olaylarında edge doğaldır;
-"bir şey hâlâ bekliyor" durumlarında (örn. RX FIFO'da veri var) level daha
-uygun olabilir. `XGpioPs_SetIntrTypePin()` fonksiyonu ikisini de destekler;
-Görev 4'te SW19 için yükselen kenar (rising edge) kullanacaksın.
+An interrupt source can trigger the CPU in one of two ways. **Edge
+triggering** captures the instant the signal changes (for example, a
+transition from 0 to 1) — it fires once and does not fire again even if
+the signal remains high. **Level triggering** fires continuously while the
+signal remains at a given level — the GIC persistently issues the
+interrupt until you remove that level (clear the flag). Edge triggering is
+natural for "it happened once" events such as a button press; level
+triggering may be more appropriate for "something is still pending"
+conditions, such as data present in the RX FIFO. The
+`XGpioPs_SetIntrTypePin()` function supports both; in Task 4, you will use
+rising edge for SW19.
 
-## GIC'i devreye almanın deseni
+## The Pattern for Bringing Up the GIC
 
-Her interrupt lab'ında (Görev 4, 5 ve ileride 8-9'da) tekrar edecek sabit
-bir kurulum sırası var:
+A fixed setup sequence recurs in every interrupt-based lab (Task 4, Task
+5, and later in Tasks 8-9):
 
 ```c
 XScuGic_Config* spGicConfig;
@@ -139,138 +158,151 @@ XScuGic_Connect(&G_sGic, KESME_ID, (Xil_ExceptionHandler)benimIsr, (void*)&sCall
 XScuGic_Enable(&G_sGic, KESME_ID);
 ```
 
-Beş adım, hep aynı sırayla: **bul (LookupConfig) → başlat (CfgInitialize)
-→ CPU'nun IRQ istisnasını GIC'in genel işleyicisine bağla
-(Xil_ExceptionRegisterHandler) → senin ISR'ini belirli bir kesme ID'sine
-bağla (Connect) → o kesmeyi aç (Enable)**. Bu deseni ezberlemene gerek yok;
-tanımasına ihtiyacın var — her yeni kesme kaynağında son iki satır tekrar
-eder, ilk üçü bir kez yapılır.
+Five steps, always in the same order: **look up (LookupConfig) →
+initialize (CfgInitialize) → bind the CPU's IRQ exception to the GIC's
+general handler (Xil_ExceptionRegisterHandler) → bind your ISR to a
+specific interrupt ID (Connect) → enable that interrupt (Enable)**. You do
+not need to memorize this pattern — you need to be able to recognize it.
+The final two lines repeat for every new interrupt source; the first
+three are performed once.
 
-Kesme mekanizmasını gördün. Şimdi onu Görev 3'ün butonuna uygulama sırası —
-sonra da düzenli aralıklarla kendi kendine tetiklenen bir kesme kaynağıyla,
-zamanlayıcıyla tanışma sırası.
+You have now seen the interrupt mechanism. It is time to apply it to the
+button from Task 3 — and then to become familiar with a self-triggering
+interrupt source that fires at regular intervals: the timer.
 
-:::gorev no=4 zorluk=2 baslik="Buton Interrupt'ı" kisa="Buton Kesmesi"
-[Hedef]
-Görev 3'ün polling ile okuduğu SW19 butonunu GIC üzerinden bağlanan bir
-GPIO kesmesine dönüştür: ana döngü kendi işiyle meşgulken buton basımı
-gecikmesiz fark edilsin.
+:::gorev no=4 zorluk=2 baslik="Button Interrupt" kisa="Button Interrupt"
+[Objective]
+Convert the SW19 button read via polling in Task 3 into a GPIO interrupt
+connected through the GIC: the button press should be detected without
+delay while the main loop is occupied with its own work.
 
-[Ön koşul]
-Bölüm 7 okundu; Görev 2'nin `uart_ps` modülü (ya da bu görevin kendi
-kopyası) elinde; XGpioPs ile pin okuma/yazmaya Görev 1'den aşinasın.
+[Prerequisites]
+Chapter 7 has been read; you have the `uart_ps` module from Task 2 (or
+this task's own copy) available; you are familiar with pin read/write via
+XGpioPs from Task 1.
 
-[Adımlar]
-1. Vitis'te yeni bir bare-metal uygulama projesi aç (platform Görev 1-3 ile
-   aynı .xsa). `lab04-kesme/src/` altındaki kaynakları projeye kopyala.
-2. PS GPIO nesnesini başlat (`XGpioPs_CfgInitialize`), SW19 (**MIO22**)
-   giriş, DS50 (**MIO23**) çıkış olacak şekilde yönlerini ayarla — Görev 1
-   ve 3'te yaptığın kurulumun aynısı.
-3. SW19 pini için kesme türünü **yükselen kenar** yap:
+[Steps]
+1. Open a new bare-metal application project in Vitis (using the same
+   .xsa platform as Tasks 1-3). Copy the sources under `lab04-interrupt/src/`
+   into the project.
+2. Initialize the PS GPIO object (`XGpioPs_CfgInitialize`), setting SW19
+   (**MIO22**) as input and DS50 (**MIO23**) as output — identical to the
+   setup you performed in Tasks 1 and 3.
+3. Set the interrupt type for the SW19 pin to **rising edge**:
    `XGpioPs_SetIntrTypePin(&G_sGpio, 22, XGPIOPS_IRQ_TYPE_EDGE_RISING)`.
-4. GIC'i bu bölümdeki beşli desenle kur; `benimIsr`'i **GPIO'nun kesme
-   ID'si olan 48**'e bağla (`XScuGic_Connect` + `XScuGic_Enable`), sonra
-   pin kesmesini aç: `XGpioPs_IntrEnablePin(&G_sGpio, 22)`.
-5. ISR'yi yaz — ve onu KISA tut: `XGpioPs_IntrGetStatusPin` ile bu pinin
-   kestiğini doğrula, `G_ucButtonFlag = 1` yap, `XGpioPs_IntrClearPin` ile
-   ack'le. Başka hiçbir şey yapma — özellikle UART'a yazma.
-6. Ana döngüde "meşgul" bir iş simüle et: DS50'yi belirli aralıklarla
-   yakıp söndüren basit bir sayaç döngüsü (heartbeat) çalıştır. Her
-   turda `G_ucButtonFlag`'ni kontrol et; set görürsen basış sayacını
-   artır, UART'a `"buton basildi, sayac = N"` yaz, bayrağı sıfırla.
+4. Set up the GIC using the five-step pattern from this chapter; bind
+   `benimIsr` to **interrupt ID 48, the GPIO's interrupt ID**
+   (`XScuGic_Connect` + `XScuGic_Enable`), then enable the pin interrupt:
+   `XGpioPs_IntrEnablePin(&G_sGpio, 22)`.
+5. Write the ISR — and keep it SHORT: confirm with
+   `XGpioPs_IntrGetStatusPin` that this pin caused the interrupt, set
+   `G_ucButtonFlag = 1`, and acknowledge with `XGpioPs_IntrClearPin`. Do
+   nothing else — in particular, do not write to the UART.
+6. Simulate "busy" work in the main loop: run a simple counting loop
+   (heartbeat) that turns DS50 on and off at regular intervals. On each
+   iteration, check `G_ucButtonFlag`; if it is set, increment the press
+   counter, write `"button pressed, count = N"` to the UART, and clear the
+   flag.
 
-[Başarı kriteri]
-Ana döngü DS50 heartbeat'iyle "meşgulken" butona her bastığında terminalde
-gecikmesiz yeni bir satır görünüyor; sayaç basış sayısını sekmeden,
-kaçırmadan artırıyor.
+[Success Criteria]
+While the main loop is "busy" with the DS50 heartbeat, a new line appears
+in the terminal without delay each time the button is pressed; the
+counter increments accurately, without skipping or missing presses.
 
-[Kendini sına]
-- ISR'de neden `xil_printf` çağırmıyoruz? UART yazmanın içinde ISR'yi
-  uzatacak ne var?
-- Bayrağı ana döngüde sıfırlarken ISR tam o anda tekrar tetiklenirse bir
-  yarış (race) riski var mı? `volatile`'ın burada koruduğu şey tam olarak
-  ne, koruMADIĞI şey ne?
-- SW19'u yükselen kenar yerine seviye (level) tetiklemeli kursaydın ne
-  değişirdi — buton basılı tutulduğunda ISR kaç kez çağrılırdı?
+[Self-Check]
+- Why do we not call `xil_printf` from the ISR? What within a UART write
+  could extend the ISR's execution time?
+- If the ISR fires again at the exact moment the main loop clears the
+  flag, is there a race condition risk? What, precisely, does `volatile`
+  protect against here, and what does it NOT protect against?
+- If you had configured SW19 for level triggering instead of rising edge,
+  what would change — how many times would the ISR be called while the
+  button is held down?
 
-[Takıldıysan]
-::ipucu İpucu 1 — Kesme hiç gelmiyor
-Sıra kontrolü yap: yön ayarı (giriş), `SetIntrTypePin`, `XScuGic_Connect`,
-`XScuGic_Enable`, `XGpioPs_IntrEnablePin` — beşi de eksiksiz mi? Bir tanesi
-eksikse donanım kesmeyi hiç üretmez ya da GIC onu CPU'ya hiç iletmez.
-`Xil_ExceptionEnable()` çağrısını unutmak da aynı sessiz sonucu verir.
+[If You Get Stuck]
+::ipucu Hint 1 — No Interrupt Occurs
+Check the sequence: direction setting (input), `SetIntrTypePin`,
+`XScuGic_Connect`, `XScuGic_Enable`, `XGpioPs_IntrEnablePin` — are all
+five present? If any one is missing, either the hardware never generates
+the interrupt or the GIC never delivers it to the CPU. Forgetting the
+`Xil_ExceptionEnable()` call produces the same silent failure.
 ::/
-::ipucu İpucu 2 — Kesme bir kez geliyor, sonra hiç gelmiyor
-Büyük ihtimalle ack (`XGpioPs_IntrClearPin`) eksik ya da yanlış pine
-yapılıyor. GIC'in kendi tarafında da bir "end of interrupt" adımı vardır
-ama `XScuGic_InterruptHandler` bunu senin için hallediyor — sen sadece
-GPIO'nun kendi durum bitini temizlemekle yükümlüsün.
+::ipucu Hint 2 — Interrupt Fires Once, Then Never Again
+The acknowledgment (`XGpioPs_IntrClearPin`) is most likely missing or
+being performed on the wrong pin. The GIC also has its own "end of
+interrupt" step, but `XScuGic_InterruptHandler` handles that for you —
+you are responsible only for clearing the GPIO's own status bit.
 ::/
-::cozum Tam çözüm — lab04-kesme
-Aşağıdaki `main.c`, GPIO kesmesini GIC'e bağlar, ISR'de yalnızca bayrak
-set eder, ana döngüde heartbeat ve basış sayacını yönetir.
-{{kod:lab04-kesme/src/main.c}}
+::cozum Full Solution — lab04-interrupt
+The `main.c` below binds the GPIO interrupt to the GIC, sets only a flag
+within the ISR, and manages the heartbeat and press counter in the main
+loop.
+{{kod:lab04-interrupt/src/main.c}}
 ::/
 :::
 
-:::gorev no=5 zorluk=2 baslik="Timer ile Kalp Atışı" kisa="Timer Kalp Atışı"
-[Hedef]
-TTC0 kanal 0'ı 1 Hz periyodik kesme üretecek şekilde kur; her tikte
-UART'a bir satır bas ve DS50'yi kalp atışı gibi çalıştır — tamamen
-kesme tabanlı, ana döngüde bekleme yok.
+:::gorev no=5 zorluk=2 baslik="Heartbeat with a Timer" kisa="Timer Heartbeat"
+[Objective]
+Configure TTC0 channel 0 to generate a 1 Hz periodic interrupt; print a
+line to the UART on every tick and drive DS50 in a heartbeat pattern —
+entirely interrupt-driven, with no waiting in the main loop.
 
-[Ön koşul]
-Görev 4 tamamlandı (GIC kurulum deseni elinde); Bölüm 7'nin TTC/interval
-bölümü okundu.
+[Prerequisites]
+Task 4 is complete (you have the GIC setup pattern in hand); the
+TTC/interval section of Chapter 7 has been read.
 
-[Adımlar]
-1. `lab05-timer/src/` kaynaklarını yeni bir bare-metal projeye kopyala.
-2. `XTtcPs` nesnesini TTC0 kanal 0 üzerinde başlat (`XTtcPs_LookupConfig`
-   + `XTtcPs_CfgInitialize`, taban adres **0xFF11_0000**); sayacı
-   "interval mode"a al (`XTtcPs_SetOptions`).
-3. **1 Hz için interval değerini hesapla:**
-   `Interval = (XPAR_XTTCPS_0_CLOCK_HZ / 1) - 1`. Bu makro senin
-   platformunun gerçek TTC giriş saatini taşır — `xparameters.h`'tan
-   oku, burada elle bir MHz rakamı varsaymıyoruz. `XTtcPs_SetInterval`
-   ile yaz.
-4. Kesmeyi aç: `XTtcPs_EnableInterrupts(&G_sTtc, XTTCPS_IXR_INTERVAL_MASK)`.
-   GIC'i Görev 4'teki beşli desenle kur; bu sefer **kesme ID'si 68**
-   (TTC0 kanal 0).
-5. `XTtcPs_Start` ile sayacı çalıştır. ISR'de sadece `G_ucTickFlag = 1`
-   yap ve `XTtcPs_InterruptHandler` (ya da doğrudan ISR biti okuma)
-   ile durumu ack'le.
-6. `main()` döngüsünde bayrağı gördüğünde: tik sayacını artır, UART'a
-   `"tick N"` bas, DS50'yi tersine çevir (toggle) — kalp atışı hissi
-   burada oluşur.
+[Steps]
+1. Copy the sources under `lab05-timer/src/` into a new bare-metal
+   project.
+2. Initialize the `XTtcPs` object on TTC0 channel 0 (`XTtcPs_LookupConfig`
+   + `XTtcPs_CfgInitialize`, base address **0xFF11_0000**); place the
+   counter into "interval mode" (`XTtcPs_SetOptions`).
+3. **Calculate the interval value for 1 Hz:**
+   `Interval = (XPAR_XTTCPS_0_CLOCK_HZ / 1) - 1`. This macro carries your
+   platform's actual TTC input clock — read it from `xparameters.h`; do
+   not assume a hand-picked MHz figure here. Write it using
+   `XTtcPs_SetInterval`.
+4. Enable the interrupt:
+   `XTtcPs_EnableInterrupts(&G_sTtc, XTTCPS_IXR_INTERVAL_MASK)`. Set up
+   the GIC using the five-step pattern from Task 4; this time, **the
+   interrupt ID is 68** (TTC0 channel 0).
+5. Start the counter with `XTtcPs_Start`. In the ISR, only set
+   `G_ucTickFlag = 1` and acknowledge the status via
+   `XTtcPs_InterruptHandler` (or by reading the ISR bit directly).
+6. In the `main()` loop, when you see the flag: increment the tick
+   counter, print `"tick N"` to the UART, and toggle DS50 — this is what
+   creates the heartbeat effect.
 
-[Başarı kriteri]
-Terminalde saniyede tam bir "tick N" satırı akıyor; DS50 gözle görülür,
-düzenli bir kalp atışı ritmiyle yanıp sönüyor.
+[Success Criteria]
+The terminal outputs exactly one "tick N" line per second; DS50 blinks
+with a visible, regular heartbeat rhythm.
 
-[Kendini sına]
-- `XPAR_XTTCPS_0_CLOCK_HZ` değerini kendi platformunda bulup, elle
-  interval hesabını (bölme + çıkarma) kâğıt üzerinde tekrar yap — kod
-  bulduğun sonuçla eşleşiyor mu?
-- Interval değerini yanlışlıkla iki katına çıkarsaydın (örn. `-1`
-  yazmayı unutsaydın) tik hızı ne yönde değişirdi, ne kadar?
-- Prescaler'ı hiç kullanmadık — 32-bit'lik interval yazmacı bunu neden
-  gereksiz kıldı? Çok daha düşük bir tik frekansında (örn. 0.001 Hz)
-  aynı şey geçerli olur muydu?
+[Self-Check]
+- Find the value of `XPAR_XTTCPS_0_CLOCK_HZ` on your own platform and
+  redo the interval calculation (division plus subtraction) by hand on
+  paper — does it match what the code computes?
+- If you accidentally doubled the interval value (for example, by
+  forgetting the `-1`), in which direction would the tick rate change,
+  and by how much?
+- We did not use the prescaler at all — why did the 32-bit interval
+  register make this unnecessary? Would the same hold at a much lower
+  tick frequency (for example, 0.001 Hz)?
 
-[Takıldıysan]
-::ipucu İpucu 1 — Tik hiç gelmiyor ya da bir kere gelip duruyor
-`XTtcPs_Start` çağrısını unutmak ya da "interval mode" seçeneğini
-(`XTTCPS_OPTION_INTERVAL_MODE`) atlamak sık rastlanan hatadır — mode
-ayarlanmazsa sayaç interval'e ulaşınca kesme üretmeden serbestçe saymaya
-devam edebilir.
+[If You Get Stuck]
+::ipucu Hint 1 — No Ticks Occur, or a Single Tick Then Nothing
+Forgetting the `XTtcPs_Start` call, or omitting the "interval mode"
+option (`XTTCPS_OPTION_INTERVAL_MODE`), is a common mistake — if the mode
+is not set, the counter may continue counting freely past the interval
+without generating an interrupt.
 ::/
-::ipucu İpucu 2 — Hız yanlış (çok hızlı/çok yavaş tik)
-`XPAR_XTTCPS_0_CLOCK_HZ` makrosunun gerçek değerini `xparameters.h`
-içinde ara ve hesabı elle doğrula; interval hesabında `-1` unutmak da
-tik süresini gözle fark edilecek kadar kaydırmaz ama saf bir aritmetik
-yazım hatası (yanlış makro, yanlış birim) genelde büyük sapmaya yol açar.
+::ipucu Hint 2 — Incorrect Rate (Tick Too Fast or Too Slow)
+Look up the actual value of the `XPAR_XTTCPS_0_CLOCK_HZ` macro in
+`xparameters.h` and verify the calculation by hand; forgetting the `-1`
+in the interval calculation does not shift the tick period by a visually
+noticeable amount, but a plain arithmetic error (wrong macro, wrong unit)
+typically causes a large deviation.
 ::/
-::cozum Tam çözüm — lab05-timer
+::cozum Full Solution — lab05-timer
 {{kod:lab05-timer/src/main.c}}
 ::/
 :::

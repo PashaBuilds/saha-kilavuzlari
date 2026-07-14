@@ -1,84 +1,90 @@
-# lab06-i2c — GÖREV 6: I2C ile Gerçek Bir Çiple Konuş
+# lab06-i2c — TASK 6: Talk to a Real Chip over I2C
 
-## Ne yapar
+## What it does
 
-PS I2C0 (MIO14-15) üzerinden gerçek bir I2C ağacına giriyoruz:
+We descend into a real I2C tree via PS I2C0 (MIO14-15):
 
 ```
-PS I2C0  →  PCA9544A mux (U23, adres 0x75), kanal 0  →  INA226 (adres 0x40, VCCINT)
+PS I2C0  →  PCA9544A mux (U23, address 0x75), channel 0  →  INA226 (address 0x40, VCCINT)
 ```
 
-`ina226Init()` I2C0'ı 100 kHz'de kurar, mux'a kanal-0 seçim baytını
-yazar, sonra INA226'nın Manufacturer ID yazmacını (0xFE) okuyup **0x5449**
-("TI") ile doğrular. Kimlik tutmazsa `main.c` hiç ölçüme geçmez — mux/adres/
-kablolama sorununu ölçümden ÖNCE, net bir hata mesajıyla yakalarız.
-Doğrulama geçtikten sonra saniyede bir Bus Voltage yazmacı (0x02) okunur,
-LSB = 1.25 mV ile milivolt'a çevrilir ve UART'a basılır.
+`ina226Init()` configures I2C0 at 100 kHz, writes the channel-0 selection
+byte to the mux, then reads the INA226's Manufacturer ID register (0xFE)
+and verifies it against **0x5449** ("TI"). If the identity does not match,
+`main.c` never proceeds to measurement — a mux/address/wiring problem is
+caught with a clear error message BEFORE any measurement is taken.
+Once verification passes, the Bus Voltage register (0x02) is read once
+per second, converted to millivolts with LSB = 1.25 mV, and printed to
+UART.
 
-`ina226.h/.c` API'si `_gorev-zinciri.md` sözleşmesiyle birebir:
+The `ina226.h/.c` API matches the `_gorev-zinciri.md` contract exactly:
 
 ```c
 int ina226Init(void);
 int ina226ReadBusVoltageMv(unsigned int* uipMilliVolt);
 ```
 
-`src/uart_ps.h` ve `src/uart_ps.c`, lab02-uart'tan birebir kopyadır.
+`src/uart_ps.h` and `src/uart_ps.c` are an exact copy from lab02-uart.
 
-## PCA9544A kontrol baytı
+## PCA9544A control byte
 
-TI PCA9544A datasheet'inin (SCPS146G, §8.6 Register Map, Table 8-1) kontrol
-yazmacında bit 2 "enable", bit 1:0 kanal numarasıdır:
+In the control register of the TI PCA9544A datasheet (SCPS146G, §8.6
+Register Map, Table 8-1), bit 2 is "enable" and bits 1:0 are the channel
+number:
 
-| B2 | B1 | B0 | Komut |
+| B2 | B1 | B0 | Command |
 |---|---|---|---|
-| 0 | X | X | Hiçbir kanal seçili değil (POR sonrası varsayılan) |
-| 1 | 0 | 0 | **Kanal 0 etkin** |
-| 1 | 0 | 1 | Kanal 1 etkin |
-| 1 | 1 | 0 | Kanal 2 etkin |
-| 1 | 1 | 1 | Kanal 3 etkin |
+| 0 | X | X | No channel selected (default after POR) |
+| 1 | 0 | 0 | **Channel 0 enabled** |
+| 1 | 0 | 1 | Channel 1 enabled |
+| 1 | 1 | 0 | Channel 2 enabled |
+| 1 | 1 | 1 | Channel 3 enabled |
 
-Kanal 0'ı seçen bayt: **0x04** (`0b0000_0100`). Doğrulama notu ve kaynak:
-`content/_arastirma-ek-D.md` §D.4.
+The byte that selects channel 0: **0x04** (`0b0000_0100`). See the
+verification note and source at `content/_arastirma-ek-D.md` §D.4.
 
-## Register pointer deseni
+## Register pointer pattern
 
-INA226 çok yazmaçlı bir cihazdır: önce tek baytlık bir "pointer" yazarak
-hangi yazmacı istediğini söylersin, ardından ayrı bir okuma işlemiyle o
-yazmacın içeriğini alırsın. `ina226RegRead()` bu iki adımı
-(`XIicPs_MasterSendPolled` + `XIicPs_MasterRecvPolled`) sarmalar ve gelen
-2 baytı big-endian (MSB önce) birleştirir.
+The INA226 is a multi-register device: you first write a single-byte
+"pointer" to indicate which register you want, then retrieve that
+register's contents with a separate read operation. `ina226RegRead()`
+wraps these two steps (`XIicPs_MasterSendPolled` + `XIicPs_MasterRecvPolled`)
+and assembles the incoming 2 bytes as big-endian (MSB first).
 
-## Sonsuz bekleme yasak
+## No infinite waiting allowed
 
-Bölüm 12'nin savunmacı programlama dersi burada erken devreye giriyor:
-`i2cSendLimited()` / `i2cRecvLimited()` her I2C işlemini en fazla
-**5 kez** dener (`I2C_DENEME_SINIRI`), aralarında kısa bir bekleme
-(`XIicPs_BusIsBusy` kontrolüyle birlikte) yapar. Beş denemede de
-başarısız olursa fonksiyon hata döner — donanım hiç yanıt vermese bile
-program sonsuza kadar takılı kalmaz.
+Chapter 12's defensive-programming lesson comes into play early here:
+`i2cSendLimited()` / `i2cRecvLimited()` retry each I2C operation at most
+**5 times** (`I2C_DENEME_SINIRI`), with a short wait between attempts
+(alongside an `XIicPs_BusIsBusy` check). If all five attempts fail, the
+function returns an error — the program never hangs forever, even if the
+hardware never responds at all.
 
-## Nasıl derlenir
+## How to build
 
-Vitis Unified IDE'de:
+In Vitis Unified IDE:
 
-1. Ekibin sağladığı hazır **platform** (.xsa, standalone) seçilir.
-2. Yeni bir **boş (empty) uygulama** projesi açılır ve bu platforma bağlanır.
-3. Bu klasördeki `src/` altındaki beş dosya (`uart_ps.h`, `uart_ps.c`,
-   `ina226.h`, `ina226.c`, `main.c`) projenin `src/` klasörüne kopyalanır.
-4. Proje derlenir (Build) ve JTAG üzerinden karta yüklenip çalıştırılır.
+1. Select the team-provided ready-made **platform** (.xsa, standalone).
+2. Open a new **empty application** project and connect it to this
+   platform.
+3. Copy the five files under this folder's `src/` (`uart_ps.h`,
+   `uart_ps.c`, `ina226.h`, `ina226.c`, `main.c`) into the project's
+   `src/` folder.
+4. Build the project and load it onto the board via JTAG to run it.
 
-## Beklenen çıktı
+## Expected output
 
 ```
---- GOREV 6: I2C ile Gercek Bir Ciple Konus ---
-PS I2C0 -> PCA9544A(0x75) kanal 0 -> INA226(0x40)
+--- TASK 6: Talk to a Real Chip over I2C ---
+PS I2C0 -> PCA9544A(0x75) channel 0 -> INA226(0x40)
 
-INA226 kimligi dogrulandi (0x5449). Olcum basliyor.
+INA226 identity verified (0x5449). Measurement starting.
 
 VCCINT = 851 mV
 VCCINT = 849 mV
 VCCINT = 850 mV
 ```
 
-VCCINT nominal 0.85 V'tir; kartın anlık yüküne göre değer birkaç mV
-oynayabilir, ama 850 mV civarında akmalıdır. Saniyede bir yeni satır gelir.
+VCCINT is nominally 0.85 V; the value may drift a few mV depending on the
+board's instantaneous load, but it should hover around 850 mV. A new
+line arrives once per second.

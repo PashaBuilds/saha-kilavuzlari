@@ -1,16 +1,18 @@
 /*
- * main.c — Gorev 1 (Bolum 4): LED Yak (Merhaba Donanim)
+ * main.c — Task 1 (Chapter 4): Turn On the LED (Hello Hardware)
  *
- * DS50 LED'ini (PS MIO23) XGpioPs surucusu ile 500 ms periyotla
- * yakip sondurur. DS50/SW19 ikilisi bu kartta bitstream'siz erisilebilen
- * TEK PS LED'i/butonudur (bkz. Bolum 2 ve Bolum 4) — 8 kullanici LED'i
- * (DS11-DS18) PL pinlerindedir, onlara Gorev 7'de (AXI GPIO ile) geliriz.
+ * Blinks the DS50 LED (PS MIO23) with a 500 ms period using the XGpioPs
+ * driver. The DS50/SW19 pair is the ONLY PS LED/button on this board that
+ * is accessible without a bitstream (see Chapter 2 and Chapter 4) — the
+ * 8 user LEDs (DS11-DS18) are on PL pins, which we revisit in Task 7
+ * (using AXI GPIO).
  *
- * Akis KLASIK Vitis yaklasimini kullanir: cihaz XPAR_..._DEVICE_ID ile
- * bulunur. Vitis Unified/SDT akisinda yerine
+ * The flow uses the CLASSIC Vitis approach: the device is located via
+ * XPAR_..._DEVICE_ID. In the Vitis Unified/SDT flow this is replaced by
  *     XGpioPs_LookupConfig(XPAR_XGPIOPS_0_BASEADDR)
- * gelir — LookupConfig taban adresi dogrudan parametre olarak alir,
- * DEVICE_ID diye bir sey kalmaz. Iki desen de Bolum 4'te anlatildi.
+ * — LookupConfig takes the base address directly as a parameter, and
+ * there is no such thing as DEVICE_ID. Both patterns are explained in
+ * Chapter 4.
  */
 
 #include "xgpiops.h"
@@ -18,10 +20,10 @@
 #include "xil_printf.h"
 #include "sleep.h"
 
-/* DS50 LED'i PS MIO23'e bagli (UG1271, "GPIO (MIO 22-23)"). */
+/* DS50 LED is connected to PS MIO23 (UG1271, "GPIO (MIO 22-23)"). */
 #define DS50_LED_PIN_MIO    23U
 
-/* Basari kriteri: 500 ms acik / 500 ms kapali. */
+/* Success criterion: 500 ms on / 500 ms off. */
 #define LED_YANIP_SONME_US  500000U
 
 int main(void)
@@ -30,32 +32,33 @@ int main(void)
     XGpioPs_Config* spGpioConfig;
     int iStatus;
 
-    /* 1. Adim: konfigurasyonu cihaz kimligiyle bul. */
+    /* Step 1: locate the configuration by device ID. */
     spGpioConfig = XGpioPs_LookupConfig(XPAR_XGPIOPS_0_DEVICE_ID);
     if (spGpioConfig == NULL)
     {
-        xil_printf("HATA: GPIO konfigurasyonu bulunamadi.\r\n");
+        xil_printf("ERROR: GPIO configuration not found.\r\n");
         return XST_FAILURE;
     }
 
-    /* 2. Adim: surucuyu bu konfigurasyonla baslat. */
+    /* Step 2: initialize the driver with this configuration. */
     iStatus = XGpioPs_CfgInitialize(&sGpio, spGpioConfig,
                                      spGpioConfig->BaseAddr);
     if (iStatus != XST_SUCCESS)
     {
-        xil_printf("HATA: GPIO baslatilamadi (kod=%d).\r\n", iStatus);
+        xil_printf("ERROR: GPIO initialization failed (code=%d).\r\n", iStatus);
         return XST_FAILURE;
     }
 
-    /* 3. Adim: MIO23'u cikis yap ve cikis tamponunu etkinlestir.
-     * Ikisi de gerekli: SetDirectionPin DIRM'i, SetOutputEnablePin OEN'i
-     * ayarlar (bkz. Bolum 4 derin-dalis — main_registerli.c). */
+    /* Step 3: set MIO23 as output and enable the output buffer.
+     * Both calls are required: SetDirectionPin sets DIRM, and
+     * SetOutputEnablePin sets OEN (see the Chapter 4 deep dive —
+     * main_registers.c). */
     XGpioPs_SetDirectionPin(&sGpio, DS50_LED_PIN_MIO, 1U);
     XGpioPs_SetOutputEnablePin(&sGpio, DS50_LED_PIN_MIO, 1U);
 
-    xil_printf("Gorev 1: DS50 500 ms periyotla yanip sonecek.\r\n");
+    xil_printf("Task 1: DS50 will blink with a 500 ms period.\r\n");
 
-    /* 4. Adim: sonsuz dongude yak-sondur. */
+    /* Step 4: turn on/off in an infinite loop. */
     for (;;)
     {
         XGpioPs_WritePin(&sGpio, DS50_LED_PIN_MIO, 1U);

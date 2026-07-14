@@ -1,136 +1,150 @@
-# Bölüm 1 — Gömülü Dünya ve Senin Rolün
+# Chapter 1 — The Embedded World and Your Role
 
-Bölüm 0'da "gömülü yazılım parmak uçlarında öğrenilir" demiştik. Ama parmaklar
-karta değmeden önce bir soruyu netleştirelim: sen bundan sonra tam olarak ne iş
-yapacaksın? Bu bölüm büyük resmi çiziyor — gömülü sistem nedir, alıştığın
-yazılım dünyasından nerede ayrılır ve bu dünyada senin masana düşen sorumluluk
-nedir.
+In Chapter 0 we stated that "embedded software is learned through
+practice." But before hands touch the board, one question needs
+clarifying: what exactly will you be doing from this point forward? This
+chapter provides the broader context — what an embedded system is, where
+it diverges from the software world you are accustomed to, and what
+responsibilities fall to you in this domain.
 
-## Gömülü sistem nedir?
+## What is an embedded system?
 
-Gömülü sistem (embedded system), belirli bir işi yapmak üzere bir cihazın
-içine gömülmüş ve çoğu zaman varlığını hiç belli etmeyen bilgisayardır.
-Klavyesi yok, ekranı çoğu zaman yok, "uygulama yükle" menüsü hiç yok; tek
-bir işi vardır ve onu cihazın ömrü boyunca, her gün, şikâyet etmeden yapar.
+An embedded system is a computer built into a device to perform a specific
+function, and one that most often gives no outward sign of its presence.
+It has no keyboard, in most cases no screen, and certainly no "install
+app" menu; it performs a single function, every day, for the lifetime of
+the device, without exception.
 
-Bu sabah uyandığından beri muhtemelen onlarcasını kullandın: seni uyandıran
-telefonun alarmı bir yana, kahvaltıda su ısıtıcının sıcaklık kontrolü, evden
-çıkarken asansörün kat mantığı, arabanın fren pedalının arkasındaki ABS
-denetleyicisi, kulağındaki Bluetooth kulaklık, öğle yemeğini ödediğin POS
-cihazı ve tüm gün telefonunu ayakta tutan baz istasyonu. Hepsinin içinde
-küçük ya da büyük bir işlemci ve o işlemcinin üzerinde bizim yazdığımız
-türden yazılım var.
+Since waking up this morning, you have likely used dozens of them: the
+alarm on the phone that woke you, the temperature control in the kettle at
+breakfast, the elevator's floor logic on your way out, the ABS controller
+behind your car's brake pedal, the Bluetooth headset in your ear, the POS
+terminal that processed your lunch payment, and the cell tower that keeps
+your phone connected throughout the day. Each contains a processor, large
+or small, running the kind of software we write.
 
-{{svg:sema-01-evren.svg|Şekil 1 — Gömülü sistem evreni: ortada sensör → MCU/SoC → aktüatör zinciri, çevresinde her gün yanından geçtiğin gömülü cihazlar.}}
+{{svg:sema-01-evren.svg|Figure 1 — The embedded systems landscape: at the center, a sensor to MCU/SoC to actuator chain, surrounded by embedded devices encountered in daily life.}}
 
-Tanımın kalbi şekildeki üçlü zincir. **Sensör** dış dünyayı ölçer: sıcaklık,
-basınç, buton, anten sinyali. Ortadaki **MCU** (microcontroller unit —
-mikrodenetleyici) ya da daha büyük kardeşi **SoC** (system on chip — tek
-çipte sistem) ölçüleni okur, karar verir. **Aktüatör** kararı dünyaya
-uygular: motoru döndürür, valfi açar, LED'i yakar, anteni sürer. Senin
-yazacağın kod bu döngünün tam ortasında oturur ve döngü cihaz fişte kaldığı
-sürece döner.
+The core of the definition is the three-part chain shown in the figure. The
+**sensor** measures the external world: temperature, pressure, a button
+press, an antenna signal. The **MCU** (microcontroller unit) at the
+center, or its larger counterpart the **SoC** (system on chip), reads the
+measurement and makes a decision. The **actuator** applies that decision
+to the world: turning a motor, opening a valve, lighting an LED, driving
+an antenna. The code you write sits at the center of this loop, and the
+loop runs for as long as the device remains powered.
 
-:::analoji Çakı ve neşter
-Masaüstü bilgisayar bir İsviçre çakısıdır: her işi yapabilir, hiçbirine
-adanmamıştır. Gömülü sistem ise neşterdir: tek iş, ama o işte kusursuz ve
-öngörülebilir olmak zorunda. Çakın takılırsa katlar cebine korsun; neşterin
-ameliyatın ortasında "şimdi meşgulüm" deme lüksü yoktur.
+:::analoji Pocketknife and scalpel
+A desktop computer is a Swiss Army knife: capable of many tasks, dedicated
+to none. An embedded system is a scalpel: it performs a single task, but
+must be flawless and predictable at that task. If the pocketknife jams,
+you fold it and put it back in your pocket; the scalpel does not have the
+luxury of announcing, mid-procedure, that it is temporarily unavailable.
 :::
 
-## Masaüstü yazılımdan dört büyük fark
+## Four major differences from desktop software
 
-Üniversitede yazdığın C programları bir işletim sisteminin şefkatli kollarında
-çalıştı: bellek istedin verildi, ekrana yazdın göründü, program çöktü —
-kimsenin canı yanmadı. Gömülü dünyada bu dört başlıkta işler değişir.
+The C programs you wrote at university ran in the accommodating embrace of
+an operating system: you requested memory and received it, you wrote to
+the screen and it appeared, the program crashed and no harm was done. In
+the embedded world, this changes across four dimensions.
 
-**1. Kaynak kısıtı.** Masaüstünde gigabyte'larla ölçülen RAM, gömülü dünyada
-çoğu zaman kilobyte'larla ölçülür; işlemci gigahertz değil megahertz
-konuşabilir. Dürüst olalım: elindeki ZCU111 bu dünyanın lüks segmentidir —
-dört çekirdeği ve gigabyte'larca DDR belleği var. Ama gömülü refleks kartla
-değil kafayla ilgilidir: her byte'ın ve her mikrosaniyenin hesabını yapma
-alışkanlığını burada kazanacaksın, çünkü bir sonraki projende o lüks
-olmayabilir.
+**1. Resource constraints.** RAM on the desktop is measured in gigabytes;
+in the embedded world it is more often measured in kilobytes, and the
+processor may run at megahertz rather than gigahertz. To be clear: the
+ZCU111 in front of you is at the premium end of this spectrum — it has
+four cores and gigabytes of DDR memory. But the embedded mindset is not
+about the specific board; it is a habit of accounting for every byte and
+every microsecond, a discipline you will build here because your next
+project may not afford the same luxury.
 
-**2. Gerçek zaman (real time).** Gömülü sistemlerde doğru cevabın geç gelmesi,
-yanlış cevaptır. ABS denetleyicisi tekerleğin kilitlendiğini milisaniyeler
-içinde fark edip basıncı bırakmak zorundadır; "birazdan bakarım" diye bir
-seçenek yok. Bu yüzden gömülü yazılımcı yalnızca *ne* hesaplandığını değil,
-*ne kadar sürede* hesaplandığını da tasarlar. Bu kavram Bölüm 7'de
-(interrupt) ve Bölüm 10'da (FreeRTOS) elle tutulur hale gelecek.
+**2. Real time.** In embedded systems, a correct answer delivered late is
+the same as a wrong answer. An ABS controller must detect wheel lockup and
+release brake pressure within milliseconds; "I'll get to it shortly" is
+not an option. For this reason, embedded engineers design not only for
+*what* is computed but also for *how long* it takes to compute. This
+concept becomes concrete in Chapter 7 (interrupts) and Chapter 10
+(FreeRTOS).
 
-**3. Donanıma yakınlık.** Masaüstünde donanımla aranda işletim sistemi,
-sürücüler ve kütüphanelerden oluşan kalın bir yastık var. Gömülüde o yastık
-ya incecik ya hiç yok: donanımı register (yazmaç — çevre biriminin içindeki
-küçük kontrol ve durum hücreleri; Bölüm 4'ün ana konusu) seviyesinde kendin
-programlarsın. Ekrana `printf` ile yazı basmak bile, senin ayağa
-kaldırdığın bir UART üzerinden akar.
+**3. Proximity to hardware.** On the desktop, a thick cushion of operating
+system, drivers, and libraries separates you from the hardware. In the
+embedded world, that cushion is thin or absent entirely: you program
+hardware directly at the register level (the small control and status
+cells inside a peripheral — the main subject of Chapter 4). Even printing
+text to the screen with `printf` flows through a UART that you yourself
+brought up.
 
-**4. Sorumluluk.** Masaüstü program çökerse yeniden başlatılır. Gömülü
-sistemde kötü giden bir yazılım güncellemesi cihazı tuğlalaştırabilir
-(brick — bir daha açılamaz hale getirmek). Üstelik cihaz sahada olabilir:
-bir kulenin tepesinde, bir aracın içinde, müşterinin elinde. "Düzeltmeyi
-yarın gönderirim" cümlesi, cihaza fiziksel erişim yoksa bir anlam ifade
-etmez.
+**4. Responsibility.** A desktop program that crashes gets restarted. In an
+embedded system, a faulty software update can brick the device (rendering
+it permanently inoperable). Moreover, the device may be deployed in the
+field: atop a tower, inside a vehicle, in a customer's hand. The statement
+"I'll ship the fix tomorrow" is meaningless without physical access to the
+device.
 
-:::saha-notu Tuğla hikâyeleri gerçektir
-Her gömülü ekibin dolabında bir tuğla hikâyesi vardır: yanlış boot imajı,
-yarıda kesilen flash yazımı, "küçücük bir değişiklikti" diye test edilmeden
-gönderilen sürüm. Bunu korkutmak için anlatmıyoruz — masandaki ZCU111 bir
-geliştirme kartıdır, JTAG sayesinde hemen her durumdan kurtarılır ve
-denemekten çekinmemen gerekir. Ama ürün kartı öyle değildir; bu yüzden bizim
-dünyada asıl kural şudur: değiştirdiysen, test et.
+:::saha-notu Bricking stories are real
+Every embedded team has a bricking story in its history: a wrong boot
+image, a flash write interrupted midway, a release shipped untested
+because "it was such a small change." We do not share this to alarm you —
+the ZCU111 on your desk is a development board, recoverable from nearly
+any state via JTAG, and you should not hesitate to experiment with it. A
+production board is a different matter, which is why the governing rule in
+our domain is: if you changed it, test it.
 :::
 
-## Senin görev tanımın
+## Your job description
 
-Peki bu dünyada "gömülü yazılımcı" somut olarak ne yapar? Beş fiille
-özetleyelim; önümüzdeki haftalarda hepsini tek tek yaşayacaksın.
+So what does an "embedded software engineer" actually do in this domain?
+Let us summarize it in five verbs; you will experience each of them
+firsthand over the coming weeks.
 
-- **Driver (sürücü) yazmak.** Bir çevre birimini register seviyesinde konuşup
-  onu ekibin geri kalanı için temiz fonksiyonlara çevirmek:
-  `uartSendChar()` yazan kişi olmak. Görev 2'de ilk driver'ını
-  yazacaksın.
-- **Donanımcıyla register map üzerinden konuşmak.** Register map (yazmaç
-  haritası), donanımcıyla aramızdaki sözleşmedir: hangi adreste hangi bit ne
-  anlama geliyor. Donanımcı FPGA'da bir IP tasarlar, sana register tablosunu
-  verir; sen o tabloyu koda çevirirsin. Bu iş akışını Bölüm 9'da göreceğiz.
-- **Bring-up.** Yeni bir kart ya da yeni bir IP masaya ilk geldiğinde ona ilk
-  nefesini aldırmak: saat çalışıyor mu, işlemci ayağa kalkıyor mu, ilk byte
-  UART'tan çıkıyor mu? Görev 0 senin ilk minik bring-up'ın olacak.
-- **Debug.** Hata ayıklamak — ama ekransız, bazen printf'siz bir dünyada.
-  Debugger, LED, UART ve gerektiğinde osiloskop; silah çantasını Bölüm 11'de
-  açacağız.
-- **Entegrasyon.** Herkesin parçası doğruyken bütünün yanlış çalıştığı o
-  meşhur güne çözüm bulmak: parçaları tek sistemde birleştirmek ve arayüz
-  hatalarını ayıklamak.
+- **Writing drivers.** Communicating with a peripheral at the register
+  level and converting that into clean functions for the rest of the team
+  to use: being the person who writes `uartSendChar()`. You will write
+  your first driver in Task 2.
+- **Communicating with hardware engineers through the register map.** The
+  register map is the contract between us and the hardware team: which
+  address, which bit, what meaning. The hardware engineer designs an IP in
+  the FPGA and hands you the register table; you convert that table into
+  code. We cover this workflow in Chapter 9.
+- **Bring-up.** Giving a new board or a new IP its first breath of life
+  when it arrives on the bench: is the clock running, does the processor
+  come up, does the first byte appear on UART? Task 0 is your first small
+  bring-up exercise.
+- **Debugging.** Diagnosing faults — often without a screen, sometimes
+  without even `printf`. Debugger, LEDs, UART, and, when needed, an
+  oscilloscope; we cover this toolkit in Chapter 11.
+- **Integration.** Resolving the familiar scenario where every individual
+  part is correct yet the system as a whole is not: bringing the pieces
+  together into one system and debugging interface errors.
 
-Bu listeyi katmanlar üzerinde gösterelim. Aşağıdaki şekilde bir gömülü
-sistemin yazılım katmanları var: en altta donanım, üstünde driver'lar,
-üstünde middleware (ara katman — protokol yığınları, RTOS gibi ortak
-hizmetler), en üstte uygulama.
+Let us map this list onto layers. The figure below shows the software
+layers of an embedded system: hardware at the bottom, drivers above it,
+middleware above that (protocol stacks, RTOS, and other shared services),
+and the application at the top.
 
-{{svg:sema-02-katmanlar.svg|Şekil 2 — Sorumluluk katmanları: gömülü yazılımcı driver ve middleware katmanlarında yaşar; masaüstü yazılımcının ayağı donanıma neredeyse hiç değmez.}}
+{{svg:sema-02-katmanlar.svg|Figure 2 — Layers of responsibility: the embedded software engineer works primarily in the driver and middleware layers; the desktop software engineer's work rarely touches the hardware directly.}}
 
-Masaüstü yazılımcı en üst şeritte yaşar; altındaki her şeyi işletim sistemi
-görünmez kılar. Biz ise ağırlıklı olarak driver ve middleware şeritlerinde
-çalışırız: bir elimiz register'larda, öbür elimiz uygulamaya temiz bir arayüz
-uzatır. Uygulama katmanına da çıkarız elbette — ama bizi biz yapan, alttaki
-iki şeridi korkusuzca yönetebilmektir.
+The desktop software engineer works in the topmost layer; the operating
+system renders everything beneath it invisible. We, by contrast, work
+predominantly in the driver and middleware layers: one hand on the
+registers, the other extending a clean interface to the application. We do
+work in the application layer as well — but what defines us is the ability
+to manage the two layers beneath it with confidence.
 
-:::ekip-notu Bizim ekipte bir işin yaşam döngüsü
-Tipik bir görev şöyle akar: (1) görevi alırsın — çoğu zaman "şu çevre birimi
-için driver lazım" ya da "şu IP'yi ayağa kaldır" cümlesiyle; (2) register
-map'i ve cihazın datasheet'ini okursun — kod yazmadan önce, sonra değil;
-(3) driver'ı yazarsın; (4) bring-up: kod gerçek kartta ilk kez çalışır, ilk
-seferde çalışmaması normaldir; (5) test edersin — başarı kriterin baştan
-bellidir; (6) code review'a gönderirsin (beklentileri Bölüm 12'de
-konuşacağız); (7) entegrasyon: parçan sistemin geri kalanıyla buluşur.
-Fark ettiysen "kod yazmak" yedi adımdan yalnızca biri. Bu doküman da seni
-tam olarak bu döngüye hazırlıyor.
+:::ekip-notu The life cycle of a task on our team
+A typical task proceeds as follows: (1) you receive the task — most often
+phrased as "this peripheral needs a driver" or "bring up this IP"; (2) you
+read the register map and the device datasheet — before writing code, not
+after; (3) you write the driver; (4) bring-up: the code runs on the actual
+board for the first time, and it is normal for it not to work on the first
+attempt; (5) you test it — your success criterion is defined up front; (6)
+you submit it for code review (expectations are discussed in Chapter 12);
+(7) integration: your component meets the rest of the system. Notice that
+"writing code" is only one of seven steps. This document prepares you for
+exactly this cycle.
 :::
 
-Bu tanımlar şu an biraz havada duruyorsa endişelenme; hepsi önümüzdeki
-görevlerde elinin altında somutlaşacak. Şimdi sıra bu işleri üzerinde
-yapacağın sahneyi tanımakta: bir sonraki bölümde masandaki kartla — Zynq ve
-ZCU111 ile — tanışıyoruz.
+If these descriptions still feel abstract, that is expected; they will
+become concrete through the tasks ahead. Next, we turn to the stage on
+which this work takes place: in the following chapter, we introduce the
+board on your desk — Zynq and the ZCU111.

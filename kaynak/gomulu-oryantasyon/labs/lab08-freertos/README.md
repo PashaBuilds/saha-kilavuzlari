@@ -1,33 +1,34 @@
-# lab08-freertos — Görev 8 çözümü: İlk FreeRTOS Uygulaman
+# lab08-freertos — Task 8 solution: Your First FreeRTOS Application
 
-## Ne yapar
+## What it does
 
-Üç FreeRTOS task'ı birlikte çalışır:
+Three FreeRTOS tasks run together:
 
-- **heartbeatTask** — DS50 LED'ini (PS MIO23) 500 ms periyotla `vTaskDelay`
-  ile yakıp söndürür (boş döngü yok).
-- **statusTask** — her 2 saniyede bir UART'a bir durum satırı basar.
-- **buttonHandlerTask** — SW19 butonuna (PS MIO22) basıldığında ISR'in
-  `xSemaphoreGiveFromISR` ile verdiği ikili (binary) semaforu
-  `xSemaphoreTake` ile bekler; basış anında bir satır basar.
+- **heartbeatTask** — toggles the DS50 LED (PS MIO23) on and off with a
+  500 ms period using `vTaskDelay` (no busy loop).
+- **statusTask** — prints a status line to UART every 2 seconds.
+- **buttonHandlerTask** — waits with `xSemaphoreTake` on the binary
+  semaphore that the ISR gives via `xSemaphoreGiveFromISR` when SW19
+  (PS MIO22) is pressed; prints a line the moment a press occurs.
 
-## Nasıl derlenir
+## How to build
 
-1. Platform component: OS = **`freertos10_xilinx`**, işlemci
-   `psu_cortexa53_0`; Görev 0-7'de kullandığın aynı `.xsa`'dan (yalnızca PS
-   yeterli, bu lab PL kullanmaz).
-2. Application component: boş uygulama + bu klasördeki `src/main.c`.
-3. Derle, JTAG ile yükle, UART terminalini 115200-8N1'de aç.
+1. Platform component: OS = **`freertos10_xilinx`**, processor
+   `psu_cortexa53_0`; use the same `.xsa` you used in Tasks 0-7 (only the
+   PS is needed, this lab does not use the PL).
+2. Application component: empty application + this folder's `src/main.c`.
+3. Build, load via JTAG, open the UART terminal at 115200-8N1.
 
-## Konsol notu
+## Console note
 
-FreeRTOS lablarında konsol çıktısı için standart `xil_printf` kullanılır
-(BSP'nin STDOUT'u UART0'a bağlar); `printf` ya da kendi `uart_ps` modülün
-gerekmez.
+FreeRTOS labs use the standard `xil_printf` for console output (the BSP
+routes STDOUT to UART0); you don't need `printf` or your own `uart_ps`
+module.
 
-## Beklenen çıktı
+## Expected output
 
-DS50 düzenli 500 ms'de bir yanıp sönerken terminalde her 2 saniyede bir
-`[Durum] N. periyot ...` satırı akar; SW19'a her basışında araya
-`[Buton] SW19 basildi (N. kez)` satırı girer — üç iş birbirini bozmadan,
-kesintisiz çalışır.
+While DS50 blinks steadily every 500 ms, a
+`[Status] period N -- heartbeatTask and buttonHandlerTask running` line
+streams in the terminal every 2 seconds; each time SW19 is pressed, a
+`[Button] SW19 pressed (N times)` line is interleaved — the three jobs
+run without interfering with one another, uninterrupted.

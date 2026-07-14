@@ -1,228 +1,240 @@
-# Bölüm 6 — Gömülü C Pratikleri II: Bellek ve Cache
+# Chapter 6 — Embedded C Practices II: Memory and Cache
 
-Bölüm 5'te dilin donanımla konuşma kalıplarını öğrendin: `volatile`, bit
-işlemleri, doğru genişlikli tipler. Şimdi dilin inceliklerinden belleğin
-gerçeklerine geçiyoruz — çünkü senin yazdığın her değişken, her fonksiyon
-çağrısı, aslında Bölüm 3'te gördüğün bellek haritasının bir köşesine
-yerleşiyor. Bu bölümü bitirdiğinde, "değişkenim nerede yaşıyor" ve
-"CPU'nun gördüğü değerle DDR'deki değer neden bazen aynı olmuyor"
-sorularına cevap verebileceksin.
+Chapter 5 covered the language's patterns for communicating with hardware:
+`volatile`, bit operations, and correctly sized types. This chapter moves
+from the subtleties of the language to the realities of memory — every
+variable you declare and every function call you make occupies a location
+within the memory map introduced in Chapter 3. By the end of this chapter,
+you will be able to answer two questions: where does a given variable
+actually reside, and why does the value the CPU sees sometimes differ from
+the value stored in DDR.
 
-## Stack, heap, static: üç bellek bölgesi
+## Stack, Heap, and Static: Three Memory Regions
 
-Bir C programındaki her değişken üç bölgeden birinde yaşar:
+Every variable in a C program resides in one of three regions:
 
-- **Stack (yığıt).** Fonksiyon içindeki yerel değişkenler burada
-  yaşar; bir fonksiyona girildiğinde otomatik ayrılır, çıkıldığında
-  otomatik geri verilir. Masaüstünde işletim sistemi stack taştığında
-  sayfa hatası verip seni uyarabilir; bizim bare-metal dünyamızda böyle
-  bir koruma yoktur — stack, kendisinden sonraki belleğe (genelde heap'e
-  ya da başka bir statik veriye) sessizce taşabilir. Görev 10'da bu
-  hatayı bizzat avlayacaksın.
-- **Static/global (.data ve .bss).** Fonksiyon dışında tanımlanan ya da
-  `static` anahtar kelimesiyle işaretlenen değişkenler, programın ömrü
-  boyunca sabit bir adreste yaşar. Başlangıç değeri verilenler `.data`
-  bölümüne (ELF dosyasında gerçek değerleriyle saklanır), sıfırla
-  başlayanlar `.bss` bölümüne gider (ELF dosyasında yer kaplamaz, sadece
-  "şu kadar bayt sıfırla" bilgisi taşınır — açılışta bu sıfırlama
-  gerçekten yapılır).
-- **Heap.** `malloc`/`free` ile çalışma zamanında ayrılıp geri verilen
-  bellek. Masaüstünde bolca kullanılan bir araçtır; bizim dünyamızda
-  temkinli yaklaşılır.
+- **Stack.** Local variables within a function reside here; space is
+  allocated automatically on entry and released automatically on exit. On
+  a desktop system, the operating system may raise a page fault and alert
+  you when the stack overflows; in our bare-metal environment, no such
+  protection exists — the stack can silently overrun into adjacent memory
+  (typically the heap or other static data). You will encounter this
+  failure directly in Task 10.
+- **Static/global (.data and .bss).** Variables declared outside any
+  function, or marked with the `static` keyword, occupy a fixed address
+  for the lifetime of the program. Variables with an explicit initial
+  value are placed in the `.data` section (stored in the ELF file with
+  their actual values); variables that begin at zero are placed in the
+  `.bss` section (which occupies no space in the ELF file — it carries
+  only a "zero this many bytes" instruction, executed at startup).
+- **Heap.** Memory allocated and released at run time via `malloc`/`free`.
+  It is used liberally on desktop systems; in our environment, it is
+  approached with caution.
 
-{{svg:sema-12-bellek-yerlesimi.svg|Şekil 12 — Stack/heap/static bellek yerleşimi: ELF dosyasının .text/.rodata/.data/.bss bölümleri linker script aracılığıyla RAM'e oturur; heap yukarı, stack aşağı büyür.}}
+{{svg:sema-12-bellek-yerlesimi.svg|Figure 12 — Stack/heap/static memory layout: the ELF file's .text/.rodata/.data/.bss sections are placed into RAM via the linker script; the heap grows upward and the stack grows downward.}}
 
-:::ekip-notu Bizim dünyada malloc ya hiç ya başlangıçta
-Masaüstü uygulamasında `malloc`/`free`'yi rahatça kullanırsın; işletim
-sistemi arkanı toplar. Bare-metal'de arkanı toplayan kimse yok: parçalanma
-(fragmentation), öngörülemeyen gecikme (heap yöneticisi her çağrıda ne
-kadar sürer, garantisi yok) ve "bellek bitti ama kimse haber vermedi"
-senaryosu hepsi senin sorumluluğun. Bizim ekipte pratik kural şu: ya
-**hiç malloc kullanma** (tüm buffer'lar derleme zamanında sabit boyutlu
-diziler olsun), ya da **yalnızca başlangıçta, bir kez** ayır ve programın
-geri kalanında hiç `free` çağırma. Çalışma zamanının ortasında
-malloc/free döngüsüne girmek, gömülü dünyada aramadığın bir belaya davet
-çıkarmaktır.
+:::ekip-notu In Our Environment: malloc Either Never or Only at Startup
+On a desktop application, you can use `malloc`/`free` freely; the
+operating system cleans up after you. In bare-metal development, no such
+safety net exists: fragmentation, unpredictable latency (the heap manager
+offers no guarantee on how long a given call will take), and the "memory
+exhausted with no warning" scenario are all your responsibility. The
+practical rule on our team is as follows: either **avoid malloc entirely**
+(allocate all buffers as fixed-size arrays at compile time), or allocate
+memory **once, at startup only**, and never call `free` for the remainder
+of the program's execution. Entering a malloc/free cycle mid-runtime
+invites problems that are best avoided in embedded development.
 :::
 
-## Linker script'e giriş: ELF'in bellek haritasına oturması
+## Introduction to the Linker Script: Placing the ELF into the Memory Map
 
-Derleyici senin `.c` dosyalarını `.o` (object) dosyalarına çevirir; ama
-bu dosyalarda henüz "bu fonksiyon şu adreste yaşayacak" bilgisi yoktur.
-Bu işi **linker** (bağlayıcı) yapar — ve linker'a "hangi bölümü hangi
-adrese koy" talimatını veren dosyaya **linker script** denir (Xilinx
-araçlarında adı genelde `lscript.ld`'dir, platformun .xsa'sından
-otomatik üretilir).
+The compiler translates your `.c` files into `.o` (object) files; at this
+stage, however, these files do not yet contain information about which
+address a given function will occupy. This task is performed by the
+**linker**, and the file that instructs the linker on which section to
+place at which address is called the **linker script** (in Xilinx tools,
+typically named `lscript.ld`, automatically generated from the platform's
+.xsa file).
 
-Derleme çıktısı olan **ELF** dosyası birkaç standart bölüme ayrılır:
-`.text` (derlenmiş makine kodu), `.rodata` (salt okunur sabitler, örneğin
-dizgi sabitleri), `.data` ve `.bss` (yukarıda gördüğün statik
-değişkenler), ve heap/stack için ayrılan boşluklar. Linker script her
-birine Bölüm 3'te tanıdığın bellek haritasından bir adres aralığı atar —
-tipik bir bare-metal projede tüm bunlar DDR Low'a (`0x0`'dan başlayan
-bölge) yerleşir; OCM ise küçüklüğü nedeniyle genelde yalnızca FSBL gibi
-özel durumlar için kullanılır. Vitis bu dosyayı platformun bellek
-haritasına göre senin için üretir; sen büyük çoğunlukla ona dokunmadan
-çalışırsın, ama var olduğunu ve ne iş yaptığını bilmek, "programım neden
-bu adrese sığmadı" gibi bir hatayla karşılaştığında hayat kurtarır.
+The **ELF** file produced by compilation is divided into several standard
+sections: `.text` (compiled machine code), `.rodata` (read-only constants,
+such as string literals), `.data` and `.bss` (the static variables
+described above), and space reserved for the heap and stack. The linker
+script assigns each of these an address range from the memory map
+introduced in Chapter 3 — in a typical bare-metal project, all of them are
+placed in DDR Low (the region starting at `0x0`); OCM, owing to its
+limited size, is generally reserved for special cases such as the FSBL.
+Vitis generates this file for you based on the platform's memory map, and
+in most cases you will work without modifying it directly. Knowing that it
+exists and what it does, however, is invaluable when you encounter an
+error such as "program does not fit at this address."
 
-## Cache: hız dostu, tutarlılık düşmanı
+## Cache: An Ally of Speed, an Adversary of Consistency
 
-**Cache** (önbellek), CPU ile DDR arasına giren küçük ama çok hızlı bir
-bellektir. DDR'ye her erişim CPU hızına göre yavaştır; cache, sık
-kullanılan verileri CPU'ya yakın tutarak bu farkı kapatır. Normal
-şartlarda cache tamamen şeffaftır — sen hiçbir şey yapmadan işini görür
-ve programın hızlanır.
+The **cache** is a small but very fast memory that sits between the CPU
+and DDR. Every access to DDR is slow relative to CPU speed; the cache
+narrows this gap by keeping frequently used data close to the CPU. Under
+normal conditions, the cache is entirely transparent — it performs its
+function without any action on your part, and your program runs faster.
 
-Şeffaflık, tek bir yazarın (CPU'nun) belleğe eriştiği sürece bozulmaz.
-Sorun, **ikinci bir yazar** sahneye çıktığında başlar — mesela bir
-**DMA** (Direct Memory Access — doğrudan bellek erişimi, CPU'yu
-atlayarak veri taşıyan bir donanım birimi) ya da PL'deki bir IP,
-doğrudan DDR'ye yazar. CPU'nun cache'i bu yazmadan haberdar değildir;
-CPU o adresi okuduğunda cache'te duran **eski** kopyayı döndürür, DDR'de
-duran yepyeni veriyi değil.
+This transparency holds as long as a single writer — the CPU — accesses
+memory. The problem arises when a **second writer** enters the picture:
+for example, a **DMA** (Direct Memory Access, a hardware unit that
+transfers data directly to memory, bypassing the CPU) engine, or an IP
+block in the PL, writes directly to DDR. The CPU's cache has no knowledge
+of this write; when the CPU subsequently reads that address, it returns
+the **stale** copy held in the cache rather than the newly written data in
+DDR.
 
-{{svg:sema-13-cache-dma.svg|Şekil 13 — Cache hiyerarşisi ve tutarlılık: DMA'nın DDR'a yazdığı yeni veriyi CPU'nun cache'ten eski okuması, invalidate sonrası doğru okumaya dönüşü.}}
+{{svg:sema-13-cache-dma.svg|Figure 13 — Cache hierarchy and consistency: the CPU reading stale data from cache after DMA writes new data to DDR, and the return to correct reads following an invalidate.}}
 
-Bu, "DMA yazdı ama CPU eskiyi okuyor" senaryosudur ve gömülü dünyanın
-klasik hata kaynaklarından biridir. Çözüm, CPU'ya "bu adres aralığındaki
-cache kopyanı at, bir dahaki okumada gerçekten DDR'ye git" demektir —
-buna **invalidate** (geçersiz kılma) denir. Tersi yönde bir ihtiyaç da
-var: CPU bir veriyi yazdı ama henüz cache'te duruyor, DMA'nın DDR'den bu
-veriyi okumasını istiyorsun — bu durumda CPU'nun cache'teki "kirli"
-(henüz DDR'ye yazılmamış) veriyi DDR'ye göndermesi gerekir, buna
-**flush** (temizleme) denir.
+This is the "DMA wrote, but the CPU is reading stale data" scenario, and
+it is one of the classic sources of error in embedded development. The
+remedy is to instruct the CPU to discard its cached copy for the given
+address range and genuinely access DDR on the next read — this operation
+is called **invalidate**. A converse need also exists: the CPU has written
+data that still resides only in cache, and you need a DMA engine to read
+that data from DDR — in this case, the CPU's "dirty" cached data (not yet
+written to DDR) must be written out to DDR, an operation called **flush**.
 
-Xilinx standalone BSP'si (BSP — Board Support Package; çevre birimi
-sürücülerini, başlangıç kodunu ve xparameters.h'i içeren/üreten ara
-katman; ayrıntısı Bölüm 11'de) bu işlemleri hazır fonksiyonlarla sunar:
-`Xil_DCacheInvalidateRange(adres, uzunluk)` ve
-`Xil_DCacheFlushRange(adres, uzunluk)`. Kural basit: **DMA'nın yazdığı
-bir bölgeyi CPU okumadan önce invalidate et; CPU'nun yazdığı bir bölgeyi
-DMA okumadan önce flush et.**
+The Xilinx standalone BSP (BSP — Board Support Package; the intermediate
+layer that contains or generates peripheral drivers, startup code, and
+xparameters.h; discussed in detail in Chapter 11) provides these
+operations as ready-made functions: `Xil_DCacheInvalidateRange(address,
+length)` and `Xil_DCacheFlushRange(address, length)`. The rule is simple:
+**invalidate a region written by DMA before the CPU reads it; flush a
+region written by the CPU before DMA reads it.**
 
-:::derin-dalis A53'te FlushRange aslında InvalidateRange'dir
-ARMv8 (Cortex-A53) standalone BSP'sinde ilginç bir ayrıntı var:
-`Xil_DCacheFlushRange` fonksiyonu, kaynak kodda doğrudan
-`Xil_DCacheInvalidateRange`'in bir takma adı (makro) olarak tanımlıdır —
-`#define Xil_DCacheFlushRange Xil_DCacheInvalidateRange`. Yani isim
-"flush" dese de, A53'te bu makronun gerçekte çalıştırdığı işlem bir
-range-invalidate'tir (ki ARMv8'de bu, önce temizleyip sonra geçersiz
-kılan bir "clean+invalidate" olarak uygulanır). Pratik sonucu: A53
-kodunda iki ismi de görebilirsin, ikisi de aynı donanım işlemine gider —
-ama isim, hangi kavramsal işlemi çağırdığını her zaman doğru
-yansıtmayabilir. Kaynak: `content/_arastirma.md` §10.
+:::derin-dalis On the A53, FlushRange Is Actually InvalidateRange
+The ARMv8 (Cortex-A53) standalone BSP contains a notable detail: the
+`Xil_DCacheFlushRange` function is defined directly in the source code as
+an alias (macro) for `Xil_DCacheInvalidateRange` —
+`#define Xil_DCacheFlushRange Xil_DCacheInvalidateRange`. In other words,
+although the name suggests "flush," on the A53 this macro actually
+performs a range-invalidate operation (which, on ARMv8, is implemented as
+a "clean+invalidate" that cleans before invalidating). The practical
+implication: in A53 code, you may encounter both names, and both resolve
+to the same hardware operation — but the name does not always accurately
+reflect the conceptual operation it invokes. Source: `content/_arastirma.md` §10.
 :::
 
-## Alignment: adresin hizası
+## Alignment: The Address Boundary
 
-**Alignment** (hizalama), bir verinin başladığı adresin, kendi
-boyutunun katı olması gerekliliğidir — 4 baytlık bir `unsigned int`'in
-adresi 4'ün katı, 8 baytlık bir `unsigned long long`'un adresi 8'in katı
-olmalıdır gibi.
-Çoğu ARM mimarisinde hizasız erişim çalışır ama yavaştır (ya da bazı
-durumlarda hiç çalışmaz); DMA transferleri ise çoğu zaman belirli bir
-hizalamayı (örneğin cache satırı boyutu — tipik 64 bayt) **şart koşar**.
-Derleyici normal değişkenlerin hizalamasını kendi halleder; DMA'ya
-vereceğin bir buffer'ı elle hizalamak istediğinde
-`__attribute__((aligned(64)))` gibi bir nitelik kullanırsın. Şimdilik
-kavramı tanı yeter — Bölüm 9'da DMA'ya değince tekrar karşına çıkacak.
+**Alignment** is the requirement that the starting address of a piece of
+data be a multiple of its own size — for example, a 4-byte `unsigned int`
+must reside at an address that is a multiple of 4, and an 8-byte
+`unsigned long long` at an address that is a multiple of 8. On most ARM
+architectures, unaligned access works but is slower (or, in some cases,
+does not work at all); DMA transfers, on the other hand, frequently
+**require** a specific alignment (for example, the cache line size —
+typically 64 bytes). The compiler handles alignment of ordinary variables
+automatically; when you need to align a buffer intended for DMA manually,
+you use an attribute such as `__attribute__((aligned(64)))`. For now, it
+is sufficient to be familiar with the concept — it will reappear when DMA
+is addressed in Chapter 9.
 
-:::tuzak "Debug'da çalışıyor, release'te çalışmıyor" klasiği
-Bu cümleyi gömülü kariyerinde defalarca duyacaksın (ve söyleyeceksin).
-İki sık kök nedeni var, ikisi de bu iki bölümde gördüğün konulardan
-çıkıyor: **(1) eksik `volatile`** — debug derlemesi genelde `-O0`
-(optimizasyonsuz) yapılır, derleyici gereksiz okuma/yazmayı silmez,
-kod "tesadüfen" çalışır; release derlemesi `-O2` gibi agresif bir
-seviyede yapılır, derleyici Bölüm 5'te gördüğün optimizasyonu uygular
-ve `volatile` eksikse okuma sessizce kaybolur. **(2) cache/DMA
-tutarlılığı** — debug'da genelde daha yavaş, daha öngörülebilir bir
-akış vardır (ya da cache bazı debug yapılandırmalarında kapalı
-tutulur); release'de hız artınca CPU'nun cache'ten eski veri okuma
-penceresi gerçek bir sorun olarak ortaya çıkar. İkisi de "kod yanlış
-değildi, optimizasyon seviyesi hatayı görünür kıldı" örneğidir — kodun
-kendisi baştan yanlıştı, sadece -O0 bunu senden gizliyordu.
+:::tuzak "It Works in Debug but Not in Release" — a Familiar Pattern
+You will hear this statement — and make it yourself — repeatedly over the
+course of an embedded career. It has two common root causes, both of
+which trace back to material covered in these two chapters. **(1) Missing
+`volatile`** — a debug build is typically compiled with `-O0` (no
+optimization); the compiler does not eliminate ostensibly redundant reads
+or writes, and the code works "by accident." A release build is compiled
+at a more aggressive level, such as `-O2`; the compiler applies the
+optimization described in Chapter 5, and if `volatile` is missing, a read
+silently disappears. **(2) Cache/DMA consistency** — a debug build
+generally runs a slower, more predictable execution path (or the cache is
+disabled in some debug configurations); once speed increases in the
+release build, the window in which the CPU reads stale data from cache
+becomes a real problem. Both cases illustrate the same principle: the code
+was not correct to begin with, and the optimization level merely exposed a
+pre-existing defect that -O0 had been concealing.
 :::
 
-Bellek nereye yerleşiyor, ne zaman cache'e güvenip ne zaman güvenmeyeceğini
-artık biliyorsun. Sıra pratikte: bu sefer kartın tek girdisini —
-butonu — okuyacaksın.
+You now understand where memory is placed and when the cache can and
+cannot be trusted. It is time to put this into practice: this time, you
+will read the board's single input device — the button.
 
-:::gorev no=3 zorluk=1 baslik="Buton Oku (Polling)" kisa="Buton Oku"
-[Hedef]
-SW19 butonunu (PS MIO22) sürekli sorgulama (polling) ile okuyup DS50
-LED'ine (PS MIO23) yansıtmak; debounce'lu (sıçrama'dan arındırılmış) bir
-basma sayacını UART'a basmak.
+:::gorev no=3 zorluk=1 baslik="Read the Button (Polling)" kisa="Read the Button"
+[Objective]
+Read the SW19 button (PS MIO22) via polling and reflect its state on the
+DS50 LED (PS MIO23); print a debounced press counter to the UART.
 
-[Ön koşul]
-Bölüm 6 okundu; Görev 2 tamamlandı (`uart_ps` modülün hazır ve çalışıyor).
+[Prerequisites]
+Chapter 6 has been read; Task 2 is complete (`uart_ps` module is ready and
+functioning).
 
-[Adımlar]
-1. Karttaki 8 LED, 5 buton ve DIP switch'in PL pinlerinde olduğunu
-   Bölüm 2'den hatırla — bu görevde de yalnızca tek PS butonu (SW19) ve
-   tek PS LED'i (DS50) kullanıyoruz; 8 LED'lik yürüyen ışık Görev 7'yi
-   bekliyor.
-2. `buton_ps.h/.c` modülünü yaz: `buttonInit()` içinde `XGpioPs`
-   sürücüsünü (Görev 1'den tanıdık) `LookupConfig` + `CfgInitialize`
-   ile kur; SW19'u giriş, DS50'yi çıkış (+ çıkış etkinleştirme) yap.
-3. `buttonRead()` içinde `XGpioPs_ReadPin` ile SW19'u oku;
-   `ledPsWrite()` içinde `XGpioPs_WritePin` ile DS50'yi sür.
-4. `main()`'de her birkaç milisaniyede bir (`usleep`, `sleep.h`) SW19'u
-   oku; okunan ham değer art arda birkaç turda aynı kalıp mevcut kararlı
-   durumdan farklıysa geçişi "gerçek" kabul et (sayaç-tabanlı debounce —
-   aşağıdaki analojiye bak), LED'i güncelle ve basılma yönündeki her
-   geçişte bir sayaç artır.
-5. Sayaç değiştiğinde `uart_ps` modülünle ("Görev 2'nin çıktısı yeniden
-   kullanılıyor") bir durum satırı bas.
+[Steps]
+1. Recall from Chapter 2 that the board's 8 LEDs, 5 buttons, and DIP
+   switch are on PL pins — this task again uses only the single PS button
+   (SW19) and the single PS LED (DS50); the 8-LED running-light pattern is
+   reserved for Task 7.
+2. Write the `button_ps.h/.c` module: in `buttonInit()`, configure the
+   `XGpioPs` driver (familiar from Task 1) via `LookupConfig` +
+   `CfgInitialize`; set SW19 as input and DS50 as output (plus output
+   enable).
+3. In `buttonRead()`, read SW19 via `XGpioPs_ReadPin`; in `ledPsWrite()`,
+   drive DS50 via `XGpioPs_WritePin`.
+4. In `main()`, read SW19 every few milliseconds (`usleep`, `sleep.h`); if
+   the raw value read remains consistent across several successive
+   iterations and differs from the current stable state, treat the
+   transition as genuine (counter-based debounce — see the analogy
+   below), update the LED, and increment a counter on every transition
+   toward the pressed state.
+5. When the counter changes, print a status line using your `uart_ps`
+   module (reusing the output of Task 2).
 
-:::analoji Debounce, bir kapı zilinin "gerçekten mi çaldı" sorusu gibidir
-Titreşen bir kapı ziline tek dokunuşta zil birkaç kez art arda öter;
-sen yine de "biri bir kez geldi" dersin, üç kez gelmiş saymazsın. Beynin
-bunu, kısa süreli titreşimleri göz ardı edip "birkaç an sonra hâlâ aynı
-mı" diye kontrol ederek yapar. Sayaç-tabanlı debounce da tam bunu yapar:
-ham okumayı hemen güvenmez, birkaç ardışık turda aynı değeri görene kadar
-bekler.
+:::analoji Debounce Resembles Determining Whether a Doorbell "Really" Rang
+A single press of a mechanically noisy doorbell button can cause the bell
+to ring several times in rapid succession; you nonetheless conclude that
+"someone rang once," not three times. Your brain accomplishes this by
+disregarding brief fluctuations and checking whether the state "is still
+the same a moment later." Counter-based debounce operates on the same
+principle: it does not trust a raw reading immediately, but waits until
+the same value is observed across several consecutive iterations.
 :::
 
-[Başarı kriteri]
-Butona basılı tuttuğun sürece DS50 yanıyor, bıraktığın anda sönüyor;
-butona tam 10 kez bastığında UART'taki sayaç tam "10" diyor — sıçrama
-yüzünden 11 ya da 12 demiyor.
+[Success Criteria]
+DS50 remains lit for as long as the button is held down and turns off the
+moment it is released; after exactly 10 button presses, the UART counter
+reads exactly "10" — not 11 or 12 due to bounce.
 
-[Kendini sına]
-- Debounce süresini (örnekleme aralığı × ardışık tur sayısı) neye göre
-  seçtin? Çok kısa tutsaydın ne olurdu, çok uzun tutsaydın ne olurdu?
-- Bu polling döngüsü çalışırken CPU başka hiçbir iş yapamıyor —
-  döngünün her turu ne kadar sürüyor, CPU zamanının ne kadarını bu
-  beklemeye harcıyorsun?
-- `buttonRead()`'in döndürdüğü ham değeri debounce'suz doğrudan
-  LED'e yazsaydın, gözle görülür fark ne olurdu?
+[Self-Check]
+- On what basis did you choose the debounce duration (sampling interval x
+  number of consecutive iterations)? What would happen if it were too
+  short, and what would happen if it were too long?
+- While this polling loop runs, the CPU cannot perform any other work —
+  how long does each loop iteration take, and what fraction of CPU time is
+  spent on this waiting?
+- If you wrote the raw value returned by `buttonRead()` directly to the
+  LED without debouncing, what visible difference would you observe?
 
-[Takıldıysan]
-::ipucu İpucu 1 — LED hiç yanmıyor ya da hep yanık
-Yön (DIRM) ve çıkış etkinleştirme (OEN) register'larını doğru pinler
-için mi kurdun — SW19 (MIO22) giriş, DS50 (MIO23) çıkış olacak şekilde
-mi? `buttonInit()`'in dönüş değerini kontrol ettin mi; `XST_SUCCESS`
-dönmüyorsa `XPAR_XGPIOPS_0_DEVICE_ID` doğru mu diye `xparameters.h`'a
-bak.
+[If You Get Stuck]
+::ipucu Hint 1 — LED Never Lights or Stays Lit
+Did you configure the direction (DIRM) and output-enable (OEN) registers
+for the correct pins — SW19 (MIO22) as input, DS50 (MIO23) as output? Did
+you check the return value of `buttonInit()`? If it does not return
+`XST_SUCCESS`, check `xparameters.h` to confirm that
+`XPAR_XGPIOPS_0_DEVICE_ID` is correct.
 ::/
-::ipucu İpucu 2 — Sayaç sekiyor (10 basışta 11-12 diyor)
-`DEBOUNCE_ESIK` (ardışık aynı okuma eşiği) çok küçük olabilir — bir
-sıçramanın birkaç ardışık turda "gerçek" sanılacak kadar uzun sürmesi
-mümkün. Eşiği artırıp örnekleme aralığını (kaç mikrosaniyede bir
-okuduğunu) birlikte değerlendir; ikisinin çarpımı senin debounce
-penceren.
+::ipucu Hint 2 — Counter Skips (Reads 11-12 for 10 Presses)
+`DEBOUNCE_ESIK` (the consecutive-identical-reading threshold) may be too
+small — a bounce can last long enough across several consecutive
+iterations to be mistaken for a genuine transition. Increase the
+threshold and reconsider it together with the sampling interval (how
+often, in microseconds, you read); the product of the two is your
+debounce window.
 ::/
-::cozum Tam çözüm — lab03-buton
-Aşağıdaki dosyalar SW19/DS50'yi debounce'lu polling ile okuyup UART'a
-basar (`uart_ps` modülü lab02'den birebir kopyadır):
-{{kod:lab03-buton/src/buton_ps.h}}
-{{kod:lab03-buton/src/buton_ps.c}}
-{{kod:lab03-buton/src/main.c}}
+::cozum Full Solution — lab03-button
+The following files read SW19/DS50 via debounced polling and print to
+UART (the `uart_ps` module is an exact copy from lab02):
+{{kod:lab03-button/src/button_ps.h}}
+{{kod:lab03-button/src/button_ps.c}}
+{{kod:lab03-button/src/main.c}}
 ::/
 :::
 
-Butonu her birkaç milisaniyede bir sen sorduğun için CPU'nun neredeyse
-tüm zamanı bu soruyu sormakla geçti — polling'in bedelini gördün, şimdi
-kesme zamanı: Bölüm 7'de aynı buton, CPU'yu hiç meşgul etmeden sana haber
-verecek.
+Because you queried the button every few milliseconds, the CPU spent
+nearly all of its time asking that question — you have now seen the cost
+of polling. It is time for interrupts: in Chapter 7, the same button will
+notify you without occupying the CPU at all.

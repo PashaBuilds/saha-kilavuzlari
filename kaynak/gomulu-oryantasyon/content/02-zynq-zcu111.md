@@ -1,230 +1,253 @@
-# Bölüm 2 — Tanış: Zynq ve ZCU111
+# Chapter 2 — Meet Zynq and the ZCU111
 
-Bölüm 1'de rolünü konuştuk; şimdi sahneyi tanıyalım. Masandaki yeşil kartın
-adı **ZCU111**, kalbindeki büyük çipin adı **Zynq UltraScale+ RFSoC**
-(XCZU28DR). Bu bölümün sonunda o çipin içindeki iki dünyayı ayırt edebilecek
-ve kartın üzerindeki her önemli parçanın ne işe yaradığını söyleyebileceksin.
-Bölüm sonunda da ilk görevin var: karta ilk kez dokunacaksın.
+In Chapter 1 we discussed your role; now let us get acquainted with the
+stage. The green board on your desk is called the **ZCU111**, and the
+large chip at its core is the **Zynq UltraScale+ RFSoC** (XCZU28DR). By the
+end of this chapter you will be able to distinguish the two worlds inside
+that chip and describe the purpose of every major component on the board.
+At the end of the chapter, your first task awaits: your first physical
+contact with the board.
 
-## SoC: tek çipte koca bir sistem
+## SoC: an entire system on one chip
 
-Eski nesil bir sistemde işlemci, bellek denetleyicisi, çevre birimleri ve
-özel devreler anakart üzerinde ayrı çipler olurdu. SoC (system on chip)
-yaklaşımı bunların hepsini tek silikon pakete toplar: daha az yer, daha az
-güç, çok daha hızlı iç bağlantılar. Zynq ailesi bu fikri bir adım öteye
-taşır ve tek pakete yalnızca işlemci sistemini değil, kocaman bir FPGA'yı da
-koyar. Yani çipin içinde iki dünya yan yana yaşar:
+In an earlier generation of systems, the processor, memory controller,
+peripherals, and specialized circuitry existed as separate chips on a
+motherboard. The SoC (system on chip) approach consolidates all of this
+into a single silicon package: less board space, lower power, and far
+faster internal interconnects. The Zynq family takes this idea a step
+further by placing not only a processing system but also a substantial
+FPGA within the same package. Two distinct worlds coexist inside the chip:
 
-{{svg:sema-03-zynq-kusbakisi.svg|Şekil 3 — Zynq UltraScale+ kuşbakışı: solda sabit işlemci sistemi (PS), sağda programlanabilir lojik (PL), aralarında AXI köprüleri.}}
+{{svg:sema-03-zynq-kusbakisi.svg|Figure 3 — Zynq UltraScale+ overview: the fixed Processing System (PS) on the left, the Programmable Logic (PL) on the right, connected by AXI bridges.}}
 
-## PS — Processing System: sabit, hazır, tanıdık
+## PS — Processing System: fixed, ready, familiar
 
-**PS (Processing System — işlemci sistemi)** çipin silikonda sabit
-dökülmüş yarısıdır; sen hiçbir şey yapmasan da oradadır ve çalışır.
-İçinde üç ana grup var:
+The **PS (Processing System)** is the half of the chip fixed in silicon;
+it is present and functional regardless of what you do. It comprises three
+main groups:
 
-- **APU (Application Processing Unit):** 4 adet **Arm Cortex-A53**
-  çekirdeği. Linux koşturabilecek sınıfta uygulama işlemcileri — biz bu
-  yolculukta üzerlerinde bare-metal (işletim sistemsiz) kod çalıştıracağız.
-- **RPU (Real-time Processing Unit):** 2 adet **Arm Cortex-R5F** çekirdeği.
-  Gerçek zaman için tasarlanmış, davranışı öngörülebilir çekirdekler;
-  Bölüm 1'deki "doğru cevabın geç gelmesi yanlış cevaptır" cümlesinin
-  silikondaki karşılığı.
-- **Sabit çevre birimleri:** UART, I2C, SPI, GPIO (General Purpose I/O —
-  genel amaçlı giriş/çıkış pinleri) denetleyicileri, DDR bellek
-  denetleyicisi ve daha fazlası. Bunlar da silikonda hazır; her birinin
-  Xilinx tarafından yazılmış, denenmiş driver'ı vardır.
+- **APU (Application Processing Unit):** four **Arm Cortex-A53** cores.
+  These are application-class processors capable of running Linux; in this
+  journey we will run bare-metal (no operating system) code on them.
+- **RPU (Real-time Processing Unit):** two **Arm Cortex-R5F** cores.
+  Cores designed for real-time behavior and predictable timing — the
+  silicon counterpart of the statement in Chapter 1 that "a correct answer
+  delivered late is the same as a wrong answer."
+- **Fixed peripherals:** UART, I2C, SPI, and GPIO (General Purpose
+  Input/Output) controllers, a DDR memory controller, and more. These are
+  likewise fixed in silicon, each with a driver written and validated by
+  Xilinx.
 
-PS çevre birimleri dış dünyaya **MIO** (multiplexed I/O — çoklanmış
-giriş/çıkış) adı verilen sınırlı sayıda özel pin üzerinden çıkar. Bu
-ayrıntı birazdan önem kazanacak.
+PS peripherals reach the outside world through a limited set of dedicated
+pins called **MIO** (multiplexed I/O). This detail will become relevant
+shortly.
 
-## PL — Programmable Logic: boş tuval
+## PL — Programmable Logic: a blank canvas
 
-**PL (Programmable Logic — programlanabilir lojik)** çipin FPGA yarısıdır:
-milyonlarca küçük lojik hücreden örülü bir **FPGA fabric**'i (İngilizce
-"fabric" = kumaş; hücrelerden dokunmuş, yeniden yapılandırılabilir bir
-donanım örgüsü). Güç verildiğinde bu fabric boştur; donanımcı arkadaşların
-Verilog/VHDL ile devre tasarlar, araç bu tasarımı **bitstream** (fabric'i
-yapılandıran ikili dosya) haline getirir ve fabric ancak o yüklendiğinde bir
-"devreye" dönüşür. Donanımcının
-tasarladığı **IP**'ler (intellectual property core — hazır ya da özel devre
-bloğu) işte burada yaşar: bir sinyal işleme zinciri, bir motor kontrol
-bloğu ya da mütevazı bir AXI GPIO.
+The **PL (Programmable Logic)** is the FPGA half of the chip: an **FPGA
+fabric** woven from millions of small logic cells (the term "fabric"
+refers to a reconfigurable hardware weave built from these cells). At
+power-up, this fabric is empty; your hardware colleagues design circuits
+in Verilog/VHDL, and the toolchain converts that design into a
+**bitstream** (a binary file that configures the fabric) — the fabric
+becomes a functioning "circuit" only once that bitstream is loaded. The
+**IP** blocks (intellectual property cores — off-the-shelf or custom
+circuit blocks) designed by hardware engineers live here: a signal
+processing chain, a motor control block, or something as modest as an AXI
+GPIO.
 
-## Evlilik: AXI
+## The union: AXI
 
-PS ile PL ayrı dünyalar olsaydı bu çipin esprisi kalmazdı. İkisi **AXI**
-(Advanced eXtensible Interface — Arm'ın çip içi veriyolu standardı)
-köprüleriyle birbirine bağlıdır. Senin açından kritik sonuç şu: PS'ten
-bakınca PL'deki bir IP, bir adres penceresinden görünen register'lar
-kümesidir. Yani donanımcının IP'siyle konuşmak, Bölüm 4'te öğreneceğin
-register okuma-yazma işinden ibarettir; köprünün ayrıntılarına Bölüm 9'da
-gireceğiz.
+If PS and PL were entirely separate worlds, the chip would lose its point.
+The two are connected by **AXI** (Advanced eXtensible Interface — Arm's
+on-chip bus standard) bridges. The key consequence for you is this: from
+the PS side, an IP in the PL appears as a set of registers visible through
+an address window. In other words, communicating with a hardware
+engineer's IP amounts to the register read/write operations you will learn
+in Chapter 4; we cover the details of the bridge itself in Chapter 9.
 
-## Aynı iş, iki dünya: PS IP ve PL IP
+## The same task, two worlds: PS peripherals and PL IP
 
-Kafa karıştıran ama ufuk açan bir gerçek: aynı işi çoğu zaman iki tarafta da
-yapabilirsin. PS'te hazır bir UART var; donanımcı istese PL'ye de bir UART
-IP'si koyar. Peki farkları ne?
+A fact that is initially confusing but ultimately clarifying: the same
+function can often be implemented on either side. The PS already includes
+a UART; a hardware engineer could just as easily place a UART IP in the
+PL. What distinguishes the two?
 
-| | PS çevre birimi | PL IP'si |
+| | PS peripheral | PL IP |
 |---|---|---|
-| Varlığı | Silikonda sabit, hep orada | Bitstream yüklenmeden yok |
-| Esneklik | Sayısı ve özellikleri değişmez | İstediğin kadar, istediğin özellikte |
-| Driver | Hazır ve denenmiş (Xilinx) | Donanımcının tablosuna göre çoğu zaman sen yazarsın |
-| Pin erişimi | Sınırlı MIO pinleri | Kartın uygun her FPGA pini |
+| Presence | Fixed in silicon, always present | Does not exist until the bitstream is loaded |
+| Flexibility | Fixed in number and feature set | As many, and as customized, as needed |
+| Driver | Ready-made and validated (Xilinx) | Most often written by you, based on the hardware engineer's table |
+| Pin access | Limited to MIO pins | Any suitable FPGA pin on the board |
 
-:::analoji Hazır mutfak, boş arsa
-PS, mutfağı kurulu bir eve taşınmaktır: ocağın yeri bellidir, belki tam
-istediğin yerde değildir ama bugün yemek pişirirsin. PL boş arsadır:
-istediğin mutfağı kurarsın, ama mimar (donanımcı) çizmeden ve inşaat
-(bitstream) bitmeden çay bile demleyemezsin.
+:::analoji A furnished kitchen versus an empty lot
+PS is like moving into a house with a kitchen already installed: the stove
+is where it is, perhaps not exactly where you would have placed it, but
+you can cook today. PL is an empty lot: you build the kitchen you want,
+but you cannot even boil water for tea until the architect (the hardware
+engineer) has drawn the plans and construction (the bitstream) is
+complete.
 :::
 
-## Kart turu: ZCU111'in üzerinde ne var?
+## Board tour: what is on the ZCU111?
 
-Çipten karta çıkalım. Aşağıdaki kroki fotoğraf değil, harita — parçaların
-yerleri temsilidir, kimlikleri gerçektir.
+Moving from the chip to the board. The diagram below is not a photograph
+but a map — component placement is representative, but identities are
+accurate.
 
-{{svg:sema-04-kart-anatomisi.svg|Şekil 4 — ZCU111 kart anatomisi (temsili kroki): sarı işaretli DS50/SW19 ikilisine PS'ten bitstream'siz erişilir; LED, buton ve DIP switch kümesi PL pinlerindedir.}}
+{{svg:sema-04-kart-anatomisi.svg|Figure 4 — ZCU111 board anatomy (representative diagram): the DS50/SW19 pair, marked in yellow, is accessible from the PS without a bitstream; the LEDs, buttons, and DIP switch cluster sit on PL pins.}}
 
-- **U1 — RFSoC:** Kartın ortasındaki büyük paket; az önce tanıştığın
-  XCZU28DR. PS de PL de bu tek paketin içinde.
-- **DDR4 SODIMM (J50):** PS'in ana belleği — dizüstü bilgisayardakine benzer
-  şekilde sokete takılan 4 GB'lık modül. Bölüm 3'te bellek haritasında yerini
-  göreceksin.
-- **8 kullanıcı LED'i (DS11–DS18):** Sıra sıra dizilmiş yeşil LED'ler. Dikkat:
-  bunlar **PL pinlerine** bağlıdır — birazdan bu ayrıntıya döneceğiz.
-- **DIP switch (SW14) ve 5'li buton takımı (SW9–SW13):** 8 kutuplu anahtar
-  ve yön tuşları gibi dizilmiş beş buton. Bunlar da PL tarafındadır; bu
-  yolculukta kart turunda tanıyıp Bölüm 9'a kadar kenarda bırakacağız.
-- **DS50 LED'i ve SW19 butonu:** Kartın gösterişsiz ama bizim için en değerli
-  ikilisi. PS'in MIO pinlerine bağlılar (LED MIO23, buton MIO22) — yani
-  bitstream olmadan, saf PS koduyla erişebileceğin tek LED ve tek buton.
-  İlk görevlerin baş aktörleri bunlar olacak.
-- **J83 micro-USB:** Tek kabloyla çok iş. Kartın üzerindeki FT4232 köprüsü bu
-  tek USB bağlantısından bilgisayarına dört ayrı port sunar: Port A **JTAG**
-  (programlama/debug arayüzü — harici bir probe gerekmez), Port B **PS
-  UART0** (terminal çıktın buradan akar), kalanlar PL UART'ı ve sistem
-  denetleyicisi içindir.
-- **SD kart yuvası (J100) ve boot switch (SW6):** Kart açılışta nereden boot
-  edeceğini SW6'nın konumundan öğrenir: JTAG, QSPI flash ya da SD kart.
-  Açılış hikâyesinin tamamı Bölüm 3'te.
-- **PMOD konnektörleri (J48/J49):** Hobi elektroniği dünyasından tanıdık
-  genişletme soketleri; küçük sensör/deneme kartları buraya takılır.
-- **Güç girişi:** Kartın kendi güç adaptörü ve açma-kapama anahtarı vardır;
-  USB'den beslenmez.
+- **U1 — RFSoC:** The large package at the center of the board — the
+  XCZU28DR you were introduced to above. Both PS and PL reside within this
+  single package.
+- **DDR4 SODIMM (J50):** The PS's main memory — a 4 GB module in a socketed
+  form factor similar to a laptop memory module. You will locate it on the
+  memory map in Chapter 3.
+- **8 user LEDs (DS11–DS18):** A row of green LEDs. Note: these are
+  connected to **PL pins** — we return to this point shortly.
+- **DIP switch (SW14) and a 5-button cluster (SW9–SW13):** An 8-position
+  switch and five buttons arranged like directional keys. These are also
+  on the PL side; we will identify them on the board tour and set them
+  aside until Chapter 9.
+- **DS50 LED and SW19 button:** The unassuming but, for our purposes, most
+  valuable pair on the board. They are connected to PS MIO pins (LED on
+  MIO23, button on MIO22) — making them the only LED and button accessible
+  from pure PS code, without a bitstream. They will be the primary actors
+  in your early tasks.
+- **J83 micro-USB:** A single cable doing a great deal of work. The board's
+  FT4232 bridge chip exposes four separate ports to your computer over
+  this one USB connection: Port A is **JTAG** (the programming/debug
+  interface — no external probe required), Port B is **PS UART0** (your
+  terminal output flows through here), and the remaining two serve the PL
+  UART and the system controller.
+- **SD card slot (J100) and boot switch (SW6):** On power-up, the board
+  determines its boot source from the position of SW6: JTAG, QSPI flash,
+  or SD card. The full boot story is covered in Chapter 3.
+- **PMOD connectors (J48/J49):** Expansion sockets familiar from the hobby
+  electronics world; small sensor or prototyping boards attach here.
+- **Power input:** The board has its own power adapter and power switch;
+  it is not powered over USB.
 
-## Dürüst bir itiraf: LED'ler neden hemen yanmayacak?
+## An honest admission: why the LEDs will not light up right away
 
-Yukarıda iki kez altını çizdik, şimdi açık konuşalım: kartın 8 LED'i, 5
-butonu ve DIP switch'i PL pinlerindedir. PL güç verildiğinde boş bir fabric
-olduğuna göre, bitstream yüklenmeden PS'ten o LED'lere giden hiçbir yol
-yoktur. PS koduyla, bitstream'siz erişebildiğin kullanıcı arayüzü DS50 LED'i
-ile SW19 butonundan ibarettir.
+We have emphasized this twice already, so let us state it plainly: the
+board's 8 LEDs, 5 buttons, and DIP switch are all on PL pins. Since the PL
+is an empty fabric at power-up, there is no path from the PS to those LEDs
+until a bitstream is loaded. The only user-facing interface reachable from
+PS code without a bitstream is the DS50 LED and the SW19 button.
 
-Bu yüzden ilk görevlerinde (Görev 1–5) tek LED ve tek butonla çalışacaksın.
-Gösterişsiz görünebilir ama bu sınırın kendisi dersin ta kendisi: PS/PL
-ayrımını slayttan değil, "LED'im neden yanmıyor?" sorusundan öğreneceksin.
-Sabret — Bölüm 9'da donanımcının hazırladığı bitstream ile PL kapısını
-açacağız ve 8 LED'lik yürüyen ışık orada seni bekliyor (Görev 7).
+For this reason, your early tasks (Tasks 1–5) will work exclusively with
+a single LED and a single button. This may seem unremarkable, but the
+constraint itself is the lesson: you will learn the PS/PL separation not
+from a slide but from the question "why won't my LED light up?" Be
+patient — in Chapter 9 we open the gate to the PL using a bitstream
+prepared by the hardware team, and the eight-LED chase pattern awaits you
+there (Task 7).
 
-:::tuzak İnternetteki her Zynq örneği senin kartında çalışmaz
-Web'de bulacağın "Zynq'te LED yakma" örneklerinin çoğu başka kartlar için
-yazılmıştır ve LED'leri farklı yerlere (MIO'ya ya da farklı PL pinlerine)
-bağlıdır. Kod hatasız derlenir, hiçbir şey yanmaz, saatler gider. Karta özgü
-her bağlantıyı kendi kartının user guide'ından (ZCU111 için UG1271) doğrulama
-refleksi, bu meslekte seni çok saatlik hüsranlardan kurtaracak.
+:::tuzak Not every Zynq example on the internet will work on your board
+Most "blinking an LED on Zynq" examples found online were written for a
+different board, with LEDs wired to different pins (MIO or otherwise).
+The code compiles without error, nothing lights up, and hours are lost.
+Developing the habit of verifying every board-specific connection against
+your own board's user guide (UG1271 for the ZCU111) will save you many
+hours of frustration in this profession.
 :::
 
-## RF tarafına bir pencere
+## A window into the RF side
 
-Adındaki RF'yi görmüşsündür: RFSoC'un süper gücü, çipin içine gömülü radyo
-frekansı veri dönüştürücüleridir — 8 adet RF-ADC (4.096 GSPS'ye kadar
-örnekleme) ve 8 adet RF-DAC (6.554 GSPS'ye kadar). Yani bu çip antenden
-gelen sinyali neredeyse doğrudan sayısallaştırabilir; kartın RF sinyalleri
-XM500 ek kartı üzerinden SMA konnektörlere çıkar. Bu, ZCU111'i sıradan bir
-geliştirme kartı olmaktan çıkaran özelliktir — ama bizim yolculuğumuzun
-dışındadır. Önce yürümeyi öğreniyoruz; hazır olduğunda serinin *RF Örnekleme
-Saha Kılavuzu*'na göz at.
+You have likely noticed the RF in the board's name: the RFSoC's defining
+capability is a set of radio-frequency data converters embedded directly
+in the chip — 8 RF-ADCs (sampling up to 4.096 GSPS) and 8 RF-DACs
+(up to 6.554 GSPS). This chip can digitize a signal arriving from an
+antenna almost directly; the board's RF signals are routed to SMA
+connectors via the XM500 add-on card. This is what sets the ZCU111 apart
+from an ordinary development board — but it lies outside the scope of
+this journey. We are learning to walk first; when you are ready, consult
+the series' *RF Sampling Field Guide*.
 
-Kart turunu bitirdin; artık eller devreye giriyor.
+The board tour is complete; it is time to get hands-on.
 
-:::gorev no=0 zorluk=1 baslik="İlk Temas" kisa="İlk Temas"
-[Hedef]
-Kartı fiziksel olarak kur, JTAG boot moduna al ve bilgisayarınla kart
-arasında doğru porttan çalışan bir seri terminal bağlantısı aç.
+:::gorev no=0 zorluk=1 baslik="First Contact" kisa="First Contact"
+[Objective]
+Physically set up the board, place it in JTAG boot mode, and establish a
+working serial terminal connection between your computer and the board on
+the correct port.
 
-[Ön koşul]
-Bölüm 0'daki kurulum listesi tamam (özellikle terminal programı kurulu);
-Bölüm 1 ve 2 okundu.
+[Prerequisites]
+The setup checklist from Chapter 0 is complete (in particular, a terminal
+program is installed); Chapters 1 and 2 have been read.
 
-[Adımlar]
-1. Kartı kutusundan çıkar: antistatik torbayı metal bir zeminde açma, kartı
-   kenarlarından tut, çipe ve konnektör pinlerine dokunma. Kuru ve iletken
-   olmayan bir masa yüzeyi yeterli.
-2. **SW6 boot switch'ini JTAG konumuna al: dört anahtarın hepsi ON.**
-   Kart fabrikadan QSPI32 konumunda gelir (ON, ON, OFF, ON) — yani büyük
-   ihtimalle bir anahtarı değiştirmen gerekecek. SW6'nın kart üzerindeki
-   yeri için Şekil 4'e bak.
-3. Güç adaptörünü karta bağla ama güç anahtarını henüz açma.
-4. J83 micro-USB konnektörünü bilgisayarına bağla.
-5. Bilgisayarında (Windows 10) seri portları bul. FT4232 köprüsü tek kablodan
-   birden fazla COM portu çıkarır; terminal çıktısı **PS UART0 = Port B**'den
-   gelir — tipik olarak dördün ikincisi, ama COM numaraları makineden makineye
-   değişir, elinle doğrula (emin olamazsan İpucu 2'ye bak). Portları görmenin
-   en kolay yolu **Aygıt Yöneticisi → Bağlantı Noktaları (COM & LPT)**; istersen
-   PowerShell'de tek satırla da listeleyebilirsin:
+[Steps]
+1. Remove the board from its packaging: do not open the antistatic bag on
+   a metal surface, hold the board by its edges, and avoid touching the
+   chip or connector pins. A dry, non-conductive desk surface is
+   sufficient.
+2. **Set the SW6 boot switch to the JTAG position: all four switches ON.**
+   The board ships from the factory set to QSPI32 (ON, ON, OFF, ON) — so
+   you will most likely need to flip one switch. See Figure 4 for the
+   location of SW6 on the board.
+3. Connect the power adapter to the board, but do not switch on power yet.
+4. Connect the J83 micro-USB connector to your computer.
+5. On your computer (Windows 10), locate the serial ports. The FT4232
+   bridge exposes multiple COM ports over the single cable; terminal
+   output comes from **PS UART0 = Port B** — typically the second of the
+   four, though COM numbering varies by machine, so verify it directly (if
+   unsure, see Hint 2). The easiest way to view the ports is **Device
+   Manager → Ports (COM & LPT)**; alternatively, list them with a single
+   PowerShell command:
 
    ```komut
    Get-CimInstance Win32_SerialPort | Select-Object Name, DeviceID
    ```
 
-6. Terminal programını o porta **115200 baud, 8 veri biti, parite yok,
-   1 stop biti (115200-8N1)** ayarıyla bağla.
-7. Kartın güç anahtarını aç.
+6. Connect the terminal program to that port with **115200 baud, 8 data
+   bits, no parity, 1 stop bit (115200-8N1)**.
+7. Switch on the board's power.
 
-[Başarı kriteri]
-Doğru COM portunu belirledin ve terminal bağlantısı hatasız açık; karta
-güç verdiğinde kartın güç LED'leri yanıyor (hangi LED'lerin güç durumunu
-gösterdiğini kart user guide'ından — UG1271 — doğrula). Not: JTAG modunda
-kart kendi başına boot etmez, terminalde yazı akmaması normaldir; kartı
-SD/QSPI üzerinde hazır imajla açan ekiplerde burada bir açılış mesajı
-görülür.
+[Success Criteria]
+You have identified the correct COM port, and the terminal connection is
+open without error; the board's power LEDs illuminate when power is
+applied (verify which LEDs indicate power status in the board user guide —
+UG1271). Note: the board does not boot on its own in JTAG mode, so no
+output appearing in the terminal is expected behavior; teams that power on
+the board with a ready-made image on SD/QSPI will see a boot message here
+instead.
 
-[Kendini sına]
-- SW6'yı JTAG yerine SD konumunda bıraksaydın kart güç verilince ne yapmaya
-  çalışırdı? (İpucu: cevabın tamamı Bölüm 3'te.)
-- Tek micro-USB kablosundan hem JTAG hem UART geçiyor — bu nasıl mümkün
-  oluyor, kartta bunu hangi çip sağlıyor?
-- 115200-8N1 ayarındaki "8", "N" ve "1" nelerin kısaltması? (Tel seviyesindeki
-  karşılıklarını Bölüm 8'de göreceksin; şimdilik terminal ayarı olarak bil.)
+[Self-Check]
+- If you had left SW6 in the SD position instead of JTAG, what would the
+  board attempt to do at power-up? (Hint: the full answer is in Chapter 3.)
+- A single micro-USB cable carries both JTAG and UART — how is this
+  possible, and which chip on the board provides it?
+- In the 115200-8N1 setting, what do "8", "N", and "1" stand for? (You
+  will see their wire-level counterparts in Chapter 8; for now, treat this
+  as a terminal setting.)
 
-[Takıldıysan]
-::ipucu İpucu 1 — Hiç seri port görünmüyorsa (sürücü sorunu)
-Önce basit şüphelileri ele: kablo gerçekten veri kablosu mu (bazı micro-USB
-kablolar yalnızca şarj içindir), farklı bir USB portu denedin mi, kartın güç
-anahtarı açık mı (köprü devresi gücünü karttan alıyor olabilir — kapalıysa
-açıp kabloyu çıkarıp tekrar tak)? Bunlar temizse sorun büyük ihtimalle FTDI
-sürücüsüdür: Aygıt Yöneticisi'nde sarı ünlem işaretli ya da "Bilinmeyen aygıt"
-görünüyorsa FTDI'nin **VCP (Virtual COM Port)** sürücüsünü FTDI'nin resmî
-sitesinden indirip kur, sonra kabloyu çıkarıp tekrar tak — "Bağlantı Noktaları
-(COM & LPT)" altında yeni COM girişleri belirmeli.
+[If You Get Stuck]
+::ipucu Hint 1 — No serial port appears at all (driver issue)
+Rule out the simple suspects first: is the cable actually a data cable
+(some micro-USB cables carry power only), have you tried a different USB
+port, and is the board's power switch on (the bridge chip may draw its
+power from the board — if it is off, switch it on, then unplug and
+reconnect the cable)? If these check out, the issue is most likely the
+FTDI driver: if Device Manager shows a device with a yellow exclamation
+mark or labeled "Unknown device," download and install FTDI's **VCP
+(Virtual COM Port)** driver from FTDI's official site, then unplug and
+reconnect the cable — new entries should appear under "Ports (COM & LPT)."
 ::/
-::ipucu İpucu 2 — Dört port var, hangisi doğru?
-Aradığın, FT4232'nin **ikinci arayüzü** (Port B). Aygıt Yöneticisi'nde
-"Bağlantı Noktaları (COM & LPT)" altında aynı USB köprüsüne ait birden çok
-"USB Serial Port (COMx)" girişi görürsün; bir COM portuna sağ tıklayıp
-**Özellikler → Ayrıntılar → "Konum bilgisi"** (ya da "Bus reported device
-description") alanına bakarsan hangi arayüz (A/B/C/D) olduğunu okuyabilirsin —
-sen Port B'yi ararsın. Kestirme yol: COM numaralarını küçükten büyüğe sırala,
-genelde ikincisi Port B'dir. Hâlâ emin değilsen hepsini not al: Görev 1'de
-karttan ilk çıktıyı aldığında hangi portun konuştuğunu kesin olarak öğrenecek
-ve bir daha unutmayacaksın.
+::ipucu Hint 2 — Four ports appear; which one is correct?
+You are looking for the FT4232's **second interface** (Port B). Under
+"Ports (COM & LPT)" in Device Manager, you will see multiple "USB Serial
+Port (COMx)" entries belonging to the same USB bridge; right-click a COM
+port and check **Properties → Details → "Location information"** (or "Bus
+reported device description") to see which interface (A/B/C/D) it
+corresponds to — you are looking for Port B. Shortcut: sort the COM
+numbers in ascending order; the second one is usually Port B. If you are
+still unsure, note all of them down: in Task 1, when you receive the first
+output from the board, you will determine with certainty which port is
+active, and you will not need to guess again.
 ::/
 :::
 
-Kartın masanda kurulu, terminalin bağlı, boot switch JTAG'da seni bekliyor.
-Peki güç anahtarını açtığın o saniyede çipin içinde neler oluyor? Bir sonraki
-bölümün konusu tam olarak bu.
+The board is set up on your desk, the terminal is connected, and the boot
+switch is waiting in JTAG mode. So what happens inside the chip the moment
+you switch on power? That is the exact subject of the next chapter.

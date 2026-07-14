@@ -1,5 +1,5 @@
 <svg viewBox="0 0 740 410" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s05-baslik">
-  <title id="s05-baslik">Boot akışı zaman çizgisi: PMU ROM, CSU ROM (BootROM), FSBL ve uygulama; ATF isteğe bağlı bir ara katman olarak; altta boot.bin içeriği ve SW6 boot kaynağı seçimi.</title>
+  <title id="s05-baslik">Boot flow timeline: PMU ROM, CSU ROM (BootROM), FSBL, and application; ATF as an optional intermediate layer; below, boot.bin contents and SW6 boot source selection.</title>
 
   <defs>
     <marker id="s05-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -7,7 +7,7 @@
     </marker>
   </defs>
 
-  <!-- Ana zincir: PMU ROM -> CSU ROM (BootROM) -> FSBL -> uygulama -->
+  <!-- Main chain: PMU ROM -> CSU ROM (BootROM) -> FSBL -> application -->
   <rect x="40" y="40" width="150" height="60" rx="8" class="svg-kutu"/>
   <text x="115" y="75" text-anchor="middle" class="svg-metin" font-size="13">PMU ROM</text>
 
@@ -19,48 +19,48 @@
   <text x="455" y="75" text-anchor="middle" class="svg-metin" font-size="13">FSBL</text>
 
   <rect x="550" y="40" width="150" height="60" rx="8" class="svg-kutu" style="stroke: var(--altin)"/>
-  <text x="625" y="75" text-anchor="middle" class="svg-metin" font-size="13">uygulama</text>
+  <text x="625" y="75" text-anchor="middle" class="svg-metin" font-size="13">application</text>
 
   <path d="M190 70 L 205 70" class="svg-cizgi" fill="none" marker-end="url(#s05-ok)"/>
   <path d="M360 70 L 375 70" class="svg-cizgi" fill="none" marker-end="url(#s05-ok)"/>
   <path d="M530 70 L 545 70" stroke="var(--altin)" stroke-width="2" fill="none" marker-end="url(#s05-ok)"/>
 
-  <!-- Alt yazılar -->
-  <text x="115" y="118" text-anchor="middle" class="svg-soluk" font-size="11">güç + saat</text>
-  <text x="115" y="132" text-anchor="middle" class="svg-soluk" font-size="11">kurulumu</text>
+  <!-- Sub-labels -->
+  <text x="115" y="118" text-anchor="middle" class="svg-soluk" font-size="11">power + clock</text>
+  <text x="115" y="132" text-anchor="middle" class="svg-soluk" font-size="11">setup</text>
 
-  <text x="285" y="118" text-anchor="middle" class="svg-soluk" font-size="11">mod pinini okur,</text>
-  <text x="285" y="132" text-anchor="middle" class="svg-soluk" font-size="11">FSBL'yi yükler</text>
+  <text x="285" y="118" text-anchor="middle" class="svg-soluk" font-size="11">reads mode pin,</text>
+  <text x="285" y="132" text-anchor="middle" class="svg-soluk" font-size="11">loads FSBL</text>
 
   <text x="455" y="118" text-anchor="middle" class="svg-soluk" font-size="11">DDR init,</text>
-  <text x="455" y="132" text-anchor="middle" class="svg-soluk" font-size="11">PL bitstream yükler</text>
+  <text x="455" y="132" text-anchor="middle" class="svg-soluk" font-size="11">loads PL bitstream</text>
 
-  <text x="625" y="118" text-anchor="middle" class="svg-soluk" font-size="11">senin</text>
-  <text x="625" y="132" text-anchor="middle" class="svg-soluk" font-size="11">main()'in</text>
+  <text x="625" y="118" text-anchor="middle" class="svg-soluk" font-size="11">your</text>
+  <text x="625" y="132" text-anchor="middle" class="svg-soluk" font-size="11">main()</text>
 
-  <!-- ATF: isteğe bağlı ara katman, kesikli çizgilerle bağlı -->
+  <!-- ATF: optional intermediate layer, connected with dashed lines -->
   <rect x="475" y="150" width="130" height="50" rx="8" class="svg-kutu" style="stroke-dasharray:4 3"/>
   <text x="540" y="180" text-anchor="middle" class="svg-metin" font-size="12">(ATF)</text>
 
   <path d="M455 100 L 505 150" class="svg-cizgi" fill="none" style="stroke-dasharray:3 3"/>
   <path d="M575 150 L 625 100" class="svg-cizgi" fill="none" style="stroke-dasharray:3 3"/>
-  <text x="540" y="218" text-anchor="middle" class="svg-soluk" font-size="11">Linux/U-Boot yolunda ara katman —</text>
-  <text x="540" y="231" text-anchor="middle" class="svg-soluk" font-size="11">bare-metal'de FSBL doğrudan uygulamaya atlar</text>
+  <text x="540" y="218" text-anchor="middle" class="svg-soluk" font-size="11">intermediate layer on the Linux/U-Boot path —</text>
+  <text x="540" y="231" text-anchor="middle" class="svg-soluk" font-size="11">in bare-metal, FSBL jumps directly to the application</text>
 
-  <!-- boot.bin içeriği şeridi -->
-  <text x="370" y="256" text-anchor="middle" class="svg-metin" font-size="13">boot.bin içeriği</text>
+  <!-- boot.bin contents strip -->
+  <text x="370" y="256" text-anchor="middle" class="svg-metin" font-size="13">boot.bin contents</text>
   <rect x="40" y="265" width="140" height="46" class="svg-kutu" style="fill: var(--altin-soluk)"/>
   <text x="110" y="293" text-anchor="middle" class="svg-kod" font-size="12">FSBL</text>
   <rect x="180" y="265" width="260" height="46" class="svg-kutu" style="fill: var(--vurgu-soluk)"/>
-  <text x="310" y="293" text-anchor="middle" class="svg-kod" font-size="12">bitstream (opsiyonel)</text>
+  <text x="310" y="293" text-anchor="middle" class="svg-kod" font-size="12">bitstream (optional)</text>
   <rect x="440" y="265" width="260" height="46" class="svg-kutu" style="fill: var(--altin-soluk)"/>
-  <text x="570" y="293" text-anchor="middle" class="svg-kod" font-size="12">uygulama</text>
+  <text x="570" y="293" text-anchor="middle" class="svg-kod" font-size="12">application</text>
 
-  <!-- CSU ROM'dan SW6 dallanmasına ince bağlantı -->
+  <!-- thin connection from CSU ROM to the SW6 branch -->
   <path d="M285 100 L 370 322" class="svg-cizgi" fill="none" style="stroke-dasharray:2 3"/>
 
-  <!-- SW6 boot kaynağı seçimi -->
-  <text x="370" y="335" text-anchor="middle" class="svg-metin" font-size="12">SW6 / boot kaynağı seçimi</text>
+  <!-- SW6 boot source selection -->
+  <text x="370" y="335" text-anchor="middle" class="svg-metin" font-size="12">SW6 / boot source selection</text>
 
   <path d="M370 340 L 170 350" stroke="var(--mor)" stroke-width="1.5" fill="none"/>
   <path d="M370 340 L 370 350" stroke="var(--mor)" stroke-width="1.5" fill="none"/>
@@ -72,7 +72,7 @@
   <text x="170" y="384" text-anchor="middle" class="svg-kod" font-size="11">SW6: ON,ON,ON,ON</text>
 
   <rect x="280" y="350" width="180" height="50" rx="6" class="svg-kutu"/>
-  <text x="370" y="368" text-anchor="middle" class="svg-metin" font-size="12">QSPI32 (fabrika)</text>
+  <text x="370" y="368" text-anchor="middle" class="svg-metin" font-size="12">QSPI32 (factory)</text>
   <text x="370" y="384" text-anchor="middle" class="svg-kod" font-size="11">SW6: ON,ON,OFF,ON</text>
 
   <rect x="480" y="350" width="180" height="50" rx="6" class="svg-kutu"/>

@@ -1,20 +1,21 @@
 /* ============================================================================
- * main.c — GÖREV 5 çözümü: Timer ile Kalp Atışı
+ * main.c — TASK 5 solution: Heartbeat via Timer
  *
- * TTC0 kanal 0'ı (taban 0xFF11_0000) 1 Hz periyodik kesme üretecek şekilde
- * kurar; her tikte DS50'yi (PS MIO23) tersine çevirir ve UART'a "tick N"
- * satırı basar. Kurulum sırası Bölüm 7'deki beşli GIC desenidir; bu sefer
- * kesme kaynağı GPIO değil TTC0 kanal 0 (GIC ID 68).
+ * Configures TTC0 channel 0 (base 0xFF11_0000) to generate a periodic 1 Hz
+ * interrupt; on every tick it toggles DS50 (PS MIO23) and prints a
+ * "tick N" line to UART. The setup order is the five-step GIC pattern
+ * from Chapter 7; this time the interrupt source is not a GPIO but TTC0
+ * channel 0 (GIC ID 68).
  *
- * INTERVAL HESABI (Bölüm 7 / content/_arastirma-ek-D.md §D.3):
- *   TTC'nin Interval yazmacı ZynqMP'de 32-bit'tir, bu yüzden tipik LPD
- *   saat hızlarında (onlarca MHz) 1 Hz gibi düşük bir frekansa
- *   prescaler'sız da ulaşılır:
+ * INTERVAL CALCULATION (Chapter 7 / content/_arastirma-ek-D.md §D.3):
+ *   The TTC's Interval register is 32-bit on the ZynqMP, so at typical
+ *   LPD clock speeds (tens of MHz) a low frequency like 1 Hz can be
+ *   reached even without a prescaler:
  *
- *       Interval = (XPAR_XTTCPS_0_CLOCK_HZ / hedef_tick_hz) - 1
+ *       Interval = (XPAR_XTTCPS_0_CLOCK_HZ / target_tick_hz) - 1
  *
- *   XPAR_XTTCPS_0_CLOCK_HZ platformun .xsa'sına göre değişir — burada
- *   elle bir MHz rakamı VARSAYILMIYOR, xparameters.h'tan okunuyor.
+ *   XPAR_XTTCPS_0_CLOCK_HZ varies according to the platform's .xsa — no
+ *   MHz figure is hardcoded here; it is read from xparameters.h.
  * ============================================================================ */
 
 #include "xparameters.h"
@@ -25,15 +26,16 @@
 #include "xstatus.h"
 #include "uart_ps.h"
 
-#define KESME_PS_PIN_DS50        23U   /* DS50 LED'i -> PS MIO23 (heartbeat) */
-#define KESME_GIC_ID_TTC0_CH0    68U   /* GIC kesme ID'si: TTC0 kanal 0 (Bolum 7) */
-#define TIMER_HEDEF_TICK_HZ      1U    /* saniyede bir tick */
+#define KESME_PS_PIN_DS50        23U   /* DS50 LED -> PS MIO23 (heartbeat) */
+#define KESME_GIC_ID_TTC0_CH0    68U   /* GIC interrupt ID: TTC0 channel 0 (Chapter 7) */
+#define TIMER_TARGET_TICK_HZ      1U    /* one tick per second */
 
 static XGpioPs S_sGpio;
 static XTtcPs  S_sTtc;
 static XScuGic S_sGic;
 
-/* ISR ile ana dongu arasindaki TEK kanal. volatile ZORUNLU (Bolum 5/7). */
+/* The ONE channel between the ISR and the main loop. volatile is
+ * MANDATORY (Chapter 5/7). */
 static volatile unsigned char G_ucTickFlag = 0U;
 
 static void printNumber(unsigned int uiValue)
@@ -59,7 +61,7 @@ static void printNumber(unsigned int uiValue)
     uartSendString(&cArrBuffer[iIndex]);
 }
 
-/* --- ISR: KISA. Durumu oku+ack'le, bayragi set et, cik. --- */
+/* --- ISR: SHORT. Read+ack the status, set the flag, exit. --- */
 static void tickIsr(void* pvCallBackRef)
 {
     XTtcPs* spTtc = (XTtcPs*)pvCallBackRef;
@@ -115,58 +117,59 @@ int main(void)
 
     uartInit();
 
-    /* --- PS GPIO: yalniz DS50 cikis (heartbeat gostergesi) --- */
+    /* --- PS GPIO: DS50 output only (heartbeat indicator) --- */
     spGpioConfig = XGpioPs_LookupConfig(XPAR_XGPIOPS_0_DEVICE_ID);
     if (spGpioConfig == NULL)
     {
-        uartSendString("HATA: XGpioPs_LookupConfig basarisiz.\n");
+        uartSendString("ERROR: XGpioPs_LookupConfig failed.\n");
         while (1) { ; }
     }
 
     if (XGpioPs_CfgInitialize(&S_sGpio, spGpioConfig,
                                spGpioConfig->BaseAddr) != XST_SUCCESS)
     {
-        uartSendString("HATA: XGpioPs_CfgInitialize basarisiz.\n");
+        uartSendString("ERROR: XGpioPs_CfgInitialize failed.\n");
         while (1) { ; }
     }
 
     XGpioPs_SetDirectionPin(&S_sGpio, KESME_PS_PIN_DS50, 1U);
     XGpioPs_SetOutputEnablePin(&S_sGpio, KESME_PS_PIN_DS50, 1U);
 
-    /* --- TTC0 kanal 0: interval mode, 1 Hz --- */
+    /* --- TTC0 channel 0: interval mode, 1 Hz --- */
     spTtcConfig = XTtcPs_LookupConfig(XPAR_XTTCPS_0_DEVICE_ID);
     if (spTtcConfig == NULL)
     {
-        uartSendString("HATA: XTtcPs_LookupConfig basarisiz.\n");
+        uartSendString("ERROR: XTtcPs_LookupConfig failed.\n");
         while (1) { ; }
     }
 
     if (XTtcPs_CfgInitialize(&S_sTtc, spTtcConfig,
                               spTtcConfig->BaseAddress) != XST_SUCCESS)
     {
-        uartSendString("HATA: XTtcPs_CfgInitialize basarisiz.\n");
+        uartSendString("ERROR: XTtcPs_CfgInitialize failed.\n");
         while (1) { ; }
     }
 
     XTtcPs_SetOptions(&S_sTtc, XTTCPS_OPTION_INTERVAL_MODE);
 
-    /* Elle hesap — dosya basi yorumundaki formulun kod karsiligi.
-     * XPAR_XTTCPS_0_CLOCK_HZ .xsa'dan uretilir, burada uydurulmuyor. */
-    uiInterval = (XPAR_XTTCPS_0_CLOCK_HZ / TIMER_HEDEF_TICK_HZ) - 1U;
+    /* Manual calculation — the code counterpart of the formula in the
+     * file header comment. XPAR_XTTCPS_0_CLOCK_HZ is generated from the
+     * .xsa, not made up here. */
+    uiInterval = (XPAR_XTTCPS_0_CLOCK_HZ / TIMER_TARGET_TICK_HZ) - 1U;
     XTtcPs_SetInterval(&S_sTtc, uiInterval);
 
     XTtcPs_EnableInterrupts(&S_sTtc, XTTCPS_IXR_INTERVAL_MASK);
 
     if (setupInterruptSystem() != XST_SUCCESS)
     {
-        uartSendString("HATA: setupInterruptSystem basarisiz.\n");
+        uartSendString("ERROR: setupInterruptSystem failed.\n");
         while (1) { ; }
     }
 
     XTtcPs_Start(&S_sTtc);
 
-    uartSendString("\n--- GOREV 5: Timer ile Kalp Atisi ---\n");
-    uartSendString("TTC0 kanal 0, 1 Hz. DS50 kalp gibi atiyor.\n\n");
+    uartSendString("\n--- TASK 5: Heartbeat via Timer ---\n");
+    uartSendString("TTC0 channel 0, 1 Hz. DS50 beats like a heart.\n\n");
 
     uiTickCount = 0U;
     uiLedState = 0U;
@@ -175,8 +178,8 @@ int main(void)
     {
         if (G_ucTickFlag != 0U)
         {
-            G_ucTickFlag = 0U;   /* once temizle, sonra isle (Gorev 4'teki
-                                    * yaris riskiyle ayni gerekce) */
+            G_ucTickFlag = 0U;   /* clear first, process second (same
+                                    * rationale as the race risk in Task 4) */
 
             uiTickCount++;
             uiLedState ^= 1U;

@@ -1021,7 +1021,7 @@ main {
     <div class="kartlar" id="kartlar"></div>
     <noscript>
       <ul style="line-height:2.2; padding-left:20px">
-        <li><a href="kilavuzlar/oryantasyon/index.html" style="text-decoration:underline">Gömülü Sistemlere Giriş — Ekip Oryantasyon Yolculuğu</a></li>
+        <li><a href="kilavuzlar/oryantasyon/index.html" style="text-decoration:underline">Introduction to Embedded Systems — A Team Onboarding Journey</a></li>
         <li><a href="kilavuzlar/rf-sampling/index.html" style="text-decoration:underline">Doğrudan RF Örnekleme ve Ön Uç Tasarımı — Saha Kılavuzu</a></li>
         <li><a href="kilavuzlar/ethernet/index.html" style="text-decoration:underline">Ethernet ve Ağ İletişimi — Saha Kılavuzu</a></li>
         <li><a href="kilavuzlar/lokal-llm/index.html" style="text-decoration:underline">Lokal LLM Dünyası — Saha Kılavuzu</a></li>
@@ -1164,7 +1164,7 @@ main {
         '<a class="yol-kart beliren" style="--d:' + (i * 90) + 'ms" href="' + y.yol + '">' +
           '<svg class="yol-motif" viewBox="0 0 328 168" aria-hidden="true">' + YOL_MOTIF + "</svg>" +
           '<div class="yol-ic">' +
-            '<span class="yol-gozkasi">Rehberli Yolculuk · Yeni başlayanlar için</span>' +
+            '<span class="yol-gozkasi">' + (y.gozkasi || "Rehberli Yolculuk · Yeni başlayanlar için") + "</span>" +
             '<h3 class="yol-baslik">' + y.baslik + "<small>" + (y.altBaslik || "") + "</small></h3>" +
             '<p class="yol-aciklama">' + y.aciklama + "</p>" +
             '<div class="yol-etiketler">' + y.etiketler.map(function (t) { return "<span>" + t + "</span>"; }).join("") + "</div>" +
@@ -1172,12 +1172,12 @@ main {
             '<div class="yol-alt">' +
               '<div class="yol-meta">' +
                 "<span><b>" + y.bolum + "</b></span><i></i>" +
-                "<span><b>" + y.lab + " uygulamalı lab</b></span><i></i>" +
+                "<span><b>" + y.lab + " " + (y.labEtiket || "uygulamalı lab") + "</b></span><i></i>" +
                 "<span>" + y.final + "</span><i></i>" +
                 "<span>" + y.boyut + "</span><i></i>" +
                 "<span>" + tarih(y.guncelleme) + "</span>" +
               "</div>" +
-              '<span class="yol-cta">Yolculuğa başla ' + OK_SVG + "</span>" +
+              '<span class="yol-cta">' + (y.cta || "Yolculuğa başla") + " " + OK_SVG + "</span>" +
             "</div>" +
           "</div>" +
         "</a>"

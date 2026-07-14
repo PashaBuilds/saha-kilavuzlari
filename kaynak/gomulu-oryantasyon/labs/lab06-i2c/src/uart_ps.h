@@ -1,8 +1,8 @@
 /* ============================================================================
- * uart_ps.h — UART0 register-seviyesi mini sürücü modülü (GÖREV 2 çözümü)
+ * uart_ps.h — UART0 register-level mini driver module (TASK 2 solution)
  *
- * lab02-uart'tan birebir kopyadır — _gorev-zinciri.md gereği her lab
- * klasörü kendi kopyasını taşır, bağımsız derlenir.
+ * An exact copy from lab02-uart — per _gorev-zinciri.md, every lab folder
+ * carries its own copy and builds independently.
  * ============================================================================ */
 #ifndef UART_PS_H
 #define UART_PS_H
@@ -10,25 +10,26 @@
 #include "xil_types.h"
 
 /**
- * @brief UART0'ı kullanıma hazırlar. DÜRÜST NOT: bu fonksiyon baud hızını /
- * kare formatını (115200-8N1) YENİDEN KURMAZ — kart açılırken FSBL ve
- * standalone BSP'nin stdout ayarı UART0'ı zaten bu ayarla bırakmış
- * durumdadır (aşağıdaki uart_ps.c dosya başı yorumuna bak). Biz burada
- * sadece kendi modülümüzün kullanacağı register tabanını "hazır" sayıyoruz.
+ * @brief Prepares UART0 for use. HONEST NOTE: this function does NOT
+ * reconfigure the baud rate / frame format (115200-8N1) — at board boot,
+ * the FSBL and the standalone BSP's stdout setup already leave UART0 with
+ * this configuration (see the file-header comment in uart_ps.c below).
+ * Here we merely treat the register base our own module will use as
+ * "ready."
  */
 void uartInit(void);
 
 /**
- * @brief Tek bir karakteri UART0 TX FIFO'suna gönderir; FIFO doluysa
- * (TXFULL) boşalana kadar bekler.
- * @param cChar Gönderilecek karakter.
+ * @brief Sends a single character to the UART0 TX FIFO; if the FIFO is
+ * full (TXFULL), waits until it drains.
+ * @param cChar The character to send.
  */
 void uartSendChar(char cChar);
 
 /**
- * @brief Sıfır sonlandırmalı bir dizgiyi karakter karakter gönderir; '\n'
- * gördüğünde önce '\r' gönderir (bkz. uart_ps.c'deki açıklama).
- * @param cpString Gönderilecek, NUL sonlandırmalı dizgi.
+ * @brief Sends a NUL-terminated string character by character; upon
+ * seeing '\n', sends '\r' first (see the explanation in uart_ps.c).
+ * @param cpString The NUL-terminated string to send.
  */
 void uartSendString(const char* cpString);
 

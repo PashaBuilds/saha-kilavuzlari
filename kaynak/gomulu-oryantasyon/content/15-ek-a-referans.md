@@ -1,127 +1,129 @@
-# Ek A — Hızlı Referans
+# Appendix A — Quick Reference
 
-Bu ek, dokümanı baştan sona okuduktan sonra masana asıp göz ucuyla bakacağın
-bir kopya kâğıdı. Şaka bir yana — gerçekten yazıcıya bas ve masana as; kod
-yazarken bir register offset'ini ya da bir FreeRTOS çağrısının imzasını
-hatırlamaya çalışıp dokümanın on sayfasını karıştırmaktan iyidir.
+This appendix serves as a quick-reference sheet for use after the document
+has been read in full. It consolidates register offsets, API signatures,
+and other frequently needed values in a single place, reducing the need to
+search through the full text while writing code.
 
-## Bit İşlem Makroları
+## Bit Manipulation Macros
 
-Bölüm 5'te gördüğün set/clear/toggle/test kalıplarının kopyalanabilir hâli.
-Kendi projene doğrudan yapıştırabilirsin.
+A copy-ready version of the set/clear/toggle/test patterns introduced in
+Chapter 5. These macros can be pasted directly into a project.
 
 ```c
-/* Bit işlem makroları — kopyala, projene yapıştır */
+/* Bit manipulation macros — copy into your project */
 #define BIT(n)              (1u << (n))
 
-#define BIT_SET(reg, n)     ((reg) |=  BIT(n))    /* biti 1 yap */
-#define BIT_CLEAR(reg, n)   ((reg) &= ~BIT(n))     /* biti 0 yap */
-#define BIT_TOGGLE(reg, n)  ((reg) ^=  BIT(n))     /* biti tersine çevir */
-#define BIT_TEST(reg, n)    (((reg) >> (n)) & 1u)  /* bit 1 mi? 0/1 döner */
+#define BIT_SET(reg, n)     ((reg) |=  BIT(n))    /* set bit to 1 */
+#define BIT_CLEAR(reg, n)   ((reg) &= ~BIT(n))     /* set bit to 0 */
+#define BIT_TOGGLE(reg, n)  ((reg) ^=  BIT(n))     /* invert bit */
+#define BIT_TEST(reg, n)    (((reg) >> (n)) & 1u)  /* is bit 1? returns 0/1 */
 
-/* Çok bitlik alan (field) işlemleri: genişlik + başlangıç konumu ile */
-#define FIELD_MASK(genislik, konum) \
-    (((1u << (genislik)) - 1u) << (konum))
+/* Multi-bit field operations: by width and starting position */
+#define FIELD_MASK(width, position) \
+    (((1u << (width)) - 1u) << (position))
 
-#define FIELD_GET(reg, genislik, konum) \
-    (((reg) & FIELD_MASK(genislik, konum)) >> (konum))
+#define FIELD_GET(reg, width, position) \
+    (((reg) & FIELD_MASK(width, position)) >> (position))
 
-#define FIELD_SET(reg, genislik, konum, deger) \
-    ((reg) = ((reg) & ~FIELD_MASK(genislik, konum)) | \
-             (((deger) << (konum)) & FIELD_MASK(genislik, konum)))
+#define FIELD_SET(reg, width, position, value) \
+    ((reg) = ((reg) & ~FIELD_MASK(width, position)) | \
+             (((value) << (position)) & FIELD_MASK(width, position)))
 ```
 
-:::tuzak Makro parantez disiplini
-`n` ve `reg` parametrelerini makro gövdesinde her zaman parantez içine al
-(yukarıdaki gibi). Aksi hâlde `BIT_SET(reg, a + b)` gibi bir çağrıda operatör
-önceliği makroyu sessizce bozar — derleyici hata vermez, davranış yanlış
-olur.
+:::tuzak Macro Parenthesization Discipline
+Always enclose the `n` and `reg` parameters in parentheses within the macro
+body (as shown above). Otherwise, operator precedence in a call such as
+`BIT_SET(reg, a + b)` silently corrupts the macro's behavior — the compiler
+produces no error, but the result is incorrect.
 :::
 
-## Sık Kullanılan Vitis İşlemleri
+## Frequently Used Vitis Operations
 
-Vitis Unified IDE'de en sık başvuracağın işlemler. **Tuşlar sürüme göre
-değişebilir** — burada verilenler menü yolu; kısayol tuşunu IDE'nin
-Run/Debug menüsünden ya da tercih (preferences) ekranından teyit et.
+The operations most frequently required in the Vitis Unified IDE.
+**Keyboard shortcuts may vary by version** — the entries below indicate the
+menu path; confirm the shortcut key from the IDE's Run/Debug menu or the
+preferences screen.
 
-| İşlem | Nerede |
+| Operation | Location |
 |---|---|
-| Yeni platform/application projesi | File → New → Platform/Application Component |
-| Derle (Build) | Proje sağ tık → Build Project, ya da araç çubuğundaki çekiç simgesi |
-| Temizle (Clean) | Proje sağ tık → Clean |
-| Debug konfigürasyonu oluştur | Proje sağ tık → Debug As → hedef seç |
-| Debug başlat (JTAG üzerinden karta yükle) | Debug perspektifi → Launch/Run ikonu |
-| Step Over | Debug araç çubuğu — "adımı atla" ikonu |
-| Step Into | Debug araç çubuğu — "içine gir" ikonu |
-| Step Out | Debug araç çubuğu — "dışına çık" ikonu |
-| Resume / Continue | Debug araç çubuğu — "devam et" ikonu |
-| Breakpoint ekle/kaldır | Kod satırı numarasının soluna tıkla |
-| Register izleme | Debug perspektifi → Registers sekmesi |
-| Memory izleme | Debug perspektifi → Memory sekmesi |
-| XSCT konsolu aç | Vitis içinden ya da terminalden `xsct` komutu |
+| New platform/application project | File → New → Platform/Application Component |
+| Build | Right-click project → Build Project, or the hammer icon in the toolbar |
+| Clean | Right-click project → Clean |
+| Create debug configuration | Right-click project → Debug As → select target |
+| Start debugging (load to board via JTAG) | Debug perspective → Launch/Run icon |
+| Step Over | Debug toolbar — "step over" icon |
+| Step Into | Debug toolbar — "step into" icon |
+| Step Out | Debug toolbar — "step out" icon |
+| Resume / Continue | Debug toolbar — "resume" icon |
+| Add/remove breakpoint | Click to the left of the line number in the code editor |
+| Register monitoring | Debug perspective → Registers tab |
+| Memory monitoring | Debug perspective → Memory tab |
+| Open XSCT console | From within Vitis, or via the `xsct` command in a terminal |
 
-## UART / SPI / I2C Özet Karşılaştırma
+## UART / SPI / I2C Comparison Summary
 
-Bölüm 8'in tel seviyesi anlatımının tablo hâli.
+A tabular summary of the wire-level discussion in Chapter 8.
 
-| Özellik | UART | SPI | I2C |
+| Characteristic | UART | SPI | I2C |
 |---|---|---|---|
-| Tel sayısı | 2 (TX, RX) + ortak GND | 4 (SCLK, MOSI, MISO, CS) + GND; her ek cihaz bir CS hattı daha ister | 2 (SDA, SCL) + GND; tüm cihazlar aynı iki hattı paylaşır |
-| Senkron mu | Hayır — asenkron, iki uç önceden aynı baud'da anlaşır | Evet — SCLK master tarafından üretilir | Evet — SCL master tarafından üretilir |
-| Topoloji | Nokta-nokta (point-to-point) | Bir master + birden çok slave, CS ile seçim | Bir (ya da çoklu) master + birden çok slave, 7/10 bit adresle seçim |
-| Fiziksel katman | Push-pull, tek yönlü hatlar | Push-pull, tek yönlü hatlar | Open-drain + pull-up dirençler (Bölüm 8) |
-| Tipik hız | 9.6 kbps – birkaç Mbps | Onlarca Mbps'e kadar | 100 kHz (standart) – 400 kHz (fast) – 1 MHz (fast mode+) |
-| Onay (ACK) mekanizması | Yok | Yok | Var — her bayttan sonra alıcı ACK/NACK üretir |
-| Bu dokümanda kullanıldığı yer | PS UART0, Görev 2 ve sonrası | Bölüm 8'de tanıtılır, bu yolculukta ayrı bir görevi yok | PS I2C0 → INA226, Görev 6 ve sonrası |
+| Wire count | 2 (TX, RX) + shared GND | 4 (SCLK, MOSI, MISO, CS) + GND; each additional device requires an additional CS line | 2 (SDA, SCL) + GND; all devices share the same two lines |
+| Synchronous | No — asynchronous; both ends must agree on the same baud rate in advance | Yes — SCLK is generated by the master | Yes — SCL is generated by the master |
+| Topology | Point-to-point | One master + multiple slaves, selected via CS | One (or multiple) masters + multiple slaves, selected via 7-/10-bit addressing |
+| Physical layer | Push-pull, unidirectional lines | Push-pull, unidirectional lines | Open-drain + pull-up resistors (Chapter 8) |
+| Typical speed | 9.6 kbps – several Mbps | Up to several tens of Mbps | 100 kHz (standard) – 400 kHz (fast) – 1 MHz (fast mode+) |
+| Acknowledgment (ACK) mechanism | None | None | Present — the receiver generates ACK/NACK after each byte |
+| Usage in this document | PS UART0, Task 2 and onward | Introduced in Chapter 8; not the subject of a separate task in this journey | PS I2C0 → INA226, Task 6 and onward |
 
-## FreeRTOS API Mini Kartı
+## FreeRTOS API Quick-Reference Card
 
-Bölüm 10 ve sonraki görevlerde en sık elinin altında olacak çağrılar.
+The calls most frequently needed in Chapter 10 and subsequent tasks.
 
-| Çağrı | Ne işe yarar |
+| Call | Purpose |
 |---|---|
-| `xTaskCreate(...)` | Yeni bir task oluşturur ve scheduler'a kaydeder |
-| `vTaskDelete(handle)` | Bir task'ı sonlandırır (`NULL` ile çağıran kendini siler) |
-| `vTaskDelay(ticks)` | Çağıran task'ı belirtilen tick kadar bloklar, CPU'yu bırakır |
-| `vTaskDelayUntil(...)` | Sabit periyotlu gecikme; zamanla sürüklenmeyi önler |
-| `xQueueCreate(uzunluk, boyut)` | Belirtilen kapasitede bir mesaj kuyruğu oluşturur |
-| `xQueueSend(q, &veri, bekleme)` | Kuyruğa veri koyar (task bağlamında çağrılır) |
-| `xQueueSendFromISR(q, &veri, &uyandi)` | Kuyruğa veri koyar (yalnızca ISR içinde çağrılır) |
-| `xQueueReceive(q, &veri, bekleme)` | Kuyruktan veri okur; veri gelene kadar bloklanabilir |
-| `xSemaphoreCreateBinary()` | İkili (binary) semaphore oluşturur |
-| `xSemaphoreCreateMutex()` | Karşılıklı dışlama (mutex) semaphore'u oluşturur |
-| `xSemaphoreGive(sem)` / `xSemaphoreGiveFromISR(...)` | Semaphore'u serbest bırakır (task / ISR bağlamı) |
-| `xSemaphoreTake(sem, bekleme)` | Semaphore'u almaya çalışır; gelene kadar bloklanabilir |
-| `portYIELD_FROM_ISR(uyandi)` | ISR sonunda, uyanan task daha öncelikliyse hemen ona geçiş yaptırır |
-| `uxTaskGetStackHighWaterMark(handle)` | Task'ın kullanmadığı en düşük stack miktarını raporlar (taşma tespiti) |
+| `xTaskCreate(...)` | Creates a new task and registers it with the scheduler |
+| `vTaskDelete(handle)` | Terminates a task (calling with `NULL` deletes the calling task itself) |
+| `vTaskDelay(ticks)` | Blocks the calling task for the specified number of ticks, yielding the CPU |
+| `vTaskDelayUntil(...)` | Fixed-period delay; prevents timing drift |
+| `xQueueCreate(length, size)` | Creates a message queue with the specified capacity |
+| `xQueueSend(q, &data, wait)` | Places data on the queue (called from task context) |
+| `xQueueSendFromISR(q, &data, &woken)` | Places data on the queue (called only from within an ISR) |
+| `xQueueReceive(q, &data, wait)` | Reads data from the queue; may block until data arrives |
+| `xSemaphoreCreateBinary()` | Creates a binary semaphore |
+| `xSemaphoreCreateMutex()` | Creates a mutual-exclusion (mutex) semaphore |
+| `xSemaphoreGive(sem)` / `xSemaphoreGiveFromISR(...)` | Releases the semaphore (task / ISR context) |
+| `xSemaphoreTake(sem, wait)` | Attempts to take the semaphore; may block until available |
+| `portYIELD_FROM_ISR(woken)` | At the end of an ISR, immediately switches to the woken task if it has higher priority |
+| `uxTaskGetStackHighWaterMark(handle)` | Reports the minimum amount of unused stack for the task (overflow detection) |
 
-## ZCU111 Önemli Adres ve Cihaz Özeti
+## ZCU111 Key Address and Device Summary
 
-Tüm değerler `_arastirma.md`'den (UG1271/UG1085 kaynaklı) — kart üstünde
-kendi gözünle doğrulamak istersen kaynak orada.
+All values are sourced from `_arastirma.md` (derived from UG1271/UG1085);
+consult that source if independent verification against the board is
+required.
 
-| Çevre birimi | Taban adres | Not |
+| Peripheral | Base Address | Note |
 |---|---|---|
-| UART0 | `0xFF00_0000` | PS_UART0, MIO 18-19, hello-world çıktısının geldiği port |
-| GPIO (PS) | `0xFF0A_0000` | DS50 (MIO23) ve SW19 (MIO22) buradan sürülür/okunur |
-| TTC0 | `0xFF11_0000` | Triple Timer Counter 0, kanal 0 Görev 5'te kullanılır |
-| GICD | `0xF901_0000` | GIC-400 dağıtıcı (distributor) |
-| GICC | `0xF902_0000` | GIC-400 CPU arayüzü |
+| UART0 | `0xFF00_0000` | PS_UART0, MIO 18-19, the port that outputs the hello-world message |
+| GPIO (PS) | `0xFF0A_0000` | DS50 (MIO23) and SW19 (MIO22) are driven/read from here |
+| TTC0 | `0xFF11_0000` | Triple Timer Counter 0; channel 0 is used in Task 5 |
+| GICD | `0xF901_0000` | GIC-400 distributor |
+| GICC | `0xF902_0000` | GIC-400 CPU interface |
 
-**PS tek LED/buton çifti:** DS50 = MIO23 (LED), SW19 = MIO22 (buton) —
-bitstream'siz erişilebilen tek çift budur (Bölüm 2, Bölüm 4).
+**PS single LED/button pair:** DS50 = MIO23 (LED), SW19 = MIO22 (button) —
+this is the only pair accessible without a bitstream (Chapter 2, Chapter 4).
 
-**I2C ağacı özeti:** PS I2C0 (MIO 14-15) → PCA9544A 4 kanallı mux (U23,
-adres `0x75`) → kanal 0 → INA226 güç monitörleri. İki laboratuvar rayı:
-**`0x40` = VCCINT**, **`0x42` = VCC1V8** (tam liste `_arastirma.md` §4'te).
+**I2C tree summary:** PS I2C0 (MIO 14-15) → PCA9544A 4-channel mux (U23,
+address `0x75`) → channel 0 → INA226 power monitors. Two laboratory rails:
+**`0x40` = VCCINT**, **`0x42` = VCC1V8** (full list in `_arastirma.md` §4).
 
-**SW6 boot modu anahtarı** (4 kutuplu DIP, Mode[3:0] = SW6[4:1], ON = 0):
+**SW6 boot mode switch** (4-pole DIP, Mode[3:0] = SW6[4:1], ON = 0):
 
-| Boot modu | SW6 [4:1] |
+| Boot Mode | SW6 [4:1] |
 |---|---|
 | JTAG | ON, ON, ON, ON |
-| QSPI32 (fabrika varsayılanı) | ON, ON, OFF, ON |
+| QSPI32 (factory default) | ON, ON, OFF, ON |
 | SD | OFF, OFF, OFF, ON |
 
-**Kesme (GIC) ID'leri:** PS GPIO = **48**, UART0 = **53**, TTC0 kanal 0 =
-**68** (ZynqMP'ye özgü; Zynq-7000 ile karıştırma — Bölüm 7).
+**Interrupt (GIC) IDs:** PS GPIO = **48**, UART0 = **53**, TTC0 channel 0 =
+**68** (specific to ZynqMP; do not confuse with Zynq-7000 — Chapter 7).

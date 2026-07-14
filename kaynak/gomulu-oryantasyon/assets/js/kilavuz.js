@@ -1,30 +1,30 @@
-/* kilavuz.js — tema, TOC vurgusu, kopyala, okuma barı, görev takibi,
-   scroll-reveal, konfeti ve kutlama. Framework yok.
-   localStorage anahtarları: "go-tema", "go-gorevler". */
+/* kilavuz.js — theme, TOC highlighting, copy, reading bar, task tracking,
+   scroll-reveal, confetti and celebration. No framework.
+   localStorage keys: "go-tema", "go-gorevler". */
 (function () {
   "use strict";
 
   var kok = document.documentElement;
-  kok.classList.add("js-hazir"); // reveal gizli durumlarını etkinleştir
+  kok.classList.add("js-hazir"); // enable reveal's hidden states
 
   var azHareket = false;
   try { azHareket = window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
   catch (e) {}
 
-  /* Hedefe kaydırma — window.scrollTo ile. NOT: html'deki
-     scroll-behavior:smooth, element.scrollIntoView()'i bu sayfada etkisiz
-     bırakıyor; window.scrollTo mutlak konumla güvenilir çalışıyor. */
+  /* Scroll to target — via window.scrollTo. NOTE: the scroll-behavior:smooth
+     in the html renders element.scrollIntoView() ineffective on this page;
+     window.scrollTo with an absolute position works reliably. */
   function hedefeKaydir(el, yumusak) {
     if (!el) { return; }
     var y = el.getBoundingClientRect().top + window.scrollY - 60;
-    // "instant" (CSS scroll-behavior:smooth'u ezer). "auto" olsaydı CSS'e
-    // uyup 40 000px'lik smooth kaydırma başlatır ve ıskalardı.
+    // "instant" (overrides the CSS scroll-behavior:smooth). If it were "auto"
+    // it would follow the CSS, start a 40,000px smooth scroll and miss.
     window.scrollTo({ top: y, behavior: (yumusak && !azHareket) ? "smooth" : "instant" });
   }
 
-  /* Yükleme sırasında hash varsa (bookmark / derin link) hedefe kaydır.
-     Ağır sayfada (25 SVG) tarayıcının ilk anchor-atlaması layout oturmadan
-     ıskalıyor; load + kısa gecikmeyle kesin olarak hedefe götürürüz. */
+  /* If there is a hash on load (bookmark / deep link), scroll to the target.
+     On a heavy page (25 SVGs) the browser's initial anchor jump misses before
+     the layout settles; with load + a short delay we reliably reach the target. */
   function hashaKaydir() {
     if (!location.hash || location.hash.length < 2) { return; }
     try {
@@ -34,10 +34,10 @@
   }
   if (location.hash && location.hash.length > 1) {
     window.addEventListener("load", function () { setTimeout(hashaKaydir, 80); });
-    setTimeout(hashaKaydir, 350); // load erken geçtiyse yedek
+    setTimeout(hashaKaydir, 350); // fallback in case load already fired early
   }
 
-  /* ---------- Tema ---------- */
+  /* ---------- Theme ---------- */
   function temaUygula(tema) {
     if (tema === "acik") { kok.setAttribute("data-tema", "acik"); }
     else { kok.removeAttribute("data-tema"); }
@@ -62,7 +62,7 @@
     });
   }
 
-  /* ---------- Okuma ilerleme barı ---------- */
+  /* ---------- Reading progress bar ---------- */
   var okumaBar = document.getElementById("okuma-bar");
   if (okumaBar) {
     var barGuncelle = function () {
@@ -74,7 +74,7 @@
     barGuncelle();
   }
 
-  /* ---------- Kod kopyala ---------- */
+  /* ---------- Code copy ---------- */
   document.addEventListener("click", function (ev) {
     var dugme = ev.target.closest(".kopyala-dugme");
     if (!dugme) { return; }
@@ -83,10 +83,10 @@
     if (!kod) { return; }
     var yaz = function () {
       dugme.classList.add("kopyalandi");
-      dugme.textContent = "kopyalandı";
+      dugme.textContent = "copied";
       setTimeout(function () {
         dugme.classList.remove("kopyalandi");
-        dugme.textContent = "kopyala";
+        dugme.textContent = "copy";
       }, 1600);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -102,13 +102,13 @@
     }
   });
 
-  /* ---------- Scroll-reveal (kurşun geçirmez) ----------
-     İçerik ASLA gizli kalmamalı. Bu yüzden üç güvence:
-     1) Geniş rootMargin ile öğe görünüme GİRMEDEN ~320px önce açılır,
-        böylece normal kaydırmada hiç opacity:0 içerik görülmez.
-     2) rAF ile kısıtlanmış bir scroll yedeği, gözlemci herhangi bir
-        nedenle atlarsa görünümdeki her öğeyi açar.
-     3) 4 sn sonra hâlâ açılmamış ne varsa koşulsuz açılır (son emniyet). */
+  /* ---------- Scroll-reveal (bulletproof) ----------
+     Content must NEVER stay hidden. Hence three safeguards:
+     1) With a wide rootMargin the element is revealed ~320px BEFORE it enters
+        the viewport, so no opacity:0 content is ever seen during normal scrolling.
+     2) A scroll fallback throttled with rAF reveals every element in view if the
+        observer skips one for any reason.
+     3) After 4 s, whatever is still not revealed is revealed unconditionally (last resort). */
   (function () {
     var secim = "figure.sema, .gorev-karti, .kutu, details.derin-dalis, " +
                 ".kod-kutu, .ilerleme-panosu, .tablo-sar, main > section.bolum > h2";
@@ -139,11 +139,11 @@
       }, { rootMargin: "320px 0px 320px 0px", threshold: 0 });
       ogeler.forEach(function (o) { gozlemci.observe(o); });
     } else {
-      // IO yoksa hepsini hemen aç (animasyonsuz ama görünür)
+      // if there is no IO, reveal them all immediately (no animation but visible)
       ogeler.forEach(ac); return;
     }
 
-    // scroll yedeği (rAF ile kısıtlı)
+    // scroll fallback (throttled with rAF)
     var bekliyor = false;
     function scrollTetik() {
       if (bekliyor || !kalan.length) { return; }
@@ -152,16 +152,16 @@
     }
     window.addEventListener("scroll", scrollTetik, { passive: true });
     window.addEventListener("resize", scrollTetik, { passive: true });
-    // hash/anchor atlamalarında da tetikle
+    // also trigger on hash/anchor jumps
     window.addEventListener("hashchange", function () {
       setTimeout(yakinlariAc, 30);
     });
-    requestAnimationFrame(yakinlariAc);   // ilk ekran
-    // son emniyet: 4 sn sonra ne kaldıysa aç
+    requestAnimationFrame(yakinlariAc);   // first screen
+    // last resort: after 4 s reveal whatever remains
     setTimeout(function () { kalan.slice().forEach(ac); kalan.length = 0; }, 4000);
   })();
 
-  /* ---------- TOC aktif başlık vurgusu ---------- */
+  /* ---------- TOC active heading highlight ---------- */
   var tocLinkler = Array.prototype.slice.call(
     document.querySelectorAll("nav.toc a[href^='#']"));
   if (tocLinkler.length && "IntersectionObserver" in window) {
@@ -180,10 +180,10 @@
         var l = linkHaritasi[aktifId];
         var nav = l.closest("nav.toc");
         if (nav) {
-          // ÖNEMLİ: l.scrollIntoView() BURADA KULLANILMAZ — o, öğeyi görünür
-          // kılmak için pencere dahil tüm kaydırılabilir ataları kaydırır ve
-          // sayfayı yukarı geri çeker. Yalnız TOC kutusunun kendi scrollTop'unu
-          // ayarlayarak aktif linki panelde ortalarız; pencere hiç etkilenmez.
+          // IMPORTANT: l.scrollIntoView() is NOT USED HERE — to make the element
+          // visible it would scroll every scrollable ancestor including the window
+          // and pull the page back up. By adjusting only the TOC box's own scrollTop
+          // we center the active link within the panel; the window is never affected.
           var ust = l.getBoundingClientRect().top - nav.getBoundingClientRect().top;
           if (ust < 60 || ust > nav.clientHeight - 60) {
             nav.scrollTop += ust - nav.clientHeight / 2;
@@ -197,7 +197,7 @@
     });
   }
 
-  /* ---------- Konfeti ---------- */
+  /* ---------- Confetti ---------- */
   var konfetiParcalari = [];
   var konfetiTuval = null, konfetiCtx = null, konfetiAktif = false;
 
@@ -266,7 +266,7 @@
     else { konfetiAktif = false; konfetiCtx.clearRect(0, 0, konfetiTuval.width, konfetiTuval.height); }
   }
 
-  /* ---------- Kutlama afişi (tüm görevler bitince) ---------- */
+  /* ---------- Celebration banner (when all tasks are done) ---------- */
   var kutlamaAfis = null;
   function kutlamaGoster() {
     if (!kutlamaAfis) {
@@ -275,16 +275,16 @@
       kutlamaAfis.innerHTML =
         '<span class="kutlama-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" ' +
         'fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12.5l5 5L20 6"/></svg></span>' +
-        '<div class="kutlama-metin"><strong>Yolculuğu tamamladın</strong>' +
-        '<span>Tüm görevler bitti — artık gömülü dünyanın işini yapabilecek ellerdesin. Tebrikler!</span></div>' +
-        '<button type="button" class="kutlama-kapat" aria-label="Kapat">&times;</button>';
+        '<div class="kutlama-metin"><strong>Journey complete</strong>' +
+        '<span>All tasks are done. You are now equipped to take on real embedded work. Congratulations.</span></div>' +
+        '<button type="button" class="kutlama-kapat" aria-label="Close">&times;</button>';
       document.body.appendChild(kutlamaAfis);
       kutlamaAfis.querySelector(".kutlama-kapat").addEventListener("click", function () {
         kutlamaAfis.classList.remove("gorunur");
       });
     }
     requestAnimationFrame(function () { kutlamaAfis.classList.add("gorunur"); });
-    // çoklu kaynaktan büyük konfeti
+    // large confetti from multiple sources
     if (!azHareket) {
       var W = window.innerWidth;
       [0.2, 0.5, 0.8].forEach(function (fx, k) {
@@ -293,7 +293,7 @@
     }
   }
 
-  /* ---------- Görev takibi (checkbox + pano + sayaçlar) ---------- */
+  /* ---------- Task tracking (checkbox + panel + counters) ---------- */
   function gorevleriOku() {
     try { return JSON.parse(localStorage.getItem("go-gorevler") || "{}"); }
     catch (e) { return {}; }
@@ -321,7 +321,7 @@
       var etiket = k.closest(".gorev-tamam");
       if (etiket) {
         var yazi = etiket.querySelector(".gorev-tamam-yazi");
-        if (yazi) { yazi.textContent = isaretli ? "Tamamlandı" : "Tamamladım"; }
+        if (yazi) { yazi.textContent = isaretli ? "Completed" : "Mark complete"; }
       }
       var tocOge = document.querySelector("nav.toc li[data-gorev='" + id + "']");
       if (tocOge) { tocOge.classList.toggle("tamam", isaretli); }
@@ -334,21 +334,21 @@
       var parca = document.querySelector(".patika-parca[data-gorev='" + id + "']");
       if (parca) { parca.style.opacity = isaretli ? "1" : "0"; }
     });
-    // sıradaki (ilk tamamlanmamış) durağı işaretle
+    // mark the next (first incomplete) stop
     if (ilkEksikDurak) { ilkEksikDurak.classList.add("sirada"); }
 
     var sayac = document.getElementById("gorev-sayac");
-    if (sayac) { sayac.textContent = tamam + " / " + toplamGorev + " görev"; }
+    if (sayac) { sayac.textContent = tamam + " / " + toplamGorev + " tasks"; }
     var oran = toplamGorev ? Math.round((tamam / toplamGorev) * 100) : 0;
     var panoDurum = document.getElementById("pano-durum");
     if (panoDurum) {
       panoDurum.innerHTML = "<span class='oran'>" + tamam + " / " + toplamGorev +
-        "</span> görev tamamlandı (%" + oran + ")";
+        "</span> tasks complete (" + oran + "%)";
     }
     var panoDolu = document.getElementById("pano-ilerleme-dolu");
     if (panoDolu) { panoDolu.style.width = oran + "%"; }
 
-    // tüm görevler yeni bittiyse kutla
+    // if all tasks have just been completed, celebrate
     if (oncekiTamam !== -1 && tamam === toplamGorev && oncekiTamam < toplamGorev
         && toplamGorev > 0) {
       kutlamaGoster();
@@ -362,7 +362,7 @@
       var id = k.getAttribute("data-gorev");
       if (k.checked) {
         durum[id] = true;
-        // checkbox konumundan konfeti
+        // confetti from the checkbox position
         var r = k.closest(".gorev-tamam");
         if (r) {
           var b = r.getBoundingClientRect();

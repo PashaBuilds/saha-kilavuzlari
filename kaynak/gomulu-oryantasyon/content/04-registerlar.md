@@ -1,261 +1,278 @@
-# Bölüm 4 — Register'lar: Donanımla Konuşma Dili
+# Chapter 4 — Registers: The Language of Communicating with Hardware
 
-Bellek haritasını gördün: her şeyin bir adresi var. Bu bölümde o adreslerin
-ardında ne olduğunu öğreneceksin — **register**'lar (yazmaçlar). Bir
-register, donanımın CPU'yla konuştuğu küçük bir kutudur; bu bölümü
-bitirdiğinde bir register map (yazmaç haritası) dokümanını okuyup
-anlamlandırabilecek, kendi kodunla gerçek bir donanımı konuşturacaksın.
+You have seen the memory map: everything has an address. In this chapter,
+you will learn what lies behind those addresses — **registers**. A
+register is a small box through which hardware communicates with the CPU;
+by the end of this chapter, you will be able to read and interpret a
+register map document, and you will make a piece of real hardware respond
+to your own code.
 
-## Memory-mapped I/O: adres aslında bir kapı
+## Memory-Mapped I/O: An Address Is Really a Door
 
-**Memory-mapped I/O** (bellek eşlemeli giriş/çıkış), bir çevre biriminin
-register'larının, tıpkı RAM'deki bir değişken gibi, bir bellek adresinden
-okunup yazılabilmesi demektir. Yani `0xFF0A0040` adresine `1` yazmakla
-`benimSayacim = 1;` yazmak, CPU'nun gözünden neredeyse aynı işlemdir —
-farkı, o adresin RAM'e değil bir GPIO denetleyicisine bağlı olmasıdır ve
-oraya yazdığın anda gerçek dünyada bir pin seviye değiştirir.
+**Memory-mapped I/O** means that a peripheral's registers can be read from
+and written to via a memory address, exactly like a variable in RAM. In
+other words, writing `1` to address `0xFF0A0040` and writing
+`myCounter = 1;` are, from the CPU's point of view, nearly identical
+operations — the difference is that the address is connected not to RAM
+but to a GPIO controller, and the instant you write to it, a physical pin
+changes level in the real world.
 
-{{svg:sema-07-adres-kapi.svg|Şekil 7 — "Adres = kapı numarası": CPU'dan adres yolu üzerinden çevre birimi register'ına giden bir okuma/yazma işleminin yolu.}}
+{{svg:sema-07-adres-kapi.svg|Figure 7 — "Address = door number": the path of a read/write operation from the CPU, over the address bus, to a peripheral register.}}
 
-Bunu sokakta kapı numarası bulmaya benzetebilirsin: CPU adres yoluna
-(bus) bir "kapı numarası" (adres) koyar, o numaradaki "bina" (çevre
-birimi) cevap verir. `0xFF00_0000` numaralı kapıyı çalarsan UART0 açar;
-`0xFF0A_0000` numaralı kapıyı çalarsan GPIO açar. Kapı numarasını yanlış
-yazarsan, ya kimse açmaz ya da hiç beklemediğin biri açar.
+As an analogy, this resembles locating a street address: the CPU places a
+"door number" (address) on the address bus, and the "building" (peripheral)
+at that number responds. Knock on door number `0xFF00_0000` and UART0
+answers; knock on door number `0xFF0A_0000` and GPIO answers. If you write
+the wrong door number, either no one answers, or someone entirely
+unexpected does.
 
-## Bir register'ın içi: bit alanları ve erişim tipleri
+## Inside a Register: Bit Fields and Access Types
 
-Her register 32 bitlik bir kutudur ve her bit (ya da bit grubu) farklı bir
-anlam taşır. UART'ın SR (Channel Status) register'ında bit 4 = TXFULL
-(gönderim FIFO'su (First In First Out — ilk giren ilk çıkan; donanımın
-veriyi geçici tuttuğu sıralı tampon) dolu mu), bit 1 = RXEMPTY (alım
-FIFO'su boş mu) gibi.
+Each register is a 32-bit box, and each bit (or group of bits) carries a
+distinct meaning. In the UART's SR (Channel Status) register, bit 4 =
+TXFULL (whether the transmit FIFO (First In First Out — the ordered
+buffer in which hardware temporarily holds data) is full), bit 1 =
+RXEMPTY (whether the receive FIFO is empty), and so on.
 
-{{svg:sema-08-register-bit.svg|Şekil 8 — 32-bit register bit alanı anatomisi: UART SR'den TXFULL/TXEMPTY/RXFULL/RXEMPTY bitleri vurgulu; altta R/W, RO, W1C rozetleri.}}
+{{svg:sema-08-register-bit.svg|Figure 8 — Anatomy of a 32-bit register's bit fields: the TXFULL/TXEMPTY/RXFULL/RXEMPTY bits from the UART SR highlighted; below, the R/W, RO, and W1C badges.}}
 
-Bit alanlarının yanında, her register'ın kendine has bir **erişim tipi**
-vardır. Üç tanesiyle sık karşılaşacaksın:
+In addition to bit fields, every register has its own **access type**. You
+will frequently encounter three of them:
 
-- **R/W (Read/Write):** Hem okunur hem yazılır, tıpkı normal bir değişken
-  gibi. CR (0x00) böyle — TX/RX'i etkinleştirmek için üzerine yazarsın.
-- **RO (Read-Only):** Sadece okunur; donanım günceller, sen yazamazsın.
-  SR (0x2C) böyle — TX FIFO'nun dolu olup olmadığını *sorarsın*, donanıma
-  *söylemezsin*.
-- **W1C (Write-1-to-Clear):** İlginç ve ilk görüşte kafa karıştıran bir
-  desen. Bu register'a **1 yazdığın bit temizlenir**, 0 yazdığın bitler
-  değişmeden kalır. ISR (0x14) böyle çalışır: bir kesme bayrağını
-  kapatmak için o bite `1` yazarsın — `0` yazmak hiçbir şey yapmaz. Yani
-  "temizlemek" fiili burada "üzerine 1 bas" anlamına geliyor; sezgine
-  aykırı ama gömülü dünyada çok yaygın bir kalıp.
+- **R/W (Read/Write):** Both readable and writable, just like an ordinary
+  variable. CR (0x00) is like this — you write to it to enable TX/RX.
+- **RO (Read-Only):** Readable only; hardware updates it, and you cannot
+  write to it. SR (0x2C) is like this — you *ask* whether the TX FIFO is
+  full, you do not *tell* the hardware.
+- **W1C (Write-1-to-Clear):** An unusual pattern that can be confusing at
+  first sight. In this register, writing 1 to a bit **clears** it; bits
+  you write 0 to remain unchanged. ISR (0x14) works this way: to clear an
+  interrupt flag, you write 1 to that bit — writing 0 does nothing. In
+  other words, the verb "clear" here means "write a 1 to it"; this is
+  counterintuitive, but it is a very common pattern in embedded systems.
 
-Bölüm 5'te bu bitleri maskelerle okuyup yazmayı öğreneceksin; şimdilik
-onları doğru isimle tanı yeter.
+In Chapter 5, you will learn to read and write these bits using masks;
+for now, it is enough to know them by their correct names.
 
-## Register map dokümanını okumak
+## Reading a Register Map Document
 
-Donanımcılar (ya da Xilinx) her çevre birimi için bir **register map**
-dokümanı yayınlar: hangi register hangi **offset**'te (taban adrese göre
-kayma), güç sonrası **reset değeri** ne ve az önce tanıdığın **erişim
-tipi** ne. ZynqMP UART'ının gerçek register map'inden küçük bir kesit:
+Hardware designers (or Xilinx) publish a **register map** document for
+each peripheral: which register sits at which **offset** (the
+displacement from the base address), what its **reset value** is after
+power-on, and what its **access type** — which you have just learned — is.
+A small excerpt from the actual register map of the ZynqMP UART:
 
-{{svg:sema-09-register-map-okuma.svg|Şekil 9 — Register map dokümanı okuma dersi: UART register tablosu üzerinde offset/erişim/reset anotasyonları.}}
+{{svg:sema-09-register-map-okuma.svg|Figure 9 — A lesson in reading a register map document: offset/access/reset annotations on the UART register table.}}
 
-| Register | Offset | Erişim | Reset | Açıklama |
+| Register | Offset | Access | Reset | Description |
 |---|---|---|---|---|
-| CR (Control) | 0x00 | R/W | 0x00000128 | TX/RX etkinleştirme, reset bitleri |
-| MR (Mode) | 0x04 | R/W | 0x00000000 | Baud kaynağı, veri/durma biti sayısı |
-| SR (Channel Status) | 0x2C | RO | — | TX/RX FIFO durumu (TXFULL, RXEMPTY...) |
-| ISR (Interrupt Status) | 0x14 | **W1C** | 0x00000000 | Kesme bayrakları |
+| CR (Control) | 0x00 | R/W | 0x00000128 | TX/RX enable, reset bits |
+| MR (Mode) | 0x04 | R/W | 0x00000000 | Baud source, data/stop bit count |
+| SR (Channel Status) | 0x2C | RO | — | TX/RX FIFO status (TXFULL, RXEMPTY...) |
+| ISR (Interrupt Status) | 0x14 | **W1C** | 0x00000000 | Interrupt flags |
 
-Dört sütun da kritik: **offset** taban adrese eklenecek sayı; **erişim**
-register'la ne yapabileceğini söylüyor; **reset değeri** kart açıldığı
-anda register'da ne bulacağını; **açıklama** ise register'ın işini.
-Bunları okumadan kod yazmak, kullanma kılavuzunu okumadan cihaz kurmaya
-benzer — bazen işe yarar, çoğu zaman saatlerini yer.
+All four columns are critical: the **offset** is the number to add to the
+base address; **access** tells you what you may do with the register;
+**reset value** tells you what you will find in the register the instant
+the board powers on; **description** tells you the register's purpose.
+Writing code without reading these is comparable to setting up a device
+without reading its manual — it sometimes works, but it costs you hours
+far more often.
 
-## Base address + offset aritmetiği
+## Base Address + Offset Arithmetic
 
-Bir register'ın gerçek adresi tek bir formülle çıkar:
+The actual address of a register follows from a single formula:
 
 ```metin
-gerçek_adres = taban_adres + offset
+actual_address = base_address + offset
 ```
 
-Örnek: GPIO denetleyicisinin taban adresi `0xFF0A_0000`. Bank 0'ın veri
-register'ı (DATA_0) `0x40` offset'inde. Gerçek adres:
-`0xFF0A_0000 + 0x40 = 0xFF0A_0040`. Bu toplamayı elle her seferinde
-yapman gerekmez — az sonra göreceğin gibi bunu senin için sürücü (driver)
-fonksiyonları ya da hazır sabitler yapar — ama formülün kendisini
-anlamadan register map okumak mümkün değil.
+Example: the GPIO controller's base address is `0xFF0A_0000`. Bank 0's
+data register (DATA_0) is at offset `0x40`. The actual address:
+`0xFF0A_0000 + 0x40 = 0xFF0A_0040`. You do not need to perform this
+addition by hand every time — as you will see shortly, driver functions or
+ready-made constants do it for you — but reading a register map is not
+possible without understanding the formula itself.
 
-:::tuzak Offset'i taban adresle karıştırmak
-Register map dokümanları çoğu zaman offset'i tek başına yazar (`0x2C`
-gibi), taban adresi ayrı bir tabloda verir. İkisini karıştırıp doğrudan
-`0x2C`'ye yazan ya da UART1'in taban adresini kopyalayıp UART0 kodunda
-kullanan bir satır, derlenir, çalışır gibi görünür ve seni yanlış çevre
-birimini programlarken bulur. Her register adresini kullanmadan önce
-"bu hangi taban + hangi offset" diye kendine sor.
+:::tuzak Confusing the Offset with the Base Address
+Register map documents often list the offset alone (such as `0x2C`) and
+give the base address in a separate table. A line that confuses the two —
+writing directly to `0x2C`, or copying UART1's base address into UART0
+code — compiles, appears to run, and leaves you programming the wrong
+peripheral. Before using any register address, ask yourself: "which base
+address plus which offset is this?"
 :::
 
-## xparameters.h: adresleri elle yazmayız
+## xparameters.h: We Do Not Write Addresses by Hand
 
-Peki bu taban adresleri koddan nereden okuyorsun? Elle yazmazsın —
-Vitis, donanım tanımından (.xsa) otomatik olarak **`xparameters.h`**
-başlık dosyasını üretir; her çevre biriminin adresi, kesme numarası ve
-kimliği burada bir sabit olarak hazır durur. İki farklı Vitis akışında
-isimlendirme biraz değişir:
+So where do you obtain these base addresses in code? You do not write
+them by hand — Vitis automatically generates the **`xparameters.h`**
+header file from the hardware definition (.xsa); the address, interrupt
+number, and identifier of every peripheral are available here as
+ready-made constants. Naming differs slightly between two Vitis flows:
 
-- **Klasik akış** (2023.1 ve öncesi Vitis Classic): her aygıt bir
-  **DEVICE_ID** ile tanınır, örn. `XPAR_XUARTPS_0_DEVICE_ID`. Sürücünün
-  `LookupConfig` fonksiyonuna bu kimliği verirsin, o da sana taban adresi
-  içeren bir konfigürasyon yapısı döner.
-- **SDT akışı** (System Device Tree — Vitis Unified IDE'nin güncel
-  yöntemi): aygıtlar doğrudan taban adresle anılır, örn.
-  `XPAR_XUARTPS_0_BASEADDR`. `LookupConfig` bu durumda adresin kendisini
-  parametre olarak alır.
+- **Classic flow** (Vitis Classic, 2023.1 and earlier): each device is
+  identified by a **DEVICE_ID**, e.g. `XPAR_XUARTPS_0_DEVICE_ID`. You
+  pass this identifier to the driver's `LookupConfig` function, which
+  returns a configuration structure containing the base address.
+- **SDT flow** (System Device Tree — the current method used by the
+  Vitis Unified IDE): devices are referred to directly by base address,
+  e.g. `XPAR_XUARTPS_0_BASEADDR`. In this case, `LookupConfig` takes the
+  address itself as its parameter.
 
-İkisinin de mantığı aynı: **adresi elle yazma, üretilen başlıktan al.**
-Elle yazdığın bir adres, donanım tasarımı değiştiğinde (ya da başka bir
-projeye taşındığında) sessizce yanlışlanır; `xparameters.h`'den gelen
-sabit ise donanımla birlikte otomatik güncellenir.
+The underlying logic is the same in both: **do not write the address by
+hand — take it from the generated header.** An address you write by hand
+becomes silently incorrect when the hardware design changes (or when the
+code moves to a different project); a constant from `xparameters.h`, in
+contrast, updates automatically together with the hardware.
 
-## Gerçek örnek: UART0'dan bir karakter göndermek
+## A Concrete Example: Sending a Character from UART0
 
-Şimdi bütün bu kavramları tek bir gerçek işleme bağlayalım: UART0
-(`0xFF00_0000`) üzerinden 'A' karakterini register seviyesinde göndermek.
-Sürücü fonksiyonlarının arkasında olan biten tam olarak şu:
+Let us now tie all of these concepts to a single concrete operation:
+sending the character 'A' at the register level through UART0
+(`0xFF00_0000`). What happens behind the driver functions is exactly this:
 
-1. **SR register'ını oku** (taban + `0x2C`).
-2. **TXFULL bitini kontrolü et** (maske `0x10`). Bit 1 ise gönderim
-   FIFO'su dolu demektir — boş yer açılana kadar bu adımı tekrarla
-   (bu, Bölüm 6'da tanışacağın "polling" deseninin ta kendisi; bedeli ve
-   interrupt'la karşılaştırması Bölüm 7'de).
-3. TXFULL sıfır olduğunda **FIFO register'ına** (taban + `0x30`) 'A'
-   karakterinin ASCII değerini yaz.
+1. **Read the SR register** (base + `0x2C`).
+2. **Check the TXFULL bit** (mask `0x10`). If the bit is 1, the transmit
+   FIFO is full — repeat this step until room opens up (this is
+   precisely the "polling" pattern you will meet in Chapter 6; its cost,
+   and a comparison with interrupts, is covered in Chapter 7).
+3. Once TXFULL is zero, **write the ASCII value of the character 'A'** to
+   the FIFO register (base + `0x30`).
 
-Donanım bundan sonrasını kendi üstlenir: karakteri fiziksel TX pininden
-seri olarak dışarı gönderir. Bu üç adım — durumu oku, bekle, yaz —
-gömülü dünyada saymakla bitmeyecek kadar sık göreceğin bir kalıptır.
+The hardware takes over from there: it serially transmits the character
+out through the physical TX pin. These three steps — read status, wait,
+write — form a pattern you will encounter more times in embedded systems
+than you could count.
 
-Artık teoriyi yeterince biriktirdin. Sıra pratik yapmakta: ilk görevin,
-bu bölümdeki register mantığını gerçek bir LED üzerinde denemek.
+You have now accumulated enough theory. It is time to put it into
+practice: your first task is to apply the register logic from this
+chapter to a real LED.
 
-## Vitis'e ilk bakış: proje aç, derle, karta at
+## A First Look at Vitis: Opening a Project, Building, and Deploying to the Board
 
-Az sonra Görev 1'de Vitis'i ilk kez açacaksın; burada tıklama sırasının
-kendisini önceden tarif edelim ki karşına çıktığında yabancı gelmesin.
-Vitis'in ne olduğu, BSP (board support package) kavramı, debugger,
-Run/Debug config'leri ve disassembly gibi derinlikler Bölüm 11'de
-bütünüyle işlenecek — burada anlattığımız yalnızca tıklama sırasının
-kendisi; şimdilik "ne yaptığını bilerek tıkla" yeter.
+You will open Vitis for the first time shortly, in Task 1; let us describe
+the sequence of clicks in advance so that it does not feel unfamiliar when
+you encounter it. What Vitis is, the BSP (board support package) concept,
+the debugger, Run/Debug configurations, and disassembly are covered in
+full depth in Chapter 11 — what is described here is only the sequence of
+clicks itself; for now, it is enough to click with an understanding of
+what each step does.
 
-İlk açılışta Vitis senden bir workspace (çalışma alanı) seçmeni ister:
-projelerini, ayarlarını ve derleme çıktılarını tuttuğu bir klasör.
-Workspace açıldıktan sonra ilk iş, ekibin sana hazırladığı platformu
-seçmektir — bu, donanımın tarifini taşıyan bir .xsa dosyasından türetilir;
-platformu sen tasarlamıyorsun, donanımcı tasarlıyor, sen listeden
-seçiyorsun.
+On first launch, Vitis asks you to choose a **workspace**: a folder that
+holds your projects, settings, and build outputs. Once the workspace is
+open, the first task is to select the platform your team has prepared for
+you — this is derived from a .xsa file that carries the hardware
+description; you do not design the platform, the hardware designer does,
+and you select it from a list.
 
-Platform seçiliyken yeni bir boş (empty) uygulama projesi açarsın:
-"empty application" şablonu hazır örnek kod getirmez, sıfırdan
-dolduracağın bir kabuk verir — ki bu yolculukta neredeyse hep tercih
-edeceğin şablon bu olacak. Vitis bu projeyi seçtiğin platforma otomatik
-bağlar ve hangi işlemci çekirdeğinde koşacağını sorar (bu yolculukta
-neredeyse hep APU'nun bir Cortex-A53 çekirdeği).
+With the platform selected, you open a new **empty application** project:
+the "empty application" template does not bring any sample code — it
+gives you a shell that you fill from scratch, and this is nearly always
+the template you will choose throughout this program. Vitis automatically
+links this project to the platform you selected and asks which processor
+core it should run on (throughout this program, this will nearly always
+be one of the APU's Cortex-A53 cores).
 
-Proje açıldıktan sonra kaynak dosyalarını projenin src/ klasörüne
-koyarsın — göreve gelince çözüm dosyasını oraya kopyalaman tam olarak bu
-yüzden. Ardından Build (derle) düğmesine basarsın; hata varsa
-Console/Problems panelinde kırmızı satırlar olarak görürsün, temizse bir
-çalıştırılabilir çıktı üretilir ve proje ağacında yeni bir Debug/Release
-klasörü belirir.
+Once the project is open, you place your source files in the project's
+`src/` folder — this is exactly why you will copy the solution file there
+when you reach a task. You then press the **Build** button; if there are
+errors, you see them as red lines in the Console/Problems panel, and if
+the build is clean, an executable output is produced and a new
+Debug/Release folder appears in the project tree.
 
-Derleme temizse sıra karta atmakta: projeye sağ tık, Run As → Launch on
-Hardware (JTAG). Vitis JTAG üzerinden karta bağlanır, derlediğini yükler
-ve çalıştırır; karttaki bir LED yanıp sönmeye başlar ya da Görev 0'da
-açtığın terminalde bir satır akar — kodunun gerçekten karta ulaştığının
-kanıtı budur.
+Once the build is clean, it is time to deploy to the board: right-click
+the project, then **Run As → Launch on Hardware (JTAG)**. Vitis connects
+to the board over JTAG, loads what you built, and runs it; an LED on the
+board begins to blink, or a line appears in the terminal you opened in
+Task 0 — this is the proof that your code has genuinely reached the
+board.
 
-Bu sıra — workspace, platform seç, boş proje aç, src/'e kod koy, Build,
-Run As → Launch on Hardware — Görev 1'den Görev 10'a kadar defalarca
-elinden geçecek. İlk seferinde adım adım oku, birkaç görev sonra
-parmakların ezberleyecek.
+This sequence — workspace, select platform, open an empty project, place
+code in `src/`, Build, Run As → Launch on Hardware — will pass through
+your hands repeatedly from Task 1 through Task 10. Read it step by step
+the first time; after a few tasks, your hands will know it by heart.
 
-:::gorev no=1 zorluk=1 baslik="LED Yak (Merhaba Donanım)" kisa="LED Yak"
-[Hedef]
-Vitis'te bare-metal bir uygulama derleyip karta yükleyerek DS50 LED'ini
-(PS MIO23) 500 ms periyotla (500 ms açık / 500 ms kapalı) yakıp söndürmek.
+:::gorev no=1 zorluk=1 baslik="Light an LED (Hello Hardware)" kisa="Light an LED"
+[Objective]
+Compile a bare-metal application in Vitis, deploy it to the board, and
+blink the DS50 LED (PS MIO23) at a 500 ms period (500 ms on / 500 ms
+off).
 
-[Ön koşul]
-Bölüm 3 ve 4 okundu; Görev 0 tamamlandı (kart JTAG modunda, terminal
-bağlantısı hazır).
+[Prerequisites]
+Chapters 3 and 4 read; Task 0 completed (board in JTAG mode, terminal
+connection ready).
 
-[Adımlar]
-1. Vitis'te ekibin sağladığı hazır **platformu** (donanım tanımı, .xsa)
-   seç — platform ile uygulama projesi ilişkisini Bölüm 11'de bütünüyle
-   göreceğiz, şimdilik "donanımın tarifi" olarak düşün.
-2. Yeni bir **boş (empty) uygulama** projesi aç ve seçtiğin platforma
-   bağla.
-3. Bu görevin çözüm dosyası olan `lab01-led/src/main.c`'yi projenin
-   `src/` klasörüne kopyala.
-4. Projeyi **derle** (Build).
-5. **JTAG üzerinden karta yükle ve çalıştır** (Run As → Launch on
-   Hardware). Adım adım JTAG/debug ayrıntılarına Bölüm 11'de gireceğiz;
-   bu beş adım şimdilik yeter.
-6. (opsiyonel) UART terminalini Görev 0'daki ayarlarla aç; "Görev 1"
-   satırının basıldığını gör.
+[Steps]
+1. In Vitis, select the ready-made **platform** (hardware definition,
+   .xsa) your team has provided — we will examine the
+   platform/application-project relationship in full in Chapter 11; for
+   now, think of it as "the hardware's description."
+2. Open a new **empty application** project and link it to the platform
+   you selected.
+3. Copy this task's solution file, `lab01-led/src/main.c`, into the
+   project's `src/` folder.
+4. **Build** the project.
+5. **Deploy to the board and run it over JTAG** (Run As → Launch on
+   Hardware). We will go into JTAG/debug details step by step in Chapter
+   11; these five steps are enough for now.
+6. (optional) Open the UART terminal with the settings from Task 0 and
+   confirm the "Task 1" line is printed.
 
-   :::derin-dalis Aynı işi doğrudan register ile yapmak
-   `XGpioPs_WritePin` gibi sürücü fonksiyonları senin için tam olarak
-   Bölüm 4'te öğrendiğin taban+offset aritmetiğini ve oku-değiştir-yaz
-   işlemini yapar. Bu satırların arkasını görmek istersen,
-   `content/_arastirma-ek-B.md`'de kaynaklı olarak doğrulanmış DIRM_0,
-   OEN_0 ve DATA_0 register ofsetleriyle aynı LED'i doğrudan volatile
-   pointer (volatile — derleyici bu adresi her erişimde gerçekten
-   okusun/yazsın; ayrıntısı Bölüm 5'te) üzerinden yakan alternatif çözüm
-   burada:
-   {{kod:lab01-led/src/main_registerli.c}}
-   Merak ediyorsan bu dosyayı ayrı bir uygulama projesi olarak derleyip
-   DS50'nin aynı şekilde yanıp söndüğünü gör — iki yaklaşımın ürettiği
-   davranış birebir aynı, yolculuk farklı.
+   :::derin-dalis Doing the Same Thing Directly with Registers
+   Driver functions such as `XGpioPs_WritePin` perform, on your behalf,
+   exactly the base+offset arithmetic and read-modify-write operation you
+   learned in Chapter 4. If you want to see what lies behind these calls,
+   here is an alternative solution that lights the same LED directly
+   through a `volatile` pointer (volatile — the compiler must genuinely
+   read/write this address on every access; details in Chapter 5), using
+   the DIRM_0, OEN_0, and DATA_0 register offsets verified with sources
+   in `content/_arastirma-ek-B.md`:
+   {{kod:lab01-led/src/main_registers.c}}
+   If you are curious, compile this file as a separate application
+   project and confirm that DS50 blinks the same way — the behavior
+   produced by the two approaches is identical; only the path there
+   differs.
    :::
 
-[Başarı kriteri]
-DS50 saniyede bir yanıp sönüyor: 500 ms açık, 500 ms kapalı, gözle net
-görülen düzenli bir ritim.
+[Success Criteria]
+DS50 blinks once per second: 500 ms on, 500 ms off, a regular rhythm
+clearly visible to the eye.
 
-[Kendini sına]
-- `XGpioPs_WritePin` yerine DATA_0 register'ına doğrudan `=` ile (yani
-  `|=` kullanmadan) yazsaydın, MIO23 dışındaki diğer MIO pinlerine ne
-  olurdu?
-- MASK_DATA (LSW/MSW) yazmaçları ne işe yarar; DATA_0'dan farkı ne?
-- `SetDirectionPin` ve `SetOutputEnablePin` çağrılarını atlayıp doğrudan
-  `WritePin` çağırsaydın LED yanar mıydı? Neden?
+[Self-Check]
+- If you wrote to the DATA_0 register directly with `=` (i.e., without
+  `|=`) instead of using `XGpioPs_WritePin`, what would happen to the
+  other MIO pins besides MIO23?
+- What are the MASK_DATA (LSW/MSW) registers for, and how do they differ
+  from DATA_0?
+- If you skipped the `SetDirectionPin` and `SetOutputEnablePin` calls and
+  called `WritePin` directly, would the LED light up? Why or why not?
 
-[Takıldıysan]
-::ipucu İpucu 1 — Platform/uygulama ilişkisini karıştırdıysan
-Bir "platform component" donanım tanımını (.xsa) ve işletim sistemi
-seçimini taşır; "application component" ona bağlanan senin kodundur.
-Yanlış ya da boş bir platforma bağlandıysan derleme hatası genelde
-`XPAR_` tanımlarının bulunamamasıyla kendini gösterir — önce platform
-seçimini kontrol et.
+[If You Get Stuck]
+::ipucu Hint 1 — If You Confused the Platform/Application Relationship
+A "platform component" carries the hardware definition (.xsa) and the
+operating-system choice; an "application component" is your own code,
+linked to it. If you linked to the wrong or an empty platform, the build
+error usually shows up as missing `XPAR_` definitions — check your
+platform selection first.
 ::/
-::ipucu İpucu 2 — Derleniyor ama LED yanmıyorsa
-`XGpioPs_LookupConfig` ve `XGpioPs_CfgInitialize`'ın dönüş değerlerini
-gerçekten kontrol ettin mi? UART terminalinde "HATA" satırı görüyorsan
-`DEVICE_ID`'yi `xparameters.h`'den doğrula. Terminalde hiçbir şey
-görünmüyorsa Görev 0'daki port/baud ayarına geri dön; kod çalışıyor
-olabilir, terminal yanlış porta bakıyor olabilir.
+::ipucu Hint 2 — If It Compiles but the LED Does Not Light Up
+Did you actually check the return values of `XGpioPs_LookupConfig` and
+`XGpioPs_CfgInitialize`? If you see an "ERROR" line on the UART terminal,
+verify `DEVICE_ID` against `xparameters.h`. If nothing appears on the
+terminal at all, go back to the port/baud settings from Task 0 — the code
+may be running fine while the terminal is looking at the wrong port.
 ::/
-::cozum Tam çözüm — lab01-led
-Aşağıdaki dosya `XGpioPs` sürücüsüyle DS50'yi 500 ms periyotla yakıp
-söndürür; klasik (DEVICE_ID) akış kullanır, SDT farkı yorum satırında not
-düşülmüştür.
+::cozum Full Solution — lab01-led
+The file below blinks DS50 at a 500 ms period using the `XGpioPs` driver;
+it uses the classic (DEVICE_ID) flow, and the SDT difference is noted in
+a comment.
 {{kod:lab01-led/src/main.c}}
 ::/
 :::
 
-Register'ları register map'ten okuyup elle adresledin; ama C dilinin bu
-düzeyde donanımla ilişkisi ince noktalarla dolu — `volatile`, bit
-işlemleri, sabit genişlikli tipler. C tarafında seni bekleyen incelikler
-bir sonraki bölümün konusu.
+You have read registers from the register map and addressed them by
+hand; but the C language's relationship with hardware at this level is
+full of subtleties — `volatile`, bit operations, fixed-width types. The
+subtleties awaiting you on the C side are the subject of the next
+chapter.

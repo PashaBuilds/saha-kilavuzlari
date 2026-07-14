@@ -1,16 +1,16 @@
-# lab02-uart — GÖREV 2: UART "Merhaba Dünya" ve printf'in Arkası
+# lab02-uart — TASK 2: UART "Hello World" and What's Behind printf
 
-## Ne yapar
+## What it does
 
-PS UART0 üzerinden iki aşamalı bir gösteri:
+A two-stage demonstration over PS UART0:
 
-1. `xil_printf` ile tek satır — hazır ve hafif printf'in doğrudan çalıştığını
-   gösterir (bkz. `%f` desteklemediği uyarısı, `main.c` içindeki yorum).
-2. Kendi yazdığın `uart_ps` modülüyle (register seviyesinde, `XUartPs`
-   sürücüsü kullanılmadan) çok satırlı bir karşılama ekranı (banner)
-   bastırır.
+1. A single line via `xil_printf` — shows that the ready-made, lightweight
+   printf works out of the box (see the note about lack of `%f` support in
+   the comment inside `main.c`).
+2. A multi-line welcome banner printed by your own `uart_ps` module (at
+   register level, without using the `XUartPs` driver).
 
-`uart_ps` modülü üç fonksiyondan oluşur (`uart_ps.h`):
+The `uart_ps` module consists of three functions (`uart_ps.h`):
 
 ```c
 void uartInit(void);
@@ -18,43 +18,47 @@ void uartSendChar(char cChar);
 void uartSendString(const char* cpString);
 ```
 
-`uartSendChar`, UART0'ın Channel Status Register'ında (`SR`, offset
-`0x2C`) TXFULL biti (`0x10`) temizlenene kadar bekler, sonra karakteri FIFO
-register'ına (offset `0x30`) yazar. `uartSendString`, `'\n'` gördüğünde
-önce `'\r'` gönderir — terminalin satırı gerçekten sola sarması için.
+`uartSendChar` waits until the TXFULL bit (`0x10`) in UART0's Channel
+Status Register (`SR`, offset `0x2C`) clears, then writes the character to
+the FIFO register (offset `0x30`). `uartSendString` sends `'\r'` before
+`'\n'` whenever it encounters `'\n'` — so the terminal actually returns the
+cursor to the left margin.
 
-**Dürüst not:** `uartInit()` UART0'ın baud hızını (115200) ya da kare
-formatını (8N1) yeniden kurmaz. Kart açılırken FSBL ve standalone BSP zaten
-UART0'ı bu ayarla bırakır — `xil_printf`'in ek bir ayar yapmadan çalışması
-bunun kanıtıdır. `uartInit()` sadece bu modülün kullanacağı register
-tabanını "hazır" ilan eder; gerçek bir sıfırdan init (Control/Mode/Baud Rate
-Generator yazmaçları) istersen ekleyeceğin yer orası.
+**Note:** `uartInit()` does not reconfigure UART0's baud rate (115200) or
+frame format (8N1). When the board boots, the FSBL and the standalone BSP
+already leave UART0 configured this way — the fact that `xil_printf` works
+without any additional setup is proof of this. `uartInit()` merely declares
+the register base used by this module as "ready"; if you want a genuine
+from-scratch init (Control/Mode/Baud Rate Generator registers), this is
+where you would add it.
 
-## Nasıl derlenir
+## How to build
 
-Vitis Unified IDE'de:
+In the Vitis Unified IDE:
 
-1. Ekibin sağladığı hazır **platform** (.xsa, standalone) seçilir.
-2. Yeni bir **boş (empty) uygulama** projesi açılır ve bu platforma bağlanır.
-3. Bu klasördeki `src/uart_ps.h`, `src/uart_ps.c` ve `src/main.c` projenin
-   `src/` klasörüne kopyalanır.
-4. Proje derlenir (Build) ve JTAG üzerinden karta yüklenip çalıştırılır
-   (Run As → Launch on Hardware) — Görev 0/1'de kurduğun akışın aynısı.
+1. Select the ready-made **platform** (.xsa, standalone) provided by the
+   team.
+2. Open a new **empty application** project and link it to this platform.
+3. Copy `src/uart_ps.h`, `src/uart_ps.c`, and `src/main.c` from this folder
+   into the project's `src/` folder.
+4. **Build** the project, then load it onto the board via JTAG and run it
+   (Run As → Launch on Hardware) — the same flow you set up in Task 0/1.
 
-## Beklenen çıktı
+## Expected output
 
-Terminal 115200-8N1 ayarıyla bağlıyken (Görev 0), kart çalıştırıldığında
-şuna benzer bir çıktı akar:
-
-```
-xil_printf hazir: UART0 platform tarafindan zaten ayarli.
-
-========================================
-  Ekibe hos geldin - ZCU111 / PS UART0
-  Bu satirlari senin uart_ps modulun bastı.
-  TXFULL biti kontrol edildi, FIFO'ya yazildi.
-========================================
+With the terminal connected at 115200-8N1 (Task 0), running the board
+produces output similar to:
 
 ```
+xil_printf ready: UART0 already configured by the platform.
 
-İlk satır `xil_printf`'ten, banner'ın geri kalanı `uart_ps` modülünden gelir.
+========================================
+  Welcome to the team - ZCU111 / PS UART0
+  These lines were printed by your uart_ps module.
+  The TXFULL bit was checked, and data was written to the FIFO.
+========================================
+
+```
+
+The first line comes from `xil_printf`; the rest of the banner comes from
+the `uart_ps` module.

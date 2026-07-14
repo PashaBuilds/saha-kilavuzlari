@@ -1,5 +1,5 @@
 <svg viewBox="0 0 740 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s25-baslik">
-  <title id="s25-baslik">Şekil 25 — Mezuniyet görevi öneri mimarisi: FreeRTOS task'ları OlcumToplayici, LedGosterge, CliIsleyici ve Telemetri; OlcumKuyrugu ve KomutKuyrugu queue'ları; SW19 kesmesinden ModSemafor üzerinden mod geçişi; altta INA226/I2C, DS50+PL LED, SW19 ve UART0 donanım şeridi</title>
+  <title id="s25-baslik">Figure 25 — Capstone Project suggested architecture: FreeRTOS tasks MeasurementCollector, LedDisplay, CliHandler, and Telemetry; MeasurementQueue and CommandQueue queues; mode transition from the SW19 interrupt via ModeSemaphore; hardware strip below with INA226/I2C, DS50+PL LED, SW19, and UART0</title>
 
   <defs>
     <marker id="s25-ok-kuyruk1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -16,83 +16,83 @@
     </marker>
   </defs>
 
-  <!-- köşe etiketi -->
-  <text x="732" y="14" text-anchor="end" class="svg-soluk" style="font-style:italic" font-size="11">öneri — kendi mimarini kurabilirsin</text>
+  <!-- corner label -->
+  <text x="732" y="14" text-anchor="end" class="svg-soluk" style="font-style:italic" font-size="11">suggested — you may design your own architecture</text>
 
-  <!-- FreeRTOS çerçevesi -->
+  <!-- FreeRTOS frame -->
   <rect x="20" y="26" width="700" height="266" rx="10" fill="none" stroke="var(--cizgi)" stroke-width="1.5" stroke-dasharray="7,5"/>
-  <text x="35" y="45" class="svg-soluk" font-size="12">FreeRTOS görev alanı</text>
+  <text x="35" y="45" class="svg-soluk" font-size="12">FreeRTOS task space</text>
 
-  <!-- Row 1: OlcumToplayici, LedGosterge -->
+  <!-- Row 1: MeasurementCollector, LedDisplay -->
   <rect x="45" y="60" width="170" height="60" rx="8" class="svg-kutu"/>
-  <text x="130" y="86" text-anchor="middle" class="svg-metin" font-size="13">OlcumToplayici</text>
+  <text x="130" y="86" text-anchor="middle" class="svg-metin" font-size="13">MeasurementCollector</text>
   <text x="130" y="103" text-anchor="middle" class="svg-soluk" font-size="10">I2C0 → INA226 (0x40, 0x42)</text>
 
   <rect x="525" y="60" width="170" height="60" rx="8" class="svg-kutu"/>
-  <text x="610" y="86" text-anchor="middle" class="svg-metin" font-size="13">LedGosterge</text>
+  <text x="610" y="86" text-anchor="middle" class="svg-metin" font-size="13">LedDisplay</text>
   <text x="610" y="103" text-anchor="middle" class="svg-soluk" font-size="10">DS50 / PL LED bar</text>
 
-  <!-- Row 2: CliIsleyici, Telemetri -->
+  <!-- Row 2: CliHandler, Telemetry -->
   <rect x="45" y="205" width="170" height="60" rx="8" class="svg-kutu"/>
-  <text x="130" y="231" text-anchor="middle" class="svg-metin" font-size="13">CliIsleyici</text>
+  <text x="130" y="231" text-anchor="middle" class="svg-metin" font-size="13">CliHandler</text>
   <text x="130" y="248" text-anchor="middle" class="svg-soluk" font-size="10">status / led / rate</text>
 
   <rect x="525" y="205" width="170" height="60" rx="8" class="svg-kutu"/>
-  <text x="610" y="231" text-anchor="middle" class="svg-metin" font-size="13">Telemetri</text>
-  <text x="610" y="248" text-anchor="middle" class="svg-soluk" font-size="10">periyodik UART satırı</text>
+  <text x="610" y="231" text-anchor="middle" class="svg-metin" font-size="13">Telemetry</text>
+  <text x="610" y="248" text-anchor="middle" class="svg-soluk" font-size="10">periodic UART line</text>
 
-  <!-- OlcumKuyrugu: OlcumToplayici -> Telemetri -->
+  <!-- MeasurementQueue: MeasurementCollector -> Telemetry -->
   <path d="M215,100 C 340,120 420,190 520,232" fill="none" stroke="var(--sinyal-1)" stroke-width="2" marker-end="url(#s25-ok-kuyruk1)"/>
-  <text x="300" y="150" class="svg-metin" font-size="11" fill="var(--sinyal-1)">OlcumKuyrugu</text>
+  <text x="300" y="150" class="svg-metin" font-size="11" fill="var(--sinyal-1)">MeasurementQueue</text>
 
-  <!-- KomutKuyrugu: CliIsleyici -> LedGosterge -->
+  <!-- CommandQueue: CliHandler -> LedDisplay -->
   <path d="M215,225 C 340,205 420,135 520,98" fill="none" stroke="var(--sinyal-2)" stroke-width="2" marker-end="url(#s25-ok-kuyruk2)"/>
-  <text x="330" y="205" class="svg-metin" font-size="11" fill="var(--sinyal-2)">KomutKuyrugu</text>
+  <text x="330" y="205" class="svg-metin" font-size="11" fill="var(--sinyal-2)">CommandQueue</text>
 
-  <!-- ISR -> Semafor -> LedGosterge -->
+  <!-- ISR -> Semaphore -> LedDisplay -->
   <path d="M460,360 L460,300 C 460,255 545,190 600,122" fill="none" stroke="var(--sinyal-5)" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#s25-ok-semafor)"/>
   <text x="463" y="292" class="svg-metin" font-size="11" fill="var(--sinyal-5)">SW19 ISR</text>
-  <text x="452" y="250" text-anchor="end" class="svg-metin" font-size="11" fill="var(--sinyal-5)">ModSemafor (binary)</text>
+  <text x="452" y="250" text-anchor="end" class="svg-metin" font-size="11" fill="var(--sinyal-5)">ModeSemaphore (binary)</text>
 
-  <!-- donanım şeridi -->
+  <!-- hardware strip -->
   <rect x="30" y="360" width="160" height="66" rx="8" class="svg-kutu" style="stroke: var(--sinyal-1)"/>
   <text x="110" y="388" text-anchor="middle" class="svg-metin" font-size="12">INA226 (I2C0)</text>
-  <text x="110" y="405" text-anchor="middle" class="svg-soluk" font-size="10">U23 0x75 kanal 0</text>
+  <text x="110" y="405" text-anchor="middle" class="svg-soluk" font-size="10">U23 0x75 channel 0</text>
 
   <rect x="205" y="360" width="160" height="66" rx="8" class="svg-kutu"/>
   <text x="285" y="388" text-anchor="middle" class="svg-metin" font-size="12">DS50 + PL LED bar</text>
   <text x="285" y="405" text-anchor="middle" class="svg-soluk" font-size="10">MIO23 / AXI GPIO</text>
 
   <rect x="380" y="360" width="160" height="66" rx="8" class="svg-kutu" style="stroke: var(--sinyal-5)"/>
-  <text x="460" y="388" text-anchor="middle" class="svg-metin" font-size="12">SW19 (buton)</text>
+  <text x="460" y="388" text-anchor="middle" class="svg-metin" font-size="12">SW19 (button)</text>
   <text x="460" y="405" text-anchor="middle" class="svg-soluk" font-size="10">MIO22, GIC IRQ 48</text>
 
   <rect x="555" y="360" width="160" height="66" rx="8" class="svg-kutu"/>
   <text x="635" y="388" text-anchor="middle" class="svg-metin" font-size="12">UART0</text>
-  <text x="635" y="405" text-anchor="middle" class="svg-soluk" font-size="10">telemetri TX + CLI RX</text>
+  <text x="635" y="405" text-anchor="middle" class="svg-soluk" font-size="10">telemetry TX + CLI RX</text>
 
-  <!-- donanım -> task bağlantıları (kısa dikey kırma çizgiler) -->
+  <!-- hardware -> task connections (short vertical break lines) -->
   <path d="M110,360 L110,294" fill="none" class="svg-cizgi" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#s25-ok-donanim)"/>
-  <text x="110" y="345" text-anchor="middle" class="svg-soluk" font-size="9">→ OlcumToplayici</text>
+  <text x="110" y="345" text-anchor="middle" class="svg-soluk" font-size="9">→ MeasurementCollector</text>
 
   <path d="M285,360 L285,294" fill="none" class="svg-cizgi" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#s25-ok-donanim)"/>
-  <text x="285" y="345" text-anchor="middle" class="svg-soluk" font-size="9">→ LedGosterge</text>
+  <text x="285" y="345" text-anchor="middle" class="svg-soluk" font-size="9">→ LedDisplay</text>
 
   <path d="M660,360 C 660,320 630,300 610,268" fill="none" class="svg-cizgi" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#s25-ok-donanim)"/>
-  <text x="660" y="345" text-anchor="middle" class="svg-soluk" font-size="9">→ Telemetri</text>
+  <text x="660" y="345" text-anchor="middle" class="svg-soluk" font-size="9">→ Telemetry</text>
 
   <path d="M610,360 C 500,330 250,300 150,268" fill="none" class="svg-cizgi" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#s25-ok-donanim)"/>
-  <text x="330" y="323" text-anchor="middle" class="svg-soluk" font-size="9">→ CliIsleyici (RX polling)</text>
+  <text x="330" y="323" text-anchor="middle" class="svg-soluk" font-size="9">→ CliHandler (RX polling)</text>
 
-  <!-- lejant -->
+  <!-- legend -->
   <line x1="35" y1="452" x2="65" y2="452" stroke="var(--sinyal-1)" stroke-width="2"/>
-  <text x="70" y="456" class="svg-soluk" font-size="10">OlcumKuyrugu</text>
+  <text x="70" y="456" class="svg-soluk" font-size="10">MeasurementQueue</text>
   <line x1="190" y1="452" x2="220" y2="452" stroke="var(--sinyal-2)" stroke-width="2"/>
-  <text x="225" y="456" class="svg-soluk" font-size="10">KomutKuyrugu</text>
+  <text x="225" y="456" class="svg-soluk" font-size="10">CommandQueue</text>
   <line x1="345" y1="452" x2="375" y2="452" stroke="var(--sinyal-5)" stroke-width="2" stroke-dasharray="5,4"/>
-  <text x="380" y="456" class="svg-soluk" font-size="10">ISR → Semafor</text>
+  <text x="380" y="456" class="svg-soluk" font-size="10">ISR → Semaphore</text>
   <line x1="500" y1="452" x2="530" y2="452" class="svg-cizgi" stroke-width="1.5" stroke-dasharray="3,3"/>
-  <text x="535" y="456" class="svg-soluk" font-size="10">donanım bağlantısı</text>
+  <text x="535" y="456" class="svg-soluk" font-size="10">hardware link</text>
 
-  <text x="370" y="478" text-anchor="middle" class="svg-soluk" font-size="10">Görev sayısı, kuyruk tasarımı ve mod geçiş mekanizması serbesttir — burada gösterilen tek olası çözümdür.</text>
+  <text x="370" y="478" text-anchor="middle" class="svg-soluk" font-size="10">The number of tasks, queue design, and mode-transition mechanism are up to you — what is shown here is only one possible solution.</text>
 </svg>

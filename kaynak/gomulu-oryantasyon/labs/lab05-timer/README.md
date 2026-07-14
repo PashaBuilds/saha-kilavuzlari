@@ -1,30 +1,31 @@
-# lab05-timer — GÖREV 5: Timer ile Kalp Atışı
+# lab05-timer — TASK 5: Heartbeat via Timer
 
-## Ne yapar
+## What it does
 
-TTC0 kanal 0'ı (taban `0xFF11_0000`) 1 Hz'de periyodik kesme üretecek
-şekilde kurar. Her tikte `tickIsr()` çalışır, DS50'yi (PS MIO23) tersine
-çevirir ve UART'a `tick N` satırı bastırır — Görev 4'teki GIC deseninin
-aynısı, bu sefer kesme kaynağı buton değil zamanlayıcı (GIC ID **68**).
+Configures TTC0 channel 0 (base `0xFF11_0000`) to generate a periodic
+interrupt at 1 Hz. On every tick, `tickIsr()` runs, toggles DS50 (PS
+MIO23), and prints a `tick N` line to UART — the same GIC pattern as
+Task 4, except this time the interrupt source is not the button but the
+timer (GIC ID **68**).
 
-`src/uart_ps.h` ve `src/uart_ps.c`, lab02-uart'tan birebir kopyadır.
+`src/uart_ps.h` and `src/uart_ps.c` are exact copies from lab02-uart.
 
-## Interval hesabı
+## Interval calculation
 
-TTC'nin Interval yazmacı ZynqMP'de **32-bit**'tir; tipik LPD saat
-hızlarında (onlarca MHz) bu genişlik 1 Hz gibi düşük bir tik frekansına
-**prescaler'sız** ulaşmaya yeter:
+The TTC's Interval register is **32-bit** on the ZynqMP; at typical LPD
+clock speeds (tens of MHz), this width is sufficient to reach a tick
+frequency as low as 1 Hz **without a prescaler**:
 
 ```
-Interval = (XPAR_XTTCPS_0_CLOCK_HZ / hedef_tick_hz) - 1
+Interval = (XPAR_XTTCPS_0_CLOCK_HZ / target_tick_hz) - 1
 ```
 
-`XPAR_XTTCPS_0_CLOCK_HZ`, platformun `.xsa`'sından üretilen gerçek TTC giriş
-saatidir — bu kodda elle bir MHz rakamı varsayılmıyor; `xparameters.h`'tan
-okunuyor. Kendi platformunda bu makronun değerini bulup hesabı kâğıt
-üzerinde tekrarlamak Görev 5'in "kendini sına" sorusudur.
+`XPAR_XTTCPS_0_CLOCK_HZ` is the actual TTC input clock generated from the
+platform's `.xsa` — no MHz figure is hardcoded in this code; it is read
+from `xparameters.h`. Finding this macro's value on your own platform and
+reproducing the calculation on paper is Task 5's "Self-Check" question.
 
-## Kurulum sırası
+## Setup order
 
 ```c
 XTtcPs_LookupConfig(XPAR_XTTCPS_0_DEVICE_ID);
@@ -32,35 +33,38 @@ XTtcPs_CfgInitialize(&S_sTtc, ...);
 XTtcPs_SetOptions(&S_sTtc, XTTCPS_OPTION_INTERVAL_MODE);
 XTtcPs_SetInterval(&S_sTtc, uiInterval);
 XTtcPs_EnableInterrupts(&S_sTtc, XTTCPS_IXR_INTERVAL_MASK);
-/* --- Bölüm 7'nin beşli GIC deseni, kesme ID 68 --- */
+/* --- Chapter 7's five-step GIC pattern, interrupt ID 68 --- */
 XTtcPs_Start(&S_sTtc);
 ```
 
-`tickIsr()` üç satırdır: `XTtcPs_GetInterruptStatus` ile durumu oku,
-`XTtcPs_ClearInterruptStatus` ile ack'le, `volatile` bayrağı set et. UART
-yazma ve LED çevirme işi tamamen ana döngüde — ISR kısa kalır.
+`tickIsr()` is three lines: read the status with
+`XTtcPs_GetInterruptStatus`, acknowledge it with
+`XTtcPs_ClearInterruptStatus`, and set the `volatile` flag. Writing to
+UART and toggling the LED are entirely the main loop's job — the ISR
+stays short.
 
-## Nasıl derlenir
+## How to build
 
-Vitis Unified IDE'de:
+In the Vitis Unified IDE:
 
-1. Ekibin sağladığı hazır **platform** (.xsa, standalone) seçilir.
-2. Yeni bir **boş (empty) uygulama** projesi açılır ve bu platforma bağlanır.
-3. Bu klasördeki `src/` altındaki üç dosya (`uart_ps.h`, `uart_ps.c`,
-   `main.c`) projenin `src/` klasörüne kopyalanır.
-4. Proje derlenir (Build) ve JTAG üzerinden karta yüklenip çalıştırılır.
+1. Select the ready-made **platform** (.xsa, standalone) provided by the
+   team.
+2. Open a new **empty application** project and link it to this platform.
+3. Copy the three files under `src/` in this folder (`uart_ps.h`,
+   `uart_ps.c`, `main.c`) into the project's `src/` folder.
+4. **Build** the project, then load it onto the board via JTAG and run it.
 
-## Beklenen çıktı
+## Expected output
 
 ```
---- GOREV 5: Timer ile Kalp Atisi ---
-TTC0 kanal 0, 1 Hz. DS50 kalp gibi atiyor.
+--- TASK 5: Heartbeat via Timer ---
+TTC0 channel 0, 1 Hz. DS50 beats like a heart.
 
 tick 1
 tick 2
 tick 3
 ```
 
-Terminalde tam olarak saniyede bir yeni satır akar; DS50 her tikte tersine
-döner, yani 2 saniyede bir tam bir yanıp-sönme çevrimi tamamlar — düzenli,
-kesintisiz bir kalp atışı ritmi.
+A new line appears in the terminal exactly once per second; DS50 toggles
+on every tick, completing one full blink cycle every 2 seconds — a
+steady, uninterrupted heartbeat rhythm.

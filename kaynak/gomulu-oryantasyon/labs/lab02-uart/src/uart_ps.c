@@ -1,55 +1,58 @@
 /* ============================================================================
- * uart_ps.c — UART0 register-seviyesi mini sürücü modülü (GÖREV 2 çözümü)
+ * uart_ps.c — UART0 register-level mini driver module (TASK 2 solution)
  *
- * Adresler ve bit maskeleri content/_arastirma.md'den (UG1085 Table 10-6 +
- * embeddedsw xuartps_hw.h) birebir alınmıştır:
- *   UART0 taban adresi   : 0xFF00_0000
+ * Addresses and bit masks are taken directly from content/_arastirma.md
+ * (UG1085 Table 10-6 + embeddedsw xuartps_hw.h):
+ *   UART0 base address   : 0xFF00_0000
  *   SR  (Channel Status) : offset 0x2C, RO
  *   FIFO (TX_RX FIFO)    : offset 0x30
- *   SR bit4 = TXFULL     : maske 0x10
+ *   SR bit4 = TXFULL     : mask 0x10
  *
- * DÜRÜST NOT (bölüm 5'te de anlatılıyor): kart açılırken FSBL/BSP zaten
- * UART0'ı 115200-8N1'e ayarlamış durumda bırakır (xil_printf'in hiçbir ek
- * ayar yapmadan çalışması bunun kanıtıdır). uartInit() burada baud/format
- * yazmaçlarına (CR/MR/Baud Rate Generator) DOKUNMAZ; sadece bu modülün
- * kullanacağı register tabanını "hazır" ilan eder. Gerçek bir sıfırdan init
- * gerekirse (örn. UART1'i de açmak istersen) eklenecek yer burasıdır.
+ * NOTE (also explained in Chapter 5): when the board boots, the FSBL/BSP
+ * already leaves UART0 configured at 115200-8N1 (the fact that xil_printf
+ * works without any additional configuration is proof of this).
+ * uartInit() here does NOT touch the baud/format registers (CR/MR/Baud
+ * Rate Generator); it merely declares the register base used by this
+ * module as "ready". If a genuine from-scratch init is ever needed (e.g.
+ * to also bring up UART1), this is where it would be added.
  * ============================================================================ */
 
 #include "uart_ps.h"
 
-/* ---- UART0 taban adresi ve yazmaç ofsetleri ---- */
-#define UART0_TABAN_ADRES   0xFF000000U
+/* ---- UART0 base address and register offsets ---- */
+#define UART0_BASE_ADDR   0xFF000000U
 #define UART_OFS_SR         0x0000002CU   /* Channel Status Register, RO */
 #define UART_OFS_FIFO       0x00000030U   /* TX_RX FIFO */
-#define UART_SR_TXFULL      0x00000010U   /* SR bit4: TX FIFO dolu */
+#define UART_SR_TXFULL      0x00000010U   /* SR bit4: TX FIFO full */
 
-/* Register'a volatile pointer ile erişim — Bölüm 5'te gördüğün desen:
- * "sabit bir adresi göster, oradan oku/yaz, derleyici bu okumayı ASLA
- * silmesin". Taban + offset toplamı Bölüm 4'teki formülün ta kendisi. */
-#define UART0_SR    (*(volatile unsigned int*)(UART0_TABAN_ADRES + UART_OFS_SR))
-#define UART0_FIFO  (*(volatile unsigned int*)(UART0_TABAN_ADRES + UART_OFS_FIFO))
+/* Register access via a volatile pointer — the pattern from Chapter 5:
+ * "point at a fixed address, read/write from there, and never let the
+ * compiler optimize the read away". Base + offset is exactly the formula
+ * from Chapter 4. */
+#define UART0_SR    (*(volatile unsigned int*)(UART0_BASE_ADDR + UART_OFS_SR))
+#define UART0_FIFO  (*(volatile unsigned int*)(UART0_BASE_ADDR + UART_OFS_FIFO))
 
 /**
- * @brief UART0'ı kullanıma hazırlar.
+ * @brief Prepares UART0 for use.
  */
 void uartInit(void)
 {
-    /* Bilerek boş: dosya başı yorumundaki dürüst nota bak. Fonksiyonu yine
-     * de burada tutuyoruz ki main.c "önce baslat, sonra kullan" akışını
-     * her modülde aynı şekilde çağırsın — yarın gerçek bir init eklemek
-     * istediğinde tek değişiklik yeri burası olur. */
+    /* Intentionally empty: see the note in the file header comment. We
+     * still keep the function here so that main.c can call the same
+     * "initialize first, then use" flow uniformly across every module —
+     * if a real init is ever needed, this is the single place to change. */
 }
 
 /**
- * @brief Tek bir karakteri UART0 TX FIFO'suna gönderir.
+ * @brief Sends a single character to the UART0 TX FIFO.
  */
 void uartSendChar(char cChar)
 {
-    /* TXFULL biti düşene kadar bekle (polling — Bölüm 7'de adını koyacağız).
-     * Dolu FIFO'ya yazmak veri kaybettirir; sonsuz döngüde takılma riskini
-     * bile bile göze alıyoruz çünkü donanım burada asla "hayır" demeyecek
-     * kadar güvenilir — TX her zaman boşalır. */
+    /* Wait until the TXFULL bit clears (polling — we will formally name
+     * this technique in Chapter 7). Writing to a full FIFO would lose
+     * data; we knowingly accept the risk of stalling in an infinite loop
+     * because the hardware here is reliable enough to never say "no" —
+     * the TX FIFO always drains. */
     while ((UART0_SR & UART_SR_TXFULL) == UART_SR_TXFULL)
     {
         ;
@@ -59,17 +62,18 @@ void uartSendChar(char cChar)
 }
 
 /**
- * @brief Sıfır sonlandırmalı bir dizgiyi karakter karakter gönderir.
+ * @brief Sends a null-terminated string character by character.
  */
 void uartSendString(const char* cpString)
 {
     while (*cpString != '\0')
     {
-        /* Seri terminaller '\n'i "aynı sütunda bir alt satır" (line feed)
-         * olarak yorumlar; satırın gerçekten sola dönmesi için ayrıca
-         * '\r' (carriage return) göndermemiz gerekir. Standart printf
-         * ailesi bu çeviriyi senin için host tarafında yapar; biz burada
-         * çıplak UART'la konuştuğumuz için işi kendimiz üstleniyoruz. */
+        /* Serial terminals interpret '\n' as "move down a line, same
+         * column" (line feed); to actually return the cursor to the left
+         * margin we also need to send '\r' (carriage return). The
+         * standard printf family performs this translation for you on
+         * the host side; since we are talking to bare UART here, we
+         * handle it ourselves. */
         if (*cpString == '\n')
         {
             uartSendChar('\r');

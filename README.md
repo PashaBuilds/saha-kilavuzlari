@@ -27,7 +27,7 @@ Sonra `index.html`'e çift tıkla. Hepsi bu — sunucu, kurulum, internet gerekm
 
 | Belge | Tür | Konu |
 |---|---|---|
-| **Gömülü Sistemlere Giriş** | Yolculuk | Yeni mezuna oryantasyon: Zynq/ZCU111, boot & bellek, register, interrupt, I2C/SPI/UART, FreeRTOS, Vitis debug — 10 uygulamalı lab + mezuniyet görevi |
+| **Introduction to Embedded Systems** (İngilizce) | Yolculuk | Yeni mezuna oryantasyon: Zynq/ZCU111, boot & bellek, register, interrupt, I2C/SPI/UART, FreeRTOS, Vitis debug — 10 uygulamalı lab + capstone projesi |
 | **Doğrudan RF Örnekleme ve Ön Uç Tasarımı** | Kılavuz | ADC/DAC, SERDES, JESD204B/C, clocking & SYSREF, TI·ADI zincirleri, Versal GT, bring-up ve debug |
 | **Ethernet ve Ağ İletişimi** | Kılavuz | PHY/MAC'ten ARP, IP, TCP/UDP, DNS ve TLS'e; Wireshark, gömülü Ethernet, arıza teşhisi |
 | **Lokal LLM Dünyası** | Kılavuz | Quantization, MoE & mimariler, VRAM hesabı, Ollama/LM Studio, lokal API — modeli kendi makinende koşturmak |

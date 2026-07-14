@@ -1,19 +1,19 @@
 /* ============================================================================
- * ina226.c — PS I2C0 -> PCA9544A mux -> INA226 mini sürücü modülü
- * (GÖREV 6 çözümü)
+ * ina226.c — PS I2C0 -> PCA9544A mux -> INA226 mini driver module
+ * (TASK 6 solution)
  *
- * I2C AĞACI (content/_arastirma.md §4 + content/_arastirma-ek-D.md §D.4):
- *   PS I2C0 (MIO14-15) -> PCA9544A mux, U23, adres 0x75 -> kanal 0
- *                       -> INA226 güç monitörü, adres 0x40 (VCCINT rayı)
+ * I2C TREE (content/_arastirma.md §4 + content/_arastirma-ek-D.md §D.4):
+ *   PS I2C0 (MIO14-15) -> PCA9544A mux, U23, address 0x75 -> channel 0
+ *                       -> INA226 power monitor, address 0x40 (VCCINT rail)
  *
- * PCA9544A KONTROL BAYTI (TI datasheet SCPS146G, Table 8-1, doğrulama notu
- * content/_arastirma-ek-D.md §D.4'te): bit2 = enable, bit1:0 = kanal no.
- * Kanal 0 için bayt = 0b0000_0100 = 0x04.
+ * PCA9544A CONTROL BYTE (TI datasheet SCPS146G, Table 8-1, verification note
+ * in content/_arastirma-ek-D.md §D.4): bit2 = enable, bit1:0 = channel no.
+ * Byte for channel 0 = 0b0000_0100 = 0x04.
  *
- * SAVUNMACI PROGRAMLAMA (Bölüm 12'nin erken uygulaması): hiçbir I2C
- * çağrısı sonsuza kadar beklemez. Her gönder/al işlemi DENEME_SINIRI kadar
- * denenir, başarısız olursa hata döner — "timeout'suz sonsuz bekleme
- * yasak" kuralı burada koddadır.
+ * DEFENSIVE PROGRAMMING (early application of Chapter 12): no I2C call
+ * ever waits forever. Every send/receive operation is retried up to
+ * DENEME_SINIRI times, and returns an error on failure — the "no infinite
+ * waiting without a timeout" rule is encoded here.
  * ============================================================================ */
 
 #include "ina226.h"
@@ -22,22 +22,22 @@
 #include "xstatus.h"
 #include "sleep.h"
 
-#define IIC0_SAAT_HZ                100000U   /* I2C0: 100 kHz standart mod */
+#define IIC0_SAAT_HZ                100000U   /* I2C0: 100 kHz standard mode */
 
-#define MUX_PCA9544A_I2C_ADRES      0x75U     /* U23 */
-#define MUX_KANAL0_KOMUT_BAYTI      0x04U     /* enable(bit2) + kanal 0 (bit1:0=00) */
+#define MUX_PCA9544A_I2C_ADDR      0x75U     /* U23 */
+#define MUX_CHANNEL0_COMMAND_BYTE      0x04U     /* enable(bit2) + channel 0 (bit1:0=00) */
 
-#define INA226_I2C_ADRES            0x40U     /* VCCINT rayı */
+#define INA226_I2C_ADDR            0x40U     /* VCCINT rail */
 #define INA226_REG_MANUFACTURER_ID  0xFEU
 #define INA226_REG_BUS_VOLTAGE      0x02U
 #define INA226_MANUFACTURER_ID_TI   0x5449U   /* "TI" ASCII */
 
-#define I2C_DENEME_SINIRI           5U        /* sonsuz bekleme YASAK */
-#define I2C_DENEME_BEKLEME_US       1000U
+#define I2C_DENEME_SINIRI           5U        /* infinite waiting is FORBIDDEN */
+#define I2C_RETRY_WAIT_US       1000U
 
 static XIicPs S_sIic;
 
-/* --- sınırlı denemeyle gönderme: sonsuz bekleme yerine DENEME_SINIRI --- */
+/* --- send with a bounded retry: DENEME_SINIRI attempts instead of an infinite wait --- */
 static int i2cSendLimited(unsigned short usSlaveAddr, unsigned char* ucpData, int iLength)
 {
     unsigned int uiAttempt;
@@ -54,13 +54,13 @@ static int i2cSendLimited(unsigned short usSlaveAddr, unsigned char* ucpData, in
             }
         }
 
-        usleep(I2C_DENEME_BEKLEME_US);
+        usleep(I2C_RETRY_WAIT_US);
     }
 
     return XST_FAILURE;
 }
 
-/* --- sınırlı denemeyle alma --- */
+/* --- receive with a bounded retry --- */
 static int i2cRecvLimited(unsigned short usSlaveAddr, unsigned char* ucpBuffer, int iLength)
 {
     unsigned int uiAttempt;
@@ -77,26 +77,26 @@ static int i2cRecvLimited(unsigned short usSlaveAddr, unsigned char* ucpBuffer, 
             }
         }
 
-        usleep(I2C_DENEME_BEKLEME_US);
+        usleep(I2C_RETRY_WAIT_US);
     }
 
     return XST_FAILURE;
 }
 
-/* --- "register pointer yaz, sonra oku" deseni: her I2C yazmaç okuması
- * aslında iki işlemdir. 16-bit sonucu big-endian (MSB önce) birleştirir
- * (INA226 tüm yazmaçlarını MSB önce gönderir). --- */
+/* --- "write register pointer, then read" pattern: every I2C register read
+ * is actually two operations. Assembles the 16-bit result as big-endian
+ * (MSB first), since the INA226 sends all its registers MSB first. --- */
 static int ina226RegRead(unsigned char ucRegAddr, unsigned short* uspValue)
 {
     unsigned char ucPointer = ucRegAddr;
     unsigned char ucArrBuffer[2];
 
-    if (i2cSendLimited(INA226_I2C_ADRES, &ucPointer, 1) != XST_SUCCESS)
+    if (i2cSendLimited(INA226_I2C_ADDR, &ucPointer, 1) != XST_SUCCESS)
     {
         return XST_FAILURE;
     }
 
-    if (i2cRecvLimited(INA226_I2C_ADRES, ucArrBuffer, 2) != XST_SUCCESS)
+    if (i2cRecvLimited(INA226_I2C_ADDR, ucArrBuffer, 2) != XST_SUCCESS)
     {
         return XST_FAILURE;
     }
@@ -108,7 +108,7 @@ static int ina226RegRead(unsigned char ucRegAddr, unsigned short* uspValue)
 int ina226Init(void)
 {
     XIicPs_Config* spIicConfig;
-    unsigned char ucMuxCmd = MUX_KANAL0_KOMUT_BAYTI;
+    unsigned char ucMuxCmd = MUX_CHANNEL0_COMMAND_BYTE;
     unsigned short usId;
 
     spIicConfig = XIicPs_LookupConfig(XPAR_XIICPS_0_DEVICE_ID);
@@ -128,17 +128,17 @@ int ina226Init(void)
         return (int)XST_FAILURE;
     }
 
-    /* Mux güç açılışında (POR) hiçbir kanalı seçili tutmaz — her seferinde
-     * açıkça kanal 0'ı seçiyoruz, aksi halde INA226'ya giden hat kapalı
-     * kalır. */
-    if (i2cSendLimited(MUX_PCA9544A_I2C_ADRES, &ucMuxCmd, 1) != XST_SUCCESS)
+    /* On power-on reset (POR) the mux keeps no channel selected — we
+     * explicitly select channel 0 every time, otherwise the path to the
+     * INA226 stays closed. */
+    if (i2cSendLimited(MUX_PCA9544A_I2C_ADDR, &ucMuxCmd, 1) != XST_SUCCESS)
     {
         return (int)XST_FAILURE;
     }
 
-    /* Kimlik doğrulaması: yanlış mux kanalı, yanlış adres ya da kablolama
-     * sorunu varsa bunu ölçüm almadan ÖNCE, net bir şekilde yakalarız —
-     * aksi halde anlamsız bir "gerilim" değeriyle yola devam ederdik. */
+    /* Identity verification: a wrong mux channel, wrong address, or wiring
+     * problem is caught here, clearly, BEFORE any measurement is taken —
+     * otherwise we would proceed with a meaningless "voltage" value. */
     if (ina226RegRead(INA226_REG_MANUFACTURER_ID, &usId) != XST_SUCCESS)
     {
         return (int)XST_FAILURE;
@@ -161,8 +161,8 @@ int ina226ReadBusVoltageMv(unsigned int* uipMilliVolt)
         return (int)XST_FAILURE;
     }
 
-    /* LSB = 1.25 mV = 5/4 mV — kayan noktaya gerek yok, tam sayı
-     * aritmetiğiyle tam sonucu verir (INA226 datasheet SBOS547B, Table 7-1). */
+    /* LSB = 1.25 mV = 5/4 mV — no need for floating point; integer
+     * arithmetic yields the exact result (INA226 datasheet SBOS547B, Table 7-1). */
     *uipMilliVolt = ((unsigned int)usRaw * 5U) / 4U;
 
     return (int)XST_SUCCESS;

@@ -1,100 +1,110 @@
-# Bölüm 0 — Hoş Geldin
+# Chapter 0 — Welcome
 
-Ekibe hoş geldin. Bu doküman, önümüzdeki birkaç haftanın yol arkadaşı olacak.
+Welcome to the team. This document is your companion for the coming weeks.
 
-Masanda (ya da yakında masanda olacak) bir **ZCU111** geliştirme kartı var:
-üzerinde Zynq UltraScale+ RFSoC (Radio Frequency System-on-Chip — RF
-örnekleyicili sistem-çipi) taşıyan, bizim dünyamızın ciddi oyuncaklarından
-biri. Üniversitede C gördün, belki Arduino'ya LED yakıp söndürdün — güzel.
-Ama önündeki kart bir Arduino değil; içinde dört çekirdekli bir uygulama
-işlemcisi, iki gerçek-zaman çekirdeği, koca bir FPGA fabric'i ve senin henüz
-adını duymadığın düzinelerce çevre birimi var. İlk bakışta gözünün korkması
-normal. Bu dokümanın işi, o korkuyu iki hafta içinde "ben bu kartla iş
-yapıyorum" rahatlığına çevirmek.
+On your desk (or soon to be on your desk) is a **ZCU111** development board:
+a Zynq UltraScale+ RFSoC (Radio Frequency System-on-Chip) sits at its
+core — one of the more serious devices in our field. You have covered C at
+university and perhaps blinked an LED on an Arduino — a solid starting
+point. But the board in front of you is not an Arduino: it contains a
+quad-core application processor, two real-time cores, a substantial FPGA
+fabric, and dozens of peripherals you have not yet encountered. It is
+reasonable to find this intimidating at first glance. This document's task
+is to convert that unfamiliarity into working competence with the board
+within two weeks.
 
-## Bu doküman nasıl çalışır
+## How this document works
 
-Bu bir referans kitabı değil, bir **yolculuk**. Okuma bölümleriyle elde kart
-yapılan görevler dönüşümlü ilerler: bir kavramı okursun, hemen ardından o
-kavramı kartın üzerinde elinle yaparsın. Hiçbir okuma bölümü, eller karta
-değmeden uzun süre teori biriktirmez — bu bilinçli bir tasarım. Gömülü
-yazılım ancak parmak uçlarında öğrenilir.
+This is not a reference manual; it is a **journey**. Reading sections
+alternate with hands-on tasks performed directly on the board: you read a
+concept, then immediately apply it on the board. No reading section
+accumulates theory for long without the reader's hands touching the board —
+this is a deliberate design choice. Embedded software is learned through
+practice.
 
-Yolculuğun durakları aşağıdaki haritada. Her görevi bitirdiğinde kartındaki
-"Tamamladım" kutusunu işaretle; harita seninle birlikte dolar. İşaretlerin
-bu tarayıcıda kalıcıdır (localStorage — tarayıcının yerel depolaması — ile
-saklanır), yani sekmeyi kapatıp ertesi gün devam edebilirsin.
+The milestones of the journey are shown in the map below. Mark the
+"Completed" checkbox on your board after finishing each task; the map fills
+in as you progress. Your markers persist in this browser (stored via
+localStorage, the browser's local storage), so you can close the tab and
+resume the next day.
 
 {{ilerleme-panosu}}
 
-Görev kartlarının anatomisine alışacaksın: her kartta bir **hedef**, seni
-hazırlayan **ön koşullar**, numaralı **adımlar** ve en önemlisi
-gözlemlenebilir bir **başarı kriteri** var — "oldu" ya da "olmadı", arası
-yok. Takılırsan kartın altındaki **ipucu merdiveni** seni bekliyor: önce
-nazik bir yönlendirme, sonra daha somut bir ipucu, en sonda tam çözüm.
-Merdivenin basamaklarını sırayla kullan; çözüme atlamak seni bugün
-hızlandırır ama iki hafta sonra yavaşlatır.
+You will become familiar with the anatomy of task cards: each card
+specifies an **objective**, the **prerequisites** that prepare you for it,
+numbered **steps**, and, most importantly, an observable **success
+criterion** — either met or not met, with no middle ground. If you get
+stuck, a **hint ladder** at the bottom of the card is available: a gentle
+pointer first, then a more concrete hint, and finally the full solution.
+Use the rungs of the ladder in order; jumping straight to the solution
+saves time today but costs more two weeks from now.
 
-:::saha-notu Takılmak işin parçası
-Bu yolculukta bir yerlerde takılacaksın; bu bir aksilik değil, müfredatın ta
-kendisi. Bizim işte hata mesajı okumak, olmayan dokümanı aramak ve "neden
-çalışmıyor"un peşine düşmek, kod yazmaktan daha fazla zaman alır. Görev 10'a
-geldiğinde bunu bir dedektiflik oyununa çevireceğiz.
+:::saha-notu Getting stuck is part of the process
+You will get stuck at some point in this journey; this is not a setback but
+part of the curriculum itself. In this profession, reading error messages,
+searching for documentation that does not exist, and chasing down "why
+isn't this working" takes more time than writing code. By the time you
+reach Task 10, we will turn this into a systematic exercise.
 :::
 
-## İlk iki haftanın sonunda nereye varacaksın
+## Where you will stand at the end of the first two weeks
 
-Somut konuşalım. Bu dokümanı bitirdiğinde:
+In concrete terms, by the time you complete this document you will be able
+to:
 
-- Bir Zynq tabanlı sistemde **PS/PL ayrımını**, **boot akışını** ve **bellek
-  haritasını** beyaz tahtada anlatabileceksin.
-- Vitis'te sıfırdan bare-metal (işletim sistemsiz) proje açıp derleyip karta
-  JTAG ile atabilecek, UART'tan çıktı alabilecek, debugger ile adım adım
-  yürütebileceksin.
-- Register map (yazmaç haritası) okuyup `volatile` pointer ile donanım
-  programlayabilecek; polling ve interrupt tabanlı iki yaklaşımı da
-  uygulayabileceksin.
-- I2C/SPI/UART'ın tel seviyesinde nasıl çalıştığını çizebilecek, karttaki
-  gerçek bir I2C cihazından veri okuyabileceksin.
-- FreeRTOS'ta task/queue/semaphore kullanan küçük bir uygulama yazabileceksin.
-- Ve final: **Mezuniyet Görevi**'ni — küçük ama gerçek bir sistemi — tek
-  başına tasarlayıp ekip önünde sunacaksın.
+- Explain the **PS/PL separation**, the **boot flow**, and the **memory
+  map** of a Zynq-based system at a whiteboard level.
+- Create a bare-metal (no operating system) project from scratch in Vitis,
+  build it, deploy it to the board via JTAG, obtain output over UART, and
+  step through execution with a debugger.
+- Read a register map and program hardware using `volatile` pointers,
+  applying both polling and interrupt-based approaches.
+- Describe how I2C, SPI, and UART operate at the wire level, and read data
+  from an actual I2C device on the board.
+- Write a small FreeRTOS application using tasks, queues, and semaphores.
+- Finally, design and present a small but functional system to the team as
+  your **Capstone Project**.
 
-Liste iddialı görünüyorsa: evet, öyle. Ama her maddenin altında seni oraya
-taşıyan küçük, sindirilebilir adımlar var. Kimse senden ikinci gün driver
-yazmanı beklemiyor; ikinci gün senden beklenen, Görev 0'ı bitirmiş olman.
+If this list looks ambitious — it is. But every item is broken down into
+small, manageable steps that lead you there. No one expects you to write a
+driver on day two; what is expected of you on day two is to have completed
+Task 0.
 
-## Başlamadan: kurulum kontrol listesi
+## Before you begin: setup checklist
 
-Aşağıdakileri ilk gün hallet; takıldığın yerde yanındaki masaya sor —
-sormak bu ekipte zayıflık değil, verimlilik göstergesidir.
+Complete the following on day one. If you get stuck, ask a colleague —
+asking for help is not a weakness on this team; it is a mark of efficiency.
 
-1. **Vitis kurulumu.** Ekipçe kullandığımız sürümü sistem yöneticisinden ya
-   da takım liderinden öğren ve kur (kurulum saatler sürebilir ve onlarca GB
-   yer ister; indirmeyi sabah başlat, öğleden sonra kahveyle kontrol et).
-   Vitis'in ne olduğunu ve içindeki kavram haritasını Bölüm 11'de ayrıntılı
-   göreceğiz; şimdilik "derleyici + IDE + kart programlayıcı" de, geç.
-2. **Kart kutusu.** ZCU111 kutusundan kartla birlikte güç adaptörü ve
-   USB kabloları çıkar; kutu içeriğini ve kartın fiziksel kurulumunu Görev
-   0'da adım adım yapacağız. Şimdilik kutuyu aç, parçaları masana diz,
-   antistatik torbadan çıkarırken kartı kenarlarından tut.
-3. **Terminal programı.** Kartla konuşmanın en temel yolu seri terminaldir.
-   Bizim ortamımız **Windows 10**; PuTTY ya da Tera Term (ikisi de ücretsiz)
-   işini görür. Birini kur, Görev 0'da kullanacağız. (Vitis'in kendi seri
-   terminali de vardır; ayrı bir program istemezsen onu da kullanabilirsin.)
-4. **Sürücüler.** Kartın USB-UART köprüsü Windows'ta birkaç sanal COM portu
-   oluşturur. Sürücü (FTDI VCP) çoğu zaman otomatik gelir; Aygıt
-   Yöneticisi'nde soru işaretli bir aygıt görürsen Görev 0'daki ipucu
-   merdivenine bak.
-5. **Hesaplar ve erişimler.** Ekibin git sunucusuna, wiki'sine ve dosya
-   paylaşımına erişimini ilk gün doğrula. Bölüm 12'de git akışımızı
-   konuşacağız.
+1. **Install Vitis.** Confirm the version used by the team with your system
+   administrator or team lead and install it (installation can take hours
+   and require tens of gigabytes of space; start the download in the
+   morning and check back after a break). We cover what Vitis is and its
+   conceptual layout in detail in Chapter 11; for now, treat it as
+   "compiler plus IDE plus board programmer" and move on.
+2. **Board contents.** Unpack the ZCU111 box and remove the power adapter
+   and USB cables that ship with the board; we will go through the box
+   contents and the physical setup of the board step by step in Task 0. For
+   now, open the box, lay out the components on your desk, and hold the
+   board by its edges when removing it from the antistatic bag.
+3. **Terminal program.** The most basic way to communicate with the board
+   is a serial terminal. Our environment is **Windows 10**; PuTTY or Tera
+   Term (both free) will serve the purpose. Install one; we will use it in
+   Task 0. (Vitis also includes its own serial terminal, which you may use
+   if you prefer not to install a separate program.)
+4. **Drivers.** The board's USB-UART bridge creates several virtual COM
+   ports on Windows. The driver (FTDI VCP) typically installs
+   automatically; if Device Manager shows a device flagged with a question
+   mark, refer to the hint ladder in Task 0.
+5. **Accounts and access.** Verify your access to the team's git server,
+   wiki, and file share on day one. We discuss our git workflow in
+   Chapter 12.
 
-:::ekip-notu İlk hafta kimseden "çıktı" beklenmez
-Bizim ekipte yeni başlayan arkadaşın ilk haftası öğrenmeye ayrılmıştır; bu
-doküman o haftanın ta kendisi. Takım liderin senden bu dokümandaki görevlerin
-ilerleyişini soracaktır, sprint görevi değil. Rahat ol, ama boş da durma.
+:::ekip-notu No "output" is expected in the first week
+On our team, a new team member's first week is dedicated to learning; this
+document constitutes that week. Your team lead will ask about your progress
+through the tasks in this document, not about sprint deliverables. Take
+your time, but stay engaged.
 :::
 
-Hazırsan Bölüm 1'de büyük resimden başlıyoruz: gömülü sistem tam olarak
-nedir ve senin bu dünyadaki rolün ne olacak?
+When you are ready, Chapter 1 begins with the big picture: what exactly is
+an embedded system, and what will your role be in this domain?

@@ -1,308 +1,331 @@
-# Bölüm 11 — Alet Çantası: Vitis ve Debug
+# Chapter 11 — The Toolbox: Vitis and Debug
 
-Bölüm 4'ten bu yana Vitis'i defalarca kullandın ama hep parça parça: bir
-proje her seferinde bir şekilde önünde hazır çıktı, derleme düğmesine
-bastın, kod karta bir şekilde indi. Şimdi durup bu parçaları tek bir
-haritada birleştirme zamanı — çünkü Görev 10'da bu haritanın her köşesine
-aynı anda ihtiyacın olacak.
+You have used Vitis repeatedly since Chapter 4, but always in pieces: a
+project appeared in front of you somehow each time, you pressed the build
+button, and the code made its way onto the board. It is now time to pause
+and assemble these pieces into a single map — because in Task 10 you will
+need every corner of that map at once.
 
-## Kavram haritası: workspace, platform, uygulama
+## Concept Map: Workspace, Platform, Application
 
-Vitis üç kavram etrafında döner ve üçü de birbirini gerektirir.
+Vitis revolves around three concepts, and each requires the others.
 
-**Workspace (çalışma alanı)**, diskte projelerini tuttuğun klasördür; Vitis'i
-her açtığında hangi workspace'le çalışacağını seçersin. Ekip arkadaşlarınla
-aynı workspace'i paylaşmazsın — herkesin diskinde kendi kopyası olur,
-paylaşılan olan git deposundaki kaynak dosyalardır.
+The **workspace** is the folder on disk where you keep your projects; each
+time you open Vitis, you choose which workspace to work with. You do not
+share a workspace with your teammates — everyone has their own copy on
+their own disk; what is shared are the source files in the git repository.
 
-**Platform component (platform bileşeni)**, donanımın yazılıma çevirisidir.
-Donanımcı Vivado'dan bir **.xsa** dosyası (donanım tanımı — hangi çevre
-birimlerin var, PL'de hangi IP'ler yüklü, saat frekansları, bellek haritası)
-dışa aktarır; sen bu .xsa'yı Vitis'e platform olarak eklersin. Vitis bunun
-üzerine bir **BSP** (board support package — çevre birimlerinin sürücülerini
-ve başlangıç dosyalarını içeren ara katman; `xparameters.h` tam olarak
-buradan doğar) üretir. Platform, işletim sistemi seçimini de taşır:
-standalone (işletim sistemsiz, yolculuğumuzun büyük kısmı) ya da
-freertos10_xilinx (Bölüm 10'da tanıştığın FreeRTOS BSP'si).
+The **platform component** is the translation of hardware into software.
+The hardware engineer exports a **.xsa** file from Vivado (the hardware
+definition — which peripherals exist, which IP blocks are loaded in the
+PL, clock frequencies, the memory map); you add this .xsa to Vitis as a
+platform. Vitis then generates a **BSP** (board support package — the
+intermediate layer containing the peripheral drivers and startup files;
+`xparameters.h` is generated directly from this) on top of it. The
+platform also carries the operating-system choice: standalone (no
+operating system, used for most of our journey) or freertos10_xilinx (the
+FreeRTOS BSP you were introduced to in Chapter 10).
 
-**Application component (uygulama bileşeni)**, senin yazdığın `main.c` ve
-kardeşlerinin yaşadığı yerdir. Bir platforma bağlanır — platformun ürettiği
-sürücülere ve adreslere erişir — ama platformdan bağımsız olarak derlenir.
-Aynı platform üzerine birden fazla uygulama bileşeni kurabilirsin: biri
-deneme "hello world" projesi, biri asıl işin.
+The **application component** is where your `main.c` and its companion
+files live. It attaches to a platform — gaining access to the drivers and
+addresses the platform generates — but compiles independently of the
+platform. You can build multiple application components on top of the
+same platform: one a trial "hello world" project, another your actual
+work.
 
-{{svg:sema-23-vitis-anatomi.svg|Şekil 23 — Vitis kavram haritası: .xsa'dan doğan platform bileşeni (BSP + donanım tanımı), üzerine kurulan uygulama bileşeni; sağda JTAG/hw_server üzerinden karta bağlanan debug zinciri.}}
+{{svg:sema-23-vitis-anatomi.svg|Figure 23 — Vitis concept map: the platform component generated from the .xsa (BSP + hardware definition), the application component built on top of it; on the right, the debug chain connecting to the board over JTAG/hw_server.}}
 
-Bu üçlü ilişkiyi bir kez kavradığında Vitis'in menüleri rastgele tıklanan
-düğmeler olmaktan çıkıp mantıklı bir sıraya oturur: önce platform, sonra
-uygulama, sonra derleme.
+Once you grasp this three-way relationship, Vitis's menus stop being
+buttons you click at random and settle into a logical sequence: platform
+first, then application, then build.
 
-## Unified IDE mi, Classic mi?
+## Unified IDE or Classic?
 
-Vitis birkaç sürüm önce **Unified IDE** adında yeni bir arayüze geçti; yakın
-dönemde bu arayüz varsayılan hale geldi ve eski **Classic Vitis IDE**
-kullanımdan kaldırılıyor (deprecated). İkisinin kavram haritası aynıdır —
-platform/uygulama ayrımı, JTAG akışı, debugger mantığı değişmez — ama menü
-yolları ve proje dosyalarının iç yapısı (Classic'te `.mss`/`.mld` dosyaları,
-Unified'da CMake tabanlı yapı) farklıdır.
+A few releases ago, Vitis moved to a new interface named the **Unified
+IDE**; this interface has recently become the default, and the older
+**Classic Vitis IDE** is being deprecated. The concept map is identical
+between the two — the platform/application distinction, the JTAG flow,
+and the debugger logic do not change — but the menu paths and the internal
+structure of project files differ (`.mss`/`.mld` files in Classic, a
+CMake-based structure in Unified).
 
-:::ekip-notu Hangi sürümdeyse ekip, ona uy
-Bu doküman sana bir sürüm numarası dayatmıyor — kurulumu Bölüm 0'da
-söylediğimiz gibi ekipten öğrendin, ekip hangi Vitis sürümünü kullanıyorsa
-onunla çalış. Ekranındaki menü adı burada anlattığımızdan biraz farklı
-görünebilir; kavram aynıysa (platform oluştur, uygulama oluştur, derle,
-debug başlat) doğru yoldasın demektir. Emin olamadığın bir menü adını
-yanındaki kıdemli arkadaşına sormak, yanlış tahmin edip yarım saat
-kaybetmekten iyidir.
+:::ekip-notu Use Whichever Version the Team Uses
+This document does not mandate a specific version number for you — as
+stated in Chapter 0, you learned the setup from the team, so work with
+whichever Vitis version the team uses. The menu name on your screen may
+look slightly different from what is described here; if the underlying
+concept is the same (create platform, create application, build, start
+debug), you are on the right track. Asking a senior colleague about a menu
+name you are unsure of is better than guessing wrong and losing half an
+hour.
 :::
 
-## Proje açma, derleme, Run ve Debug konfigürasyonları
+## Opening a Project, Building, and Run/Debug Configurations
 
-Yeni bir uygulama açarken Vitis sana hazır şablonlar sunar; **Hello World**
-şablonu ilk denemen için idealdir — UART üzerinden bir karşılama mesajı
-basan, derlenmeye hazır minik bir proje. Kendi projelerinde bu şablonu boş
-bırakıp Görev 1'den beri yazdığın kaynak dosyaları içine taşırsın.
+When you open a new application, Vitis offers ready-made templates; the
+**Hello World** template is ideal for your first attempt — a tiny,
+build-ready project that prints a greeting message over UART. For your own
+projects, you start from this template and move in the source files you
+have been writing since Task 1.
 
-Derleme (build), kaynak dosyalarını çapraz derleyiciyle (cross compiler —
-senin bilgisayarında çalışıp Arm çekirdeği için makine kodu üreten
-derleyici) işleyip bir **ELF** (yürütülebilir çıktı dosyası) üretir. Derleme
-başarılıysa bu ELF'i karta iki şekilde gönderebilirsin:
+Building compiles your source files with the cross compiler (a compiler
+that runs on your computer but produces machine code for the Arm core)
+and produces an **ELF** (executable output file). If the build succeeds,
+you can send this ELF to the board in two ways:
 
-- **Run configuration:** ELF'i karta yükler ve doğrudan çalıştırır. Hızlıdır,
-  ama bir hata çıktığında elinde tek UART çıktısı kalır.
-- **Debug configuration:** ELF'i karta yükler ama çekirdeği başlangıçta
-  (genelde `main()`'in ilk satırında) durdurur ve debugger'ı bağlar. Görev
-  10'da hep bu ikincisini kullanacaksın.
+- **Run configuration:** loads the ELF onto the board and runs it
+  directly. It is fast, but when something goes wrong, all you have to go
+  on is the UART output.
+- **Debug configuration:** loads the ELF onto the board but halts the core
+  at the start (typically at the first line of `main()`) and attaches the
+  debugger. You will use this second option throughout Task 10.
 
-Aradaki fark küçük bir ayrıntı gibi görünse de alışkanlık haline getirmeye
-değer: "neden çalışmıyor" sorusuyla karşılaştığında refleksin Run'ı tekrar
-tekrar denemek değil, Debug'a geçmek olmalı.
+The difference may seem like a minor detail, but it is worth making into a
+habit: when confronted with the question "why isn't this working," your
+reflex should be to switch to Debug, not to keep retrying Run.
 
-## JTAG: tek kablo, iki iş
+## JTAG: One Cable, Two Jobs
 
-Kartına Görev 0'da taktığın o tek J83 micro-USB kablosu, aynı anda iki işi
-görür: kartın üzerindeki **FT4232** köprüsünün **Port A**'sı JTAG
-(programlama ve debug erişimi) taşırken, **Port B**'si senin terminal
-çıktını okuduğun PS UART0'ı taşır. Yani debug oturumu açıkken de UART
-penceren aynı kablodan akmaya devam eder — iki farklı kablo aramana gerek
-yok.
+The single J83 micro-USB cable you connected to your board in Task 0
+performs two jobs at once: **Port A** of the board's **FT4232** bridge
+carries JTAG (programming and debug access), while **Port B** carries the
+PS UART0 that your terminal output reads. That means your UART window
+keeps streaming over the same cable even while a debug session is open —
+you do not need to hunt for a second cable.
 
-Vitis'in JTAG üzerinden karta konuşması **hw_server** adlı bir arka plan
-sürecinden geçer; Vivado'nun Hardware Manager'ı da aynı hw_server'a bağlanır,
-yani ikisi aynı kartı sırayla paylaşabilir (ikisinin aynı anda kartı
-programlamaya çalışması karışıklık çıkarır — sırayla ilerle).
+Vitis's communication with the board over JTAG passes through a background
+process named **hw_server**; Vivado's Hardware Manager connects to the
+same hw_server, meaning the two tools can share the board in sequence
+(having both try to program the board at the same time causes conflicts —
+proceed one at a time).
 
-## Debugger'la göz göze: breakpoint'ten disassembly'ye
+## Face to Face with the Debugger: From Breakpoints to Disassembly
 
-Debug konfigürasyonunu başlattığında karşına dört köşeden bir manzara çıkar:
+When you start a debug configuration, a view with four key elements
+appears:
 
-- **Breakpoint (kesme noktası):** kodun bir satırına "buraya geldiğinde dur"
-  dersin. Çekirdek o satıra ulaştığında donar, sen inceleme yaparsın.
-- **Step over / step into (üzerinden geç / içine gir):** bir sonraki satıra
-  geçerken fonksiyon çağrısının içine girmeden atlamak (over) ya da içine
-  dalıp orada da adım adım ilerlemek (into) arasında seçim yaparsın.
-- **Değişken, register ve memory pencereleri:** o anki değişken değerlerini,
-  işlemcinin register'larını ve istediğin bir bellek adresinin ham
-  içeriğini canlı izlersin. Bölüm 4'te "adres = kapı numarası" dediğimiz
-  register'ları artık ekranda gerçek sayılar olarak görürsün.
-- **Disassembly (çözümlenmiş makine kodu):** C satırlarının derleyici
-  tarafından hangi işlemci komutlarına çevrildiğini gösteren pencere.
+- **Breakpoint:** you tell a line of code "stop when you reach here." The
+  core freezes when it reaches that line, and you examine the state.
+- **Step over / step into:** when moving to the next line, you choose
+  between skipping over a function call without entering it (over) or
+  diving into it and stepping through it as well (into).
+- **Variable, register, and memory windows:** you watch the current
+  variable values, the processor's registers, and the raw contents of any
+  memory address you choose, live. The registers we described in Chapter 4
+  as "address = door number" are now visible on screen as real numbers.
+- **Disassembly:** a window showing which processor instructions your C
+  lines were translated into by the compiler.
 
-Bu son maddeye çoğu yeni başlayan ürküyle bakar — "ben assembly okuyamam"
-diye. Gerçek şu: okuman gerekmiyor, *tanıman* yetiyor. `LDR`/`STR` gördüğünde
-"bellekten okuma/belleğe yazma" de, geç. Asıl değerli olan şu: `volatile`
-işaretlemediğin bir değişkenin okunmasının derleyici tarafından tamamen
-silindiğini disassembly'de gözünle görebilmen — Bölüm 5'te anlattığımız
-hikâyenin (Şekil 10) somut kanıtı burada, ekranında duruyor.
+Most newcomers regard this last item with apprehension — "I cannot read
+assembly." The reality is that you do not need to read it, only
+*recognize* it. When you see `LDR`/`STR`, note "read from memory / write
+to memory" and move on. What is genuinely valuable is this: you can see
+with your own eyes, in the disassembly, that a read of a variable you did
+not mark `volatile` is eliminated entirely by the compiler — the concrete
+proof of the story told in Chapter 5 (Figure 10) stands right there on
+your screen.
 
-:::derin-dalis Disassembly'de volatile'ın izini sürmek
-İki derlemeyi yan yana koy. `volatile` olmayan bir bayrağı döngüde okuyan
-kod, optimizasyon açıldığında (`-O2`) genelde şuna benzer bir şey üretir —
-değişken bir kere register'a yüklenir, döngü boyunca bellek bir daha hiç
-ziyaret edilmez:
+:::derin-dalis Tracing volatile in the Disassembly
+Place two compilations side by side. Code that reads a non-`volatile` flag
+in a loop typically produces something like the following once
+optimization is enabled (`-O2`) — the variable is loaded into a register
+once, and memory is never visited again for the rest of the loop:
 
 ```metin
-; G_ucFlag volatile DEĞİL, -O2
-LDR   w0, [x1]        ; bir KERE yüklendi
-donguDevam:
-b.eq  donguDevam       ; sonrasında hep aynı register'a bakılıyor
+; G_ucFlag NOT volatile, -O2
+LDR   w0, [x1]        ; loaded ONCE
+loopContinue:
+b.eq  loopContinue     ; the same register is checked from then on
 ```
 
-`volatile` eklenince derleyici her döngü turunda belleğe gerçekten gider:
+Once `volatile` is added, the compiler genuinely goes to memory on every
+iteration of the loop:
 
 ```metin
 ; G_ucFlag volatile, -O2
-donguBasi:
-LDR   w0, [x1]        ; HER turda tekrar yükleniyor
-b.eq  donguBasi
+loopStart:
+LDR   w0, [x1]        ; reloaded on EVERY iteration
+b.eq  loopStart
 ```
 
-Görev 10'da tam bu ikilemle karşılaşacaksın; disassembly penceresi orada
-şüpheni kanıta çevirecek yer olacak.
+You will encounter exactly this dilemma in Task 10; the disassembly window
+will be the place where your suspicion turns into proof.
 :::
 
-## XSCT/xsdb: konsolun arkasındaki konsol
+## XSCT/xsdb: The Console Behind the Console
 
-Vitis'in altında, IDE'nin grafik arayüzünün perde arkasında **XSCT** (Xilinx
-Software Command-Line Tool) çalışır; interaktif hedef kontrolü için
-kullanılan komut satırı arayüzü **xsdb**'dir. Günlük işinde XSCT'yi elle
-çağırman gerekmez — Vitis onu senin için çalıştırır — ama bir gün otomasyon
-yazman ya da IDE'nin göstermediği bir ayrıntıyı sorgulaman gerekirse, IDE
-içindeki XSCT konsolu penceresi tam bu iş için orada durur. Şimdilik
-varlığını bil; ekip arkadaşların "xsct'den bak" dediğinde nereye bakacağını
-bileceksin.
+Underneath Vitis, behind the IDE's graphical interface, runs **XSCT**
+(Xilinx Software Command-Line Tool); the command-line interface used for
+interactive target control is **xsdb**. In your daily work you do not need
+to invoke XSCT by hand — Vitis runs it for you — but if you ever need to
+write automation or query a detail the IDE does not surface, the XSCT
+console window inside the IDE exists for exactly that purpose. For now,
+simply be aware that it exists; when a teammate tells you to "check it
+from xsct," you will know where to look.
 
-{{svg:sema-24-debug-akisi.svg|Şekil 24 — Debug oturumu döngüsü: JTAG bağlan → breakpoint koy → run/durdu → adım adım ilerle → register/memory/değişken izle → hipotez kur → düzelt ve yeniden derle; kenarda "dört silah" rozetleri.}}
+{{svg:sema-24-debug-akisi.svg|Figure 24 — Debug session cycle: connect JTAG → set breakpoint → run/halt → step through → watch register/memory/variables → form a hypothesis → fix and rebuild; with "four tools" badges at the side.}}
 
-:::saha-notu Dört silah
-Bir hata avına çıktığında elinde dört silah var, hepsi farklı işe yarar.
-**printf** (UART'a satır bas) hızlıdır ama akışı yavaşlatır, ISR içinde
-tehlikelidir. **LED** tek bitlik ama zamanlamayı neredeyse hiç bozmayan bir
-sinyaldir — belirli bir noktada yakıp söndürmek, "buraya geldi mi geldi"
-sorusuna osiloskopla bile cevap verebilir. **Debugger** durdurur, içine
-bakmanı sağlar, ama zaman akışını dondurduğun için gerçek zamanlı hataları
-maskeleyebilir. **Lojik analizör** dışarıdan, hattı hiç bozmadan izler — en
-dürüst tanık, ama kurulumu en zahmetli olan. İyi bir gömülü yazılımcı bu
-dördü arasında seçim yapmayı bilir; hangi belirtinin hangi silahı istediğini
-Görev 10'da elinle öğreneceksin.
+:::saha-notu Four Tools
+When you set out to hunt a bug, you have four tools at your disposal, and
+each serves a different purpose. **printf** (printing a line to UART) is
+fast but slows down execution and is dangerous inside an ISR. The **LED**
+is a single-bit signal that barely disturbs timing at all — toggling it at
+a specific point can answer the question "did execution reach here" even
+under an oscilloscope. The **debugger** halts execution and lets you
+inspect state, but because it freezes the flow of time, it can mask
+real-time bugs. The **logic analyzer** observes from the outside without
+disturbing the line at all — the most honest witness, but the most
+demanding to set up. A good embedded developer knows how to choose among
+these four; you will learn firsthand, in Task 10, which symptom calls for
+which tool.
 :::
 
-Alet çantan artık tam; teori burada bitiyor, sıra dedektiflikte.
+Your toolbox is now complete; the theory ends here, and the investigation
+begins.
 
-:::gorev no=10 zorluk=3 baslik="Bug Avı" kisa="Bug Avı"
-[Hedef]
-`lab10-bugav` projesindeki 4 gerçek hatayı bul, düzelt ve her biri için tek
-cümlelik bir kök neden yaz.
+:::gorev no=10 zorluk=3 baslik="Bug Hunt" kisa="Bug Hunt"
+[Objective]
+Find and fix the 4 real defects in the `lab10-bughunt` project, and write a
+one-sentence root cause for each.
 
-[Ön koşul]
-Bölüm 4-11 okundu; Görev 1, 2, 4 ve 5 tamamlandı (register erişimi, UART,
-interrupt ve TTC ile artık aşinasın).
+[Prerequisites]
+Chapters 4–11 read; Tasks 1, 2, 4, and 5 completed (you are now familiar
+with register access, UART, interrupts, and the TTC).
 
-[Adımlar]
-1. `labs/lab10-bugav/` projesini incele — bu proje senden önceki stajyerden
-   kaldı. `README.md`'deki spesifikasyonu ve gözlenen belirtileri dikkatle
-   oku: derleniyor, karta yükleniyor, ama dört yerinde iş beklendiği gibi
-   yürümüyor.
-2. Projeyi kendi Vitis workspace'inde bir uygulama bileşeni olarak aç, derle
-   ve **Debug configuration** ile karta yükle (README'de tam adımlar var).
-3. Sıradaki dört bulguyu tahmin etmeden önce sistemi kendi gözünle çalıştır;
-   her belirti için hangi silahın (printf, LED, debugger, lojik analizör)
-   işine yarayacağına önce kendin karar ver.
-4. Dört hatayı bulup düzelt. Her düzeltmeden sonra sistemi baştan test et —
-   bir hatayı düzeltmek bazen bir öncekinin belirtisini değiştirir.
-5. Her hata için tek cümlelik bir kök neden yaz (ne oldu değil, *neden*
-   oldu).
+[Steps]
+1. Examine the `labs/lab10-bughunt/` project — it was left behind by the
+   intern who preceded you. Read the specification and the observed
+   symptoms in `README.md` carefully: the project compiles and loads onto
+   the board, but four aspects of its behavior do not match expectations.
+2. Open the project as an application component in your own Vitis
+   workspace, build it, and load it onto the board with a **Debug
+   configuration** (full steps are in the README).
+3. Before guessing at the four findings, run the system and observe it
+   with your own eyes; for each symptom, first decide for yourself which
+   tool (printf, LED, debugger, logic analyzer) is best suited to it.
+4. Find and fix all four defects. Retest the system from the start after
+   each fix — fixing one defect can sometimes change the symptom of
+   another.
+5. Write a one-sentence root cause for each defect (not *what* happened,
+   but *why* it happened).
 
-[Başarı kriteri]
-Proje spesifikasyona tam uyuyor: TTC0 ile saniyede bir "tick N" satırı
-akıyor, SW19 basışında "buton: M" satırı çıkıyor ve DS50 toggle oluyor,
-sayaçlar doğru artıyor, sistem saatlerce kararlı çalışıyor — ve elinde 4
-hata için 4 kök neden cümlesi var.
+[Success Criteria]
+The project fully conforms to the specification: a "tick N" line is
+printed once per second via TTC0, a "button: M" line appears and DS50
+toggles on every SW19 press, the counters increment correctly, and the
+system runs stably for hours — and you have 4 root-cause sentences for the
+4 defects.
 
-[Kendini sına]
-- Bu dört hatadan hangisini debugger olmadan, yalnızca UART çıktısına
-  bakarak bulamazdın? Neden?
-- Release (optimizasyonlu, `-O2`) ve debug (`-O0`) derlemeleri arasındaki
-  fark hangi hatanın görünürlüğünü etkiliyor, hangisini gizliyor?
-- Dördüncü hatanın belirtisi neden hemen değil, sistem "bir süre" çalıştıktan
-  sonra ortaya çıkıyor?
+[Self-Check]
+- Which of these four defects could you not have found without a
+  debugger, using UART output alone? Why?
+- Which defect's visibility is affected by the difference between a
+  release build (optimized, `-O2`) and a debug build (`-O0`), and which
+  one does it conceal?
+- Why does the fourth defect's symptom appear not immediately, but only
+  after the system has been running for "a while"?
 
-[Takıldıysan]
-::ipucu İpucu 1 — Hangi silah hangi belirtiye
-Dört belirtiyi teker teker düşün. "Optimizasyonlu derlemede buton hiç tepki
-vermiyor" cümlesi seni doğrudan derleyicinin ne yaptığını sorgulamaya
-götürmeli — disassembly penceresi burada devreye girer. "Tick bazen sekiyor
-ya da geç geliyor" zamanlamayla ilgili, yani kesmelerin ne kadar sürdüğüyle
-— bir LED ya da zaman damgasıyla ölçülebilir. "DS50 bir kez yanıp bir daha
-sönmüyor" saf bir mantık hatası, tek satırlık kaynağa bakmak yeterli.
-"Sistem rastgele çöküyor" ise klasik bir bellek/stack şüphesi — memory
-penceresi ve `lscript.ld` senin dostun.
+[If You Get Stuck]
+::ipucu Hint 1 — Which tool for which symptom
+Consider the four symptoms one at a time. The statement "the button does
+not respond at all in the optimized build" should lead you directly to
+question what the compiler is doing — the disassembly window comes into
+play here. "The tick sometimes skips or arrives late" concerns timing —
+specifically, how long the interrupts take — and can be measured with an
+LED or a timestamp. "DS50 lights once and never turns off again" is a
+pure logic error; looking at a single line of source is enough. "The
+system crashes randomly" is a classic memory/stack suspicion — the memory
+window and `lscript.ld` are your allies.
 ::/
-::ipucu İpucu 2 — Somut izler
-(1) `G_ucButtonFlag` bayrağının tanımına bak: bir niteleyici eksik. (2)
-Buton ISR'inin içine bak: orada olmaması gereken iki şey var, ikisi de
-zaman alıyor. (3) LED'i tersine çeviren satırı bul: kullanılan bit
-operatörü "aç" diyor ama "tersine çevir" demiyor. (4) 8 KB'lık yerel bir
-diziyle başlayan fonksiyonu bul, `lscript.ld`'deki stack boyutuyla
-karşılaştır.
+::ipucu Hint 2 — Concrete leads
+(1) Look at the definition of the `G_ucButtonFlag` flag: it is missing a
+qualifier. (2) Look inside the button ISR: two things are present that
+should not be there, and both take time. (3) Find the line that toggles
+the LED: the bit operator in use says "turn on," not "toggle." (4) Find
+the function that begins with an 8 KB local array, and compare it against
+the stack size in `lscript.ld`.
 ::/
-::cozum Tam çözüm — 4 hata: konum, kök neden, düzeltme
-### 1. `G_ucButtonFlag` volatile değil
+::cozum Full Solution — 4 Defects: Location, Root Cause, Fix
+### 1. `G_ucButtonFlag` Is Not volatile
 
-**Konum:** `src/gpio_led_buton.h` (global değişken tanımı); kullanıldığı
-yerler `src/main.c` ana döngü ve `src/gpio_led_buton.c` buton ISR'i.
+**Location:** `src/gpio_led_button.h` (global variable definition); used in
+the main loop in `src/main.c` and in the button ISR in
+`src/gpio_led_button.c`.
 
-**Kök neden:** Değişken ISR ile ana döngü arasında paylaşılıyor ama
-`volatile` işaretli değil; `-O2` optimizasyonunda derleyici ana döngüde
-değişkenin bir daha değişmeyeceğini varsayıp değerini bir register'da
-önbelleğe alıyor, bu yüzden ISR belleği güncellese de ana döngü bunu hiç
-görmüyor.
+**Root cause:** The variable is shared between the ISR and the main loop
+but is not marked `volatile`; under `-O2` optimization, the compiler
+assumes the variable will not change again within the main loop and
+caches its value in a register, so even though the ISR updates memory,
+the main loop never observes it.
 
-**Düzeltme:**
+**Fix:**
 ```c
-/* önce */
+/* before */
 unsigned char G_ucButtonFlag = 0;
-/* sonra */
+/* after */
 volatile unsigned char G_ucButtonFlag = 0;
 ```
 
-### 2. Buton ISR'inde uzun iş (xil_printf + gecikme döngüsü)
+### 2. Long-Running Work in the Button ISR (xil_printf + Delay Loop)
 
-**Konum:** `src/gpio_led_buton.c`, `buttonIsr()` fonksiyonu.
+**Location:** `src/gpio_led_button.c`, the `buttonIsr()` function.
 
-**Kök neden:** ISR'in içine "hızlı bir durum satırı" gerekçesiyle eklenen
-`xil_printf` çağrısı ve boş bekleme döngüsü, kesmeyi olması gerekenden çok
-daha uzun tutuyor; bu süre boyunca öncelikli TTC kesmeleri gecikiyor ya da
-kaçıyor, bu da tick sayacının sekmesine/geç gelmesine yol açıyor.
+**Root cause:** An `xil_printf` call added inside the ISR under the
+justification of "a quick status line," together with an empty delay
+loop, keeps the interrupt running far longer than it should; during this
+time, higher-priority TTC interrupts are delayed or missed, which causes
+the tick counter to skip or arrive late.
 
-**Düzeltme:** ISR yalnızca bayrağı set etsin ve sayacı artırsın; yazdırma
-işini ana döngüye taşı — ayrıntılı diff için `labs/lab10-bugav/COZUM.md`'ye
-bak.
+**Fix:** The ISR should only set the flag and increment the counter; move
+the printing work to the main loop — see `labs/lab10-bughunt/SOLUTION.md` for
+the detailed diff.
 
-### 3. DS50 toggle'da `|=` kullanılmış
+### 3. `|=` Used Instead of Toggle for DS50
 
-**Konum:** `src/gpio_led_buton.c`, `ledDs50Toggle()` fonksiyonu.
+**Location:** `src/gpio_led_button.c`, the `ledDs50Toggle()` function.
 
-**Kök neden:** Durumu tersine çevirmesi gereken satır `^=` yerine `|=`
-kullanıyor; `|= 1` her çağrıda durumu 1'e sabitliyor, yani LED bir kez
-yandıktan sonra bir daha hiç sönmüyor.
+**Root cause:** The line that is supposed to invert the state uses `|=`
+instead of `^=`; `|= 1` pins the state to 1 on every call, meaning that
+once the LED turns on, it never turns off again.
 
-**Düzeltme:**
+**Fix:**
 ```c
-/* önce */
+/* before */
 G_uiDs50State |= 1;
-/* sonra */
+/* after */
 G_uiDs50State ^= 1;
 ```
 
-### 4. 8 KB'lık yerel dizi → stack taşması
+### 4. An 8 KB Local Array → Stack Overflow
 
-**Konum:** `src/main.c`, `printHealthSummary()` fonksiyonu;
-karşılaştırma için `src/lscript.ld`'deki `_STACK_SIZE`.
+**Location:** `src/main.c`, the `printHealthSummary()` function; for
+comparison, `_STACK_SIZE` in `src/lscript.ld`.
 
-**Kök neden:** Fonksiyon her çağrıldığında 8 KB'lık `cArrHistoryBuffer` dizisi
-stack üzerinde ayrılıyor; bu proje için `lscript.ld`'de ayrılan stack alanı
-bunu, üstüne binen diğer çağrı çerçeveleriyle birlikte, taşıracak kadar dar.
-Taşma komşu bellek bölgesini bozuyor; bozulan verinin ne olduğu çağrı
-anındaki stack derinliğine (kesme araya girdi mi, girmedi mi) bağlı olduğu
-için çökme hemen değil, sistem bir süre çalıştıktan sonra rastgele ortaya
-çıkıyor.
+**Root cause:** Every time the function is called, an 8 KB
+`cArrHistoryBuffer` array is allocated on the stack; the stack space
+reserved in `lscript.ld` for this project is too narrow to hold it
+together with the other call frames stacked on top of it. The overflow
+corrupts the adjacent memory region; because what gets corrupted depends
+on the stack depth at the moment of the call (whether an interrupt
+happened to intervene or not), the crash does not occur immediately but
+appears randomly after the system has been running for a while.
 
-**Düzeltme:** Buffer'ı gerçek ihtiyaca indir:
+**Fix:** Reduce the buffer to the actual requirement:
 ```c
-/* önce */
+/* before */
 char cArrHistoryBuffer[8192];
-/* sonra */
+/* after */
 char cArrHistoryBuffer[128];
 ```
-Kalıcı çözüm için `lscript.ld`'deki `_STACK_SIZE` değerini de projenin
-gerçek en kötü durum çağrı derinliğine göre gözden geçir. Tam açıklama:
-`labs/lab10-bugav/COZUM.md`.
+For a durable fix, also review the `_STACK_SIZE` value in `lscript.ld`
+against the project's actual worst-case call depth. Full explanation:
+`labs/lab10-bughunt/SOLUTION.md`.
 ::/
 :::
 
-Dört hatayı da bulup düzelttiysen artık alet çantanı gerçekten tanıyorsun —
-debugger'ı korkmadan açan, disassembly'ye bakınca ürkmeyen, hangi belirtide
-hangi silahı çekeceğini bilen biri oldun. Aletleri tanıdın; şimdi sıra
-zanaatın görgü kurallarında: iyi bir gömülü yazılımcıyı yalnızca çalışan
-kod değil, ekiple çalışabilme becerisi de tanımlar.
+Having found and fixed all four defects, you now genuinely know your
+toolbox — you have become someone who opens the debugger without
+hesitation, does not flinch at disassembly, and knows which tool to reach
+for given a particular symptom. You know the tools; now it is time for the
+conventions of the craft: a good embedded developer is defined not only by
+working code, but by the ability to work effectively within a team.

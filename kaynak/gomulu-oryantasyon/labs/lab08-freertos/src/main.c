@@ -1,21 +1,22 @@
 /*
  * lab08-freertos / main.c
  *
- * GOREV 8 -- "Ilk FreeRTOS Uygulaman" cozumu.
+ * TASK 8 -- "Your First FreeRTOS Application" solution.
  *
- * Uc gorev (task) ayni anda (aslinda: tek cekirdekte hizli dilimlenerek)
- * calisir:
- *   - heartbeatTask    : DS50 LED'ini (PS MIO23) 500 ms periyotla yakip
- *                        sondurur, vTaskDelay ile bekler (bos dongu YOK).
- *   - statusTask       : her 2 saniyede bir UART'a bir durum satiri basar.
- *   - buttonHandlerTask: SW19 butonuna (PS MIO22) basildiginda ISR'in
- *                        xSemaphoreGiveFromISR ile verdigi semaforu
- *                        xSemaphoreTake ile bekler; basis aninda bir
- *                        satir basar.
+ * Three tasks run at the same time (in reality: time-sliced rapidly on a
+ * single core):
+ *   - heartbeatTask    : toggles the DS50 LED (PS MIO23) on and off with a
+ *                        500 ms period, waiting via vTaskDelay (NO busy
+ *                        loop).
+ *   - statusTask       : prints a status line to UART every 2 seconds.
+ *   - buttonHandlerTask: waits with xSemaphoreTake on the semaphore the ISR
+ *                        gives via xSemaphoreGiveFromISR when SW19
+ *                        (PS MIO22) is pressed; prints a line the moment a
+ *                        press occurs.
  *
- * Donanim degerleri (kaynak: content/_arastirma.md): DS50=MIO23,
- * SW19=MIO22, PS GPIO IRQ kimligi = 48 (XPS_GPIO_INT_ID).
- * FreeRTOS BSP: freertos10_xilinx, configTICK_RATE_HZ = 100 varsayilan.
+ * Hardware values (source: content/_arastirma.md): DS50=MIO23,
+ * SW19=MIO22, PS GPIO IRQ ID = 48 (XPS_GPIO_INT_ID).
+ * FreeRTOS BSP: freertos10_xilinx, configTICK_RATE_HZ = 100 default.
  */
 
 #include "FreeRTOS.h"
@@ -30,23 +31,24 @@
 
 #define DS50_MIO_PINI            23U
 #define SW19_MIO_PINI            22U
-#define BUTON_GIC_KESME_ID       XPS_GPIO_INT_ID   /* ZynqMP PS GPIO = 48 */
+#define BUTTON_GIC_INTERRUPT_ID       XPS_GPIO_INT_ID   /* ZynqMP PS GPIO = 48 */
 
-#define ONCELIK_KALP_ATISI       (tskIDLE_PRIORITY + 1)
-#define ONCELIK_DURUM            (tskIDLE_PRIORITY + 1)
-#define ONCELIK_BUTON_ISLEYICI   (tskIDLE_PRIORITY + 2)
+#define PRIORITY_HEARTBEAT       (tskIDLE_PRIORITY + 1)
+#define PRIORITY_STATUS            (tskIDLE_PRIORITY + 1)
+#define ONCELIK_BUTTON_ISLEYICI   (tskIDLE_PRIORITY + 2)
 
-#define KALP_ATISI_PERIYOT_MS    500U
+#define HEARTBEAT_PERIOD_MS    500U
 #define DURUM_PERIYOT_MS         2000U
 
-/* G_ onekli: FreeRTOS nesneleri ve surucu ornekleri, task'lar arasi
- * paylasilir; ISR'den de erisildigi icin global kalmalari gerekir. */
+/* G_ prefix: FreeRTOS objects and driver instances are shared between
+ * tasks; since they are also accessed from the ISR, they must remain
+ * global. */
 static XGpioPs           G_sGpio;
 static XScuGic           G_sGic;
 static SemaphoreHandle_t G_sButtonSemaphore;
 
 
-/* ledPsWrite -- DS50'yi PS GPIO uzerinden yakar/sondurur. */
+/* ledPsWrite -- turns DS50 on/off via PS GPIO. */
 static void
 ledPsWrite(unsigned int uiState)
 {
@@ -54,8 +56,8 @@ ledPsWrite(unsigned int uiState)
 }
 
 
-/* buttonIsr -- SW19 kesmesi. Kisa tutulur: bayrak/is islemez, yalnizca
- * semaforu verir ve GIC'e kesmeyi temizletir. */
+/* buttonIsr -- SW19 interrupt. Kept short: does not process flags/work,
+ * only gives the semaphore and lets the GIC clear the interrupt. */
 static void
 buttonIsr(void* pvCallBackRef)
 {
@@ -66,14 +68,14 @@ buttonIsr(void* pvCallBackRef)
 
     xSemaphoreGiveFromISR(G_sButtonSemaphore, &xHigherPriorityTaskWoken);
 
-    /* ISR'den cikarken, semaforu bekleyen gorev daha yuksek oncelikliyse
-     * scheduler'a hemen ona gecmesini soyleriz -- bloklamadan haber verme
-     * budur. */
+    /* When leaving the ISR, if the task waiting on the semaphore has
+     * higher priority, we tell the scheduler to switch to it immediately
+     * -- this is what it means to signal without blocking. */
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 
-/* heartbeatTask -- DS50'yi 500 ms periyotla toggle eder. */
+/* heartbeatTask -- toggles DS50 with a 500 ms period. */
 static void
 heartbeatTask(void* pvParameters)
 {
@@ -86,14 +88,15 @@ heartbeatTask(void* pvParameters)
         uiLedState ^= 1U;
         ledPsWrite(uiLedState);
 
-        /* vTaskDelay: CPU'yu bosta dondurmez, scheduler bu gorevi
-         * Blocked'a alir ve o sure boyunca baska gorevlere CPU verir. */
-        vTaskDelay(pdMS_TO_TICKS(KALP_ATISI_PERIYOT_MS));
+        /* vTaskDelay: does not spin the CPU idly, the scheduler moves this
+         * task to Blocked and hands the CPU to other tasks for that
+         * duration. */
+        vTaskDelay(pdMS_TO_TICKS(HEARTBEAT_PERIOD_MS));
     }
 }
 
 
-/* statusTask -- her 2 saniyede bir UART'a durum satiri basar. */
+/* statusTask -- prints a status line to UART every 2 seconds. */
 static void
 statusTask(void* pvParameters)
 {
@@ -104,14 +107,14 @@ statusTask(void* pvParameters)
     for (;;)
     {
         uiCounter++;
-        xil_printf("[Durum] %u. periyot -- heartbeatTask ve buttonHandlerTask calisiyor\r\n",
+        xil_printf("[Status] period %u -- heartbeatTask and buttonHandlerTask running\r\n",
                    (unsigned int)uiCounter);
         vTaskDelay(pdMS_TO_TICKS(DURUM_PERIYOT_MS));
     }
 }
 
 
-/* buttonHandlerTask -- semaforu bekler, ISR'in verdigi anda uyanir. */
+/* buttonHandlerTask -- waits on the semaphore, wakes the instant the ISR gives it. */
 static void
 buttonHandlerTask(void* pvParameters)
 {
@@ -121,20 +124,21 @@ buttonHandlerTask(void* pvParameters)
 
     for (;;)
     {
-        /* portMAX_DELAY: sinirsiz bekle -- bu gorev semafor gelene kadar
-         * Blocked'ta durur, CPU'dan hicbir sey calmaz. */
+        /* portMAX_DELAY: wait indefinitely -- this task stays Blocked until
+         * the semaphore arrives, stealing no CPU time at all. */
         if (xSemaphoreTake(G_sButtonSemaphore, portMAX_DELAY) == pdTRUE)
         {
             uiPressCount++;
-            xil_printf("[Buton] SW19 basildi (%u. kez)\r\n",
+            xil_printf("[Button] SW19 pressed (%u times)\r\n",
                        (unsigned int)uiPressCount);
         }
     }
 }
 
 
-/* hardwareInit -- GPIO + GIC kurulumu; bare-metal Gorev 4'teki ile
- * aynidir, tek fark scheduler baslamadan once, main() icinde yapilmasi. */
+/* hardwareInit -- GPIO + GIC setup; identical to bare-metal Task 4, the
+ * only difference being that this runs inside main() before the scheduler
+ * starts. */
 static int
 hardwareInit(void)
 {
@@ -180,14 +184,14 @@ hardwareInit(void)
                                   &G_sGic);
     Xil_ExceptionEnable();
 
-    iStatus = XScuGic_Connect(&G_sGic, BUTON_GIC_KESME_ID,
+    iStatus = XScuGic_Connect(&G_sGic, BUTTON_GIC_INTERRUPT_ID,
                                (Xil_ExceptionHandler)buttonIsr,
                                (void*)&G_sGpio);
     if (iStatus != XST_SUCCESS)
     {
         return XST_FAILURE;
     }
-    XScuGic_Enable(&G_sGic, BUTON_GIC_KESME_ID);
+    XScuGic_Enable(&G_sGic, BUTTON_GIC_INTERRUPT_ID);
 
     return XST_SUCCESS;
 }
@@ -195,11 +199,11 @@ hardwareInit(void)
 
 int main(void)
 {
-    xil_printf("\r\n--- Gorev 8: Ilk FreeRTOS Uygulaman ---\r\n");
+    xil_printf("\r\n--- Task 8: Your First FreeRTOS Application ---\r\n");
 
     if (hardwareInit() != XST_SUCCESS)
     {
-        xil_printf("HATA: donanim baslatilamadi, duruyorum.\r\n");
+        xil_printf("ERROR: hardware initialization failed, halting.\r\n");
         for (;;)
         {
         }
@@ -208,24 +212,24 @@ int main(void)
     G_sButtonSemaphore = xSemaphoreCreateBinary();
     if (G_sButtonSemaphore == NULL)
     {
-        xil_printf("HATA: semafor olusturulamadi, duruyorum.\r\n");
+        xil_printf("ERROR: could not create semaphore, halting.\r\n");
         for (;;)
         {
         }
     }
 
     xTaskCreate(heartbeatTask, "Heartbeat", configMINIMAL_STACK_SIZE,
-                NULL, ONCELIK_KALP_ATISI, NULL);
+                NULL, PRIORITY_HEARTBEAT, NULL);
     xTaskCreate(statusTask, "Status", configMINIMAL_STACK_SIZE,
-                NULL, ONCELIK_DURUM, NULL);
+                NULL, PRIORITY_STATUS, NULL);
     xTaskCreate(buttonHandlerTask, "ButtonHandler", configMINIMAL_STACK_SIZE,
-                NULL, ONCELIK_BUTON_ISLEYICI, NULL);
+                NULL, ONCELIK_BUTTON_ISLEYICI, NULL);
 
-    /* Scheduler'i baslat -- bu satirdan sonrasina normal akista asla
-     * dogru donulmez, kontrol artik uc gorev arasinda paylasilir. */
+    /* Start the scheduler -- control never correctly returns past this
+     * line in the normal flow; it is now shared among the three tasks. */
     vTaskStartScheduler();
 
-    xil_printf("HATA: scheduler beklenmedik sekilde durdu.\r\n");
+    xil_printf("ERROR: scheduler stopped unexpectedly.\r\n");
     for (;;)
     {
     }

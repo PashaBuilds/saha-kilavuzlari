@@ -1,295 +1,312 @@
-# Bölüm 10 — İşletim Sistemi: Bare-metal'den FreeRTOS'a
+# Chapter 10 — Operating Systems: From Bare-Metal to FreeRTOS
 
-Şu ana kadar yazdığın her şey **bare-metal**ti — işletim sistemi yok, tek
-bir `main()`, sonsuz bir döngü, araya giren birkaç interrupt (kesme).
-Görev 4 ve 5'te bunu güzelce çalıştırdın: buton kesmesi bir bayrak set
-ediyor, timer kesmesi bir sayaç arttırıyor, ana döngü bayrakları kontrol
-edip işini yapıyordu. Küçük bir sistemde bu mimari hem yeterli hem de
-anlaşılırdır. Bu bölümün konusu, o mimarinin nerede çatırdamaya başladığı
-ve bunun çözümü olan **FreeRTOS**. Konu yoğun olduğu için bölümü iki
-oturuma ayırdık: önce FreeRTOS'un çekirdek mekaniğini (task, öncelik,
-scheduler, tick) kuracağız ve elini kart üzerinde kirleteceksin; sonra
-task'lar arasında veri ve olay paylaşmanın araçlarına (queue, semaphore,
-mutex) ve bunların klasik tuzaklarına geçeceğiz.
+Everything you have written so far has been **bare-metal** — no operating
+system, a single `main()`, an infinite loop, with occasional interrupts. In
+Tasks 4 and 5, you put this to good use: a button interrupt set a flag, a
+timer interrupt incremented a counter, and the main loop checked the flags
+and carried out its work. In a small system, this architecture is both
+sufficient and easy to follow. This chapter addresses where that
+architecture begins to break down, and its solution: **FreeRTOS**. Because
+the material is substantial, the chapter is split into two sessions: first,
+we build FreeRTOS's core mechanics (task, priority, scheduler, tick), and
+you put this into practice on the board; then we move on to the tools for
+sharing data and events between tasks (queue, semaphore, mutex) and their
+classic pitfalls.
 
-## Birinci parça: RTOS çekirdeği
+## Part One: The RTOS Kernel
 
-Bu ilk oturumda tek bir soru peşindeyiz: FreeRTOS bir task'ı nasıl tanır,
-çalıştırır ve zamanlar? Task'lar arası iletişimi (queue, semaphore, mutex)
-bilinçli olarak ikinci oturuma bırakıyoruz — önce tek bir task'ın hayat
-döngüsünü sağlam anlamalısın, üstüne bir şey inşa etmeden önce.
+In this first session we pursue a single question: how does FreeRTOS
+recognize, run, and schedule a task? We deliberately defer inter-task
+communication (queue, semaphore, mutex) to the second session — you should
+first have a solid grasp of a single task's life cycle before building
+anything on top of it.
 
-## Bayrak çorbası: bare-metal'in sınırı
+## Flag Soup: The Limits of Bare-Metal
 
-Görevlerin sayısı arttıkça süperdöngü + ISR mimarisi bir örüntüye girer:
-her yeni iş için yeni bir bayrak, ana döngüde yeni bir `if`. Beş, altı iş
-olunca döngü artık "hangi bayrak ne zaman set edildi, hangi sırayla
-kontrol edilmeli, biri diğerini geciktirir mi" sorularının cevaplanamadığı
-bir **bayrak çorbasına** dönüşür. Daha kötüsü: hiçbir işin zamanlama
-garantisi yoktur. Döngünün başındaki iş uzun sürerse, sondaki iş o kadar
-geç çalışır — kimse bunu sana söylemez, koddan da görünmez, sadece bir gün
-"neden bu buton bazen geç tepki veriyor" sorusuyla karşına çıkar.
+As the number of tasks grows, the superloop-plus-ISR architecture falls
+into a pattern: a new flag for every new job, a new `if` in the main loop.
+Once there are five or six jobs, the loop turns into **flag soup** — a
+state in which questions such as "which flag was set when, in what order
+should they be checked, does one delay another" can no longer be answered.
+Worse, no job carries a timing guarantee. If the job at the start of the
+loop takes a long time, the job at the end runs correspondingly late —
+nobody tells you this, and it is not visible from the code; it simply
+surfaces one day as the question "why does this button sometimes respond
+late."
 
-{{svg:sema-21-superdongu-rtos.svg|Şekil 21 — Bare-metal süperdöngü ile FreeRTOS scheduler'ının yan yana karşılaştırması: "aynı anda" çalışmak, tek çekirdekte hızlı dilimlemedir.}}
+{{svg:sema-21-superdongu-rtos.svg|Figure 21 — Side-by-side comparison of a bare-metal superloop and the FreeRTOS scheduler: running "at the same time" is, on a single core, rapid time-slicing.}}
 
-## Neden RTOS
+## Why an RTOS
 
-**RTOS (Real-Time Operating System — gerçek zamanlı işletim sistemi)**,
-tek bir sorunu çözmek için var: birden çok **mantıksal işi**, her birinin
-kendi zamanlama beklentisini karşılayacak şekilde, tek bir CPU üzerinde
-yönetmek. Anahtar kelime **bloklanma**dır. Bare-metal dünyada "bekle"
-demek çoğu zaman boş bir döngüde CPU'yu döndürmek demekti (`while
-(!bayrak);` gibi) — CPU o sürede hiçbir faydalı iş yapmaz. RTOS dünyasında
-"bekle" demek, o işin CPU'yu **gönüllü olarak bıraktığı**, scheduler'ın
-(zamanlayıcı) o süre boyunca CPU'yu başka işe verdiği bir durumdur. Aynı
-kelime, tamamen farklı bir davranış.
+**RTOS (Real-Time Operating System)** exists to solve one problem: managing
+multiple **logical jobs** on a single CPU such that each meets its own
+timing expectations. The key word is **blocking**. In the bare-metal
+world, "wait" usually meant spinning the CPU in an empty loop (something
+like `while (!flag);`) — the CPU does no useful work during that time. In
+the RTOS world, "wait" means a state in which the job **voluntarily gives
+up the CPU**, and the scheduler hands the CPU to other work for that
+duration. The same word, an entirely different behavior.
 
-## FreeRTOS çekirdeği: task, öncelik, tick
+## The FreeRTOS Kernel: Task, Priority, Tick
 
-FreeRTOS'un temel birimi **task** (görev — bare-metal'deki "iş" kelimesiyle
-karıştırma, burada FreeRTOS'un resmi terimi). Her task, kendi yığınına
-(stack) sahip, bağımsız çalışan bir fonksiyondur ve her an dört durumdan
-birindedir:
+FreeRTOS's fundamental unit is the **task** — not to be confused with the
+word "job" used above for the bare-metal discussion; here it is FreeRTOS's
+official term. Each task is an independently running function with its own
+stack, and at any given moment it is in one of four states:
 
-- **Running** — o an CPU'da çalışan (tek çekirdekte aynı anda yalnızca bir
-  task Running olabilir).
-- **Ready** — çalışmaya hazır, sırasını bekliyor.
-- **Blocked** — bir olayı (süre dolması, veri gelmesi, bir kaynağın
-  serbest kalması) bekliyor; o olay gerçekleşene kadar CPU'ya aday değil.
-- **Suspended** — zamanlama dışı bırakılmış, biri onu açıkça uyandırana
-  kadar hiçbir şey beklemez.
+- **Running** — currently executing on the CPU (on a single core, only one
+  task can be Running at a time).
+- **Ready** — ready to run, waiting its turn.
+- **Blocked** — waiting for an event (a timeout, incoming data, a resource
+  becoming free); it is not a candidate for the CPU until that event
+  occurs.
+- **Suspended** — excluded from scheduling; it waits for nothing until
+  something explicitly resumes it.
 
-Her task'a bir **öncelik** (priority) atarsın. FreeRTOS'un scheduler'ı
-**preemptive**tir (önalımlı) — yani Ready durumundaki en yüksek öncelikli
-task her zaman CPU'yu alır; düşük öncelikli bir task çalışırken yüksek
-öncelikli bir task Ready olursa, scheduler düşük öncelikliyi anında keser.
-Bu kesme kararını hangi sıklıkla verdiğini belirleyen şey **tick**tir:
-periyodik bir donanım zamanlayıcısının ürettiği düzenli kesme.
-`configTICK_RATE_HZ` bizim BSP'mizde (`freertos10_xilinx`) varsayılan
-olarak **100 Hz**'dir — yani scheduler saniyede 100 kez "şu an kim
-çalışmalı" kararını gözden geçirir.
+You assign each task a **priority**. FreeRTOS's scheduler is **preemptive**
+— the highest-priority task in the Ready state always takes the CPU; if a
+higher-priority task becomes Ready while a lower-priority task is running,
+the scheduler interrupts the lower-priority task immediately. The **tick**
+determines how frequently this preemption decision is made: it is the
+regular interrupt produced by a periodic hardware timer.
+`configTICK_RATE_HZ` defaults to **100 Hz** in our BSP (`freertos10_xilinx`)
+— meaning the scheduler reviews the "who should run now" decision 100
+times per second.
 
-Task'ların doğuşunu, önceliklerini ve scheduler'ın onları nasıl sıraya
-soktuğunu gördün; sıra elini kirletmede. Görev 8'de üç task'ı aynı anda
-ayağa kaldıracaksın — aralarında SW19'dan gelen bir sinyal de olacak; onu
-nasıl taşıdığımızın ayrıntılı mekaniğine ikinci oturumda gireceğiz, şimdilik
-görev kartındaki adımlar sana yeter.
+You have seen how tasks come into being, how they are prioritized, and how
+the scheduler orders them; it is now time to put this into practice. In
+Task 8 you will bring up three tasks simultaneously, including one
+carrying a signal from SW19 — we will cover the detailed mechanics of how
+that signal is transported in the second session; for now, the steps in
+the task card are all you need.
 
-:::gorev no=8 zorluk=2 baslik="İlk FreeRTOS Uygulaman" kisa="İlk FreeRTOS"
-[Hedef]
-Üç FreeRTOS task'ını (heartbeat, durum, buton işleyici) birbirini
-bozmadan aynı sistemde çalıştırmak.
+:::gorev no=8 zorluk=2 baslik="Your First FreeRTOS Application" kisa="First FreeRTOS"
+[Objective]
+Run three FreeRTOS tasks (heartbeat, status, button handler) in the same
+system without interfering with one another.
 
-[Ön koşul]
-Bölüm 10'un birinci parçası okundu; Görev 4'te (buton kesmesi) kurduğun
-GIC/GPIO kesme mantığına aşinasın.
+[Prerequisites]
+Part One of Chapter 10 read; you are familiar with the GIC/GPIO interrupt
+logic you set up in Task 4 (button interrupt).
 
-[Adımlar]
-1. Vitis'te platform component'ini OS = `freertos10_xilinx` ile oluştur
-   (işlemci `psu_cortexa53_0`).
-2. `heartbeatTask` task'ını yaz: DS50 LED'ini (MIO23) 500 ms periyotla
-   `vTaskDelay` ile toggle etsin — **boş döngüyle bekleme yok**.
-3. `statusTask` task'ını yaz: her 2 saniyede bir UART'a bir durum satırı
-   bassın.
-4. SW19 (MIO22) için bir binary semafor oluştur; ISR içinde
-   `xSemaphoreGiveFromISR` ile ver, sonunda `portYIELD_FROM_ISR` çağır.
-5. `buttonHandlerTask` task'ını yaz: `xSemaphoreTake` ile semaforu bekleyip
-   her basışta bir satır bassın.
-6. `xTaskCreate` ile üç task'ı da oluştur, `vTaskStartScheduler()` ile
-   başlat.
+[Steps]
+1. Create your platform component in Vitis with OS = `freertos10_xilinx`
+   (processor `psu_cortexa53_0`).
+2. Write the `heartbeatTask` task: it should toggle the DS50 LED (MIO23)
+   every 500 ms using `vTaskDelay` — **no waiting with an empty loop**.
+3. Write the `statusTask` task: it should print a status line to the UART
+   every 2 seconds.
+4. Create a binary semaphore for SW19 (MIO22); give it from within the ISR
+   using `xSemaphoreGiveFromISR`, and call `portYIELD_FROM_ISR` at the
+   end.
+5. Write the `buttonHandlerTask` task: it should wait on the semaphore
+   with `xSemaphoreTake` and print a line on every press.
+6. Create all three tasks with `xTaskCreate`, and start the scheduler with
+   `vTaskStartScheduler()`.
 
-[Başarı kriteri]
-DS50 düzenli 500 ms'de bir yanıp sönerken terminalde her 2 saniyede bir
-durum satırı akıyor ve SW19'a her basışında araya bir buton satırı
-giriyor — üç iş birbirini bozmadan çalışıyor.
+[Success Criteria]
+DS50 blinks regularly every 500 ms, a status line appears on the terminal
+every 2 seconds, and a button line is interleaved on every SW19 press —
+all three jobs run without interfering with one another.
 
-[Kendini sına]
-- `vTaskDelay` ile boş bir `while` döngüsünde beklemenin CPU açısından
-  farkı ne?
-- Semaphore yerine bare-metal'deki gibi bir global bayrak kullansaydın
-  ne kaybederdin?
-- `statusTask` ve `heartbeatTask` aynı önceliğe sahip — bu bir sorun
-  yaratır mı? Neden?
+[Self-Check]
+- What is the difference, from the CPU's perspective, between waiting
+  with `vTaskDelay` and waiting in an empty `while` loop?
+- What would you lose if you used a global flag, as in bare-metal, instead
+  of a semaphore?
+- `statusTask` and `heartbeatTask` share the same priority — does this
+  create a problem? Why or why not?
 
-[Takıldıysan]
-::ipucu İpucu 1 — LED yanıp sönmüyor ya da terminal hiç yazmıyor
-`vTaskStartScheduler()`'dan önce GPIO ve GIC kurulumunun (yön ayarı,
-kesme bağlama) bare-metal'deki Görev 4'ten farksız olduğunu doğrula.
-Scheduler başlamadan önce çağrılan kod hâlâ sıradan bare-metal koddur.
+[If You Get Stuck]
+::ipucu Hint 1 — The LED does not blink, or the terminal prints nothing
+Confirm that the GPIO and GIC setup before `vTaskStartScheduler()`
+(direction configuration, interrupt binding) is no different from Task 4
+in the bare-metal chapters. Code called before the scheduler starts is
+still ordinary bare-metal code.
 ::/
-::ipucu İpucu 2 — buton satırı hiç görünmüyor
-`XGpioPs_IntrClearPin`'i ISR içinde çağırmayı unutma — temizlenmeyen bir
-kesme, GIC'i kilitli tutar ve bir daha tetiklenmez. `portYIELD_FROM_ISR`'a
-verdiğin `BaseType_t` değişkeninin ISR başında `pdFALSE` ile
-başlatıldığından emin ol.
+::ipucu Hint 2 — The button line never appears
+Do not forget to call `XGpioPs_IntrClearPin` inside the ISR — an uncleared
+interrupt keeps the GIC locked and it will never fire again. Make sure the
+`BaseType_t` variable you pass to `portYIELD_FROM_ISR` is initialized to
+`pdFALSE` at the start of the ISR.
 ::/
-::cozum Tam çözüm — lab08-freertos
-`labs/lab08-freertos/src/main.c` üç task'ı, GIC/GPIO kurulumunu ve
-FromISR akışını uçtan uca gösterir.
+::cozum Full Solution — lab08-freertos
+`labs/lab08-freertos/src/main.c` demonstrates all three tasks, the
+GIC/GPIO setup, and the FromISR flow end to end.
 {{kod:lab08-freertos/src/main.c}}
 ::/
 :::
 
-Şu ana kadar tek tek task'ların nasıl doğduğunu, önceliklendiğini ve
-scheduler tarafından nasıl değiştirildiğini gördün — Görev 8'de SW19'dan
-gelen bir sinyali bir semaforla task'a taşıyarak bunu elinle de kurdun.
-Ama gerçek sistemlerde task'lar adalar gibi izole çalışmaz; veri ve olay
-paylaşmaları gerekir. İkinci oturumda bu paylaşımın üç temel aracına ve
-beraberinde gelen klasik tuzaklara geçiyoruz.
+So far you have seen how individual tasks come into being, how they are
+prioritized, and how the scheduler switches between them — in Task 8 you
+also built this yourself, carrying a signal from SW19 to a task through a
+semaphore. In real systems, however, tasks do not operate in isolation
+like separate islands; they need to share data and events. In the second
+session, we turn to the three fundamental tools for this sharing, along
+with the classic pitfalls that accompany them.
 
-## İkinci parça: task'lar arası iletişim ve tuzaklar
+## Part Two: Inter-Task Communication and Pitfalls
 
-Görev 8'de SW19 için oluşturduğun semaforun aslında ne olduğunu, queue ve
-mutex'le birlikte nasıl bir aile oluşturduğunu ve bu ailenin hangi
-tuzaklara açık olduğunu bu oturumda göreceksin. Aşağıdaki şema bu ikinci
-oturumun tamamını tek bakışta özetliyor: task durum makinesi, artık
-queue/semaphore/mutex/ISR'in tetiklediği geçişlerle birlikte.
+In this session you will see what the semaphore you created for SW19 in
+Task 8 actually is, how it forms a family together with the queue and the
+mutex, and which pitfalls that family is exposed to. The diagram below
+summarizes this entire second session at a glance: the task state machine,
+now shown together with the transitions triggered by the queue, semaphore,
+mutex, and ISR.
 
-{{svg:sema-22-freertos-nesneleri.svg|Şekil 22 — FreeRTOS çekirdek nesneleri haritası: task durum makinesi ile queue, semaphore, mutex ve ISR'in tetiklediği geçişler.}}
+{{svg:sema-22-freertos-nesneleri.svg|Figure 22 — Map of FreeRTOS core objects: the task state machine together with the transitions triggered by the queue, semaphore, mutex, and ISR.}}
 
-## Queue, semaphore, mutex: ne zaman hangisi
+## Queue, Semaphore, Mutex: Which One, and When
 
-Task'lar birbirinden izole çalışır ama gerçek sistemler veri ve olay
-paylaşmak zorundadır. FreeRTOS bunun için üç temel nesne sunar, üçü de
-farklı bir soruya cevap verir:
+Tasks run in isolation from one another, but real systems must share data
+and events. FreeRTOS provides three fundamental objects for this purpose,
+and each answers a different question:
 
-- **Queue (kuyruk)** — *veri taşımak* içindir. Bir task `xQueueSend` ile
-  bir kopya veri koyar, başka bir task `xQueueReceive` ile alır; FIFO
-  sırayla, boyutu sabit bir tampon üzerinden. "Bu ölçüm değerini oradan
-  buraya güvenli taşı" sorusunun cevabı budur.
-- **Semaphore (semafor)** — *olay bildirmek* içindir, veri taşımaz.
-  İkili (binary) semafor "bir şey oldu" der (bir kesme geldi, bir iş
-  bitti); sayaçlı (counting) semafor "şu kadar kaynak/olay birikti" der.
-  "Buton basıldı, uyan" sorusunun cevabı budur — Görev 8'deki SW19
-  semaforu tam olarak bu.
-- **Mutex (mutual exclusion — karşılıklı dışlama)** — *paylaşılan bir
-  kaynağı korumak* içindir. Görünüşte ikili semaforla aynı API'yi
-  kullanır ama anlamı farklıdır: mutex'i alan task'ın onu geri vermesi
-  beklenir ("bu kaynağı ben kilitledim, işim bitince açarım"), semaforda
-  böyle bir "sahiplik" fikri yoktur. Bu farkın neden önemli olduğunu
-  birazdan (öncelik ters dönmesi) göreceksin.
+- **Queue** — for *carrying data*. One task places a copy of the data with
+  `xQueueSend`; another task retrieves it with `xQueueReceive`, in FIFO
+  order, over a fixed-size buffer. This is the answer to "safely carry
+  this measurement from there to here."
+- **Semaphore** — for *signaling an event*; it carries no data. A binary
+  semaphore says "something happened" (an interrupt arrived, a job
+  finished); a counting semaphore says "this many resources/events have
+  accumulated." This is the answer to "the button was pressed, wake up" —
+  the SW19 semaphore in Task 8 is exactly this.
+- **Mutex (mutual exclusion)** — for *protecting a shared resource*. It
+  appears to use the same API as a binary semaphore, but its meaning is
+  different: the task that takes a mutex is expected to give it back
+  ("I have locked this resource; I will release it when I am done"),
+  whereas a semaphore carries no notion of "ownership." You will shortly
+  see why this distinction matters (priority inversion).
 
-## ISR'den task'a: FromISR ailesi
+## From ISR to Task: The FromISR Family
 
-Bölüm 7'de öğrendiğin kural hâlâ geçerli: ISR (kesme rutini) kısa tutulur,
-içinde `xil_printf` çağırmazsın, uzun iş yapmazsın. FreeRTOS'ta ISR'ler bir
-task'ı Blocked'tan Ready'e taşıyarak "haber verir" ama normal
-`xQueueSend`/`xSemaphoreGive` çağrılarını ISR içinde **kullanamazsın** —
-bunlar scheduler'ı bloklayabilecek varsayımlarla yazılmıştır ve kesme
-bağlamında güvenli değildir. Bunun yerine her nesnenin bir **FromISR**
-kardeşi vardır: `xQueueSendFromISR`, `xSemaphoreGiveFromISR`. Bu
-fonksiyonlar bir çıktı parametresiyle "bu işlem, benden daha yüksek
-öncelikli bir task'ı uyandırdı mı" bilgisini verir; ISR'in sonunda
-`portYIELD_FROM_ISR()` çağrısı, cevap evetse scheduler'a "ISR'den çıkar
-çıkmaz o task'a geç" der. Görev 8'de bunu SW19 butonuyla zaten kurdun —
-şimdi az önce elinle yaptığının arkasındaki mekanizmayı görüyorsun.
+The rule you learned in Chapter 7 still applies: keep the ISR (interrupt
+service routine) short — do not call `xil_printf` inside it, and do not
+perform long-running work there. In FreeRTOS, ISRs "notify" by moving a
+task from Blocked to Ready, but you **cannot** use the normal
+`xQueueSend`/`xSemaphoreGive` calls inside an ISR — these are written with
+assumptions that may block the scheduler and are not safe in an interrupt
+context. Instead, every object has a **FromISR** counterpart:
+`xQueueSendFromISR`, `xSemaphoreGiveFromISR`. These functions report,
+through an output parameter, whether the operation woke a task of higher
+priority than the one that was interrupted; at the end of the ISR, a call
+to `portYIELD_FROM_ISR()` tells the scheduler, if the answer is yes, to
+switch to that task as soon as the ISR exits. You already set this up
+with the SW19 button in Task 8 — now you are seeing the mechanism behind
+what you built by hand.
 
-:::tuzak Stack taşması: sessiz ve tehlikeli
-Her task kendi stack'ine sahiptir ve bu stack `xTaskCreate` çağrısında
-verdiğin sabit boyuttadır — büyümez. Yerel değişkenlerin, fonksiyon çağrı
-zincirin bu sınırı aşarsa **stack taşması (stack overflow)** olur ve
-sonuç genelde açık bir hata mesajı değil, rastgele bozulma, çökme, ya da
-hiç ilgisiz bir değişkenin beklenmedik şekilde değişmesidir. BSP'mizin
-varsayılanı `configCHECK_FOR_STACK_OVERFLOW = 2` — FreeRTOS her context
-switch'te (context switch — CPU'nun bir task'tan diğerine geçerken o anki
-durumunu kaydedip yenisini yüklemesi) stack'in belirli bir deseni koruyup
-korumadığını denetler ve taşma tespit ederse
-`vApplicationStackOverflowHook`'u çağırır. Şüphelendiğin bir task için
-`uxTaskGetStackHighWaterMark(handle)` fonksiyonu, o task'ın şimdiye kadar
-stack'inin ne kadarına yaklaştığını (kalan en düşük boş alan) döndürür —
-sayı küçüldükçe tehlike büyür. Görev 10'da (Bug Avı) bu tuzağın canlı bir
-örneğiyle karşılaşacaksın.
+:::tuzak Stack Overflow: Silent and Dangerous
+Each task has its own stack, and that stack is the fixed size you supply
+in the `xTaskCreate` call — it does not grow. If your local variables and
+function call chain exceed this limit, a **stack overflow** occurs, and
+the result is usually not a clear error message but random corruption, a
+crash, or an unrelated variable changing unexpectedly. Our BSP's default
+is `configCHECK_FOR_STACK_OVERFLOW = 2` — on every context switch (the CPU
+saving one task's state and loading another's as it moves between tasks),
+FreeRTOS checks whether the stack still preserves a specific pattern, and
+calls `vApplicationStackOverflowHook` if it detects an overflow. For a
+task you suspect, `uxTaskGetStackHighWaterMark(handle)` returns how close
+that task has come to exhausting its stack (the lowest amount of free
+space remaining) — the smaller the number, the greater the danger. In
+Task 10 (Bug Hunt) you will encounter a live example of this pitfall.
 :::
 
-:::derin-dalis Öncelik ters dönmesi (priority inversion) ve mirası
-Şu senaryoyu düşün: düşük öncelikli bir task bir mutex'i almış, kaynağı
-kullanıyor. Yüksek öncelikli bir task aynı mutex'i istiyor, doğal olarak
-Blocked'a düşüyor — düşük öncelikli task işini bitirip mutex'i bırakana
-kadar bekleyecek, makul. Ama araya **orta öncelikli** bir task girip
-CPU'yu meşgul ederse ne olur? Scheduler kuralına göre orta öncelikli task,
-düşük öncelikliyi keser (çünkü daha yüksek öncelikli); düşük öncelikli
-task mutex'i bırakamaz, dolayısıyla yüksek öncelikli task da bekletmeye
-devam eder. Sonuç: en yüksek öncelikli task, ondan daha düşük öncelikli
-bir task yüzünden değil, **ondan da düşük bir task'ın CPU'yu tutması**
-yüzünden bekliyor — önceliklerin sırası fiilen tersine dönmüş oldu. Buna
-**öncelik ters dönmesi** denir ve gerçek zamanlı sistemlerde ciddi
-zamanlama ihlallerine yol açabilir.
+:::derin-dalis Priority Inversion and Priority Inheritance
+Consider the following scenario: a low-priority task has taken a mutex and
+is using the resource. A high-priority task requests the same mutex and,
+naturally, drops into Blocked — it will wait until the low-priority task
+finishes and releases the mutex, which is reasonable. But what happens if
+a **medium-priority** task now steps in and occupies the CPU? Under the
+scheduler's rule, the medium-priority task preempts the low-priority one
+(because it has higher priority); the low-priority task cannot release the
+mutex, and so the high-priority task continues to wait as well. The
+result: the highest-priority task is waiting — not because of a task lower
+in priority than itself, but because **a task lower still is holding the
+CPU** — the priority order has effectively been inverted. This is called
+**priority inversion**, and it can lead to serious timing violations in
+real-time systems.
 
-FreeRTOS'un mutex'i (adi semaforun aksine) **öncelik mirası (priority
-inheritance)** uygular: düşük öncelikli task bir mutex'i tutarken ondan
-daha yüksek öncelikli biri o mutex'i beklemeye başlarsa, düşük öncelikli
-task *geçici olarak* bekleyenin önceliğine yükseltilir — böylece orta
-öncelikli task onu kesemez, mutex çabucak serbest kalır, gerçek sahibi
-işine devam eder. Bu, semaforla mutex arasındaki API benzerliğinin altında
-yatan gerçek farktır: paylaşılan kaynağı koruman gerektiğinde her zaman
-mutex kullan, "aynı işi görüyor" diye adi semaforla idare etme.
+FreeRTOS's mutex (unlike an ordinary semaphore) implements **priority
+inheritance**: if a task of higher priority begins waiting on a mutex held
+by a lower-priority task, the low-priority task is *temporarily* raised to
+the waiting task's priority — so the medium-priority task cannot preempt
+it, the mutex is released promptly, and the true waiter proceeds. This is
+the real difference underlying the API similarity between semaphore and
+mutex: whenever you need to protect a shared resource, always use a
+mutex — do not make do with an ordinary semaphore on the assumption that
+"it does the same job."
 :::
 
-Task/queue/semaphore mekaniği artık elinde; sıra bunu gerçek bir
-üretici/tüketici hattında birleştirmede.
+You now have the task/queue/semaphore mechanics in hand; it is time to
+combine them in a real producer/consumer pipeline.
 
-:::gorev no=9 zorluk=2 baslik="Queue ile Üretici/Tüketici" kisa="Queue Akışı"
-[Hedef]
-Bir üretici task'ın periyodik ölçtüğü veriyi bir queue üzerinden bir
-tüketici task'a taşıyıp güvenli, düzenli bir çıktı üretmek.
+:::gorev no=9 zorluk=2 baslik="Producer/Consumer with a Queue" kisa="Queue Flow"
+[Objective]
+Carry data measured periodically by a producer task to a consumer task
+through a queue, producing safe, orderly output.
 
-[Ön koşul]
-Bölüm 10'un ikinci parçası okundu; Görev 8 tamamlandı; Görev 6'nın
-`ina226` modülüne (ya da bu lab'ın kendi kopyasına — bkz.
-`labs/lab09-kuyruk/README.md`) aşinasın.
+[Prerequisites]
+Part Two of Chapter 10 read; Task 8 completed; you are familiar with
+Task 6's `ina226` module (or this lab's own copy of it — see
+`labs/lab09-queue/README.md`).
 
-[Adımlar]
-1. `SMeasurementPacket` struct'ını tanımla: zaman damgası + VCCINT mV
-   değeri.
-2. Bir queue oluştur: `xQueueCreate(uzunluk, sizeof(SMeasurementPacket))`.
-3. `producerTask` task'ını yaz: 500 ms'de bir `ina226ReadBusVoltageMv` ile
-   ölçüm al, paketle, `xQueueSend` ile kuyruğa koy.
-4. `consumerTask` task'ını yaz: `xQueueReceive` ile bekle, gelen paketi
-   formatlayıp `xil_printf` ile bas.
-5. UART'a **yalnızca** `consumerTask`'ın yazdığından emin ol — bu,
-   satırların karışmamasını mimari olarak garantiler.
+[Steps]
+1. Define the `SMeasurementPacket` struct: a timestamp plus a VCCINT mV
+   value.
+2. Create a queue: `xQueueCreate(length, sizeof(SMeasurementPacket))`.
+3. Write the `producerTask` task: take a measurement every 500 ms with
+   `ina226ReadBusVoltageMv`, package it, and place it on the queue with
+   `xQueueSend`.
+4. Write the `consumerTask` task: wait with `xQueueReceive`, then format
+   and print the incoming packet with `xil_printf`.
+5. Make sure that **only** `consumerTask` writes to the UART — this
+   architecturally guarantees that lines do not get interleaved.
 
-[Başarı kriteri]
-Terminalde zaman damgalı mV satırları düzenli akıyor; üretici ve tüketici
-farklı hızlarda çalışsa da veri kaybolmuyor (kuyruk doluysa bu açıkça
-bildiriliyor, sessizce kaybolmuyor).
+[Success Criteria]
+Timestamped mV lines flow steadily on the terminal; no data is lost even
+if the producer and consumer run at different rates (if the queue is
+full, this is reported explicitly rather than being silently dropped).
 
-[Kendini sına]
-- Kuyruk dolduğunda `xQueueSend` ne yapar? Bu davranışı nasıl gözlemlersin?
-- Ölçümü doğrudan `consumerTask` içinde alsaydın (queue'suz, tek task)
-  mimari olarak ne kaybederdin?
+[Self-Check]
+- What does `xQueueSend` do when the queue is full? How would you observe
+  this behavior?
+- If you took the measurement directly inside `consumerTask` (no queue, a
+  single task), what would you lose architecturally?
 
-[Takıldıysan]
-::ipucu İpucu 1 — hiç veri akmıyor
-`ina226Init()`'ın dönüş değerini kontrol ettiğinden emin ol; INA226
-kimlik doğrulaması (`0x5449`) başarısızsa üretici hiç ölçüm göndermez.
-I2C0/mux kurulumunu Bölüm 8'deki (I2C) refleksle kontrol et.
+[If You Get Stuck]
+::ipucu Hint 1 — No data flows at all
+Make sure you are checking the return value of `ina226Init()`; if the
+INA226 identity check (`0x5449`) fails, the producer never sends a
+measurement. Check the I2C0/mux setup using the same approach as
+Chapter 8 (I2C).
 ::/
-::ipucu İpucu 2 — satırlar bazen karışıyor gibi görünüyor
-İki task'ın da doğrudan `xil_printf` çağırmadığından emin ol; yalnızca
-`consumerTask` yazmalı. `producerTask`'ın yazdığı tek şey kuyruk dolu
-uyarısıdır ve bu da nadiren, yalnızca gerçekten tüketici geride
-kaldığında olmalı.
+::ipucu Hint 2 — Lines sometimes appear to interleave
+Confirm that neither task calls `xil_printf` directly except
+`consumerTask`; only it should write. The only thing `producerTask`
+should print is a queue-full warning, and that should be rare — occurring
+only when the consumer has genuinely fallen behind.
 ::/
-::cozum Tam çözüm — lab09-kuyruk
-`labs/lab09-kuyruk/src/main.c` üretici/tüketici çiftini, `src/ina226.c`
-INA226 okuma modülünü içerir.
-{{kod:lab09-kuyruk/src/main.c}}
+::cozum Full Solution — lab09-queue
+`labs/lab09-queue/src/main.c` contains the producer/consumer pair;
+`src/ina226.c` contains the INA226 reading module.
+{{kod:lab09-queue/src/main.c}}
 ::/
 :::
 
-## Bizim dünyanın dışında: ticari RTOS'lar
+## Beyond Our World: Commercial RTOSes
 
-FreeRTOS bizim ekipte ve genel gömülü dünyada en yaygın tercih — açık
-kaynaklı, hafif, Xilinx'in resmi desteğiyle geliyor. Ama havacılık, tıbbi
-cihaz ya da otomotiv gibi sertifikasyon gerektiren (DO-178C, IEC 62304
-gibi standartlara uyum isteyen) alanlarda **VxWorks**, **QNX** ya da
-**Integrity** gibi ticari, sertifikalı RTOS'lar tercih edilir; bunların
-maliyeti ve destek modeli farklıdır ama garantileri (belgelenmiş worst-case
-zamanlama, sertifikasyon dosyaları) bu alanlarda vazgeçilmezdir. Bizim
-yolculuğumuzda karşına çıkmayacaklar ama adlarını duyduğunda "FreeRTOS'un
-ticari akrabaları" diye tanıyabilmen yeterli.
+FreeRTOS is the most common choice on our team and in the embedded world
+generally — it is open source, lightweight, and comes with official
+Xilinx support. In domains that require certification, however —
+aerospace, medical devices, or automotive, where compliance with standards
+such as DO-178C or IEC 62304 is required — commercial, certified RTOSes
+such as **VxWorks**, **QNX**, or **Integrity** are preferred; their cost
+and support model differ, but their guarantees (documented worst-case
+timing, certification artifacts) are indispensable in those domains. They
+will not appear in your journey here, but it is enough that you can
+recognize them, when you hear the names, as "FreeRTOS's commercial
+relatives."
 
-Bunca parçayı (görevler, kesmeler, kuyruklar, register haritaları) bir
-arada yönetmek için artık aletlerini daha iyi tanıman gerekiyor —
-sıradaki durak Vitis'in kendisi.
+Managing all of these pieces together — tasks, interrupts, queues,
+register maps — now requires a better understanding of your tools. The
+next stop is Vitis itself.

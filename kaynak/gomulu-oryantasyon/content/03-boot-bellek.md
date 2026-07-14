@@ -1,170 +1,183 @@
-# Bölüm 3 — Sistem Nasıl Ayağa Kalkar: Boot ve Bellek Haritası
+# Chapter 3 — How the System Boots: Boot Process and Memory Map
 
-Görev 0'da güç anahtarını açtın (ya da JTAG modunda açık bıraktın — kendi
-kendine boot etmeyi bilerek engelledin). O saniyede kartın içinde, sen daha
-hiçbir kod yazmadan önce, koca bir tören başlıyor. Bu bölümde o töreni adım
-adım izleyeceğiz ve törenin sonunda ortaya çıkan sahneyi — bellek haritasını
-— tanıyacağız. Register'larla konuşmaya başlamadan önce "hangi adreste ne
-var" sorusuna cevap vermen lazım; bu bölüm tam olarak o cevabı hazırlıyor.
-İki durağımız var: önce töreni (boot zincirini) izleyeceğiz, sonra sahneyi
-(bellek haritasını) tanıyacağız.
+In Task 0, you powered on the board (or intentionally left it in JTAG mode,
+which prevents it from booting on its own). In that instant, before you had
+written a single line of code, an extensive sequence of operations began
+inside the board. This chapter follows that sequence step by step and
+introduces the resulting picture — the memory map. Before you can
+communicate with registers, you need to answer the question "what resides
+at which address"; this chapter provides exactly that answer. There are two
+parts: first we examine the sequence itself (the boot chain), then we
+examine the resulting picture (the memory map).
 
-## Bölüm 3 · Birinci yarı: Reset'ten main()'e (boot zinciri)
+## Chapter 3 · Part One: From Reset to main() (the Boot Chain)
 
-## Reset'ten main()'e: dört durak
+## From Reset to main(): Four Stages
 
-Zynq UltraScale+'ta reset kalktığı anda çalışan ilk kod senin yazdığın kod
-değildir — çipin kendi silikonuna gömülü, değiştiremeyeceğin bir kod
-zinciridir. Sırasıyla dört durak var:
+On the Zynq UltraScale+, the first code that executes the moment reset is
+released is not code you wrote — it is a chain of code embedded in the
+chip's own silicon, which you cannot modify. There are four stages, in
+sequence:
 
-1. **PMU ROM.** PMU (Platform Management Unit — platform yönetim birimi),
-   CPU çekirdeklerinden bağımsız çalışan küçük bir denetleyicidir. Reset
-   kalkar kalkmaz devreye giren PMU ROM kodu, güç dizilimini ve saat
-   ağaçlarını kurar — CPU'lar daha "uyanmadan" önce platformun temel
-   düzeni oturur.
-2. **CSU ROM (BootROM).** Sıra artık ana boot koduna gelir: CSU ROM, SW6
-   anahtarının konumundan boot modunu (mod pinlerini) okur, seçilen harici
-   aygıttan (JTAG, QSPI flash ya da SD kart) **FSBL**'yi bulup yükler.
-3. **FSBL (First Stage Boot Loader — ilk aşama önyükleyici).** Artık senin
-   yazılım dünyana en yakın kod burada başlıyor. FSBL, DDR belleği
-   başlatır (denetleyiciyi yapılandırır, bellek training'ini yapar), varsa PL
-   bitstream'ini yükleyip FPGA fabric'ini yapılandırır ve son olarak
-   uygulamanı belleğe koyup ona atlar.
-4. **Uygulama** (ya da ara katman olarak **ATF**). Bare-metal bir
-   hello-world'de FSBL uygulamanı doğrudan yükler ve çalıştırır; Linux
-   koşan bir sistemde FSBL'den sonra bir ATF (ARM Trusted Firmware) katmanı
-   ve ardından U-Boot/Linux gelir. Bu yolculukta hep bare-metal
-   çalışacağımız için senin `main()`'in FSBL'nin doğrudan sıçradığı yer
-   olacak.
+1. **PMU ROM.** The PMU (Platform Management Unit) is a small controller
+   that operates independently of the CPU cores. The PMU ROM code, which
+   takes over as soon as reset is released, establishes the power
+   sequencing and clock trees — the platform's basic configuration is in
+   place before the CPUs even "wake up."
+2. **CSU ROM (BootROM).** Control then passes to the primary boot code:
+   the CSU ROM reads the boot mode (mode pins) from the position of the
+   SW6 switch and locates and loads the **FSBL** from the selected
+   external device (JTAG, QSPI flash, or SD card).
+3. **FSBL (First Stage Boot Loader).** This is where code that is closest
+   to your software world begins. The FSBL initializes DDR memory
+   (configures the controller, performs memory training), loads the PL
+   bitstream if one is present and configures the FPGA fabric, and
+   finally places your application in memory and jumps to it.
+4. **The application** (or, as an intermediate layer, **ATF**). In a
+   bare-metal hello-world, the FSBL loads and runs your application
+   directly; on a system running Linux, an ATF (ARM Trusted Firmware)
+   layer follows the FSBL, then U-Boot/Linux. Since this program works
+   exclusively in bare-metal, your `main()` will be the point the FSBL
+   jumps to directly.
 
-{{svg:sema-05-boot-akisi.svg|Şekil 5 — Boot akışı zaman çizgisi: PMU ROM → CSU ROM (BootROM) → FSBL → (ATF) → uygulama; altta boot.bin'in içi, en altta SW6 boot kaynağı dallanması.}}
+{{svg:sema-05-boot-akisi.svg|Figure 5 — Boot flow timeline: PMU ROM → CSU ROM (BootROM) → FSBL → (ATF) → application; below, the contents of boot.bin; at the bottom, the SW6 boot-source branching.}}
 
-FSBL kendisi de bir yere yüklenmesi gereken bir programdır: BootROM onu
-DDR henüz hazır olmadan **OCM**'e (On-Chip Memory — çip içi bellek, 256 KB)
-yükler; başlangıç adresi tam olarak `0xFFFC_0000`'dir (tam aralığı bölüm
-sonundaki adres özetinde bulacaksın). Bunun mantığı basit: DDR'yi
-başlatacak kodun kendisi DDR'de yaşayamaz, o yüzden çip üzerinde küçük ama
-her zaman hazır bir bellek (OCM) bu iş için ayrılmıştır.
+The FSBL is itself a program that must be loaded somewhere: since DDR is
+not yet ready, the BootROM loads it into **OCM** (On-Chip Memory, 256 KB);
+its start address is precisely `0xFFFC_0000` (you will find the full range
+in the address summary at the end of the chapter). The logic here is
+straightforward: the code responsible for initializing DDR cannot itself
+reside in DDR, so a small memory block that is always ready on the chip
+(OCM) is reserved for this purpose.
 
-## boot.bin: tek dosyada üç bileşen
+## boot.bin: Three Components in a Single File
 
-Kart açıldığında BootROM'un okuduğu şey tek bir dosyadır: **boot.bin**.
-Bu dosya aslında birbirinden farklı üç parçanın art arda dizilmesinden
-oluşur: **FSBL**, (varsa) **PL bitstream'i** ve **uygulaman**. Vitis (ya da
-klasik akışta bootgen aracı) bu üç parçayı senin için tek dosyada
-paketler; SD karta ya da QSPI flash'a yazılan da bu tek dosyadır. JTAG
-boot modunda ise bu paketleme adımını bile atlarsın — Vitis, FSBL'yi ve
-uygulamanı debugger üzerinden doğrudan karta basar; boot.bin kavramı asıl
-değerini SD/QSPI gibi "kendi kendine açılan" senaryolarda gösterir.
+When the board powers on, the BootROM reads a single file: **boot.bin**.
+This file is in fact composed of three distinct components arranged in
+sequence: the **FSBL**, the **PL bitstream** (if present), and **your
+application**. Vitis (or, in the classic flow, the bootgen tool) packages
+these three components into a single file for you; this is the same single
+file that is written to an SD card or QSPI flash. In JTAG boot mode, you
+skip even this packaging step — Vitis loads the FSBL and your application
+directly onto the board through the debugger; the boot.bin concept
+demonstrates its real value in "self-booting" scenarios such as SD or
+QSPI.
 
-## Boot modları: SW6 anahtarının dili
+## Boot Modes: The Language of the SW6 Switch
 
-Kart, hangi kaynaktan boot edeceğini **SW6** adlı 4 kutuplu DIP anahtardan
-okur. Anahtarların her biri bir mod bitine karşılık gelir ve mantık
-ters-çevrilidir: **anahtar ON konumundaysa karşılık gelen bit 0'dır.**
-Yani "hepsi ON" görüntüsü kafa karıştırıcı gelebilir ama aslında "hepsi
-sıfır" demektir.
+The board reads which source to boot from off a 4-pole DIP switch named
+**SW6**. Each switch corresponds to one mode bit, and the logic is
+inverted: **when a switch is in the ON position, the corresponding bit is
+0.** This means that an "all ON" appearance can be misleading — it in fact
+represents "all zero."
 
-| Boot Modu | Mode Pinleri [3:0] | SW6 [4:1] |
+| Boot Mode | Mode Pins [3:0] | SW6 [4:1] |
 |---|---|---|
 | JTAG | 0000 | ON, ON, ON, ON |
-| QSPI32 (fabrika varsayılanı) | 0010 | ON, ON, OFF, ON |
+| QSPI32 (factory default) | 0010 | ON, ON, OFF, ON |
 | SD | 1110 | OFF, OFF, OFF, ON |
 
-Görev 0'da kartı JTAG konumuna aldıysan, tablodaki ilk satırı elinle
-doğrulamış oldun. Kart fabrikadan QSPI32 konumunda gelir — yani muhtemelen
-bir anahtarı çevirmen gerekmişti. SD kart yuvası **J100**'dür; SD'den boot
-etmek istediğinde boot.bin'i karta koyar, SW6'yı SD konumuna alır ve gücü
-çevirirsin.
+If you set the board to the JTAG position in Task 0, you personally
+verified the first row of the table. The board ships from the factory in
+the QSPI32 position — meaning you likely had to flip a switch. The SD card
+slot is **J100**; to boot from SD, you place boot.bin on the card, set SW6
+to the SD position, and power-cycle the board.
 
-Nefes al — buraya kadar kartın kendi kendine nasıl ayağa kalktığını
-gördün: PMU'dan CSU ROM'a, oradan FSBL'ye, oradan senin `main()`'ine.
-Şimdi ikinci yarıya geçiyoruz: o ayağa kalkmış sistemde CPU'nun dünyayı
-nasıl gördüğünü, yani bellek haritasını konuşacağız.
+At this point, you have seen how the board brings itself up on its own:
+from the PMU to the CSU ROM, from there to the FSBL, and from there to
+your `main()`. We now move to Part Two: how the CPU perceives the world
+once the system is up — that is, the memory map.
 
-## Bölüm 3 · İkinci yarı: Her şeyin bir adresi var (bellek haritası)
+## Chapter 3 · Part Two: Everything Has an Address (the Memory Map)
 
-## Bellek haritası: her şeyin bir adresi var
+## The Memory Map: Everything Has an Address
 
-Artık sistemin ayağa kalktığını biliyorsun. Peki CPU, "UART'a yaz" ya da
-"şu LED'i yak" dediğinde bunu nasıl ifade ediyor? Cevap basit ama kritik:
-**her şeyin bir adresi var.** DDR belleğin de, çip içi belleğin de, her bir
-çevre biriminin register'larının da, PL'de yaşayan bir IP'nin de kendine
-ait bir adres aralığı vardır. CPU'nun gözünden bakınca hepsi aynı düz
-adres uzayında yaşar — RAM'e yazmakla bir UART register'ına yazmak,
-donanım seviyesinde aynı işlemdir, sadece adres farklıdır.
+You now know the system is up. But how does the CPU express an operation
+such as "write to the UART" or "turn on this LED"? The answer is simple
+but critical: **everything has an address.** DDR memory, on-chip memory,
+the registers of each peripheral, and any IP residing in the PL each have
+their own address range. From the CPU's perspective, all of these live in
+the same flat address space — writing to RAM and writing to a UART
+register are, at the hardware level, the same operation; only the address
+differs.
 
-{{svg:sema-06-bellek-haritasi.svg|Şekil 6 — Bellek haritası çubuğu: DDR Low (2 GB, 0x0), PL adres pencereleri, çevre birimi register blokları (UART0/UART1/GPIO/TTC0), OCM (0xFFFC_0000); sağda ayrı bir çubukta DDR High (0x8_0000_0000).}}
+{{svg:sema-06-bellek-haritasi.svg|Figure 6 — Memory map bar: DDR Low (2 GB, 0x0), PL address windows, peripheral register blocks (UART0/UART1/GPIO/TTC0), OCM (0xFFFC_0000); on the right, in a separate bar, DDR High (0x8_0000_0000).}}
 
-Haritanın kabaca dört bölgesi var:
+The map is divided, broadly, into four regions:
 
-- **OCM — 256 KB.** FSBL'nin az önce gördüğün ilk konağı (`0xFFFC_0000`'dan
-  başlıyor); küçük ama her zaman hazır, DDR gibi ayrıca başlatılmaya
-  ihtiyaç duymaz.
-- **DDR Low — 2 GB, `0x0`'dan başlar.** Uygulamanın ana çalışma alanı:
-  kod, stack (yığıt), heap (dinamik bellek havuzu) ve veri hep burada
-  yaşar (stack/heap/linker script kavramları Bölüm 6'da işlenecek;
-  şimdilik: her bölümün belleğe nereye yerleşeceğini bir betik — linker
-  script — belirler). ZCU111'in PS tarafındaki DDR4 SODIMM'i aslında 4
-  GB'lık tek bir modüldür ama bu 4 GB'ın yalnızca alt 2 GB'ı bu bölgede
-  görünür.
-- **DDR High — SODIMM'in üst 2 GB'ı, `0x8_0000_0000`'dan başlayan bambaşka
-  bir pencere.** DDR Low'un devamı değildir; adres uzayının çok uzağında,
-  ayrı bir köşede ortaya çıkar. Aradaki boşluk gerçek değil — ZynqMP'nin
-  adresleme mimarisinin bir sonucu.
-- **Çevre birimleri ve PL pencereleri.** UART0, GPIO, TTC0 gibi PS çevre
-  birimlerinin register blokları `0xFF00_0000` civarında sıralanır (tam
-  adresler bölüm sonundaki tabloda); PL'de yaşayan IP'ler de (Bölüm 9)
-  donanımcının tasarımına göre kendi adres pencerelerinden görünür.
+- **OCM — 256 KB.** The first destination of the FSBL that you just saw
+  (starting at `0xFFFC_0000`); small but always ready, it does not
+  require separate initialization the way DDR does.
+- **DDR Low — 2 GB, starting at `0x0`.** The application's primary
+  working area: code, the stack, the heap (the dynamic memory pool), and
+  data all reside here (the concepts of stack/heap/linker script are
+  covered in Chapter 6; for now: a script — the linker script —
+  determines where in memory each section is placed). The ZCU111's
+  PS-side DDR4 SODIMM is in fact a single 4 GB module, but only the lower
+  2 GB of that 4 GB is visible in this region.
+- **DDR High — the upper 2 GB of the SODIMM,** an entirely separate
+  window starting at `0x8_0000_0000`. It is not a continuation of DDR
+  Low; it appears far away in the address space, in a separate corner.
+  The gap between them is not physical — it is a consequence of the
+  ZynqMP's addressing architecture.
+- **Peripherals and PL windows.** The register blocks of PS peripherals
+  such as UART0, GPIO, and TTC0 are arranged around `0xFF00_0000` (full
+  addresses are in the table at the end of the chapter); IP residing in
+  the PL (Chapter 9) is likewise visible through its own address
+  windows, according to the hardware designer's layout.
 
-:::analoji Bellek haritası bir şehrin imar planı gibidir
-İmar planında hangi bölgenin konut, hangisinin sanayi, hangisinin resmi
-daire olduğu önceden bellidir; yanlış adrese bina dikemezsin. Bellek
-haritası da böyle çalışır: DDR geniş bir "konut bölgesi" — istediğin gibi
-doldurursun; OCM küçük ve değerli bir merkez parseli; çevre birimleri ise
-her biri kendi kapı numarasına sahip resmi daireler. Yanlış kapıyı
-çalarsan (yanlış adrese yazarsan) ya hiçbir şey olmaz ya da çok daha kötü
-bir şey olur.
+:::analoji A Memory Map Is Like a City Zoning Plan
+A zoning plan determines in advance which zone is residential, which is
+industrial, and which is a government building; you cannot construct a
+building at the wrong address. A memory map operates the same way: DDR is
+a large "residential zone" — you may fill it as you see fit; OCM is a
+small, valuable central plot; peripherals are government offices, each
+with its own address. If you knock on the wrong door (write to the wrong
+address), either nothing happens, or something considerably worse does.
 :::
 
-:::tuzak 4 GB SODIMM diye adres de 4 GB sürekli sanma
-ZCU111'deki PS DDR4 modülü fiziksel olarak 4 GB'lık tek bir parça, ama
-bellek haritasında tek bir sürekli adres bloğu DEĞİL. SODIMM'in alt yarısı
-(2 GB) `0x0`'dan `0x7FFF_FFFF`'e kadar DDR Low bölgesinde yaşar; üst yarısı
-(kalan 2 GB) ise bambaşka bir pencerede, `0x8_0000_0000` adresinden
-itibaren DDR High olarak ortaya çıkar. Aradaki adresler boştur, SODIMM'in
-bir parçası değildir — bunu tek sürekli blok sanıp bir arabellek ya da
-linker script bölümünü sınırın üzerinden taşırsan derleyici seni uyarmaz,
-kartta sessizce yanlış adrese yazan bir uygulamayla karşılaşırsın.
+:::tuzak Do Not Assume a 4 GB SODIMM Means a Contiguous 4 GB Address Range
+The PS DDR4 module on the ZCU111 is physically a single 4 GB part, but in
+the memory map it is **not** a single contiguous address block. The lower
+half of the SODIMM (2 GB) resides in the DDR Low region, from `0x0` to
+`0x7FFF_FFFF`; the upper half (the remaining 2 GB) appears in an entirely
+separate window, as DDR High, starting at `0x8_0000_0000`. The addresses
+in between are empty — they are not part of the SODIMM. If you assume
+this is a single contiguous block and let a buffer or linker script
+section overrun that boundary, the compiler will not warn you; on the
+board, you will end up with an application that silently writes to the
+wrong address.
 :::
 
-:::derin-dalis ATF ve PMU'nun sahne arkası
-PMU, CPU çekirdeklerinden bağımsız çalışan küçük bir mikrodenetleyicidir;
-güç dizilimi ve saat ağaçlarını CPU'lar daha devreye girmeden halleder —
-PMU ROM dediğimiz ilk durak bu birimin kodudur. ATF (ARM Trusted
-Firmware), FSBL'den sonra devreye girebilen, güvenli bir ortam kurup
-uygulamayı ya da bir işletim sistemini (Linux, U-Boot) devralan bir ara
-katmandır; bizim bare-metal çalışmalarımızda FSBL uygulamayı doğrudan
-yüklediği için bu katman devre dışı kalır, ama ekipte Linux'lu bir Zynq
-sistemiyle karşılaşırsan mutlaka göreceksin. TrustZone ise donanımın
-"güvenli" ve "güvensiz" dünya ayrımını çip seviyesinde uygulayan mimarinin
-adıdır — şimdilik yalnızca adını bilmen yeterli.
+:::derin-dalis Behind the Scenes: ATF and the PMU
+The PMU is a small microcontroller that operates independently of the CPU
+cores; it handles power sequencing and clock trees before the CPUs even
+come online — the first stage we called PMU ROM is this unit's code. ATF
+(ARM Trusted Firmware) is an intermediate layer that can take over after
+the FSBL, establishing a secure environment before handing control to the
+application or to an operating system (Linux, U-Boot); in our bare-metal
+work, this layer is inactive because the FSBL loads the application
+directly, but you will certainly encounter it if you work on a Zynq
+system running Linux on the team. TrustZone is the name of the
+architecture that enforces the hardware's "secure" and "non-secure" world
+separation at the chip level — for now, it is enough to know the name.
 :::
 
-## Bu bölümün adres özeti
+## Address Summary for This Chapter
 
-Bu bölümde geçen tüm adresler tek bakışta:
+All addresses covered in this chapter, at a glance:
 
-| Bileşen | Adres / Aralık | Not |
+| Component | Address / Range | Note |
 |---|---|---|
-| OCM (çip içi bellek) | `0xFFFC_0000`–`0xFFFF_FFFF` | 256 KB, FSBL'nin ilk konağı |
-| FSBL yükleme adresi | `0xFFFC_0000` | OCM'in başlangıcıyla aynı adres |
-| DDR Low | `0x0000_0000`–`0x7FFF_FFFF` | 2 GB, uygulamanın ana çalışma alanı (kod, stack, heap, veri) |
-| DDR High | `0x8_0000_0000`–`0xF_FFFF_FFFF` | 32 GB'lık ayrı pencere; SODIMM'in üst 2 GB'ı burada görünür |
-| UART0 | `0xFF00_0000` | PS çevre birimi register bloğu |
-| GPIO | `0xFF0A_0000` | PS çevre birimi register bloğu |
-| TTC0 | `0xFF11_0000` | PS çevre birimi register bloğu |
+| OCM (on-chip memory) | `0xFFFC_0000`–`0xFFFF_FFFF` | 256 KB, the FSBL's first destination |
+| FSBL load address | `0xFFFC_0000` | Same address as the start of OCM |
+| DDR Low | `0x0000_0000`–`0x7FFF_FFFF` | 2 GB, the application's primary working area (code, stack, heap, data) |
+| DDR High | `0x8_0000_0000`–`0xF_FFFF_FFFF` | Separate 32 GB window; the upper 2 GB of the SODIMM is visible here |
+| UART0 | `0xFF00_0000` | PS peripheral register block |
+| GPIO | `0xFF0A_0000` | PS peripheral register block |
+| TTC0 | `0xFF11_0000` | PS peripheral register block |
 
-Haritayı gördün, adres artık soyut bir kavram değil. Şimdi tek tek
-kapıları çalacağız: her çevre biriminin kendi register'ları, kendi
-kuralları var — bir sonraki bölümün konusu tam olarak bu.
+You have seen the map; an address is no longer an abstract concept. We
+will now knock on each door in turn: every peripheral has its own
+registers and its own rules — that is precisely the subject of the next
+chapter.
