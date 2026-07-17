@@ -1,9 +1,9 @@
 <svg viewBox="0 0 2560 1400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" font-family="Segoe UI, system-ui, sans-serif">
 <image x="0" y="0" width="2560" height="1400" xlink:href="__SHOT_17__" preserveAspectRatio="xMidYMid meet"/>
-<rect x="627" y="119" width="346" height="28" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
-<g><circle cx="627" cy="119" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="627" y="129" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">1</text></g>
-<rect x="1242" y="140" width="192" height="119" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
-<g><circle cx="1242" cy="140" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="1242" y="150" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">2</text></g>
-<rect x="1370" y="140" width="154" height="119" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
-<g><circle cx="1370" cy="140" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="1370" y="150" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">3</text></g>
+<rect x="678" y="197" width="384" height="162" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
+<g><circle cx="678" cy="197" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="678" y="207" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">1</text></g>
+<rect x="1234" y="174" width="136" height="188" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
+<g><circle cx="1234" cy="174" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="1234" y="184" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">2</text></g>
+<rect x="1377" y="174" width="184" height="188" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
+<g><circle cx="1377" cy="174" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="1377" y="184" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">3</text></g>
 </svg>

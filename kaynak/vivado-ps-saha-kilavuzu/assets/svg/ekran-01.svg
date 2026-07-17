@@ -1,9 +1,9 @@
 <svg viewBox="0 0 2560 1400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" font-family="Segoe UI, system-ui, sans-serif">
 <image x="0" y="0" width="2560" height="1400" xlink:href="__SHOT_01__" preserveAspectRatio="xMidYMid meet"/>
-<rect x="5" y="70" width="225" height="616" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
-<g><circle cx="5" cy="70" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="5" y="80" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">1</text></g>
-<rect x="256" y="126" width="435" height="406" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
-<g><circle cx="256" cy="126" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="256" y="136" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">2</text></g>
-<rect x="730" y="154" width="1395" height="630" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
-<g><circle cx="730" cy="154" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="730" y="164" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">3</text></g>
+<rect x="31" y="81" width="210" height="980" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
+<g><circle cx="31" cy="81" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="31" y="91" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">1</text></g>
+<rect x="256" y="123" width="435" height="528" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
+<g><circle cx="256" cy="123" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="256" y="133" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">2</text></g>
+<rect x="684" y="119" width="1843" height="952" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
+<g><circle cx="684" cy="119" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="684" y="129" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">3</text></g>
 </svg>

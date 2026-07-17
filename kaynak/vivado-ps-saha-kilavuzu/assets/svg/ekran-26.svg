@@ -1,7 +1,7 @@
 <svg viewBox="0 0 2560 1762" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" font-family="Segoe UI, system-ui, sans-serif">
 <image x="0" y="0" width="2560" height="1762" xlink:href="__SHOT_26__" preserveAspectRatio="xMidYMid meet"/>
-<rect x="819" y="396" width="410" height="70" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
-<g><circle cx="819" cy="396" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="819" y="406" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">1</text></g>
-<rect x="474" y="546" width="973" height="132" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
-<g><circle cx="474" cy="546" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="474" y="556" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">2</text></g>
+<rect x="673" y="402" width="404" height="56" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
+<g><circle cx="673" cy="402" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="673" y="412" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">1</text></g>
+<rect x="673" y="550" width="788" height="132" rx="14" fill="none" stroke="#E8B84B" stroke-width="5"/>
+<g><circle cx="673" cy="550" r="28" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="673" y="560" text-anchor="middle" font-size="32" font-weight="700" fill="#14100a">2</text></g>
 </svg>
