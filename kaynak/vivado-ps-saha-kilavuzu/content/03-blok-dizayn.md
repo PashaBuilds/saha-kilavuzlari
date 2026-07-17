@@ -81,10 +81,10 @@ rozet 1: Arama kutusu — IP, port ve net adlarında canlı filtre.
 rozet 2: Sonuç satırı — seçince Diagram ilgili bloğa odaklanır.
 ]]
 
-[[ekran: 05 | Sinyal takibi — interrupt zinciri seçili
-rozet 1: axi_timer_0/interrupt teli — seçimle uçtan uca vurgulu.
-rozet 2: irq_concat — üç teli tek demet yapan blok.
-rozet 3: ps_ultra/pl_ps_irq0 girişi — zincirin PS'e değdiği nokta.
+[[ekran: 05 | Sinyal takibi — interrupt demeti seçili
+rozet 1: Seçili net irq_concat_dout — concat çıkışından ps_ultra/pl_ps_irq0'a giden demet, seçimle turuncu vurgulu.
+rozet 2: irq_concat — üç interrupt telini tek demet yapan blok; giriş sırası ID'leri belirler (Bölüm 6).
+rozet 3: System Net Properties — seçilen netin kimlik kartı: adı, sürücüsü (irq_concat/dout).
 not: Seçim yalnızca görsel vurgudur; diske hiçbir şey yazılmaz.
 ]]
 
@@ -98,8 +98,8 @@ gösterir: VLNV (Vendor:Library:Name:Version — IP'nin tam kimliği), sürüm,
 konfigürasyon parametreleri.
 
 [[ekran: 07 | Block Properties — axi_gpio_led seçili
-rozet 1: Name — instance adı; XPAR türetmelerinin kökü.
-rozet 2: VLNV — IP'nin kimliği ve sürümü; driver uyumluluğu tartışmalarında lazım olur.
+rozet 1: Block Properties paneli — Name: axi_gpio_led; instance adı, XPAR türetmelerinin kökü. VLNV ayrıntısı alttaki Properties/IP sekmelerinde.
+rozet 2: Seçili blok Diagram'da turuncu çerçeveli — panel ile diyagram hep senkron.
 ]]
 
 :::tuzak

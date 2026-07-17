@@ -70,7 +70,7 @@ tarifi — analiz ve erken yazılım geliştirme için yeterli) ya da **Include
 bitstream** (implementasyon bitmişse, PL imajı da pakete girer).
 
 [[ekran: 19 | Export Hardware — sihirbaz açılışı
-rozet 1: Fixed platform seçimi — donanım tarifi sabit, Vitis platformu bunun üstüne kurulur.
+rozet 1: Sihirbaz girişi — "Vitis veya PetaLinux için donanım platformu export'u"; platform tipi (Fixed) ve çıktı kapsamı sonraki adımlarda seçilir.
 ]]
 
 [[ekran: 20 | Export Hardware — çıktı kapsamı

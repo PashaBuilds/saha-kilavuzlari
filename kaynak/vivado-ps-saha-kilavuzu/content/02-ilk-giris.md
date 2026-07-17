@@ -55,8 +55,8 @@ görürsün — donanımcı blok dizaynı bir HDL sarmalayıcı (wrapper) içine
 sentez o sarmalayıcıdan başlar. Senin okuyacağın şey `.bd` dosyasıdır.
 
 [[ekran: 02 | Sources — hiyerarşi görünümü
-rozet 1: sistem_wrapper — projenin en üst HDL modülü; elle yazılmaz, Vivado üretir.
-rozet 2: sistem.bd — blok dizayn; çift tıklayınca Diagram penceresinde açılır.
+rozet 1: sistem_wrapper — projenin en üst HDL modülü; elle yazılmaz, Vivado üretir. Yanına genişletince blok dizayn (sistem.bd) çıkar.
+rozet 2: Hierarchy / IP Sources / Libraries / Compile Order — aynı dosyaların dört farklı görünümü; senin durağın Hierarchy.
 ]]
 
 ## "Yanlışlıkla neyi bozabilirim?" — read-only görgü kuralları

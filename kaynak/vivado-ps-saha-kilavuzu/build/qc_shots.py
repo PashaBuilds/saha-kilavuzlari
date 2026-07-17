@@ -48,7 +48,8 @@ def qc(no: str, spec: dict) -> None:
         pw, ph = round(bw * w), round(bh * h)
         d.rectangle([px, py, px + pw, py + ph], outline=(232, 184, 75), width=sw)
         badge(px, py, bn)
-    for i, (bx, by) in enumerate(spec.get("badges", []), start=1):
+    for i, (bx, by) in enumerate(spec.get("badges", []),
+                                 start=len(spec.get("boxes", [])) + 1):
         badge(round(bx * w), round(by * h), i)
 
     if w > QC_W:

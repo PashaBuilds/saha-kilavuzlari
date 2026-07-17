@@ -2,7 +2,8 @@
 <image x="0" y="0" width="2080" height="1561" xlink:href="__SHOT_08__" preserveAspectRatio="xMidYMid meet"/>
 <rect x="21" y="468" width="333" height="312" rx="11" fill="none" stroke="#E8B84B" stroke-width="4"/>
 <g><circle cx="21" cy="468" r="23" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="21" y="476" text-anchor="middle" font-size="26" font-weight="700" fill="#14100a">1</text></g>
-<rect x="395" y="437" width="1664" height="874" rx="11" fill="none" stroke="#E8B84B" stroke-width="4"/>
-<g><circle cx="395" cy="437" r="23" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="395" y="445" text-anchor="middle" font-size="26" font-weight="700" fill="#14100a">2</text></g>
-<g><circle cx="1872" cy="1428" r="23" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="1872" y="1436" text-anchor="middle" font-size="26" font-weight="700" fill="#14100a">1</text></g>
+<rect x="385" y="367" width="1674" height="1054" rx="11" fill="none" stroke="#E8B84B" stroke-width="4"/>
+<g><circle cx="385" cy="367" r="23" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="385" y="375" text-anchor="middle" font-size="26" font-weight="700" fill="#14100a">2</text></g>
+<rect x="1882" y="1464" width="141" height="59" rx="11" fill="none" stroke="#E8B84B" stroke-width="4"/>
+<g><circle cx="1882" cy="1464" r="23" fill="#E8B84B" stroke="#14100a" stroke-width="2"/><text x="1882" y="1472" text-anchor="middle" font-size="26" font-weight="700" fill="#14100a">3</text></g>
 </svg>

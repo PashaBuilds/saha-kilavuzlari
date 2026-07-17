@@ -149,7 +149,7 @@ window.KILAVUZLAR = [
     bolum: "11 bölüm + 3 ek",
     bolumSayi: 14,
     sema: 41,
-    kelime: 10819,
+    kelime: 10956,
     boyut: "3,9 MB",
     guncelleme: "2026-07-17",
     yol: "kilavuzlar/vivado-ps/index.html",
