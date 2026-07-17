@@ -1,0 +1,67 @@
+<svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s3-title">
+  <title id="s3-title">Blok dizayndaki bir IP kutusunun anatomisi: AXI arayüzleri, clock ve reset iğneleri, interrupt çıkışı ve harici portlar</title>
+  <defs>
+    <marker id="s3-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--metin-soluk)"/>
+    </marker>
+  </defs>
+
+  <!-- IP kutusu -->
+  <rect x="290" y="60" width="240" height="220" rx="10" fill="var(--kart)" stroke="var(--vurgu)" stroke-width="2"/>
+  <rect x="290" y="60" width="240" height="36" rx="10" fill="var(--vurgu-yumusak)"/>
+  <text x="410" y="84" text-anchor="middle" fill="var(--metin)" font-size="14" font-weight="700" font-family="Consolas, monospace">axi_uartlite_dbg</text>
+  <text x="410" y="112" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">AXI Uartlite (v2.0)</text>
+
+  <!-- sol taraf: AXI slave arayuzu -->
+  <rect x="278" y="130" width="24" height="24" fill="var(--kart-2)" stroke="var(--vurgu)" stroke-width="1.5"/>
+  <path d="M283 137 l8 5 l-8 5 z" fill="var(--vurgu)"/>
+  <text x="312" y="146" fill="var(--metin)" font-size="12" font-family="Consolas, monospace">S_AXI</text>
+
+  <!-- sol alt: clock/reset pinleri -->
+  <line x1="278" y1="196" x2="302" y2="196" stroke="var(--altin)" stroke-width="2"/>
+  <text x="312" y="200" fill="var(--metin)" font-size="11.5" font-family="Consolas, monospace">s_axi_aclk</text>
+  <line x1="278" y1="228" x2="302" y2="228" stroke="var(--kirmizi)" stroke-width="2"/>
+  <text x="312" y="232" fill="var(--metin)" font-size="11.5" font-family="Consolas, monospace">s_axi_aresetn</text>
+
+  <!-- sag taraf: harici arayuz + interrupt -->
+  <rect x="518" y="130" width="24" height="24" fill="var(--kart-2)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <path d="M523 137 l8 5 l-8 5 z" fill="var(--yesil)"/>
+  <text x="508" y="146" text-anchor="end" fill="var(--metin)" font-size="12" font-family="Consolas, monospace">UART</text>
+  <line x1="518" y1="228" x2="542" y2="228" stroke="var(--mor)" stroke-width="2"/>
+  <text x="508" y="232" text-anchor="end" fill="var(--metin)" font-size="11.5" font-family="Consolas, monospace">interrupt</text>
+
+  <!-- aciklama balonlari: sol -->
+  <rect x="10" y="112" width="220" height="60" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="22" y="132" fill="var(--vurgu)" font-size="11" font-weight="700">AXI ARAYÜZÜ (kalın, tek sembol)</text>
+  <text x="22" y="148" fill="var(--metin-soluk)" font-size="10.5">Onlarca sinyalin paketlenmiş hâli.</text>
+  <text x="22" y="162" fill="var(--metin-soluk)" font-size="10.5">Register erişimi bu kapıdan girer.</text>
+  <line x1="230" y1="142" x2="274" y2="142" stroke="var(--cizgi)" stroke-width="1.2" marker-end="url(#s3-ok)"/>
+
+  <rect x="10" y="186" width="220" height="42" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="22" y="203" fill="var(--altin)" font-size="11" font-weight="700">CLOCK İĞNESİ (ince, tek tel)</text>
+  <text x="22" y="219" fill="var(--metin-soluk)" font-size="10.5">Bu IP hangi saatle çalışıyor?</text>
+  <line x1="230" y1="200" x2="274" y2="198" stroke="var(--cizgi)" stroke-width="1.2" marker-end="url(#s3-ok)"/>
+
+  <rect x="10" y="240" width="220" height="42" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="22" y="257" fill="var(--kirmizi)" font-size="11" font-weight="700">RESET İĞNESİ (aktif-düşük: _n)</text>
+  <text x="22" y="273" fill="var(--metin-soluk)" font-size="10.5">Kim resetliyor? proc_sys_reset izle.</text>
+  <line x1="230" y1="256" x2="274" y2="230" stroke="var(--cizgi)" stroke-width="1.2" marker-end="url(#s3-ok)"/>
+
+  <!-- aciklama balonlari: sag -->
+  <rect x="590" y="112" width="220" height="60" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="602" y="132" fill="var(--yesil)" font-size="11" font-weight="700">HARİCİ ARAYÜZ</text>
+  <text x="602" y="148" fill="var(--metin-soluk)" font-size="10.5">Dünyaya çıkan taraf: pinlere,</text>
+  <text x="602" y="162" fill="var(--metin-soluk)" font-size="10.5">konektöre ya da başka bloğa gider.</text>
+  <line x1="586" y1="142" x2="546" y2="142" stroke="var(--cizgi)" stroke-width="1.2" marker-end="url(#s3-ok)"/>
+
+  <rect x="590" y="200" width="220" height="60" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="602" y="220" fill="var(--mor)" font-size="11" font-weight="700">INTERRUPT ÇIKIŞI</text>
+  <text x="602" y="236" fill="var(--metin-soluk)" font-size="10.5">Ucu nereye gidiyor? concat üzerinden</text>
+  <text x="602" y="250" fill="var(--metin-soluk)" font-size="10.5">pl_ps_irq'ya — Bölüm 6'nın konusu.</text>
+  <line x1="586" y1="228" x2="546" y2="228" stroke="var(--cizgi)" stroke-width="1.2" marker-end="url(#s3-ok)"/>
+
+  <!-- alt okuma anahtari -->
+  <rect x="60" y="300" width="700" height="46" rx="8" fill="var(--vurgu-yumusak)" stroke="var(--cizgi)"/>
+  <text x="410" y="319" text-anchor="middle" fill="var(--metin)" font-size="11.5" font-weight="600">Okuma refleksi: önce sol kenar (kim erişiyor?), sonra alt kenar (hangi saat/reset?), en son sağ kenar (dünyaya ne çıkıyor?)</text>
+  <text x="410" y="336" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">Kalın çizgi = arayüz (sinyal demeti) · ince çizgi = tek tel · kutu üstündeki ad = instance adı (xparameters'a bu ad düşer)</text>
+</svg>

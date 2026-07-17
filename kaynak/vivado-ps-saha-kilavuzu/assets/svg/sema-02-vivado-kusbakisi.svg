@@ -1,0 +1,60 @@
+<svg viewBox="0 0 820 330" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s2-title">
+  <title id="s2-title">Vivado akışının kuşbakışı: proje, blok dizayn, sentez, implementasyon ve bitstream; yazılımcının umursadığı şerit vurgulanmış</title>
+  <defs>
+    <marker id="s2-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--metin-soluk)"/>
+    </marker>
+  </defs>
+
+  <!-- yazilimcinin seridi (ust) -->
+  <rect x="10" y="14" width="800" height="140" rx="12" fill="var(--yesil-yumusak)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="26" y="40" fill="var(--yesil)" font-size="12" font-weight="700" letter-spacing="1">SENİN ŞERİDİN — analiz, tıkla, oku; hiçbir düğmeye basman gerekmez</text>
+
+  <rect x="30" y="58" width="150" height="70" rx="8" fill="var(--kart)" stroke="var(--vurgu)" stroke-width="1.5"/>
+  <text x="105" y="86" text-anchor="middle" fill="var(--metin)" font-size="13" font-weight="600">Proje (.xpr)</text>
+  <text x="105" y="106" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">donanımcıdan gelen paket</text>
+
+  <rect x="240" y="58" width="170" height="70" rx="8" fill="var(--kart)" stroke="var(--vurgu)" stroke-width="1.5"/>
+  <text x="325" y="80" text-anchor="middle" fill="var(--metin)" font-size="13" font-weight="600">Blok Dizayn (.bd)</text>
+  <text x="325" y="99" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">IP'ler + PS ayarları +</text>
+  <text x="325" y="114" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">adres haritası</text>
+
+  <rect x="470" y="58" width="150" height="70" rx="8" fill="var(--kart)" stroke="var(--vurgu)" stroke-width="1.5"/>
+  <text x="545" y="86" text-anchor="middle" fill="var(--metin)" font-size="13" font-weight="600">Address Editor</text>
+  <text x="545" y="106" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">kim nerede oturuyor</text>
+
+  <rect x="660" y="58" width="130" height="70" rx="8" fill="var(--kart)" stroke="var(--altin)" stroke-width="1.5"/>
+  <text x="725" y="86" text-anchor="middle" fill="var(--metin)" font-size="13" font-weight="600" font-family="Consolas, monospace">.xsa</text>
+  <text x="725" y="106" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">Vitis'e giden paket</text>
+
+  <line x1="180" y1="93" x2="236" y2="93" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s2-ok)"/>
+  <line x1="410" y1="93" x2="466" y2="93" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s2-ok)"/>
+  <line x1="620" y1="93" x2="656" y2="93" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s2-ok)"/>
+
+  <!-- donanimcinin seridi (alt) -->
+  <rect x="10" y="176" width="800" height="118" rx="12" fill="var(--kart)" stroke="var(--cizgi)" opacity="0.9"/>
+  <text x="26" y="202" fill="var(--metin-soluk)" font-size="12" font-weight="700" letter-spacing="1">DONANIMCININ ŞERİDİ — bilmen yeter, basman gerekmez</text>
+
+  <rect x="30" y="216" width="160" height="58" rx="8" fill="var(--kart-2)" stroke="var(--cizgi)"/>
+  <text x="110" y="240" text-anchor="middle" fill="var(--metin)" font-size="12.5" font-weight="600">Sentez</text>
+  <text x="110" y="258" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">RTL → kapı seviyesi netlist</text>
+
+  <rect x="250" y="216" width="180" height="58" rx="8" fill="var(--kart-2)" stroke="var(--cizgi)"/>
+  <text x="340" y="240" text-anchor="middle" fill="var(--metin)" font-size="12.5" font-weight="600">Implementasyon</text>
+  <text x="340" y="258" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">yerleştir + yolları bağla + timing</text>
+
+  <rect x="490" y="216" width="180" height="58" rx="8" fill="var(--kart-2)" stroke="var(--cizgi)"/>
+  <text x="580" y="240" text-anchor="middle" fill="var(--metin)" font-size="12.5" font-weight="600">Bitstream / PDI</text>
+  <text x="580" y="258" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">PL'i programlayan ikili dosya</text>
+
+  <line x1="190" y1="245" x2="246" y2="245" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s2-ok)"/>
+  <line x1="430" y1="245" x2="486" y2="245" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s2-ok)"/>
+
+  <!-- iki serit arasi baglar -->
+  <line x1="325" y1="128" x2="110" y2="212" stroke="var(--cizgi)" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#s2-ok)"/>
+  <path d="M 670 245 C 740 245, 725 180, 725 132" fill="none" stroke="var(--cizgi)" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#s2-ok)"/>
+  <text x="770" y="180" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">bitstream'li .xsa</text>
+  <text x="770" y="193" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">(opsiyonel)</text>
+
+  <text x="410" y="318" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">Alt şerit saatler sürebilir; üst şerit her zaman saniyeler içinde açılır. Analiz için alt şeride hiç girmezsin.</text>
+</svg>

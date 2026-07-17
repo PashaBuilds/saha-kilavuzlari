@@ -1,0 +1,60 @@
+<svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s5-title">
+  <title id="s5-title">MIO ve EMIO yönlendirme farkı: aynı UART denetleyicisinin MIO üzerinden doğrudan pine, EMIO üzerinden PL içinden dünyaya çıkışı</title>
+  <defs>
+    <marker id="s5-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--metin-soluk)"/>
+    </marker>
+  </defs>
+
+  <!-- PS bolgesi -->
+  <rect x="20" y="40" width="300" height="280" rx="12" fill="var(--vurgu-yumusak)" stroke="var(--vurgu)" stroke-width="1.5"/>
+  <text x="40" y="66" fill="var(--vurgu)" font-size="12" font-weight="700" letter-spacing="1">PS</text>
+
+  <!-- UART0 MIO yolu -->
+  <rect x="48" y="90" width="150" height="60" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="123" y="115" text-anchor="middle" fill="var(--metin)" font-size="13" font-weight="700" font-family="Consolas, monospace">UART0</text>
+  <text x="123" y="134" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">aynı denetleyici silikonu</text>
+
+  <!-- UART1 EMIO yolu -->
+  <rect x="48" y="220" width="150" height="60" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="123" y="245" text-anchor="middle" fill="var(--metin)" font-size="13" font-weight="700" font-family="Consolas, monospace">UART1</text>
+  <text x="123" y="264" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">yazılım için fark yok</text>
+
+  <!-- MIO mux kutusu -->
+  <rect x="236" y="90" width="64" height="60" rx="8" fill="var(--altin-yumusak)" stroke="var(--altin)" stroke-width="1.5"/>
+  <text x="268" y="116" text-anchor="middle" fill="var(--altin)" font-size="11" font-weight="700">MIO</text>
+  <text x="268" y="132" text-anchor="middle" fill="var(--metin-soluk)" font-size="9">pin mux</text>
+
+  <!-- EMIO kapisi -->
+  <rect x="236" y="220" width="64" height="60" rx="8" fill="var(--yesil-yumusak)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="268" y="246" text-anchor="middle" fill="var(--yesil)" font-size="11" font-weight="700">EMIO</text>
+  <text x="268" y="262" text-anchor="middle" fill="var(--metin-soluk)" font-size="9">PL kapısı</text>
+
+  <line x1="198" y1="120" x2="232" y2="120" stroke="var(--altin)" stroke-width="2" marker-end="url(#s5-ok)"/>
+  <line x1="198" y1="250" x2="232" y2="250" stroke="var(--yesil)" stroke-width="2" marker-end="url(#s5-ok)"/>
+
+  <!-- MIO dogrudan pine -->
+  <line x1="300" y1="120" x2="700" y2="120" stroke="var(--altin)" stroke-width="2.5" marker-end="url(#s5-ok)"/>
+  <rect x="706" y="96" width="86" height="48" rx="8" fill="var(--kart)" stroke="var(--altin)" stroke-width="1.5"/>
+  <text x="749" y="116" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">MIO18/19</text>
+  <text x="749" y="132" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">paket pini</text>
+  <text x="500" y="108" text-anchor="middle" fill="var(--altin)" font-size="10.5">doğrudan çıkış — PL'e hiç girmez, bitstream'e bağımlı değil</text>
+
+  <!-- PL bolgesi -->
+  <rect x="340" y="190" width="300" height="130" rx="12" fill="var(--kart)" stroke="var(--cizgi)" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="360" y="214" fill="var(--metin-soluk)" font-size="12" font-weight="700" letter-spacing="1">PL (FPGA)</text>
+
+  <rect x="380" y="228" width="220" height="66" rx="8" fill="var(--kart-2)" stroke="var(--cizgi)"/>
+  <text x="490" y="252" text-anchor="middle" fill="var(--metin)" font-size="11">donanımcının seçtiği yol:</text>
+  <text x="490" y="270" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">routing → istediği PL pini,</text>
+  <text x="490" y="284" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">ya da PL içindeki başka bir bloğa</text>
+
+  <line x1="300" y1="250" x2="376" y2="250" stroke="var(--yesil)" stroke-width="2.5" marker-end="url(#s5-ok)"/>
+  <line x1="600" y1="260" x2="700" y2="260" stroke="var(--yesil)" stroke-width="2.5" marker-end="url(#s5-ok)"/>
+  <rect x="706" y="236" width="86" height="48" rx="8" fill="var(--kart)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="749" y="256" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">PL pini</text>
+  <text x="749" y="272" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">XDC belirler</text>
+
+  <!-- uyari -->
+  <text x="410" y="345" text-anchor="middle" fill="var(--kirmizi)" font-size="10.5">EMIO'daki UART, bitstream PL'i yapılandırmadan dünyaya ÇIKAMAZ — "kart açıldı ama konsol yok" vakalarının klasik nedeni.</text>
+</svg>

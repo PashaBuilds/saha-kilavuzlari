@@ -1,0 +1,63 @@
+<svg viewBox="0 0 820 560" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s12-title">
+  <title id="s12-title">Bring-up öncesi PS kontrol listesi karar akışı: proje açılışından konsol, clock, DDR, adres, interrupt kontrollerine ve bring-up'a hazır durumuna</title>
+  <defs>
+    <marker id="s12-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--metin-soluk)"/>
+    </marker>
+  </defs>
+
+  <!-- 0 baslangic -->
+  <rect x="300" y="16" width="220" height="44" rx="22" fill="var(--vurgu-yumusak)" stroke="var(--vurgu)" stroke-width="1.5"/>
+  <text x="410" y="43" text-anchor="middle" fill="var(--metin)" font-size="12" font-weight="700">Proje teslim alındı — aç, KAYDETME</text>
+  <line x1="410" y1="60" x2="410" y2="84" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s12-ok)"/>
+
+  <!-- 1 konsol -->
+  <rect x="270" y="88" width="280" height="52" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="410" y="110" text-anchor="middle" fill="var(--metin)" font-size="11.5" font-weight="700">1 · Konsol UART hangi yolda?</text>
+  <text x="410" y="128" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">I/O Configuration → MIO tablosu (Bölüm 5)</text>
+  <line x1="550" y1="114" x2="640" y2="114" stroke="var(--kirmizi)" stroke-width="1.4" marker-end="url(#s12-ok)"/>
+  <rect x="644" y="92" width="160" height="46" rx="8" fill="var(--kirmizi-yumusak)" stroke="var(--kirmizi)"/>
+  <text x="724" y="111" text-anchor="middle" fill="var(--kirmizi)" font-size="9.5" font-weight="600">EMIO ise: bitstream yüklenmeden</text>
+  <text x="724" y="126" text-anchor="middle" fill="var(--kirmizi)" font-size="9.5" font-weight="600">konsol bekleme (şema 5)</text>
+  <line x1="410" y1="140" x2="410" y2="164" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s12-ok)"/>
+
+  <!-- 2 clock -->
+  <rect x="270" y="168" width="280" height="52" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="410" y="190" text-anchor="middle" fill="var(--metin)" font-size="11.5" font-weight="700">2 · UART ref clock &amp; baud kaynağı?</text>
+  <text x="410" y="208" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">Clock Configuration → gerçek (actual) değer</text>
+  <line x1="410" y1="220" x2="410" y2="244" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s12-ok)"/>
+
+  <!-- 3 DDR -->
+  <rect x="270" y="248" width="280" height="52" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="410" y="270" text-anchor="middle" fill="var(--metin)" font-size="11.5" font-weight="700">3 · DDR açık mı, tip/boyut doğru mu?</text>
+  <text x="410" y="288" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">MPSoC: DDR Config · Versal: NoC/DDRMC (Bölüm 8)</text>
+  <line x1="550" y1="274" x2="640" y2="274" stroke="var(--kirmizi)" stroke-width="1.4" marker-end="url(#s12-ok)"/>
+  <rect x="644" y="252" width="160" height="46" rx="8" fill="var(--kirmizi-yumusak)" stroke="var(--kirmizi)"/>
+  <text x="724" y="271" text-anchor="middle" fill="var(--kirmizi)" font-size="9.5" font-weight="600">kapalıysa: linker script OCM'e</text>
+  <text x="724" y="286" text-anchor="middle" fill="var(--kirmizi)" font-size="9.5" font-weight="600">sığmalı — donanımcıyla konuş</text>
+  <line x1="410" y1="300" x2="410" y2="324" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s12-ok)"/>
+
+  <!-- 4 adres -->
+  <rect x="270" y="328" width="280" height="52" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="410" y="350" text-anchor="middle" fill="var(--metin)" font-size="11.5" font-weight="700">4 · PL IP adresleri atanmış mı?</text>
+  <text x="410" y="368" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">Address Editor: unmapped satır var mı? (Bölüm 7)</text>
+  <line x1="550" y1="354" x2="640" y2="354" stroke="var(--kirmizi)" stroke-width="1.4" marker-end="url(#s12-ok)"/>
+  <rect x="644" y="332" width="160" height="46" rx="8" fill="var(--kirmizi-yumusak)" stroke="var(--kirmizi)"/>
+  <text x="724" y="351" text-anchor="middle" fill="var(--kirmizi)" font-size="9.5" font-weight="600">unmapped varsa: o IP'ye</text>
+  <text x="724" y="366" text-anchor="middle" fill="var(--kirmizi)" font-size="9.5" font-weight="600">yazılımdan ERİŞİM YOK</text>
+  <line x1="410" y1="380" x2="410" y2="404" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s12-ok)"/>
+
+  <!-- 5 interrupt -->
+  <rect x="270" y="408" width="280" height="52" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="410" y="430" text-anchor="middle" fill="var(--metin)" font-size="11.5" font-weight="700">5 · Interrupt zinciri tam mı?</text>
+  <text x="410" y="448" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">concat sırası → pl_ps_irq → ID listesi (Bölüm 6)</text>
+  <line x1="410" y1="460" x2="410" y2="484" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s12-ok)"/>
+
+  <!-- hazir -->
+  <rect x="290" y="488" width="240" height="48" rx="24" fill="var(--yesil-yumusak)" stroke="var(--yesil)" stroke-width="2"/>
+  <text x="410" y="512" text-anchor="middle" fill="var(--yesil)" font-size="12.5" font-weight="700">BRING-UP'A HAZIR</text>
+  <text x="410" y="528" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">.xsa'yı al, platformu kur, notlarını sakla</text>
+
+  <!-- sol kenar notu -->
+  <text x="30" y="300" fill="var(--metin-soluk)" font-size="10" transform="rotate(-90 30 300)" text-anchor="middle">her adımın ayrıntısı Bölüm 10'daki kontrol listesinde</text>
+</svg>

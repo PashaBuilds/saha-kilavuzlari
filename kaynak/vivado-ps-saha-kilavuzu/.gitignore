@@ -1,0 +1,16 @@
+# Vivado türetilmiş çıktılar — scriptten yeniden üretilebilir
+vivado/work/
+
+# Vivado geçici dosyaları
+*.jou
+*.log
+*.str
+.Xil/
+vivado_pid*.str
+
+# Python
+__pycache__/
+*.pyc
+
+# QC kompozitleri (rozet doğrulama; türetilmiş, repo çıktısı değil)
+build/qc/

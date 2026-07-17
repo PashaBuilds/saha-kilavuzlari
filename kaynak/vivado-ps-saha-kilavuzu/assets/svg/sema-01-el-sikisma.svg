@@ -1,0 +1,59 @@
+<svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s1-title">
+  <title id="s1-title">Donanımcının dünyası ile yazılımcının dünyası arasındaki teslimat zinciri: Vivado projesi, .xsa dosyası, Vitis platformu ve uygulama</title>
+  <defs>
+    <marker id="s1-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--metin-soluk)"/>
+    </marker>
+  </defs>
+
+  <!-- iki dunya arka planlari -->
+  <rect x="10" y="14" width="390" height="210" rx="12" fill="var(--vurgu-yumusak)" stroke="var(--cizgi)"/>
+  <rect x="420" y="14" width="390" height="210" rx="12" fill="var(--yesil-yumusak)" stroke="var(--cizgi)"/>
+  <text x="30" y="42" fill="var(--vurgu)" font-size="13" font-weight="700" letter-spacing="1">DONANIMCININ DÜNYASI</text>
+  <text x="440" y="42" fill="var(--yesil)" font-size="13" font-weight="700" letter-spacing="1">SENİN DÜNYAN</text>
+
+  <!-- Vivado projesi -->
+  <rect x="34" y="66" width="150" height="64" rx="8" fill="var(--kart)" stroke="var(--vurgu)" stroke-width="1.5"/>
+  <text x="109" y="92" text-anchor="middle" fill="var(--metin)" font-size="14" font-weight="600">Vivado projesi</text>
+  <text x="109" y="112" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">blok dizayn + PS ayarları</text>
+
+  <!-- xsa -->
+  <rect x="244" y="66" width="130" height="64" rx="8" fill="var(--kart)" stroke="var(--altin)" stroke-width="1.5"/>
+  <text x="309" y="92" text-anchor="middle" fill="var(--metin)" font-size="14" font-weight="600" font-family="Consolas, monospace">.xsa</text>
+  <text x="309" y="112" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">donanım el sıkışması</text>
+
+  <!-- Vitis platform -->
+  <rect x="444" y="66" width="150" height="64" rx="8" fill="var(--kart)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="519" y="92" text-anchor="middle" fill="var(--metin)" font-size="14" font-weight="600">Vitis platformu</text>
+  <text x="519" y="112" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">BSP + xparameters.h</text>
+
+  <!-- uygulama -->
+  <rect x="644" y="66" width="140" height="64" rx="8" fill="var(--kart)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="714" y="92" text-anchor="middle" fill="var(--metin)" font-size="14" font-weight="600">Uygulama</text>
+  <text x="714" y="112" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">senin kodun</text>
+
+  <!-- oklar -->
+  <line x1="184" y1="98" x2="240" y2="98" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s1-ok)"/>
+  <line x1="374" y1="98" x2="440" y2="98" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s1-ok)"/>
+  <line x1="594" y1="98" x2="640" y2="98" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s1-ok)"/>
+
+  <!-- export/import etiketleri -->
+  <text x="212" y="86" text-anchor="middle" fill="var(--altin)" font-size="10" font-family="Consolas, monospace">export</text>
+  <text x="407" y="86" text-anchor="middle" fill="var(--altin)" font-size="10" font-family="Consolas, monospace">import</text>
+
+  <!-- alt aciklama seridi -->
+  <rect x="34" y="156" width="340" height="52" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="204" y="178" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">Burada üretilen her ayar (adres, clock, MIO, interrupt)</text>
+  <text x="204" y="196" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">.xsa içinde sana taşınır — kaynağı BU projedir.</text>
+
+  <rect x="444" y="156" width="340" height="52" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="614" y="178" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">xparameters.h'taki her #define, soldaki projedeki</text>
+  <text x="614" y="196" text-anchor="middle" fill="var(--metin-soluk)" font-size="11">bir ekran/ayarın yazılıma düşmüş hâlidir.</text>
+
+  <!-- sinir cizgisi -->
+  <line x1="410" y1="24" x2="410" y2="214" stroke="var(--cizgi)" stroke-width="1" stroke-dasharray="5 5"/>
+
+  <!-- geri bildirim oku -->
+  <path d="M 714 134 C 714 260, 109 260, 109 134" fill="none" stroke="var(--kirmizi)" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#s1-ok)"/>
+  <text x="410" y="272" text-anchor="middle" fill="var(--kirmizi)" font-size="11">"UART hangi pinde? DDR neden kapalı?" — doğru soru, donanımcıya bu zincir üzerinden geri döner</text>
+</svg>

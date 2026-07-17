@@ -1,0 +1,267 @@
+# ============================================================
+# shots.yaml — GUI yakalama kare manifesti
+#
+# Prensip: Tcl ile duruma getir, GUI'de yalnizca son adimi at,
+# her karede gor-dogrula. Kaydetme soran her popup'ta "kaydetme".
+#
+# Alanlar:
+#   id         : shot-NN — dosya adi assets/screenshots/shot-NN.png
+#   baslik     : dokumandaki "Ekran N" basligi
+#   oturum     : us (demo_ultrascale GUI oturumu) | versal (demo_versal)
+#   sahne      : GUI Tcl konsoluna yazilacak source komutu / Tcl durumu
+#   eylem      : computer use ile atilacak son adim(lar)
+#   dogrulama  : karede gorunmesi ZORUNLU olan icerik
+#   yakala     : pencere (on plandaki pencere) | ekran (tum ekran)
+# ============================================================
+
+oturumlar:
+  us:
+    baslat: vivado -mode tcl -source vivado/gui_capture/stage_us_open.tcl
+    proje: vivado/work/demo_ultrascale/demo_ultrascale.xpr
+  versal:
+    baslat: vivado -mode tcl -source vivado/gui_capture/stage_versal_open.tcl
+    proje: vivado/work/demo_versal/demo_versal.xpr
+
+kareler:
+  # ---------- Bolum 2: ilk giris ----------
+  - id: shot-01
+    baslik: "Vivado ana penceresi — proje açık, Flow Navigator + Sources + Diagram"
+    oturum: us
+    sahne: "stage_us_open.tcl (proje + BD açık, layout yenilenmiş)"
+    eylem: "Diagram penceresinde Zoom Fit; ana pencere maksimize"
+    dogrulama: "Flow Navigator solda, Sources üstte, Diagram'da sistem BD'nin tamamı"
+    yakala: pencere
+
+  - id: shot-02
+    baslik: "Sources penceresi — sistem_wrapper hiyerarşisi"
+    oturum: us
+    sahne: "ayni oturum; Sources sekmesi one getirilir"
+    eylem: "Sources panelinde hierarchy görünümü; sistem_wrapper genişletilmiş"
+    dogrulama: "sistem_wrapper.v altında sistem.bd görünür"
+    yakala: pencere
+
+  - id: shot-03
+    baslik: "Kaydetmeden çıkış disiplini — kapatma onay diyaloğu"
+    oturum: us
+    sahne: "BD'de zararsiz bir degisiklik (hücre taşı) yapilmis durumda close_bd_design cagrilir"
+    eylem: "Çıkan 'Save project?' diyaloğunu yakala; ardından Don't Save/Cancel ile geri çık"
+    dogrulama: "Diyalogda Save/Don't Save/Cancel seçenekleri okunur"
+    yakala: pencere
+
+  # ---------- Bolum 3: BD okuma ----------
+  - id: shot-04
+    baslik: "Diagram — sistem BD tam görünüm (GUI çerçevesiyle)"
+    oturum: us
+    sahne: "stage_us_bd.tcl (BD açık, layout yenilenmiş)"
+    eylem: "Zoom Fit"
+    dogrulama: "9 IP bloğu tek karede: ps_ultra, axi_smc, 4 çevre birimi, irq_concat, rst, bram"
+    yakala: pencere
+
+  - id: shot-05
+    baslik: "Sinyal takibi — interrupt zinciri seçili/vurgulu"
+    oturum: us
+    sahne: "stage_us_irq_sec.tcl (irq_concat/dout neti Tcl ile seçilir)"
+    eylem: "yok (seçim Tcl'den); Diagram'ı öne getir"
+    dogrulama: "irq_concat→pl_ps_irq0 çizgisi seçim renginde belirgin"
+    yakala: pencere
+
+  - id: shot-06
+    baslik: "IP arama — Search kutusunda 'uart' ile hücre bulma"
+    oturum: us
+    sahne: "BD açık"
+    eylem: "Diagram'da Ctrl+F, 'uart' yaz; sonuç listesi açıkken yakala"
+    dogrulama: "Arama listesinde axi_uartlite_dbg görünür"
+    yakala: pencere
+
+  - id: shot-07
+    baslik: "Blok özellikleri — axi_gpio_led seçili, Block Properties"
+    oturum: us
+    sahne: "stage_us_gpio_sec.tcl (hücre Tcl ile seçilir)"
+    eylem: "Block Properties panelini öne getir"
+    dogrulama: "Properties'te axi_gpio_led adı ve VLNV okunur"
+    yakala: pencere
+
+  # ---------- Bolum 4: PS IP ana ekran ----------
+  - id: shot-08
+    baslik: "PS IP Re-customize — açılış (Block Design görünümü)"
+    oturum: us
+    sahne: "stage_us_bd.tcl; ps_ultra Tcl ile seçili"
+    eylem: "ps_ultra bloğuna çift tık; diyalog yüklenene dek bekle"
+    dogrulama: "Başlık 'Re-customize IP', sol ağaçta I/O Configuration / Clock / DDR / PS-PL"
+    yakala: pencere
+
+  # ---------- Bolum 5: I/O, Clock, DDR ----------
+  - id: shot-09
+    baslik: "I/O Configuration — MIO tablosu genel görünüm"
+    oturum: us
+    sahne: "Re-customize diyaloğu açık"
+    eylem: "Sol ağaçta I/O Configuration; MIO Voltage/bank başlıkları görünür"
+    dogrulama: "MIO tablo sütunları ve bank gerilimleri okunur"
+    yakala: pencere
+
+  - id: shot-10
+    baslik: "I/O Configuration — UART0 satırı (MIO 18..19)"
+    oturum: us
+    sahne: "ayni diyalog"
+    eylem: "Low Speed ağacını genişlet; UART0 satırını görünür kıl"
+    dogrulama: "UART0 işaretli ve MIO 18..19 ataması okunur"
+    yakala: pencere
+
+  - id: shot-11
+    baslik: "Clock Configuration — Input Clocks (PSS_REF_CLK)"
+    oturum: us
+    sahne: "ayni diyalog"
+    eylem: "Clock Configuration > Input Clocks sekmesi"
+    dogrulama: "PSS_REF_CLK frekansı (33.333 MHz) okunur"
+    yakala: pencere
+
+  - id: shot-12
+    baslik: "Clock Configuration — Output Clocks / Low Power Domain (UART ref)"
+    oturum: us
+    sahne: "ayni diyalog"
+    eylem: "Output Clocks sekmesi; IOU_SWITCH/UART satırları görünür"
+    dogrulama: "UART0/1 ref clock satırı ve MHz değeri okunur"
+    yakala: pencere
+
+  - id: shot-13
+    baslik: "Clock Configuration — PL Fabric Clocks (PL0)"
+    oturum: us
+    sahne: "ayni diyalog"
+    eylem: "Output Clocks içinde Full Power/PL Fabric Clocks bölümüne kaydır"
+    dogrulama: "PL0 satırı, kaynak PLL ve istenen/gerçek MHz okunur"
+    yakala: pencere
+
+  - id: shot-14
+    baslik: "DDR Configuration — tip/hız/genişlik"
+    oturum: us
+    sahne: "ayni diyalog"
+    eylem: "Sol ağaçta DDR Configuration"
+    dogrulama: "DDR4, hız sınıfı ve veri genişliği alanları okunur"
+    yakala: pencere
+
+  # ---------- Bolum 6: PS-PL ----------
+  - id: shot-15
+    baslik: "PS-PL Configuration — AXI master/slave port listesi"
+    oturum: us
+    sahne: "ayni diyalog"
+    eylem: "PS-PL Configuration; PS-PL interfaces ağacı genişletilmiş"
+    dogrulama: "AXI HPM0 FPD işaretli (bizim projede açık tek master kapı)"
+    yakala: pencere
+
+  - id: shot-16
+    baslik: "PS-PL Configuration — General/Interrupts (IRQ0 açık)"
+    oturum: us
+    sahne: "ayni diyalog"
+    eylem: "General > Interrupts bölümüne in; IRQ0 satırı görünür"
+    dogrulama: "PL to PS IRQ0 etkin (1 bit kullanımda)"
+    yakala: pencere
+    kapanis: "Diyalogdan CANCEL ile çık — asla OK değil"
+
+  # ---------- Bolum 7: adres + export ----------
+  - id: shot-17
+    baslik: "Address Editor — tam tablo"
+    oturum: us
+    sahne: "stage_us_adres.tcl (Address Editor GUI'de açılır)"
+    eylem: "Address Editor sekmesini öne getir; ağacı genişlet"
+    dogrulama: "4 PL çevre birimi satırı base/high adresleriyle okunur"
+    yakala: pencere
+
+  - id: shot-18
+    baslik: "Validate Design — başarı diyaloğu"
+    oturum: us
+    sahne: "BD açık"
+    eylem: "F6 (Validate); başarı diyaloğu çıkınca yakala; OK ile kapat"
+    dogrulama: "'Validation successful' metni okunur"
+    yakala: pencere
+
+  - id: shot-19
+    baslik: "Export Hardware — sihirbaz açılışı (platform tipi)"
+    oturum: us
+    sahne: "BD açık, degisiklik yok"
+    eylem: "File > Export > Export Hardware; ilk sayfada yakala"
+    dogrulama: "'Export Hardware Platform' başlığı görünür"
+    yakala: pencere
+
+  - id: shot-20
+    baslik: "Export Hardware — Pre-synthesis / Include bitstream seçimi"
+    oturum: us
+    sahne: "sihirbaz açık"
+    eylem: "Next ile Output sayfasına geç; seçenekler görünür"
+    dogrulama: "Pre-synthesis seçili, Include bitstream seçeneği görünür"
+    yakala: pencere
+    kapanis: "Cancel ile çık — export'u batch script yapar"
+
+  # ---------- Bolum 8: Versal ----------
+  - id: shot-21
+    baslik: "Versal Diagram — sistem BD tam görünüm"
+    oturum: versal
+    sahne: "stage_versal_open.tcl (proje + BD açık)"
+    eylem: "Zoom Fit"
+    dogrulama: "CIPS, axi_noc (DDRMC), GPIO/Timer ve NoC-DDR bağlantısı görünür"
+    yakala: pencere
+
+  - id: shot-22
+    baslik: "CIPS Re-customize — açılış"
+    oturum: versal
+    sahne: "CIPS Tcl ile seçili"
+    eylem: "versal_cips_0'a çift tık; yüklenmesi YAVAŞTIR, cömert bekle"
+    dogrulama: "CIPS yapılandırma penceresi; PS PMC bölümü görünür"
+    yakala: pencere
+
+  - id: shot-23
+    baslik: "CIPS — PS PMC I/O Peripherals (UART0 PMC MIO)"
+    oturum: versal
+    sahne: "CIPS diyaloğu açık"
+    eylem: "PS PMC > I/O ağacında UART0 satırını görünür kıl"
+    dogrulama: "UART0 etkin ve PMC MIO pin ataması okunur"
+    yakala: pencere
+
+  - id: shot-24
+    baslik: "CIPS — Clocking (PL clock)"
+    oturum: versal
+    sahne: "CIPS diyaloğu açık"
+    eylem: "Clocking bölümü; PL0_REF_CLK satırı görünür"
+    dogrulama: "PL clock frekans değeri okunur"
+    yakala: pencere
+    kapanis: "CANCEL ile çık"
+
+  - id: shot-25
+    baslik: "NoC Re-customize — General (NMU/NSU sayıları)"
+    oturum: versal
+    sahne: "axi_noc_0 Tcl ile seçili"
+    eylem: "axi_noc_0'a çift tık; General sekmesi"
+    dogrulama: "AXI slave/master port sayıları ve MC seçenekleri okunur"
+    yakala: pencere
+
+  - id: shot-26
+    baslik: "NoC — DDR Memory Controller sekmesi (DDRMC)"
+    oturum: versal
+    sahne: "NoC diyaloğu açık"
+    eylem: "DDR/Memory Controller ile ilgili sekmeye geç"
+    dogrulama: "DDR4 denetleyici parametreleri (hız/genişlik) okunur"
+    yakala: pencere
+    kapanis: "CANCEL ile çık"
+
+  - id: shot-27
+    baslik: "Versal Address Editor — DDR NoC arkasında"
+    oturum: versal
+    sahne: "stage_versal_adres.tcl"
+    eylem: "Address Editor sekmesi; ağaç genişletilmiş"
+    dogrulama: "DDR segmenti (axi_noc üzerinden) ve PL IP satırları okunur"
+    yakala: pencere
+
+  - id: shot-28
+    baslik: "Versal — CIPS↔NoC bağlantıları seçili (FPD_AXI_NOC vurgusu)"
+    oturum: versal
+    sahne: "stage_versal_noc_sec.tcl (CIPS-NoC arasi intf netler Tcl ile seçilir)"
+    eylem: "Diagram öne; seçim belirgin"
+    dogrulama: "CIPS'ten NoC'a giden arayüz çizgileri seçim renginde"
+    yakala: pencere
+
+  - id: shot-29
+    baslik: "Vivado açılış ekranı (Start Page)"
+    oturum: us
+    sahne: "GUI ilk açılış (proje kapalı) — oturum sonunda close_project ile"
+    eylem: "Start Page görünür durumda yakala"
+    dogrulama: "Quick Start / Open Project alanları okunur"
+    yakala: pencere

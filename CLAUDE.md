@@ -21,6 +21,9 @@ Tür ayrımı yalnızca kayıtta + sunumda yaşar; dosyalar hepsi `kilavuzlar/` 
 
 Kullanıcı "yapıyı güncelle" (veya benzeri) dediğinde:
 
+0. Asıl kaynağı GitHub'ta yaşayan kardeş repolarda önce `git pull` çek
+   (ör. `../vivado-ps-saha-kilavuzu` → PashaBuilds/vivado-ps-saha-kilavuzu
+   klonu) — guncelle.py pull YAPMAZ, diskteki hali neyse onu yansıtır.
 1. `python3 guncelle.py` çalıştır. Script **kayıt-güdümlüdür**:
    - `kilavuzlar.js`teki her kaydın `kaynak` reposunu bulur (önce üst dizindeki
      kardeş `../<kaynak>`, yoksa `kaynak/<kaynak>` yansısı),
@@ -48,12 +51,14 @@ saha-kilavuzlari/
 │   ├── oryantasyon/index.html
 │   ├── rf-sampling/index.html
 │   ├── ethernet/index.html
-│   └── lokal-llm/index.html
+│   ├── lokal-llm/index.html
+│   └── vivado-ps/index.html
 └── kaynak/           ← belge kaynaklarının TAM yansıları (klonlayan düzenleyebilsin)
     ├── gomulu-oryantasyon/         (.git, node_modules, dist, _scratch hariç ayna)
     ├── rf-sampling-saha-kilavuzu/
     ├── ethernet-saha-kilavuzu/
-    └── lokal-llm-saha-kilavuzu/
+    ├── lokal-llm-saha-kilavuzu/
+    └── vivado-ps-saha-kilavuzu/
 ```
 
 `guncelle.py` her kaydın kaynağını önce üst dizindeki kardeş repoda arar (yazar
@@ -88,8 +93,8 @@ yapma, kardeş repo varken ezilir — asıl düzenleme her zaman kardeş repoda 
   süpürmesi, işaretçi eğimi.
 - Kart vurgu rengi `renk` alanındaki **hue açısından** türetilir
   (kullanılan: 285 RF moru, 160 Ethernet turkuazı, 25 Lokal-LLM amberi,
-  40 Oryantasyon altını; boşta: 210, 340). Yeni belge = yeni hue.
-- Kart deseni `motif` alanı: `analog` | `digital` | `sinir` | `varsayilan`.
+  210 Vivado-PS mavisi, 40 Oryantasyon altını; boşta: 340). Yeni belge = yeni hue.
+- Kart deseni `motif` alanı: `analog` | `digital` | `sinir` | `blok` | `varsayilan`.
   Yeni motif gerekiyorsa index.html'deki `MOTIF` sözlüğüne SVG path ekle.
 - "Buradan başla" bandı (`tur:"yolculuk"`) kendi CSS'iyle (`.yol-kart`) çift-tonlu
   şafak gradyanı kullanır; `renk` yerine sabit `--y1`/`--y2` (altın/yeşil) ile

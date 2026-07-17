@@ -1,0 +1,2 @@
+validate_bd_design: HATASIZ (kritik uyari yok)
+Tarih: Thu Jul 16 20:28:24 +0300 2026

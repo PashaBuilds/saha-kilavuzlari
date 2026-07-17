@@ -27,8 +27,9 @@
 //   yol         : Karttan açılacak dosya (file:// uyumu için açık index.html)
 //   renk        : Vurgu tonu, 0-360 arası hue açısı
 //                 (kullanılanlar: 285 mor/RF, 160 turkuaz/Ethernet,
-//                  25 amber/Lokal-LLM, 40 altın/Oryantasyon — boşta: 210, 340)
-//   motif       : Kart deseni: "analog" | "digital" | "sinir" | "varsayilan"
+//                  25 amber/Lokal-LLM, 210 mavi/Vivado-PS,
+//                  40 altın/Oryantasyon — boşta: 340 gül)
+//   motif       : Kart deseni: "analog" | "digital" | "sinir" | "blok" | "varsayilan"
 //
 // Yalnızca "yolculuk" türüne özel alanlar:
 //   altBaslik   : Başlığın altındaki serif alt-başlık
@@ -132,5 +133,27 @@ window.KILAVUZLAR = [
     yol: "kilavuzlar/lokal-llm/index.html",
     renk: 25,
     motif: "sinir",
+  },
+  {
+    sira: 4,
+    slug: "vivado-ps",
+    kaynak: "vivado-ps-saha-kilavuzu",
+    baslik: "Vivado'yu Yazılımcı Gibi Okumak",
+    aciklama:
+      "Donanımcının teslim ettiği Vivado projesini açıp korkmadan okumak " +
+      "için: blok dizaynda yol bulma, PS/CIPS ayarlarını — clock, DDR, " +
+      "MIO/EMIO, PS-PL arayüzleri, interrupt — söküp xparameters.h ile " +
+      "eşleştirme, Address Editor'dan .xsa export'a uzanan zincir. Donanım " +
+      "tasarlamayan, analiz eden gömülü yazılımcı için.",
+    etiketler: ["Blok Dizayn", "PS IP & CIPS", "MIO / EMIO", "Address Editor", ".xsa → Vitis"],
+    bolum: "11 bölüm + 3 ek",
+    bolumSayi: 14,
+    sema: 41,
+    kelime: 10819,
+    boyut: "3,9 MB",
+    guncelleme: "2026-07-17",
+    yol: "kilavuzlar/vivado-ps/index.html",
+    renk: 210,
+    motif: "blok",
   },
 ];

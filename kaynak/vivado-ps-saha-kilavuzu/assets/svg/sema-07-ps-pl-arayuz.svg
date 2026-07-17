@@ -1,0 +1,45 @@
+<svg viewBox="0 0 820 380" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s7-title">
+  <title id="s7-title">PS-PL AXI arayüz haritası: M_AXI_HPM pencerelerinde PS master, S_AXI_HP ve ACP pencerelerinde PL master; her pencerenin tipik kullanım amacı</title>
+  <defs>
+    <marker id="s7-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--metin-soluk)"/>
+    </marker>
+  </defs>
+
+  <!-- PS -->
+  <rect x="20" y="30" width="250" height="310" rx="12" fill="var(--vurgu-yumusak)" stroke="var(--vurgu)" stroke-width="2"/>
+  <text x="145" y="58" text-anchor="middle" fill="var(--vurgu)" font-size="13" font-weight="700" letter-spacing="1">PS</text>
+  <text x="145" y="80" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">APU · cache/CCI · DDR denetleyici</text>
+
+  <!-- PL -->
+  <rect x="550" y="30" width="250" height="310" rx="12" fill="var(--kart)" stroke="var(--cizgi)" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="675" y="58" text-anchor="middle" fill="var(--metin-soluk)" font-size="13" font-weight="700" letter-spacing="1">PL</text>
+  <text x="675" y="80" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">donanımcının IP'leri</text>
+
+  <!-- HPM: PS -> PL -->
+  <rect x="300" y="100" width="220" height="58" rx="8" fill="var(--kart)" stroke="var(--vurgu)" stroke-width="1.5"/>
+  <text x="410" y="121" text-anchor="middle" fill="var(--vurgu)" font-size="12" font-weight="700" font-family="Consolas, monospace">M_AXI_HPM0/1_FPD</text>
+  <text x="410" y="137" text-anchor="middle" fill="var(--metin)" font-size="10">PS master → PL slave</text>
+  <text x="410" y="151" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">senin kodun PL register'ı okur/yazar</text>
+  <line x1="270" y1="129" x2="296" y2="129" stroke="var(--vurgu)" stroke-width="2.5" marker-end="url(#s7-ok)"/>
+  <line x1="520" y1="129" x2="546" y2="129" stroke="var(--vurgu)" stroke-width="2.5" marker-end="url(#s7-ok)"/>
+
+  <!-- HP: PL -> PS(DDR) -->
+  <rect x="300" y="180" width="220" height="58" rx="8" fill="var(--kart)" stroke="var(--yesil)" stroke-width="1.5"/>
+  <text x="410" y="201" text-anchor="middle" fill="var(--yesil)" font-size="12" font-weight="700" font-family="Consolas, monospace">S_AXI_HP0-3_FPD</text>
+  <text x="410" y="217" text-anchor="middle" fill="var(--metin)" font-size="10">PL master → DDR</text>
+  <text x="410" y="231" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">DMA: veri cache'e uğramadan akar</text>
+  <line x1="546" y1="209" x2="520" y2="209" stroke="var(--yesil)" stroke-width="2.5" marker-end="url(#s7-ok)"/>
+  <line x1="296" y1="209" x2="270" y2="209" stroke="var(--yesil)" stroke-width="2.5" marker-end="url(#s7-ok)"/>
+
+  <!-- ACP/ACE -->
+  <rect x="300" y="260" width="220" height="58" rx="8" fill="var(--kart)" stroke="var(--mor)" stroke-width="1.5"/>
+  <text x="410" y="281" text-anchor="middle" fill="var(--mor)" font-size="12" font-weight="700" font-family="Consolas, monospace">S_AXI_ACP / ACE</text>
+  <text x="410" y="297" text-anchor="middle" fill="var(--metin)" font-size="10">PL master → cache-tutarlı erişim</text>
+  <text x="410" y="311" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">veri CCI üzerinden; nadir, bilinçli tercih</text>
+  <line x1="546" y1="289" x2="520" y2="289" stroke="var(--mor)" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#s7-ok)"/>
+  <line x1="296" y1="289" x2="270" y2="289" stroke="var(--mor)" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#s7-ok)"/>
+
+  <!-- teshis kutusu -->
+  <text x="410" y="366" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">Ezber: adı M_ ile başlıyorsa PS konuşur, S_ ile başlıyorsa PS dinler. "PL'deki IP'me erişemiyorum" teşhisi HPM penceresinden başlar (Bölüm 6).</text>
+</svg>

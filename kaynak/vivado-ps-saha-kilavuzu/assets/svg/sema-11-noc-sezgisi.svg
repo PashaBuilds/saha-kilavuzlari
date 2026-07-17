@@ -1,0 +1,52 @@
+<svg viewBox="0 0 820 400" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s11-title">
+  <title id="s11-title">NoC sezgisi: yatay ve dikey hatlardan oluşan çip içi ağ, NMU giriş kapıları ve NSU çıkış kapıları; AXI trafiğinin şehir içi metro benzetmesi</title>
+  <defs>
+    <marker id="s11-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--mor)"/>
+    </marker>
+  </defs>
+
+  <!-- metro hatlari (izgara) -->
+  <g stroke="var(--mor)" stroke-width="5" opacity="0.55" stroke-linecap="round">
+    <line x1="120" y1="140" x2="700" y2="140"/>
+    <line x1="120" y1="250" x2="700" y2="250"/>
+    <line x1="200" y1="70" x2="200" y2="320"/>
+    <line x1="410" y1="70" x2="410" y2="320"/>
+    <line x1="620" y1="70" x2="620" y2="320"/>
+  </g>
+  <text x="410" y="34" text-anchor="middle" fill="var(--mor)" font-size="13" font-weight="700" letter-spacing="1">NoC — ÇİPİN METRO AĞI</text>
+  <text x="410" y="54" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">hatlar silikonda hazır döşeli; hangi istasyondan kime sefer olacağını Vivado'daki NoC konfigürasyonu belirler</text>
+
+  <!-- istasyonlar: NMU girisler -->
+  <g>
+    <rect x="60" y="116" width="120" height="48" rx="8" fill="var(--vurgu-yumusak)" stroke="var(--vurgu)" stroke-width="1.5"/>
+    <text x="120" y="136" text-anchor="middle" fill="var(--vurgu)" font-size="10.5" font-weight="700">NMU · giriş turnikesi</text>
+    <text x="120" y="152" text-anchor="middle" fill="var(--metin)" font-size="10" font-family="Consolas, monospace">CIPS FPD/LPD</text>
+
+    <rect x="60" y="226" width="120" height="48" rx="8" fill="var(--vurgu-yumusak)" stroke="var(--vurgu)" stroke-width="1.5"/>
+    <text x="120" y="246" text-anchor="middle" fill="var(--vurgu)" font-size="10.5" font-weight="700">NMU · giriş turnikesi</text>
+    <text x="120" y="262" text-anchor="middle" fill="var(--metin)" font-size="10" font-family="Consolas, monospace">PL master (DMA)</text>
+  </g>
+
+  <!-- istasyonlar: NSU cikislar -->
+  <g>
+    <rect x="560" y="296" width="120" height="48" rx="8" fill="var(--altin-yumusak)" stroke="var(--altin)" stroke-width="1.5"/>
+    <text x="620" y="316" text-anchor="middle" fill="var(--altin)" font-size="10.5" font-weight="700">NSU · çıkış kapısı</text>
+    <text x="620" y="332" text-anchor="middle" fill="var(--metin)" font-size="10" font-family="Consolas, monospace">DDRMC (DDR4)</text>
+
+    <rect x="660" y="116" width="130" height="48" rx="8" fill="var(--yesil-yumusak)" stroke="var(--yesil)" stroke-width="1.5"/>
+    <text x="725" y="136" text-anchor="middle" fill="var(--yesil)" font-size="10.5" font-weight="700">NSU · çıkış kapısı</text>
+    <text x="725" y="152" text-anchor="middle" fill="var(--metin)" font-size="10" font-family="Consolas, monospace">PL slave (timer)</text>
+  </g>
+
+  <!-- ornek yolculuk -->
+  <path d="M 180 140 L 410 140 L 410 250 L 620 250 L 620 296" fill="none" stroke="var(--altin)" stroke-width="2.5" stroke-dasharray="8 5" marker-end="url(#s11-ok)"/>
+  <text x="300" y="128" fill="var(--altin)" font-size="10" font-weight="600">örnek sefer: APU → DDR okuma</text>
+
+  <path d="M 180 250 L 200 250 L 200 140 L 660 140" fill="none" stroke="var(--yesil)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#s11-ok)"/>
+  <text x="300" y="286" fill="var(--yesil)" font-size="10" font-weight="600">örnek sefer: CIPS → PL'deki IP (NSU üzerinden)</text>
+
+  <!-- alt panel -->
+  <rect x="60" y="356" width="700" height="36" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="410" y="379" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">Yazılımcı çevirisi: NoC senin için görünmezdir — adresi okur/yazarsın; ama "bu IP'ye giden yol var mı" sorusunun cevabı artık NoC connectivity tablosundadır.</text>
+</svg>
