@@ -21,6 +21,9 @@ oturumlar:
   versal:
     baslat: vivado -mode tcl -source vivado/gui_capture/stage_versal_open.tcl
     proje: vivado/work/demo_versal/demo_versal.xpr
+  mb:
+    baslat: vivado -mode tcl -source vivado/gui_capture/stage_mb_open.tcl
+    proje: vivado/work/demo_microblaze/demo_microblaze.xpr
 
 kareler:
   # ---------- Bolum 2: ilk giris ----------
@@ -265,3 +268,91 @@ kareler:
     eylem: "Start Page görünür durumda yakala"
     dogrulama: "Quick Start / Open Project alanları okunur"
     yakala: pencere
+
+  # ---------- Bolum 9: MicroBlaze ----------
+  - id: shot-30
+    baslik: "MicroBlaze Diagram — sistem BD tam görünüm"
+    oturum: mb
+    sahne: "stage_mb_open.tcl (proje + BD açık)"
+    eylem: "Zoom Fit"
+    dogrulama: "MB çekirdeği + local_memory + mdm + intc + 6 AXI çevre birimi + kart portları"
+    yakala: pencere
+
+  - id: shot-31
+    baslik: "MicroBlaze Wizard — Sayfa 1 (genel yapı)"
+    oturum: mb
+    sahne: "microblaze_0 çift tık"
+    eylem: "Sayfa 1'de yakala"
+    dogrulama: "Predefined Configurations, 32/64, General Settings, Resource Estimates"
+    yakala: pencere (dialog -Title)
+
+  - id: shot-32
+    baslik: "MicroBlaze Wizard — Sayfa 2 (komut seti)"
+    oturum: mb
+    sahne: "sihirbazda Next"
+    eylem: "Sayfa 2'de yakala"
+    dogrulama: "Barrel/FPU/Multiplier/Divider anahtarları + Optimization"
+    yakala: pencere (dialog -Title)
+    kapanis: "Cancel"
+
+  - id: shot-33
+    baslik: "Address Editor — MB'nin çift adres uzayı"
+    oturum: mb
+    sahne: "Address Editor sekmesi"
+    eylem: "ağaç genişletilmiş yakala"
+    dogrulama: "Network 0 (Data, 8 segment) + Network 1 (Instruction, ilmb)"
+    yakala: pencere
+
+  - id: shot-34
+    baslik: "AXI Interrupt Controller — yapılandırma"
+    oturum: mb
+    sahne: "microblaze_0_axi_intc çift tık"
+    eylem: "Basic sekmesinde yakala"
+    dogrulama: "5 giriş, Fast Interrupt, edge/level maskeleri"
+    yakala: pencere (dialog -Title)
+    kapanis: "Cancel"
+
+  - id: shot-35
+    baslik: "AXI Uartlite — IP Configuration (sabit baud)"
+    oturum: mb
+    sahne: "axi_uartlite_0 çift tık → IP Configuration"
+    eylem: "yakala"
+    dogrulama: "Baud 115200, AXI CLK 100 MHz, No Parity"
+    yakala: pencere (dialog -Title)
+    kapanis: "Cancel"
+
+  - id: shot-36
+    baslik: "AXI Quad SPI — IP Configuration"
+    oturum: mb
+    sahne: "axi_quad_spi_0 çift tık → IP Configuration"
+    eylem: "yakala"
+    dogrulama: "Quad, Frequency Ratio 2, Micron, FIFO 16, STARTUP"
+    yakala: pencere (dialog -Title)
+    kapanis: "Cancel"
+
+  - id: shot-37
+    baslik: "AXI IIC — IP Configuration"
+    oturum: mb
+    sahne: "axi_iic_0 çift tık → IP Configuration"
+    eylem: "yakala"
+    dogrulama: "SCL 100 kHz, 7-bit adres"
+    yakala: pencere (dialog -Title)
+    kapanis: "Cancel"
+
+  - id: shot-38
+    baslik: "AXI GPIO — IP Configuration"
+    oturum: mb
+    sahne: "axi_gpio_led çift tık → IP Configuration"
+    eylem: "yakala"
+    dogrulama: "Width 4, All Outputs, Enable Interrupt"
+    yakala: pencere (dialog -Title)
+    kapanis: "Cancel"
+
+  - id: shot-39
+    baslik: "AXI Timer — yapılandırma"
+    oturum: mb
+    sahne: "axi_timer_0 çift tık"
+    eylem: "yakala"
+    dogrulama: "32-bit, Timer 2 etkin, pwm0 ucu"
+    yakala: pencere (dialog -Title)
+    kapanis: "Cancel"

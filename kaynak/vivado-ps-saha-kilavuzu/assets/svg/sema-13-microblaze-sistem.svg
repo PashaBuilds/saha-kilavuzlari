@@ -1,0 +1,111 @@
+<svg viewBox="0 0 820 440" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s13-title">
+  <title id="s13-title">MicroBlaze sistemi kuşbakışı: PL dokusuna sentezlenen soft-core işlemci, LMB üzerinden yerel BRAM, AXI üzerinden çevre birimleri, axi_intc ile kesmeler ve MDM ile debug</title>
+  <defs>
+    <marker id="s13-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--metin-soluk)"/>
+    </marker>
+  </defs>
+
+  <!-- PL dokusu: her sey bunun icinde -->
+  <rect x="12" y="14" width="796" height="392" rx="14" fill="var(--kart)" stroke="var(--cizgi)" stroke-width="1.5" stroke-dasharray="8 5"/>
+  <text x="30" y="40" fill="var(--metin-soluk)" font-size="13" font-weight="700" letter-spacing="1">PL — FPGA DOKUSU</text>
+  <text x="235" y="40" fill="var(--metin-soluk)" font-size="10">· bu şemada PS yok: işlemci dahil HER kutu sentezlenen bir IP</text>
+
+  <!-- MicroBlaze -->
+  <rect x="60" y="120" width="190" height="110" rx="10" fill="var(--vurgu-yumusak)" stroke="var(--vurgu)" stroke-width="2"/>
+  <text x="155" y="148" text-anchor="middle" fill="var(--vurgu)" font-size="14" font-weight="700">MicroBlaze</text>
+  <text x="155" y="167" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">soft-core işlemci (32-bit RISC)</text>
+  <text x="155" y="186" text-anchor="middle" fill="var(--metin)" font-size="10">LUT + FF + BRAM'den örülür</text>
+  <text x="155" y="204" text-anchor="middle" fill="var(--metin-soluk)" font-size="10">saat: clk_wiz'den (100 MHz)</text>
+  <text x="155" y="222" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">tek interrupt girişi ↓ (axi_intc şart)</text>
+
+  <!-- LMB local memory -->
+  <rect x="60" y="290" width="190" height="80" rx="8" fill="var(--altin-yumusak)" stroke="var(--altin)" stroke-width="1.5"/>
+  <text x="155" y="314" text-anchor="middle" fill="var(--altin)" font-size="12" font-weight="700">Yerel Bellek — 64KB BRAM</text>
+  <text x="155" y="332" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">ILMB (komut) + DLMB (veri) ayrı yollar</text>
+  <text x="155" y="348" text-anchor="middle" fill="var(--metin)" font-size="9.5">kodunun evi; içeriği bitstream'le yüklenir</text>
+  <text x="155" y="363" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">(MMI + updatemem — şema 15)</text>
+
+  <line x1="120" y1="230" x2="120" y2="286" stroke="var(--altin)" stroke-width="2.5" marker-end="url(#s13-ok)"/>
+  <line x1="190" y1="230" x2="190" y2="286" stroke="var(--altin)" stroke-width="2.5" marker-end="url(#s13-ok)"/>
+  <text x="100" y="262" text-anchor="end" fill="var(--altin)" font-size="9" font-family="Consolas, monospace">ILMB</text>
+  <text x="210" y="262" fill="var(--altin)" font-size="9" font-family="Consolas, monospace">DLMB</text>
+
+  <!-- MDM -->
+  <rect x="60" y="52" width="190" height="40" rx="8" fill="var(--kart-2)" stroke="var(--cizgi)"/>
+  <text x="155" y="69" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">MDM — MicroBlaze Debug Module</text>
+  <text x="155" y="84" text-anchor="middle" fill="var(--metin-soluk)" font-size="9">JTAG debug + XSDB konsolu buradan</text>
+  <line x1="155" y1="92" x2="155" y2="116" stroke="var(--cizgi)" stroke-width="1.5" marker-end="url(#s13-ok)"/>
+
+  <!-- AXI interconnect -->
+  <rect x="320" y="140" width="120" height="70" rx="8" fill="var(--kart-2)" stroke="var(--cizgi)" stroke-width="1.5"/>
+  <text x="380" y="168" text-anchor="middle" fill="var(--metin)" font-size="11" font-weight="700">AXI</text>
+  <text x="380" y="184" text-anchor="middle" fill="var(--metin)" font-size="11" font-weight="700">Interconnect</text>
+  <text x="380" y="200" text-anchor="middle" fill="var(--metin-soluk)" font-size="9">M_AXI_DP kapısından</text>
+  <line x1="250" y1="175" x2="316" y2="175" stroke="var(--vurgu)" stroke-width="2.5" marker-end="url(#s13-ok)"/>
+
+  <!-- cevre birimleri sutunu -->
+  <g font-family="Consolas, monospace">
+    <rect x="500" y="52" width="130" height="40" rx="7" fill="var(--kart-2)" stroke="var(--yesil)"/>
+    <text x="565" y="69" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">axi_uartlite</text>
+    <text x="565" y="84" text-anchor="middle" fill="var(--metin-soluk)" font-size="8.5">baud DONANIMDA sabit</text>
+
+    <rect x="500" y="102" width="130" height="40" rx="7" fill="var(--kart-2)" stroke="var(--yesil)"/>
+    <text x="565" y="119" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">axi_iic</text>
+    <text x="565" y="134" text-anchor="middle" fill="var(--metin-soluk)" font-size="8.5">SCL frekansı config'te</text>
+
+    <rect x="500" y="152" width="130" height="40" rx="7" fill="var(--kart-2)" stroke="var(--yesil)"/>
+    <text x="565" y="169" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">axi_quad_spi</text>
+    <text x="565" y="184" text-anchor="middle" fill="var(--metin-soluk)" font-size="8.5">SCK oranı + SS sayısı</text>
+
+    <rect x="500" y="202" width="130" height="40" rx="7" fill="var(--kart-2)" stroke="var(--yesil)"/>
+    <text x="565" y="219" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">axi_gpio</text>
+    <text x="565" y="234" text-anchor="middle" fill="var(--metin-soluk)" font-size="8.5">genişlik + yön + kesme</text>
+
+    <rect x="500" y="252" width="130" height="40" rx="7" fill="var(--kart-2)" stroke="var(--yesil)"/>
+    <text x="565" y="269" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">axi_timer</text>
+    <text x="565" y="284" text-anchor="middle" fill="var(--metin-soluk)" font-8.5="" font-size="8.5">saati = AXI saati</text>
+
+    <rect x="500" y="302" width="130" height="40" rx="7" fill="var(--kart-2)" stroke="var(--altin)"/>
+    <text x="565" y="319" text-anchor="middle" fill="var(--metin)" font-size="10.5" font-weight="700">axi_bram_ctrl</text>
+    <text x="565" y="334" text-anchor="middle" fill="var(--metin-soluk)" font-8.5="" font-size="8.5">ek veri BRAM'i</text>
+  </g>
+
+  <!-- interconnect -> cevre birimleri fan-out -->
+  <line x1="440" y1="160" x2="496" y2="76"  stroke="var(--cizgi)" stroke-width="1.4" marker-end="url(#s13-ok)"/>
+  <line x1="440" y1="168" x2="496" y2="122" stroke="var(--cizgi)" stroke-width="1.4" marker-end="url(#s13-ok)"/>
+  <line x1="440" y1="176" x2="496" y2="172" stroke="var(--cizgi)" stroke-width="1.4" marker-end="url(#s13-ok)"/>
+  <line x1="440" y1="184" x2="496" y2="222" stroke="var(--cizgi)" stroke-width="1.4" marker-end="url(#s13-ok)"/>
+  <line x1="440" y1="192" x2="496" y2="272" stroke="var(--cizgi)" stroke-width="1.4" marker-end="url(#s13-ok)"/>
+  <line x1="440" y1="200" x2="496" y2="322" stroke="var(--cizgi)" stroke-width="1.4" marker-end="url(#s13-ok)"/>
+
+  <!-- intc -->
+  <rect x="320" y="290" width="120" height="60" rx="8" fill="var(--mor-yumusak)" stroke="var(--mor)" stroke-width="1.5"/>
+  <text x="380" y="313" text-anchor="middle" fill="var(--mor)" font-size="11" font-weight="700">axi_intc</text>
+  <text x="380" y="329" text-anchor="middle" fill="var(--metin-soluk)" font-size="9">kesme toplayıcı</text>
+  <text x="380" y="343" text-anchor="middle" fill="var(--metin-soluk)" font-size="9">(şema 14)</text>
+  <path d="M 496 330 L 470 330 L 470 320 L 444 320" fill="none" stroke="var(--mor)" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#s13-ok)"/>
+  <line x1="320" y1="320" x2="230" y2="234" stroke="var(--mor)" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#s13-ok)"/>
+
+  <!-- alt not -->
+  <rect x="660" y="52" width="136" height="340" rx="10" fill="var(--yesil-yumusak)" stroke="var(--yesil)" stroke-width="1.2"/>
+  <text x="728" y="76" text-anchor="middle" fill="var(--yesil)" font-size="10.5" font-weight="700">YAZILIMCIYA NOT</text>
+  <text x="728" y="100" text-anchor="middle" fill="var(--metin)" font-size="9.5">Zynq'ta PS "hazır</text>
+  <text x="728" y="114" text-anchor="middle" fill="var(--metin)" font-size="9.5">silikon"du; burada</text>
+  <text x="728" y="128" text-anchor="middle" fill="var(--metin)" font-size="9.5">işlemci de dahil her</text>
+  <text x="728" y="142" text-anchor="middle" fill="var(--metin)" font-size="9.5">şey donanımcının</text>
+  <text x="728" y="156" text-anchor="middle" fill="var(--metin)" font-size="9.5">seçimiyle var olur.</text>
+  <text x="728" y="182" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">Çekirdek özellikleri</text>
+  <text x="728" y="196" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">(çarpıcı, FPU, cache)</text>
+  <text x="728" y="210" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">bile konfigürasyon —</text>
+  <text x="728" y="224" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">derleyici bayrakların</text>
+  <text x="728" y="238" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">buna uymak zorunda.</text>
+  <text x="728" y="264" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">Bitstream yüklenmeden</text>
+  <text x="728" y="278" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">bu sistem YOKTUR:</text>
+  <text x="728" y="292" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">ne işlemci, ne UART.</text>
+  <text x="728" y="318" text-anchor="middle" fill="var(--metin)" font-size="9.5" font-weight="600">Ayarların xparameters</text>
+  <text x="728" y="332" text-anchor="middle" fill="var(--metin)" font-size="9.5" font-weight="600">karşılıkları Bölüm 9'da</text>
+  <text x="728" y="346" text-anchor="middle" fill="var(--metin)" font-size="9.5" font-weight="600">tek tek işlenir.</text>
+
+  <text x="410" y="428" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">Kutu adları demo projedeki gerçek instance adlarıdır; adresleri Address Editor'dan (Ekran 33) okunur.</text>
+</svg>

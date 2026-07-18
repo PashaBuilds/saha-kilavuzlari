@@ -50,9 +50,8 @@
   <line x1="190" y1="245" x2="246" y2="245" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s2-ok)"/>
   <line x1="430" y1="245" x2="486" y2="245" stroke="var(--metin-soluk)" stroke-width="1.5" marker-end="url(#s2-ok)"/>
 
-  <!-- iki serit arasi baglar -->
-  <line x1="325" y1="128" x2="110" y2="212" stroke="var(--cizgi)" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#s2-ok)"/>
-  <path d="M 670 245 C 740 245, 725 180, 725 132" fill="none" stroke="var(--cizgi)" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#s2-ok)"/>
+  <!-- iki serit arasi bag: bitstream'li xsa (opsiyonel) -->
+  <path d="M 670 245 C 740 245, 725 180, 725 132" fill="none" stroke="var(--metin-soluk)" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#s2-ok)"/>
   <text x="770" y="180" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">bitstream'li .xsa</text>
   <text x="770" y="193" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">(opsiyonel)</text>
 

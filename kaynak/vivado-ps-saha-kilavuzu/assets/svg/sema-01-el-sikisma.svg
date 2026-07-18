@@ -53,7 +53,7 @@
   <!-- sinir cizgisi -->
   <line x1="410" y1="24" x2="410" y2="214" stroke="var(--cizgi)" stroke-width="1" stroke-dasharray="5 5"/>
 
-  <!-- geri bildirim oku -->
-  <path d="M 714 134 C 714 260, 109 260, 109 134" fill="none" stroke="var(--kirmizi)" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#s1-ok)"/>
-  <text x="410" y="272" text-anchor="middle" fill="var(--kirmizi)" font-size="11">"UART hangi pinde? DDR neden kapalı?" — doğru soru, donanımcıya bu zincir üzerinden geri döner</text>
+  <!-- geri bildirim oku: panellerin altindan dolasir, kutulara degmez -->
+  <path d="M 615 230 C 615 262, 205 262, 205 230" fill="none" stroke="var(--kirmizi)" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#s1-ok)"/>
+  <text x="410" y="288" text-anchor="middle" fill="var(--kirmizi)" font-size="11">"UART hangi pinde? DDR neden kapalı?" — doğru soru, donanımcıya bu zincir üzerinden geri döner</text>
 </svg>

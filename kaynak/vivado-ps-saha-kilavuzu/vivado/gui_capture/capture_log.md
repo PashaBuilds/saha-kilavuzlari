@@ -72,9 +72,31 @@ Aynı GUI'de `source ~/vopen.tcl` ile proje değiştirildi
 BD layout SVG/PDF: `assets/bd-exports/versal-bd-full.{svg,pdf}`
 (GUI konsolundan `source ~/vlay2.tcl`).
 
-**Alınamayan kareler:** shot-23, shot-24 → `SHOT-LIST.md`.
-Her ikisinin de sayısal verisi `assets/reports/versal-ps-pmc-config.txt`'te
-mevcut ve Bölüm 8'de işlendi.
+**Oturum 3 — demo_microblaze (AC701):**
+`vivado -mode tcl -source vivado/gui_capture/stage_mb_open.tcl`
+
+| Kare | Sahne / eylem | Doğrulanan içerik |
+|---|---|---|
+| shot-30 | Diagram, Zoom Fit | MB çekirdeği + 6 AXI çevre birimi + kart portları |
+| shot-31 | microblaze_0 çift tık, Sayfa 1 | Predefined/32-64/General Settings/Resource Est. |
+| shot-32 | Wizard Next, Sayfa 2 | Barrel/FPU/Mul/Div anahtarları (hepsi kapalı) |
+| shot-33 | Address Editor | Data (8 segment) + Instruction (ilmb) çift uzay |
+| shot-34 | axi_intc çift tık | 5 giriş, Fast Interrupt, 0xFFFFFFEA maskesi |
+| shot-35 | uartlite → IP Config | Baud 115200 SABİT, AXI CLK 100 MHz |
+| shot-36 | quad_spi → IP Config | Quad, Ratio 2 (SCK 50 MHz), Micron, STARTUP |
+| shot-37 | iic → IP Config | SCL 100 kHz |
+| shot-38 | gpio → IP Config | Width 4, All Outputs, Enable Interrupt |
+| shot-39 | timer çift tık | 32-bit, Timer 2, pwm0 |
+
+BD layout SVG/PDF: `assets/bd-exports/microblaze-bd-full.{svg,pdf}` (GUI
+konsolundan); kırpım `microblaze-bd-cekirdek.svg` (`build/crop_bd.py`).
+Ayrıca `vivado/microblaze/impl_bitstream.tcl` ile implementasyon +
+bitstream + **gerçek MMI** (`assets/reports/microblaze-sistem.mmi`) ve
+kaynak kullanım raporu üretildi.
+
+**Alınamayan kareler:** shot-23, shot-24 → `SHOT-LIST.md`'de reçetesiyle
+alınmıştı; düzeltme turunda otomatik çekildi. MicroBlaze turunda alınamayan
+kare YOK. Askıda kalan tek kare: shot-03 (bkz. SHOT-LIST).
 
 **Katman A kırpımları** (`build/crop_bd.py`): tam BD SVG'leri viewBox ile
 kırpılarak `ultrascale-bd-ps.svg` (PS-yakın) ve `versal-bd-cips.svg`

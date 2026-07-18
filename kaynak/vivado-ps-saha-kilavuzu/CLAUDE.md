@@ -16,6 +16,10 @@ orada tanımlıdır.
   (`zynq_ultra_ps_e`) tüm UltraScale+ ailesinde aynıdır; doküman bunu not eder.
 - VPK120 yok → Demo 2 **VCK190** (`xilinx.com:vck190:part0:3.1`, xcvc1902)
   üzerine kurulur (KICKOFF'un öngördüğü yedek).
+- Demo 3 (MicroBlaze, Bölüm 9) **AC701** (`xilinx.com:ac701:part0:1.4`,
+  xc7a200t) üzerine kurulur: KC705 (xc7k325t) bu makinede lisans dışı;
+  Artix-7 WebPACK kapsamında olduğundan implementasyon + bitstream + MMI
+  üretimi lisanssız koşar.
 
 ## Değişmez kurallar
 

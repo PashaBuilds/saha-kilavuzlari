@@ -31,7 +31,7 @@ edersin.
 
 :::saha-notu
 Acil bring-up durumu: yeni kart elinde, konsol yok, zaman dar. Rota:
-**Bölüm 3 → 5 → 7 → 10.** Blok dizaynda yolunu bul, UART/clock ayarlarını
+**Bölüm 3 → 5 → 7 → 11.** Blok dizaynda yolunu bul, UART/clock ayarlarını
 oku, adres haritasını çıkar, kontrol listesini koştur. Gerisini kart
 ayaktayken okursun.
 :::
@@ -47,7 +47,9 @@ bilgi aynı mantıkla organize edilmiş halde durur.
 Demo projelerimizden ilki ZCU102 kartını (Zynq UltraScale+ MPSoC) hedefler.
 Ekipteki ZCU111 (RFSoC) ile bire bir aynı PS mimarisini taşır — bu eşleşmenin
 neden sorunsuz olduğunu Bölüm 4'te netleştiriyoruz. İkinci demo VCK190
-(Versal) üzerine kurulu; Bölüm 8'in konusu.
+(Versal) üzerine kurulu; Bölüm 8'in konusu. Üçüncü demo ise PS'siz dünyayı
+anlatır: AC701 (Artix-7) üzerinde PL'e sentezlenen bir MicroBlaze sistemi —
+Bölüm 9'un konusu.
 
 ## Repo ve demo projeler
 
@@ -56,8 +58,9 @@ kılavuzdaki TÜM gerçek ekranların ve tabloların kaynağı olan iki demo pro
 sıfırdan kurar:
 
 ```tcl
-vivado -mode batch -source vivado/rfsoc/create_bd.tcl    ;# Demo 1: UltraScale+ PS
-vivado -mode batch -source vivado/versal/create_bd.tcl   ;# Demo 2: Versal CIPS+NoC
+vivado -mode batch -source vivado/rfsoc/create_bd.tcl      ;# Demo 1: UltraScale+ PS
+vivado -mode batch -source vivado/versal/create_bd.tcl     ;# Demo 2: Versal CIPS+NoC
+vivado -mode batch -source vivado/microblaze/create_bd.tcl ;# Demo 3: MicroBlaze (PL)
 ```
 
 Deneme kutularını çalışmak için bu projeleri kendi makinende kurman yeterli.

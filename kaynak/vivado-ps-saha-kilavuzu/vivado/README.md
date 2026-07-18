@@ -36,8 +36,14 @@ vivado -mode batch -source vivado\rfsoc\create_bd.tcl
 :: 2) Demo 2 — Versal CIPS + NoC + DDRMC (VPK120 -> VCK190 yedekli)
 vivado -mode batch -source vivado\versal\create_bd.tcl
 
-:: 3) Katman A exportlari: BD SVG/PDF + raporlar + pre-synth XSA
+:: 3) Demo 3 — MicroBlaze soft-core (AC701; WebPACK lisansiyla kosar)
+vivado -mode batch -source vivado\microblaze\create_bd.tcl
+
+:: 4) Katman A exportlari: BD SVG/PDF + raporlar + pre-synth XSA
 vivado -mode batch -source vivado\export_visuals.tcl
+
+:: 5) (yalniz Demo 3) implementasyon + bitstream + MMI + kaynak raporu
+vivado -mode batch -source vivado\microblaze\impl_bitstream.tcl
 ```
 
 Çıktılar:

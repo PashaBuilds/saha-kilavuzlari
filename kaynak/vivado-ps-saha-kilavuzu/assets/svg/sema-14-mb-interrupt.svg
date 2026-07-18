@@ -1,0 +1,65 @@
+<svg viewBox="0 0 820 400" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="s14-title">
+  <title id="s14-title">MicroBlaze kesme yolu: beş çevre biriminin telleri concat ile demetlenir, axi_intc önceliklendirir ve MicroBlaze'in tek interrupt girişine sürer; GIC'li PS ile fark tablosu</title>
+  <defs>
+    <marker id="s14-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--mor)"/>
+    </marker>
+  </defs>
+
+  <!-- kaynaklar -->
+  <g font-family="Consolas, monospace" font-size="10">
+    <rect x="20" y="36" width="128" height="30" rx="6" fill="var(--kart)" stroke="var(--cizgi)"/>
+    <text x="84" y="55" text-anchor="middle" fill="var(--metin)">timer.interrupt</text>
+    <rect x="20" y="76" width="128" height="30" rx="6" fill="var(--kart)" stroke="var(--cizgi)"/>
+    <text x="84" y="95" text-anchor="middle" fill="var(--metin)">uartlite.interrupt</text>
+    <rect x="20" y="116" width="128" height="30" rx="6" fill="var(--kart)" stroke="var(--cizgi)"/>
+    <text x="84" y="135" text-anchor="middle" fill="var(--metin)">iic.iic2intc_irpt</text>
+    <rect x="20" y="156" width="128" height="30" rx="6" fill="var(--kart)" stroke="var(--cizgi)"/>
+    <text x="84" y="175" text-anchor="middle" fill="var(--metin)">spi.ip2intc_irpt</text>
+    <rect x="20" y="196" width="128" height="30" rx="6" fill="var(--kart)" stroke="var(--cizgi)"/>
+    <text x="84" y="215" text-anchor="middle" fill="var(--metin)">gpio.ip2intc_irpt</text>
+  </g>
+
+  <!-- concat -->
+  <rect x="210" y="96" width="100" height="90" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>
+  <text x="260" y="124" text-anchor="middle" fill="var(--metin)" font-size="11" font-weight="700" font-family="Consolas, monospace">xlconcat</text>
+  <text x="260" y="142" text-anchor="middle" fill="var(--metin-soluk)" font-size="9">In0..In4 →</text>
+  <text x="260" y="156" text-anchor="middle" fill="var(--metin-soluk)" font-size="9">5 bitlik demet</text>
+  <text x="260" y="174" text-anchor="middle" fill="var(--kirmizi)" font-size="8.5">SIRA = bit = ID</text>
+
+  <line x1="148" y1="51"  x2="206" y2="106" stroke="var(--mor)" stroke-width="1.6" marker-end="url(#s14-ok)"/>
+  <line x1="148" y1="91"  x2="206" y2="121" stroke="var(--mor)" stroke-width="1.6" marker-end="url(#s14-ok)"/>
+  <line x1="148" y1="131" x2="206" y2="136" stroke="var(--mor)" stroke-width="1.6" marker-end="url(#s14-ok)"/>
+  <line x1="148" y1="171" x2="206" y2="151" stroke="var(--mor)" stroke-width="1.6" marker-end="url(#s14-ok)"/>
+  <line x1="148" y1="211" x2="206" y2="166" stroke="var(--mor)" stroke-width="1.6" marker-end="url(#s14-ok)"/>
+
+  <!-- axi_intc -->
+  <rect x="380" y="86" width="150" height="110" rx="10" fill="var(--mor-yumusak)" stroke="var(--mor)" stroke-width="2"/>
+  <text x="455" y="112" text-anchor="middle" fill="var(--mor)" font-size="12.5" font-weight="700" font-family="Consolas, monospace">axi_intc</text>
+  <text x="455" y="130" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">AXI Interrupt Controller</text>
+  <text x="455" y="148" text-anchor="middle" fill="var(--metin)" font-size="9.5">maskeler + önceliklendirir</text>
+  <text x="455" y="164" text-anchor="middle" fill="var(--metin)" font-size="9.5">edge/level ayarı IP config'te</text>
+  <text x="455" y="181" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">kendisi de AXI'de adreslenir!</text>
+  <line x1="310" y1="141" x2="376" y2="141" stroke="var(--mor)" stroke-width="2.5" marker-end="url(#s14-ok)"/>
+
+  <!-- MB -->
+  <rect x="610" y="96" width="180" height="90" rx="10" fill="var(--vurgu-yumusak)" stroke="var(--vurgu)" stroke-width="2"/>
+  <text x="700" y="124" text-anchor="middle" fill="var(--vurgu)" font-size="12.5" font-weight="700">MicroBlaze</text>
+  <text x="700" y="144" text-anchor="middle" fill="var(--metin)" font-size="10" font-family="Consolas, monospace">INTERRUPT girişi</text>
+  <text x="700" y="162" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">TEK tel — GIC yok,</text>
+  <text x="700" y="177" text-anchor="middle" fill="var(--metin-soluk)" font-size="9.5">dağıtımı intc + yazılım yapar</text>
+  <line x1="530" y1="141" x2="606" y2="141" stroke="var(--mor)" stroke-width="2.5" marker-end="url(#s14-ok)"/>
+
+  <!-- fark tablosu -->
+  <rect x="20" y="252" width="770" height="112" rx="10" fill="var(--kart)" stroke="var(--altin)" stroke-width="1.5"/>
+  <text x="405" y="276" text-anchor="middle" fill="var(--altin)" font-size="11" font-weight="700" letter-spacing="0.5">GIC (Zynq/Versal PS) — axi_intc (MicroBlaze) FARKI</text>
+  <g font-size="10" fill="var(--metin)">
+    <text x="40" y="300" font-weight="700">GIC:</text>
+    <text x="80" y="300">sabit silikon, ID'ler mimaride sabit (121…), handler kaydı XScuGic ile</text>
+    <text x="40" y="322" font-weight="700">intc:</text>
+    <text x="80" y="322">sentezlenen IP; ID = concat GİRİŞ SIRASI (In0=0, In1=1…), handler kaydı XIntc ile</text>
+    <text x="40" y="344" fill="var(--metin-soluk)">Ortak refleks: .xsa her değiştiğinde ID tablosunu concat sırasından yeniden çıkar — iki dünyada da sıra değişirse handler şaşar.</text>
+  </g>
+
+  <text x="410" y="388" text-anchor="middle" fill="var(--metin-soluk)" font-size="10.5">Demo projede: In0=timer(ID 0), In1=uartlite(1), In2=iic(2), In3=spi(3), In4=gpio(4) — xparameters'taki XPAR_INTC_0_*_VEC_ID tanımlarının kaynağı.</text>
+</svg>

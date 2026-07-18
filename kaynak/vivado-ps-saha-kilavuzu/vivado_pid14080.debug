@@ -1,0 +1,39 @@
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2022.2 (64-bit)
+# SW Build: 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build: 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Current time: Fri Jul 17 13:57:31 TRT 2026
+# Process ID (PID): 14080
+# User: QP
+# OS: Windows 10
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+Fri Jul 17 13:57:31 TRT 2026
+java.lang.NullPointerException
+	at ui.views.systembuilder.AddressMapHtml.<init>(SourceFile:137)
+	at ui.views.systembuilder.AddressMapHtml.<init>(SourceFile:117)
+	at ui.views.X.O.JN(SourceFile:252)
+	at ui.views.X.O.JO(SourceFile:265)
+	at ui.views.X.P.timerActionPerformed(SourceFile:366)
+	at ui.utils.q.b.actionPerformed(SourceFile:137)
+	at java.desktop/javax.swing.Timer.fireActionPerformed(Timer.java:317)
+	at ui.utils.q.a.fireActionPerformed(SourceFile:78)
+	at java.desktop/javax.swing.Timer$DoPostEvent.run(Timer.java:249)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:313)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+	at ui.frmwork.a.d.dispatchEvent(SourceFile:92)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+

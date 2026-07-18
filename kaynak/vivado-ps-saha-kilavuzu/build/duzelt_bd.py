@@ -53,3 +53,4 @@ def duzelt(ad: str) -> None:
 if __name__ == "__main__":
     duzelt("ultrascale-bd-full.svg")
     duzelt("versal-bd-full.svg")
+    duzelt("microblaze-bd-full.svg")

@@ -39,12 +39,12 @@
     <text x="725" y="152" text-anchor="middle" fill="var(--metin)" font-size="10" font-family="Consolas, monospace">PL slave (timer)</text>
   </g>
 
-  <!-- ornek yolculuk -->
-  <path d="M 180 140 L 410 140 L 410 250 L 620 250 L 620 296" fill="none" stroke="var(--altin)" stroke-width="2.5" stroke-dasharray="8 5" marker-end="url(#s11-ok)"/>
+  <!-- ornek yolculuklar: ikisi de CIPS turnikesinden baslar -->
+  <path d="M 180 146 L 410 146 L 410 250 L 620 250 L 620 296" fill="none" stroke="var(--altin)" stroke-width="2.5" stroke-dasharray="8 5" marker-end="url(#s11-ok)"/>
   <text x="300" y="128" fill="var(--altin)" font-size="10" font-weight="600">örnek sefer: APU → DDR okuma</text>
 
-  <path d="M 180 250 L 200 250 L 200 140 L 660 140" fill="none" stroke="var(--yesil)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#s11-ok)"/>
-  <text x="300" y="286" fill="var(--yesil)" font-size="10" font-weight="600">örnek sefer: CIPS → PL'deki IP (NSU üzerinden)</text>
+  <path d="M 180 134 L 656 134" fill="none" stroke="var(--yesil)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#s11-ok)"/>
+  <text x="300" y="110" fill="var(--yesil)" font-size="10" font-weight="600">örnek sefer: CIPS → PL'deki IP (NSU üzerinden)</text>
 
   <!-- alt panel -->
   <rect x="60" y="356" width="700" height="36" rx="8" fill="var(--kart)" stroke="var(--cizgi)"/>

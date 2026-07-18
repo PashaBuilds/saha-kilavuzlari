@@ -21,6 +21,9 @@ KIRPIMLAR = [
     # CIPS(244-764) + NoC(1194-1450) + aradaki NoC arayuz demeti + CH0_DDR4_0
     ("versal-bd-full.svg", "versal-bd-cips.svg", 2143, 650,
      [190, 0, 1330, 480]),
+    # MB cekirdegi: xlconcat + axi_intc(~1043) + MicroBlaze(~1423) + LMB(~1823)
+    ("microblaze-bd-full.svg", "microblaze-bd-cekirdek.svg", 2687, 1290,
+     [820, 590, 1200, 520]),
 ]
 
 

@@ -122,6 +122,43 @@ proc proje_isle {ad xpr ps_hucre secme_desenler} {
     dosyaya [file join $rapor_dizin "$ad-ps-config-secme.md"] \
         [secme_tablo $ps $secme_desenler]
 
+    # MicroBlaze ise cevre birimlerinin config dokumunu ayrica yaz
+    if {$ad eq "microblaze"} {
+        set satirlar {}
+        foreach {hucre desenler} {
+            axi_uartlite_0  {C_BAUDRATE C_DATA_BITS C_USE_PARITY C_ODD_PARITY C_S_AXI_ACLK_FREQ_HZ*}
+            axi_iic_0       {IIC_FREQ_KHZ C_IIC_FREQ* C_TEN_BIT_ADR C_GPO_WIDTH C_SDA_LEVEL C_SCL_INHIBIT*}
+            axi_quad_spi_0  {C_SCK_RATIO C_NUM_SS_BITS C_NUM_TRANSFER_BITS C_SPI_MODE C_USE_STARTUP C_FIFO_DEPTH}
+            axi_gpio_led    {C_GPIO_WIDTH C_ALL_OUTPUTS C_ALL_INPUTS C_IS_DUAL C_INTERRUPT_PRESENT}
+            axi_timer_0     {COUNT_WIDTH ONE_TIMER_ONLY TRIG* GEN* C_COUNT_WIDTH C_ONE_TIMER_ONLY}
+            axi_bram_ctrl_0 {SINGLE_PORT_BRAM DATA_WIDTH ECC_TYPE MEM_DEPTH*}
+        } {
+            set c [get_bd_cells -quiet $hucre]
+            if {![llength $c]} { continue }
+            lappend satirlar "" "### $hucre" "" "| Parametre | Deger |" "|---|---|"
+            foreach desen $desenler {
+                foreach p [lsort [list_property $c]] {
+                    if {![string match "CONFIG.$desen" $p]} { continue }
+                    set deger [get_property $p $c]
+                    if {$deger eq ""} { set deger "(bos)" }
+                    lappend satirlar "| `[string range $p 7 end]` | `$deger` |"
+                }
+            }
+        }
+        # intc ayrica (otomasyonun verdigi adla bul)
+        set intc [get_bd_cells -quiet -filter {VLNV =~ "*axi_intc*"}]
+        if {[llength $intc]} {
+            lappend satirlar "" "### [lindex $intc 0] (axi_intc)" "" "| Parametre | Deger |" "|---|---|"
+            foreach desen {C_IRQ_IS_LEVEL C_IRQ_ACTIVE C_HAS_FAST C_HAS_ILR C_NUM_INTR_INPUTS C_KIND_OF_INTR} {
+                foreach p [lsort [list_property [lindex $intc 0]]] {
+                    if {![string match "CONFIG.$desen" $p]} { continue }
+                    lappend satirlar "| `[string range $p 7 end]` | `[get_property $p [lindex $intc 0]]` |"
+                }
+            }
+        }
+        dosyaya [file join $rapor_dizin "$ad-cevre-config.md"] [join $satirlar "\n"]
+    }
+
     # CIPS ise PS_PMC_CONFIG sozlugunu ayrica coz
     if {$ad eq "versal"} {
         set cfg [get_property -quiet CONFIG.PS_PMC_CONFIG $ps]
@@ -189,6 +226,17 @@ set versal_desenler {
     PS_BOARD_INTERFACE PMC_* PS_*
 }
 
+set mb_desenler {
+    C_FREQ C_USE_MSR_INSTR C_USE_PCMP_INSTR C_USE_BARREL C_USE_HW_MUL
+    C_USE_DIV C_USE_FPU C_USE_REORDER_INSTR
+    C_USE_ICACHE C_USE_DCACHE C_CACHE_BYTE_SIZE C_DCACHE_BYTE_SIZE
+    C_ICACHE_BASEADDR C_DCACHE_BASEADDR
+    C_DEBUG_ENABLED C_NUMBER_OF_PC_BRK C_NUMBER_OF_RD_ADDR_BRK
+    C_NUMBER_OF_WR_ADDR_BRK
+    C_D_AXI C_I_AXI C_D_LMB C_I_LMB
+    C_USE_MMU C_FAULT_TOLERANT C_PVR C_INTERCONNECT
+}
+
 foreach h $hedefler {
     if {$h eq "ultrascale"} {
         proje_isle ultrascale \
@@ -198,6 +246,10 @@ foreach h $hedefler {
         proje_isle versal \
             [file join $repo vivado work demo_versal demo_versal.xpr] \
             versal_cips_0 $versal_desenler
+    } elseif {$h eq "microblaze"} {
+        proje_isle microblaze \
+            [file join $repo vivado work demo_microblaze demo_microblaze.xpr] \
+            microblaze_0 $mb_desenler
     }
 }
 puts "EXPORT TAMAM."
