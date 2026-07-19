@@ -1,11 +1,11 @@
-# lab02-uart — GÖREV 2: UART "Hello World" ve printf'in Arkasındaki Şey
+# lab02-uart — Görev 2: UART "Hello World" ve printf'in Arkasındaki Mekanizma
 
 ## Ne yapar
 
 PS UART0 üzerinden iki aşamalı bir gösterim:
 
-1. `xil_printf` ile tek satır — hazır, hafif printf'in kutudan çıktığı
-   gibi çalıştığını gösterir (`main.c` içindeki yorumda `%f` desteğinin
+1. `xil_printf` ile tek satır — hazır, hafif printf'in ek ayar gerektirmeden
+   çalıştığını gösterir (`main.c` içindeki yorumda `%f` desteğinin
    olmadığına dair nota bak).
 2. Kendi `uart_ps` modülünün (register seviyesinde, `XUartPs` sürücüsü
    kullanmadan) bastığı çok satırlı karşılama afişi.

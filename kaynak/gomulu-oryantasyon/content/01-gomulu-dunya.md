@@ -26,7 +26,7 @@ yazılımı koşturan irili ufaklı bir işlemci var.
 
 Tanımın çekirdeği, şekildeki üç parçalı zincir. **Sensör** dış dünyayı
 ölçer: sıcaklık, basınç, bir buton basışı, bir anten sinyali. Ortadaki
-**MCU** (microcontroller unit — mikrodenetleyici) ya da büyük kardeşi
+**MCU** (microcontroller unit — mikrodenetleyici) ya da daha büyük ölçekli sınıfı
 **SoC** (system on chip — sistem-çipi) ölçümü okur ve karar verir.
 **Aktüatör** kararı dünyaya uygular: motoru döndürür, valfi açar, LED'i
 yakar, anteni sürer. Yazdığın kod bu döngünün tam ortasında oturur ve
@@ -63,8 +63,8 @@ hesaplandığını değil, hesabın *ne kadar sürdüğünü* de tasarlar. Kavra
 Bölüm 7'de (interrupt) ve Bölüm 10'da (FreeRTOS) somutlaşacak.
 
 **3. Donanıma yakınlık.** Masaüstünde seninle donanım arasında işletim
-sistemi, sürücüler ve kütüphanelerden örülü kalın bir yastık var. Gömülü
-dünyada o yastık incedir ya da hiç yoktur: donanımı doğrudan register
+sistemi, sürücüler ve kütüphanelerden oluşan kalın bir tampon katmanı var. Gömülü
+dünyada o tampon incedir ya da hiç yoktur: donanımı doğrudan register
 (çevre biriminin içindeki küçük kontrol ve durum hücreleri — Bölüm 4'ün
 ana konusu) düzeyinde programlarsın. `printf` ile ekrana yazı basmak
 bile, kendi elinle ayağa kaldırdığın bir UART'tan akar.

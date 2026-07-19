@@ -3,7 +3,7 @@
 On bir görev boyunca kartı parça parça tanıdın: register okudun, kendi
 kodunla UART'a yazı bastın, buton interrupt'ı yapılandırdın, gerçek bir
 I2C çipiyle haberleştin, PL'deki bir IP bloğunu sürdün, FreeRTOS'ta
-kuyruk ve semaforla task'lar arasında veri taşıdın. Her görev tek bir
+kuyruk ve semaphore ile task'lar arasında veri taşıdın. Her görev tek bir
 beceriyi yalıttı — bilerek; çünkü her şeyi aynı anda öğrenmeye kalkmak,
 hiçbirini iyi öğrenmemek demektir. Mezuniyet Görevi'nin tek amacı bu
 yalıtımı kaldırmak: şimdi hepsini aynı anda, tek bir projede, her parça
@@ -28,7 +28,7 @@ tabloya bak — hangi bölüme döneceğini söyler.
 | TTC periyodik interrupt | Bölüm 7 | Periyodik ölçüm/telemetri zamanlaması (R2, R8) |
 | I2C protokolü, datasheet okuma | Bölüm 8 | INA226'dan ölçüm okuma (R2, R3) |
 | PL'deki IP ile haberleşme (AXI GPIO) | Bölüm 9 | Gelişmiş LED gösterimi (R4, opsiyonel katman) |
-| FreeRTOS task/kuyruk/semafor | Bölüm 10 | Tüm mimarinin omurgası (R1, R9) |
+| FreeRTOS task/kuyruk/semaphore | Bölüm 10 | Tüm mimarinin omurgası (R1, R9) |
 | Vitis/debug becerileri | Bölüm 11 | Geliştirme ve doğrulamanın tamamı |
 | Savunmacı programlama, README/commit kültürü | Bölüm 12 | Teslim standardı (Teslim bölümü) |
 
@@ -79,7 +79,7 @@ aralıkla sınırlanmalı (örneğin 100–5000 ms); aralık dışı değer,
 kullanıcıya geri bildirimle reddedilmeli.
 
 **R9.** Task'lar arası veri paylaşımı FreeRTOS senkronizasyon nesneleri
-(kuyruk, semafor, mutex) üzerinden yapılmalı; birden çok task'ın ortak
+(kuyruk, semaphore, mutex) üzerinden yapılmalı; birden çok task'ın ortak
 bir değişkene kilitsiz doğrudan eriştiği (race condition riski taşıyan)
 bir tasarım kabul edilmez.
 
@@ -119,7 +119,7 @@ olduğun bir şey değil**. Bu gereksinimleri üç task'la da
 karşılayabilirsin, beş task'la da; önemli olan R9'un istediği temiz
 senkronizasyondur.
 
-{{svg:sema-25-mezuniyet-mimari.svg|Şekil 25 — Önerilen Mezuniyet Görevi mimarisi: FreeRTOS task'ları, kuyruklar, ISR/semafor ile mod geçişleri ve donanım bağlantıları}}
+{{svg:sema-25-mezuniyet-mimari.svg|Şekil 25 — Önerilen Mezuniyet Görevi mimarisi: FreeRTOS task'ları, kuyruklar, ISR/semaphore ile mod geçişleri ve donanım bağlantıları}}
 
 Görev 7 bitstream'in yoksa ya da PL LED barını kurmaya vaktin olmadıysa,
 R4'ün temel seviyesi (yalnızca DS50) tek başına yeterli bir teslimdir —
@@ -135,7 +135,7 @@ edilir, altında kalmak edilmez.
 1. **Kısa bir README** (diğer `labs/` lab'larındaki dosyaların bir
    benzeri gibi düşün — ama bunu kendin yazıyorsun). Şunları içermeli:
    - Projenin amacı ve kısa mimari özeti (kaç task, hangi
-     kuyruklar/semaforlar).
+     kuyruklar/semaphore'lar).
    - Donanım/yazılım gereksinimleri (Vitis sürümü, gerekiyorsa hangi
      .xsa/bitstream).
    - Nasıl derlenip karta yükleneceği (Vitis proje tipi, adımlar).
@@ -164,11 +164,11 @@ Ama üç yaygın mimari tuzaktan kaçınman için üç işaret bırakıyoruz:
   yapıyla) ulaşmalı. Aynı şekilde CLI'ın ayrıştırdığı komutlar (`led on`,
   `rate <ms>`) ilgili task'a kuyruk mesajı olarak gitmeli — R9'un
   "kilitsiz paylaşım yok" kuralının doğal sonucu budur.
-- **Mod değişikliğini semafor ya da event ile taşı; ISR içinde işleme.**
+- **Mod değişikliğini semaphore ya da event ile taşı; ISR içinde işleme.**
   SW19 ISR'ı kısa kalmalı (Bölüm 7'nin kuralı burada da geçerli): ISR
-  yalnızca `FromISR` API'siyle bir binary semafor vermeli; mod değişikliği
+  yalnızca `FromISR` API'siyle bir binary semaphore vermeli; mod değişikliği
   mantığının kendisi (hangi ekrana geçileceğine karar vermek, LED
-  desenini güncellemek) o semaforu bekleyen bir task'ta koşmalı.
+  desenini güncellemek) o semaphore'u bekleyen bir task'ta koşmalı.
 
 :::gorev no=mezuniyet zorluk=3 baslik="Board Health Monitor" kisa="Mezuniyet"
 [Hedef]
@@ -178,7 +178,7 @@ hem mini CLI sunan bağımsız bir "Board Health Monitor" uygulamasını
 FreeRTOS üzerinde tasarla ve çalışır hâle getir.
 [Ön koşul]
 Görev 0'dan Görev 10'a kadar tamamlanmış olmalı: I2C okuma, interrupt
-yapılandırma, FreeRTOS task/kuyruk/semafor becerileri ve (varsa) AXI
+yapılandırma, FreeRTOS task/kuyruk/semaphore becerileri ve (varsa) AXI
 GPIO becerisi burada bir araya geliyor.
 [Gereksinimler]
 - En az 3 FreeRTOS task'ı: ölçüm toplama, LED gösterim, UART/CLI
@@ -206,7 +206,7 @@ bak.
 Kısa bir README (amaç, mimari özeti, derleme/yükleme adımları, CLI komut
 listesi, bilinen sınırlamalar) + ekip önünde 10 dakikalık canlı demo.
 [Kendini sına]
-- Mod değişikliğini ISR içinde doğrudan işlemek yerine neden bir semafora
+- Mod değişikliğini ISR içinde doğrudan işlemek yerine neden bir semaphore'a
   devrettin? Doğrudan işleseydin hangi task'lar risk altında olurdu?
 - `rate <ms>` değerini kuyruk yerine paylaşılan bir global değişkende
   tutsaydın, race condition hangi senaryoda ortaya çıkardı?
@@ -215,7 +215,7 @@ listesi, bilinen sınırlamalar) + ekip önünde 10 dakikalık canlı demo.
 [Takıldıysan]
 ::ipucu İpucu 1 — Mimariyi kodlamadan önce çiz
 Klavyeye dokunmadan önce task'larını, aralarındaki
-kuyrukları/semaforları ve her birinin kullandığı donanımı kutu-ok
+kuyrukları/semaphore'ları ve her birinin kullandığı donanımı kutu-ok
 şeması olarak çiz (Şekil 25'e bakmadan önce kendi sürümünü dene). "Bu
 veri nereden nereye gidiyor" sorusuna kâğıt üzerinde net cevap
 veremiyorsan, kodda da veremezsin.

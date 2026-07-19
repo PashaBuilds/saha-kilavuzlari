@@ -52,18 +52,19 @@ window.KILAVUZLAR = [
     baslik: "Gömülü Sistemlere Giriş",
     altBaslik: "Ekip Oryantasyon Yolculuğu",
     aciklama:
-      "Üniversiteden yeni mezun, ekibe yeni katılan mühendis için hazırlanmış " +
-      "müfredat: masadaki ZCU111 üzerinde okuma bölümleri ile uygulamalı " +
-      "görevler dönüşümlü ilerler — Zynq PS/PL ayrımı, boot süreci, register " +
-      "programlama, interrupt, I2C/SPI/UART, FreeRTOS ve Vitis debug. Referans " +
-      "değil; iki hafta sonunda kartla iş yapar hale getiren rehberli bir yolculuk.",
+      "Üniversiteden yeni mezun, ekibe yeni katılan mühendis için iki haftalık " +
+      "oryantasyon müfredatı: okuma bölümleri ile ZCU111 üzerinde yürütülen " +
+      "uygulamalı görevler dönüşümlü ilerler — Zynq PS/PL mimarisi, boot " +
+      "süreci, register programlama, interrupt, seri protokoller, FreeRTOS ve " +
+      "Vitis debug. Referans eseri değil; ilk günden mezuniyet görevine uzanan " +
+      "rehberli bir program.",
     etiketler: ["Zynq · ZCU111", "Bare-metal C", "Register & Interrupt", "I2C · SPI · UART", "FreeRTOS", "Vitis Debug"],
     rota: ["Hoş geldin", "LED", "UART", "Interrupt", "Timer", "I2C", "PL LED'leri", "FreeRTOS", "Queue", "Hata Avı", "Mezuniyet"],
     bolum: "15 bölüm + 2 ek",
     bolumSayi: 17,
     lab: 10,
     sema: 25,
-    kelime: 25399,
+    kelime: 25413,
     final: "Mezuniyet Görevi",
     boyut: "567 KB",
     guncelleme: "2026-07-19",

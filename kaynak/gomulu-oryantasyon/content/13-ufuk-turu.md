@@ -97,7 +97,7 @@ geri alması en pahalı hatalardan biridir.
 
 ## JESD204 ve PCIe: yüksek hızlı arayüzler
 
-Neden önemli: ZCU111'inin Bölüm 2'de kısaca "süper güç" olarak gösterilen
+Neden önemli: ZCU111'inin Bölüm 2'de tanıtılan
 RF örnekleme yeteneği tümüyle bu arayüzler üzerinden işler. **JESD204**
 (B/C revizyonları), yüksek hızlı ADC/DAC (analog-sayısal / sayısal-analog
 çevirici) çipleriyle FPGA arasında gigabit ölçeğinde veriyi seri hatlar
@@ -110,7 +110,7 @@ sunucu sınıfı sistemlerde hızlandırıcı kart bağlamanın standart yolu.
 sıkışmasından çok daha karmaşık fiziksel katman tasarımlarıdır — çok
 kanallı, senkronizasyon ve **link training** (bağlantının otomatik
 kalibrasyonu) isteyen yapılar. Bu dokümanın kapsamı dışındadır; adını
-duyduğunda "AXI'nin bir üst ligi" diye tanıman şimdilik yeter. Hazır
+duyduğunda "AXI'nin çok daha karmaşık bir muadili" diye tanıman şimdilik yeter. Hazır
 olduğunda serinin *RF Örnekleme Saha Kılavuzu*'na başvur; JESD204'ün
 ZCU111 üzerindeki gerçek uygulamasını orada bulursun.
 
@@ -155,7 +155,7 @@ andığında ne işe yaradığını hatırlaman:
 | Unit test | Donanımdan bağımsız kodu, kart olmadan sıradan bilgisayarda test etme yöntemi. |
 | CI (Continuous Integration) | Her commit'te otomatik build ve test koşturup hataları insana ulaşmadan yakalayan sistem. |
 | TRM (Technical Reference Manual) | Bir çipin register ve adres ayrıntıları için üreticinin resmi, eksiksiz kaynağı. |
-| Kök dosya sistemi (root filesystem) | Linux'un çalışması için gereken dosya/dizin hiyerarşisini tutan depolama alanı. |
+| Root filesystem (kök dosya sistemi) | Linux'un çalışması için gereken dosya/dizin hiyerarşisini tutan depolama alanı. |
 
 Yedi kavramın hepsine bugün hâkim olman beklenmiyor; bu bölümün tek işi
 her biri için zihnine bir kanca bırakmaktı. Şimdi sıra, kazandığın bütün

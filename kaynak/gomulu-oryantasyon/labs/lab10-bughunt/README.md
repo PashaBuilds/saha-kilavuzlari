@@ -1,4 +1,4 @@
-# lab10-bughunt — Bug Hunt (Görev 10)
+# lab10-bughunt — Görev 10: Hata Avı
 
 Bu proje senden önceki stajyerden kaldı. Ekipten ayrılmadan önceki son
 işiydi: TTC0 tabanlı bir sayaç, SW19 butonu ve UART durum satırları —
@@ -35,10 +35,9 @@ lab10-bughunt/
 Vitis'te yeni bir **application component** aç (platform: standalone,
 işlemci: `psu_cortexa53_0`, boş şablon — Hello World seçme, kendi
 kaynaklarını kullanacaksın). `src/` altındaki tüm dosyaları projenin
-kaynak klasörüne kopyala ve build et. `lscript.ld`'yi kendi projenin
-linker script'indeki ilgili STACK/HEAP bölümüyle karşılaştır — Vitis,
-platformdan senin için eksiksiz bir `lscript.ld` üretir; buradaki dosya
-yalnızca bu lab'i ilgilendiren kısmı gösteren bir özettir.
+kaynak klasörüne kopyala ve build et. Vitis, platformdan senin için
+eksiksiz bir `lscript.ld` üretir; buradaki dosya o script'in yalnızca
+bu lab'i ilgilendiren kısmını gösteren bir özettir.
 
 ## Spesifikasyon (beklenen davranış)
 

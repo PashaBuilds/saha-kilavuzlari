@@ -5,7 +5,7 @@ donanımla bu düzeydeki ilişkisi inceliklerle doludur — bu bölüm
 bunların ilkini ele alır. Üniversitede öğrendiğin C çoğunlukla
 "değerler bellekte durur, ben okur/yazarım" varsayımıyla çalışır.
 Donanım register'ları bu varsayımı bozar: bir register'ın değeri, senin
-kodundan tek satır çalışmadan, arka planda değişebilir — bir düğmeye
+kodundan tek satır çalışmadan, arka planda değişebilir — bir butona
 basılır, bir interrupt gelir, bir DMA (Direct Memory Access — CPU'yu
 araya sokmadan belleğe doğrudan yazan donanım; ayrıntısı Bölüm 6 ve
 9'da) veri aktarır. Bu bölümde C'nin bu gerçeklikle konuşmasını
@@ -13,7 +13,7 @@ sağlayan araçları öğreneceksin.
 
 ## volatile: Derleyiciye "Optimizasyonların Burada Geçmez" Demek
 
-Derleyiciler tembel değildir — tam tersine, saldırgan optimizasyon
+Derleyiciler tembel değildir — tam tersine, agresif optimizasyon
 yapar. Derleyici bir değişkenin art arda birkaç kez okunduğunu görür ve
 arada değişmediğini "kanıtlayabilirse" (kodun kendi akışında yazma
 görmüyorsa) okumayı tekrarlamaz: değeri bir kez CPU register'ında tutar
@@ -31,19 +31,19 @@ while (uiFlag == 0)
 
 Derleyici `uiFlag`'in döngü içinde hiç yazılmadığını görür ve "bu değer
 hiç değişmiyor, koşulu bir kez değerlendirip sonucu sabitlerim" diye
-akıl yürütebilir — sonuç, bir ISR ya da donanım `uiFlag`'i gerçekte
+akıl yürütebilir — sonuç, bir ISR (interrupt service routine — kesme servis rutini) ya da donanım `uiFlag`'i gerçekte
 değiştirse bile döngüye hiç girmemek ya da içinde sonsuza dek
 kalmaktır. `volatile` anahtar sözcüğü tam olarak bunu engeller:
 derleyiciye "bu adresteki değer senin göremediğin bir yerden
 değişebilir; her erişimde gerçekten oku/yaz, önceki okumaya güvenme"
 der.
 
-{{svg:sema-10-volatile.svg|Şekil 10 — volatile'ın öyküsü: aynı -O2 optimizasyonu volatile'sız kodda okumayı eler, volatile'lı kodda her turda taze okuma yapmaya zorlanır.}}
+{{svg:sema-10-volatile.svg|Şekil 10 — volatile'ın hikâyesi: aynı -O2 optimizasyonu volatile'sız kodda okumayı eler, volatile'lı kodda her turda taze okuma yapmaya zorlanır.}}
 
 `volatile`'a ihtiyaç duyacağın iki tipik yer var: **donanım
 register'ları** (her okuma, donanım durumunun gerçek bir sorgusu
-olmalı) ve **ISR (interrupt service routine — kesme servis rutini) ile
-ana kod arasında paylaşılan değişkenler** (bunu Bölüm 7'de kendi
+olmalı) ve **ISR ile ana kod
+arasında paylaşılan değişkenler** (bunu Bölüm 7'de kendi
 elinle yaşayacaksın). İkisinde de ortak nokta aynıdır: değer
 "dışarıdan" biri tarafından değiştirilebilir.
 
@@ -233,7 +233,7 @@ yerine dayattığı için review süresi biçime değil öze harcanır.
 
 Donanımla konuşan C'nin temel sözlüğünü artık öğrendin: `volatile`,
 bit işlemleri, doğru genişlikte tipler ve pointer tabanlı adresleme.
-Sıra pratikte: UART'tan kendi elinle bir şey basma vakti.
+Sıra pratikte: UART'tan kendi elinle ilk çıktını basma vakti.
 
 :::gorev no=2 zorluk=1 baslik="UART Hello World ve printf'in Arkasındakiler" kisa="UART Hello World"
 [Hedef]

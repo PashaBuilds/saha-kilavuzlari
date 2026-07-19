@@ -1,5 +1,5 @@
-<svg viewBox="0 0 740 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s12-baslik">
-  <title id="s12-baslik">Şekil 13 — Cache hiyerarşisi ve tutarlılık: CPU-cache-DDR-DMA dörtgeni; DMA yazımından sonra CPU'nun cache'ten bayat değer okuması ve invalidate ile çözüm</title>
+<svg viewBox="0 0 740 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s13-baslik">
+  <title id="s13-baslik">Şekil 13 — Cache hiyerarşisi ve tutarlılık: CPU-cache-DDR-DMA dörtgeni; DMA yazımından sonra CPU'nun cache'ten bayat değer okuması ve invalidate ile çözüm</title>
 
   <!-- four boxes -->
   <rect x="50" y="50" width="160" height="64" rx="8" class="svg-kutu"/>

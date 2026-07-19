@@ -228,7 +228,7 @@ class Isleyici:
         no = oz.get("no", "?")
         mezuniyet = no.lower() in ("mezuniyet", "m")
         gid = "gorev-mezuniyet" if mezuniyet else f"gorev-{int(no):02d}"
-        baslik = oz.get("baslik", "Task")
+        baslik = oz.get("baslik", "Görev")
         zorluk = max(1, min(3, int(oz.get("zorluk", "1"))))
         kisa = oz.get("kisa", baslik.split("(")[0].strip())
 

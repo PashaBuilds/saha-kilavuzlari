@@ -1,6 +1,6 @@
 # Bölüm 3 — Sistem Nasıl Açılır: Boot Süreci ve Bellek Haritası
 
-Görev 0'da karta enerji verdin (ya da kartı bilerek JTAG modunda bıraktın;
+Görev 0'da karta güç verdin (ya da kartı bilerek JTAG modunda bıraktın;
 bu mod kartın kendi başına boot etmesini engeller). O anda, sen daha tek
 satır kod yazmamışken, kartın içinde geniş bir işlem dizisi başladı. Bu
 bölüm o diziyi adım adım izler ve sonunda ortaya çıkan tabloyu — memory
@@ -11,7 +11,7 @@ sonra ortaya çıkan tablo (bellek haritası).
 
 ## Bölüm 3 · Birinci Kısım: Reset'ten main()'e (Boot Zinciri)
 
-## Reset'ten main()'e: Dört Aşama
+## Dört Aşama
 
 Zynq UltraScale+ üzerinde, reset bırakıldığı anda çalışan ilk kod senin
 yazdığın kod değildir — çipin silikonuna gömülü, değiştiremeyeceğin bir
@@ -33,7 +33,7 @@ kod zinciridir. Sırasıyla dört aşama var:
 4. **Uygulama** (ya da ara katman olarak **ATF**). Bare-metal bir
    hello-world'de FSBL uygulamanı doğrudan yükleyip çalıştırır; Linux
    koşan bir sistemde FSBL'yi ATF (ARM Trusted Firmware) katmanı, onu da
-   U-Boot/Linux izler. Bu program yalnızca bare-metal çalıştığı için
+   U-Boot/Linux izler. Bu yolculukta yalnızca bare-metal çalıştığın için
    `main()` fonksiyonun, FSBL'nin doğrudan atladığı nokta olacak.
 
 {{svg:sema-05-boot-akisi.svg|Şekil 5 — Boot akışı zaman çizgisi: PMU ROM → CSU ROM (BootROM) → FSBL → (ATF) → uygulama; altında boot.bin'in içeriği; en altta SW6 boot kaynağı dallanması.}}
@@ -47,7 +47,7 @@ ilklendirmekle görevli kod DDR'ın kendisinde duramaz; bu iş için çip
 
 ## boot.bin: Tek Dosyada Üç Parça
 
-Kart enerjilendiğinde BootROM tek bir dosya okur: **boot.bin**. Bu dosya
+Karta güç verildiğinde BootROM tek bir dosya okur: **boot.bin**. Bu dosya
 aslında art arda dizilmiş üç ayrı parçadan oluşur: **FSBL**, **PL
 bitstream** (varsa) ve **senin uygulaman**. Vitis (klasik akışta bootgen
 aracı) bu üç parçayı senin yerine tek dosyada paketler; SD karta veya
@@ -73,7 +73,7 @@ Görev 0'da kartı JTAG konumuna aldıysan tablonun ilk satırını kendi
 elinle doğruladın. Kart fabrikadan QSPI32 konumunda çıkar — yani büyük
 olasılıkla bir anahtar çevirmen gerekti. SD kart yuvası **J100**'dür;
 SD'den boot etmek için boot.bin'i karta koyar, SW6'yı SD konumuna alır
-ve kartın enerjisini kapatıp açarsın.
+ve kartın gücünü kesip yeniden verirsin.
 
 Bu noktada kartın kendini nasıl ayağa kaldırdığını gördün: PMU'dan CSU
 ROM'a, oradan FSBL'ye, oradan `main()` fonksiyonuna. Şimdi ikinci kısma
@@ -82,12 +82,12 @@ haritası.
 
 ## Bölüm 3 · İkinci Kısım: Her Şeyin Bir Adresi Var (Bellek Haritası)
 
-## Bellek Haritası: Her Şeyin Bir Adresi Var
+## Bellek Haritasını Okumak
 
 Sistemin ayakta olduğunu artık biliyorsun. Peki CPU "UART'a yaz" ya da
 "şu LED'i yak" gibi bir işlemi nasıl ifade eder? Cevap basit ama kritik:
 **her şeyin bir adresi var.** DDR bellek, çip üstü bellek, her
-peripheral'ın (çevre birimi) register'ları ve PL'de duran her IP kendi
+çevre biriminin register'ları ve PL'de duran her IP kendi
 adres aralığına sahiptir. CPU'nun gözünden bunların hepsi aynı düz adres
 uzayında yaşar — RAM'e yazmak ile bir UART register'ına yazmak donanım
 düzeyinde aynı işlemdir; yalnızca adres farklıdır.
@@ -120,7 +120,7 @@ Harita kabaca dört bölgeye ayrılır:
 binası olduğunu önceden belirler; yanlış parsele bina dikemezsin. Bellek
 haritası aynı işi yapar: DDR geniş bir imar bölgesidir, istediğin gibi
 doldurursun; OCM merkezde küçük ama değerli bir parseldir; çevre
-birimleri her biri kendi adresine kayıtlı resmi dairelerdir. Yanlış
+birimlerinin her biri kendi adresine kayıtlı bir resmi dairedir. Yanlış
 kapıya gidersen (yanlış adrese yazarsan) ya hiçbir şey olmaz ya da çok
 daha kötüsü olur.
 :::

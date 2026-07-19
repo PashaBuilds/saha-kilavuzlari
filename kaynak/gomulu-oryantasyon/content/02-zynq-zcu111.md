@@ -4,7 +4,7 @@ Bölüm 1'de rolünü konuştuk; şimdi sahneyi tanıyalım. Masandaki yeşil
 kartın adı **ZCU111**, çekirdeğindeki büyük çipin adı **Zynq UltraScale+
 RFSoC** (XCZU28DR). Bu bölümün sonunda o çipin içindeki iki dünyayı
 ayırt edebilecek ve kart üzerindeki her ana bileşenin ne işe yaradığını
-söyleyebileceksin. Bölümün sonunda ilk görevin bekliyor: kartla ilk
+söyleyebileceksin. Sonunda da ilk görevin bekliyor: kartla ilk
 fiziksel temas.
 
 ## SoC: bütün sistem tek çipte
@@ -91,7 +91,7 @@ kurarsın, ama proje (donanım mühendisinin tasarımı) çizilip kurulum
 Çipten karta geçiyoruz. Aşağıdaki şema fotoğraf değil harita — bileşen
 yerleşimi temsili, kimlikler doğru.
 
-{{svg:sema-04-kart-anatomisi.svg|Şekil 4 — ZCU111 kart anatomisi (temsili şema): sarıyla işaretli DS50/SW19 çifti bitstream olmadan PS'ten erişilebilir; LED'ler, butonlar ve DIP switch kümesi PL pinlerinde oturur.}}
+{{svg:sema-04-kart-anatomisi.svg|Şekil 4 — ZCU111 kart anatomisi (temsili kroki): sarıyla işaretli DS50/SW19 çifti bitstream olmadan PS'ten erişilebilir; LED'ler, butonlar ve DIP switch kümesi PL pinlerinde oturur.}}
 
 - **U1 — RFSoC:** Kartın ortasındaki büyük paket — yukarıda tanıştığın
   XCZU28DR. PS de PL de bu tek paketin içinde.
@@ -106,7 +106,7 @@ yerleşimi temsili, kimlikler doğru.
 - **DS50 LED'i ve SW19 butonu:** Kartın gösterişsiz ama bizim için en
   değerli ikilisi. PS MIO pinlerine bağlılar (LED MIO23'te, buton
   MIO22'de) — yani bitstream olmadan, saf PS kodundan erişilebilen tek
-  LED ve tek buton bunlar. İlk görevlerinin başrol oyuncuları olacaklar.
+  LED ve tek buton bunlar. İlk görevlerinin merkezinde bu ikili olacak.
 - **J83 micro-USB:** Tek başına çok iş gören bir kablo. Karttaki FT4232
   köprü çipi bu tek USB bağlantısı üzerinden bilgisayarına dört ayrı
   port açar: Port A **JTAG** (programlama/debug arayüzü — harici prob
@@ -130,10 +130,9 @@ yok. Bitstream olmadan PS kodundan ulaşılabilen tek kullanıcı arayüzü
 DS50 LED'i ile SW19 butonu.
 
 Bu yüzden ilk görevlerin (Görev 1–5) yalnızca tek LED ve tek butonla
-çalışacak. Gösterişsiz görünebilir, ama kısıtın kendisi dersin ta
-kendisi: PS/PL ayrımını bir slayttan değil, "LED'im neden yanmıyor"
+çalışacak. Gösterişsiz görünebilir, ama bu kısıt dersin ta kendisi: PS/PL ayrımını bir slayttan değil, "LED'im neden yanmıyor"
 sorusundan öğreneceksin. Sabret — Bölüm 9'da donanım ekibinin
-hazırladığı bitstream ile PL kapısını açıyoruz; sekiz LED'lik kayan ışık
+hazırladığı bitstream ile PL kapısını açıyoruz; sekiz LED'lik yürüyen ışık
 deseni seni orada bekliyor (Görev 7).
 
 :::tuzak İnternetteki her Zynq örneği senin kartında çalışmaz

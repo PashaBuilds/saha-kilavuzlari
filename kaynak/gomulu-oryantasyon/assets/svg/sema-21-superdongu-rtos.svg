@@ -38,7 +38,7 @@
   <text x="329" y="322" text-anchor="middle" class="svg-soluk" font-size="10">g_fFlag = 1</text>
 
   <text x="40" y="420" class="svg-soluk" font-size="12">Güçlü ve basit — ama tüm görevler CPU'yu sırayla paylaşır,</text>
-  <text x="40" y="438" class="svg-soluk" font-size="12">zamanlama garantisi yok ("bayrak çorbası" büyüdükçe okumak</text>
+  <text x="40" y="438" class="svg-soluk" font-size="12">zamanlama garantisi yok (bayrak karmaşası büyüdükçe okumak</text>
   <text x="40" y="456" class="svg-soluk" font-size="12">ve doğrulamak zorlaşır).</text>
 
   <!-- ============ RIGHT: FreeRTOS ============ -->

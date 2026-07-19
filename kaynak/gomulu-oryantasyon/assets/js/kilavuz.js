@@ -276,7 +276,7 @@
         '<span class="kutlama-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" ' +
         'fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12.5l5 5L20 6"/></svg></span>' +
         '<div class="kutlama-metin"><strong>Yolculuk tamamlandı</strong>' +
-        '<span>Bütün görevler tamamlandı. Artık gerçek gömülü işleri üstlenecek donanıma sahipsin. Tebrikler.</span></div>' +
+        '<span>Bütün görevler işaretlendi. Artık gerçek gömülü işleri üstlenecek donanıma sahipsin. Tebrikler.</span></div>' +
         '<button type="button" class="kutlama-kapat" aria-label="Kapat">&times;</button>';
       document.body.appendChild(kutlamaAfis);
       kutlamaAfis.querySelector(".kutlama-kapat").addEventListener("click", function () {

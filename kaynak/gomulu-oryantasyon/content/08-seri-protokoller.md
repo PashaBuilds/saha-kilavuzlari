@@ -50,7 +50,7 @@ yoktur.
   önceden anlaşır.
 - **Adresleme:** yok — noktadan noktaya; bir TX hattı hep aynı RX
   hattına bağlıdır.
-- **Tipik hız:** kilobit/saniye mertebesi (bizim konfigürasyon: 115200
+- **Tipik hız:** kilobit/saniye mertebesi (kullandığımız konfigürasyon: 115200
   baud).
 - **Ne zaman seçilir:** az cihazlı, hızın kritik olmadığı basit seri
   bağlantı ya da konsol için.
@@ -60,14 +60,14 @@ yoktur.
 
 SPI (Serial Peripheral Interface); **SCLK** (saat), **MOSI** (Master
 Out Slave In), **MISO** (Master In Slave Out, MOSI'nin karşılığı) ve
-her slave için ayrı bir **CS** (Chip Select, aktif-düşük) hattı
-kullanan senkron bir protokoldür. Saati master üretir; her saat
+her slave (yönetilen çip) için ayrı bir **CS** (Chip Select, aktif-düşük) hattı
+kullanan senkron bir protokoldür. Saati master (hattı yöneten taraf) üretir; her saat
 vuruşunda bir bit kayar — MOSI ile MISO veriyi **aynı anda**
 taşıdığından SPI, doğası gereği **full-duplex**'tir (iki yönde
 eşzamanlı). Adresleme yoktur; "kiminle konuştuğunu", o slave'in CS
 hattını düşüğe çekerek belirlersin.
 
-{{svg:sema-17-spi-dalga.svg|Şekil 17 — SPI dalga biçimi: CS, SCLK, MOSI, MISO ve örnekleme kenarları; altta mod 0-3 için CPOL/CPHA farkları.}}
+{{svg:sema-17-spi-dalga.svg|Şekil 17 — SPI dalga şekli: CS, SCLK, MOSI, MISO ve örnekleme kenarları; altta mod 0-3 için CPOL/CPHA farkları.}}
 
 Saatin ayrıntısında dört varyant vardır — **mod 0-3** — iki
 parametrenin kombinasyonundan oluşur: **CPOL** (Clock Polarity — saat
@@ -81,7 +81,7 @@ ve ekranlarda kullanılır — saat frekansı onlarca MHz'e çıkabilir;
 UART'ın çok üstünde.
 
 :::saha-notu Hızlı Özet — SPI
-- **Tel sayısı:** 4 (SCLK, MOSI, MISO) + her slave için ayrı bir CS
+- **Tel sayısı:** 3 ortak hat (SCLK, MOSI, MISO) + her slave için ayrı bir CS
   hattı.
 - **Zamanlama:** senkron — saati master üretir, herkes ona bakar;
   MOSI/MISO aynı anda taşıdığından full-duplex.
@@ -92,7 +92,7 @@ UART'ın çok üstünde.
   ekran) ve slave başına bir pin ayırmak kabul edilebilirse.
 :::
 
-## I2C: İki Tel Üzerinde Koca Bir Ağaç
+## I2C: İki Tel Üzerinde Büyük Bir Ağaç
 
 I2C (Inter-Integrated Circuit) yalnızca iki tel kullanır — **SDA**
 (veri) ve **SCL** (saat) — ama bu iki telin üzerinde onlarca çip aynı
@@ -103,7 +103,7 @@ Hattı yükseğe taşıyan, harici bir **pull-up direncidir**. Hiçbir çip
 düşer — bu "wired-AND" davranışı, aynı anda konuşan iki çipin hattı
 elektriksel çatışmaya sokmasını fiziksel olarak imkânsız kılar.
 
-{{svg:sema-18-i2c-dalga.svg|Şekil 18 — I2C dalga biçimi: START koşulu, 7 bit adres + R/W, slave ACK'i, bir veri baytı, STOP; altta open-drain hat ve pull-up direncinin sezgisi.}}
+{{svg:sema-18-i2c-dalga.svg|Şekil 18 — I2C dalga şekli: START koşulu, 7 bit adres + R/W, slave ACK'i, bir veri baytı, STOP; altta open-drain hat ve pull-up direncinin sezgisi.}}
 
 Aynı open-drain mantığı SCL için de geçerlidir; verisini hazırlamak
 için zamana ihtiyaç duyan bir slave, saati kendisi düşükte tutabilir
@@ -131,7 +131,7 @@ I2C0** (MIO14-15), bir **PCA9544A** (4 kanallı mux, adres 0x75)
 üzerinden kartın INA226 güç monitörlerine dallanır; **PS I2C1**
 (MIO16-17), iki **TCA9548A** (8 kanallı switch, 0x74 ve 0x75) üzerinden
 EEPROM'a, saat üreteçlerine, SYSMON'a, DDR SPD'ye ve SFP modüllerine
-dallanır. Tek I2C denetleyicisinden koca bir ağaç.
+dallanır. Tek I2C denetleyicisinden geniş bir ağaç.
 
 :::saha-notu Hızlı Özet — I2C
 - **Tel sayısı:** 2 (SDA, SCL) — open-drain çıkış artı harici pull-up
@@ -139,7 +139,7 @@ dallanır. Tek I2C denetleyicisinden koca bir ağaç.
 - **Zamanlama:** senkron — saat SCL üzerinden taşınır; gerekirse slave,
   clock stretching ile saati kendisi uzatabilir.
 - **Adresleme:** var — 7 bit adres artı R/W biti; onlarca çip bir hattı
-  paylaşabilir, mux/switch cihazlarıyla dallardan koca bir ağaç
+  paylaşabilir, mux/switch cihazlarıyla dallardan büyük bir ağaç
   kurulur.
 - **Tipik hız:** standart modda 100 kHz, fast modda 400 kHz.
 - **Ne zaman seçilir:** az pinle (yalnızca 2 tel) çok sayıda düşük
@@ -160,7 +160,7 @@ SDA/SCL'ye logic analyzer ya da osiloskop bağlayıp START'ın gerçekten
 oluştuğunu, adresin doğru gittiğini ve ACK'in gelip gelmediğini gözle
 doğrulamak yazılımcının da işidir — yalnızca donanımcının aleti
 değildir. Dalga biçimini elle okuyabilme becerisi (bu bölümdeki
-şemaları tanımak), gerçek hattaki dalga biçimini okumaya doğrudan
+şemaları tanımak), gerçek hattaki dalga şeklini okumaya doğrudan
 aktarılır; ilk seferinde yabancı gelir, üçüncüsünde refleks olur.
 :::
 

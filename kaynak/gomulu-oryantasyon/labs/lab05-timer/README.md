@@ -1,4 +1,4 @@
-# lab05-timer — GÖREV 5: Timer ile Heartbeat
+# lab05-timer — Görev 5: Timer ile Heartbeat
 
 ## Ne yapar
 

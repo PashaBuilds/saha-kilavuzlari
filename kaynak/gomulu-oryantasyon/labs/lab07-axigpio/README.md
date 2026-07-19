@@ -1,4 +1,4 @@
-# lab07-axigpio — Görev 7 çözümü: PL'deki Bir IP Bloğuyla Konuş
+# lab07-axigpio — Görev 7: PL'deki Bir IP Bloğuyla Haberleş
 
 ## Ne yapar
 

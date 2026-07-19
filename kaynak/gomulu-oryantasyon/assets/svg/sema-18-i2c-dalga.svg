@@ -98,7 +98,7 @@
   <circle cx="230" cy="354" r="5" class="svg-kutu"/>
   <line x1="234" y1="350" x2="248" y2="340" stroke="var(--yesil)" stroke-width="2"/>
   <line x1="230" y1="359" x2="230" y2="372" class="svg-cizgi" stroke-width="2"/>
-  <text x="230" y="390" text-anchor="middle" class="svg-soluk" font-size="9">Aygıt A: bırakmış</text>
+  <text x="230" y="390" text-anchor="middle" class="svg-soluk" font-size="9">Cihaz A: bırakmış</text>
   <text x="230" y="402" text-anchor="middle" class="svg-soluk" font-size="9">(yüksek empedans)</text>
 
   <!-- Device B: pulling (closed) -->
@@ -106,7 +106,7 @@
   <circle cx="510" cy="354" r="5" class="svg-kutu"/>
   <line x1="510" y1="348" x2="510" y2="360" stroke="var(--kirmizi)" stroke-width="2"/>
   <line x1="510" y1="359" x2="510" y2="372" class="svg-cizgi" stroke-width="2"/>
-  <text x="510" y="390" text-anchor="middle" fill="var(--kirmizi)" font-size="9">Aygıt B: çekiyor</text>
+  <text x="510" y="390" text-anchor="middle" fill="var(--kirmizi)" font-size="9">Cihaz B: çekiyor</text>
   <text x="510" y="402" text-anchor="middle" fill="var(--kirmizi)" font-size="9">(hattı 0'a çeker)</text>
 
   <line x1="150" y1="372" x2="590" y2="372" class="svg-cizgi" stroke-width="2"/>

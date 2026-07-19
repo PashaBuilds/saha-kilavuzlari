@@ -25,8 +25,8 @@ doğrudan buradan üretilir). Platform, işletim sistemi seçimini de taşır:
 standalone (işletim sistemi yok; yolculuğumuzun çoğunda kullanılan) ya da
 freertos10_xilinx (Bölüm 10'da tanıştığın FreeRTOS BSP'si).
 
-**Application bileşeni** (uygulama), `main.c`'nin ve yol arkadaşı
-dosyaların yaşadığı yerdir. Bir platforma bağlanır — platformun ürettiği
+**Application bileşeni** (uygulama), `main.c`'nin ve ona eşlik eden
+dosyaların bulunduğu yerdir. Bir platforma bağlanır — platformun ürettiği
 sürücülere ve adreslere erişim kazanır — ama platformdan bağımsız
 derlenir. Aynı platformun üstüne birden çok application bileşeni
 kurabilirsin: biri deneme amaçlı bir "hello world" projesi, diğeri asıl
@@ -60,8 +60,8 @@ edip yarım saat kaybetmekten iyidir.
 ## Proje Açmak, Build Almak ve Run/Debug Konfigürasyonları
 
 Yeni bir application açtığında Vitis hazır şablonlar sunar; ilk deneme
-için **Hello World** şablonu idealdir — UART üzerinden bir selam mesajı
-basan, derlenmeye hazır minik bir proje. Kendi projelerinde bu şablondan
+için **Hello World** şablonu idealdir — UART üzerinden kısa bir karşılama mesajı
+basan, derlenmeye hazır küçük bir proje. Kendi projelerinde bu şablondan
 başlar, Görev 1'den beri yazdığın kaynak dosyaları içine taşırsın.
 
 Build almak, kaynak dosyalarını cross compiler (senin bilgisayarında
@@ -157,7 +157,7 @@ gerekirse, IDE içindeki XSCT konsol penceresi tam bunun için vardır.
 Şimdilik varlığını bilmen yeter; bir ekip arkadaşın "xsct'den bak"
 dediğinde nereye bakacağını bileceksin.
 
-{{svg:sema-24-debug-akisi.svg|Şekil 24 — Debug oturumu döngüsü: JTAG bağla → breakpoint koy → çalıştır/durdur → adım adım ilerle → register/bellek/değişken izle → hipotez kur → düzelt ve yeniden derle; kenarda "dört alet" rozetleri.}}
+{{svg:sema-24-debug-akisi.svg|Şekil 24 — Debug oturumu döngüsü: JTAG bağla → breakpoint koy → çalıştır/durdur → adım adım ilerle → register/bellek/değişken izle → hipotez kur → düzelt ve yeniden derle; kenarda "dört araç" rozetleri.}}
 
 :::saha-notu Dört Alet
 Bir hatanın peşine düştüğünde elinde dört alet vardır ve her biri farklı

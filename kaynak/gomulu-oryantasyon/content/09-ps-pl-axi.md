@@ -158,7 +158,7 @@ pinlerine bağlı bir AXI GPIO IP bloğu olduğu varsayılır (bkz.
    `labs/lab07-axigpio/src/main.c`'deki gibi doğrudan
    `volatile`/`Xil_Out32` register erişimiyle.
 5. Derin dalış (isteğe bağlı ama önerilir): aynı görevi Xilinx'in hazır
-   `XGpio` sürücüsüyle (`XGpio_Initialize`, `XGpio_SetDataDirection`,
+   `XGpio` driver'ıyla (`XGpio_Initialize`, `XGpio_SetDataDirection`,
    `XGpio_DiscreteWrite`) yeniden yaz; iki yaklaşımın da birebir aynı
    register trafiğini ürettiğini gözle.
 
@@ -193,7 +193,7 @@ kültürünün parçasıdır.
 ::cozum Tam Çözüm — lab07-axigpio
 `labs/lab07-axigpio/src/main.c`, TRI/DATA register çiftine volatile
 pointer ile erişir; dosyanın sonundaki yorum bloğu aynı işin `XGpio`
-sürücüsüyle nasıl yapılacağını gösterir.
+driver'ıyla nasıl yapılacağını gösterir.
 {{kod:lab07-axigpio/src/main.c}}
 ::/
 :::

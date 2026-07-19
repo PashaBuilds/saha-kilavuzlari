@@ -1,8 +1,8 @@
-# lab08-freertos — Görev 8 çözümü: İlk FreeRTOS Uygulaman
+# lab08-freertos — Görev 8: İlk FreeRTOS Uygulaman
 
 ## Ne yapar
 
-Üç FreeRTOS task'i birlikte çalışır:
+Üç FreeRTOS task'ı birlikte çalışır:
 
 - **heartbeatTask** — DS50 LED'ini (PS MIO23) `vTaskDelay` ile 500 ms
   periyotla yakıp söndürür (busy loop yok).

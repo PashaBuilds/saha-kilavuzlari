@@ -1,8 +1,8 @@
-# lab06-i2c — GÖREV 6: I2C ile Gerçek Bir Çiple Konuş
+# lab06-i2c — Görev 6: I2C ile Gerçek Bir Çiple Konuş
 
 ## Ne yapar
 
-PS I2C0 (MIO14-15) üzerinden gerçek bir I2C ağacına iniyoruz:
+PS I2C0 (MIO14-15) üzerinden gerçek bir I2C ağacına iner:
 
 ```
 PS I2C0  →  PCA9544A mux (U23, adres 0x75), kanal 0  →  INA226 (adres 0x40, VCCINT)

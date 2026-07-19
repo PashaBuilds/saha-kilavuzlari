@@ -30,9 +30,9 @@ C programındaki her değişken şu üç bölgeden birinde yaşar:
 
 {{svg:sema-12-bellek-yerlesimi.svg|Şekil 12 — Stack/heap/statik bellek yerleşimi: ELF dosyasının .text/.rodata/.data/.bss bölümleri linker script aracılığıyla RAM'e yerleştirilir; heap yukarı, stack aşağı büyür.}}
 
-:::ekip-notu Bizim Ortamda: malloc Ya Hiç, Ya Yalnızca Açılışta
-Masaüstü uygulamada `malloc`/`free` serbestçe kullanılır; arkanı işletim
-sistemi toplar. Bare-metal geliştirmede bu emniyet ağı yok:
+:::ekip-notu Bizim Ortamımızda: malloc Ya Hiç, Ya Yalnızca Açılışta
+Masaüstü uygulamada `malloc`/`free` serbestçe kullanılır; temizliği işletim
+sistemi üstlenir. Bare-metal geliştirmede bu emniyet ağı yok:
 fragmentation (parçalanma), öngörülemeyen gecikme (heap yöneticisi bir
 çağrının ne kadar süreceği konusunda garanti vermez) ve "bellek bitti,
 haber yok" senaryosunun tamamı senin sorumluluğundadır. Ekipteki pratik
@@ -73,8 +73,8 @@ kullanılan veriyi CPU'ya yakın tutarak bu açığı daraltır. Normal
 koşullarda cache tamamen şeffaftır — sen hiçbir şey yapmadan işini
 görür, programın hızlanır.
 
-Bu şeffaflık, belleğe tek yazıcı — CPU — eriştiği sürece geçerlidir.
-Sorun, sahneye **ikinci bir yazıcı** girdiğinde başlar: örneğin bir
+Bu şeffaflık, belleğe yazan tek birim CPU olduğu sürece geçerlidir.
+Sorun, sahneye **ikinci bir yazan birim** girdiğinde başlar: örneğin bir
 **DMA** (Direct Memory Access; CPU'yu aradan çıkarıp veriyi doğrudan
 belleğe taşıyan donanım birimi) motoru ya da PL'deki bir IP bloğu
 DDR'ye doğrudan yazar. CPU'nun cache'i bu yazmadan habersizdir; CPU o
@@ -128,7 +128,7 @@ kullanırsın. Şimdilik kavrama aşina olman yeterli — Bölüm 9'da DMA ele
 alınırken yeniden karşına çıkacak.
 
 :::tuzak "Debug'da Çalışıyor, Release'te Çalışmıyor" — Tanıdık Bir Kalıp
-Bu cümleyi gömülü kariyerin boyunca defalarca duyacak — ve kuracaksın.
+Bu cümleyi gömülü kariyerin boyunca defalarca duyacaksın — ve kuracaksın.
 İki yaygın kök nedeni vardır; ikisi de bu iki bölümde işlenen konulara
 dayanır. **(1) Eksik `volatile`** — debug derlemesi genellikle `-O0`
 (optimizasyonsuz) yapılır; derleyici görünüşte gereksiz okuma/yazmaları
@@ -159,7 +159,7 @@ Bölüm 6 okundu; Görev 2 tamamlandı (`uart_ps` modülü hazır ve
 [Adımlar]
 1. Bölüm 2'den hatırla: kartın 8 LED'i, 5 butonu ve DIP switch'i PL
    pinlerindedir — bu görev yine yalnızca tek PS butonunu (SW19) ve tek
-   PS LED'ini (DS50) kullanır; 8 LED'li kayan ışık deseni Görev 7'ye
+   PS LED'ini (DS50) kullanır; 8 LED'lik yürüyen ışık deseni Görev 7'ye
    ayrıldı.
 2. `button_ps.h/.c` modülünü yaz: `buttonInit()` içinde, Görev 1'den
    tanıdığın `XGpioPs` sürücüsünü `LookupConfig` + `CfgInitialize` ile

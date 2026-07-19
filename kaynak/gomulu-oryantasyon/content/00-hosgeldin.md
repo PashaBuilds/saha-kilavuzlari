@@ -1,6 +1,6 @@
 # Bölüm 0 — Hoş Geldin
 
-Ekibe hoş geldin. Bu doküman, önümüzdeki iki haftanın yol arkadaşı.
+Ekibe hoş geldin. Bu doküman önümüzdeki iki hafta boyunca sana eşlik edecek.
 
 Masanda (ya da yakında masanda olacak) bir **ZCU111** geliştirme kartı var:
 çekirdeğinde bir Zynq UltraScale+ RFSoC (Radio Frequency System-on-Chip —
@@ -53,7 +53,7 @@ Somut olarak, bu dokümanı bitirdiğinde şunları yapabileceksin:
 - Vitis'te sıfırdan bare-metal (işletim sistemsiz) bir proje oluşturmak,
   derlemek, JTAG üzerinden karta yüklemek, UART'tan çıktı almak ve
   debugger (hata ayıklayıcı) ile adım adım yürütmek.
-- Register map (register tablosu) okuyup `volatile` işaretçilerle donanım
+- Register map (register tablosu) okuyup `volatile` pointer'larla donanım
   programlamak; hem polling (sürekli sorgulama) hem interrupt (kesme)
   tabanlı yaklaşımı uygulamak.
 - I2C, SPI ve UART'ın kablo düzeyinde nasıl işlediğini anlatmak ve

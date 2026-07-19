@@ -1,4 +1,4 @@
-# lab03-button — GÖREV 3: Butonu Oku (Polling)
+# lab03-button — Görev 3: Butonu Oku (Polling)
 
 ## Ne yapar
 
@@ -9,7 +9,7 @@ basma sayısını UART'a basar.
 Kartın 8 kullanıcı LED'i, 5 butonu ve DIP switch'i **PL pinlerindedir**
 (Bölüm 2) — bitstream olmadan PS'ten erişilemezler. Bu yüzden bu görev
 de yalnızca tek PS butonunu (SW19) ve tek PS LED'ini (DS50) kullanır;
-8'li LED karaşimşeği, PL kapısı Bölüm 9 / Görev 7'de açılınca gelir.
+8 LED'lik yürüyen ışık deseni, PL kapısı Bölüm 9 / Görev 7'de açılınca gelir.
 
 `button_ps` modülü (`button_ps.h`), `_gorev-zinciri.md` sözleşmesindeki
 imzalarla birebir aynıdır:

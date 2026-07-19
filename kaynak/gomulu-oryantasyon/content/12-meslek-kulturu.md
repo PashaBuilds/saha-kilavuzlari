@@ -47,8 +47,8 @@ bir değişkenin ne tuttuğunu, bir döngünün kaç kez döndüğünü görür.
 Yorumun görevi farklıdır: **neden**i açıklamak, **ne**yi değil.
 `i++; /* i'yi bir artir */` gibi bir yorum zaman kaybıdır; ama
 `/* once GIC etkinlesmeli, yoksa TTC interrupt'i hic gelmez */` gibi bir
-yorum, bir sonraki kişiye (altı ay sonra o kişi büyük ihtimalle sensin)
-saatlerce sürecek bir yeniden keşfi bağışlar. Görev 10'un acı dersi
+yorum, bir sonraki kişiyi (altı ay sonra o kişi büyük ihtimalle sensin)
+saatler sürecek bir yeniden keşiften kurtarır. Görev 10'un acı dersi
 burada yeniden karşına çıkıyor: yanıltıcı ya da eksik yorum, hiç yorum
 olmamasından daha tehlikelidir — "bu bayrağı ana döngü okuyor" diyen
 satırın `volatile`'ı unutmuş olabileceğini hiçbir yorum söyleyemez.
@@ -65,7 +65,7 @@ ağırlığı özellikle büyüktür:
   her biri kendi branch'inde, tek başına review edilebilecek boyutta
   kalmalı.
 - **Anlamlı commit mesajı.** "fix", "wip", "asdf" gibi mesajlar, altı ay
-  sonra `git log`a bakan kişiye (sana dahil) hiçbir şey söylemez.
+  sonra `git log`a bakan kişiye (sen dahil) hiçbir şey söylemez.
   "TTC0 interrupt maskesi düzeltildi: yanlış bit sayısı frekansı iki
   katına çıkarıyordu" gibi bir mesaj hem o anki niyetini kayda geçirir
   hem de aynı hatayı arayan bir sonraki kişiye doğrudan cevap verir.

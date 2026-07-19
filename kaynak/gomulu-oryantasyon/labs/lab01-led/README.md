@@ -1,4 +1,4 @@
-# lab01-led — Görev 1: LED'i Yak (Merhaba Donanım)
+# lab01-led — Görev 1: LED Yak (Merhaba Donanım)
 
 ## Ne yapar
 

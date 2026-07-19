@@ -82,7 +82,7 @@ Bölüm 10 ve sonraki görevlerde en sık gereken çağrılar.
 | Çağrı | Ne yapar |
 |---|---|
 | `xTaskCreate(...)` | Yeni bir task oluşturur ve scheduler'a kaydeder |
-| `vTaskDelete(handle)` | Task'ı sonlandırır (`NULL` ile çağırılırsa çağıran task kendini siler) |
+| `vTaskDelete(handle)` | Task'ı sonlandırır (`NULL` ile çağrılırsa çağıran task kendini siler) |
 | `vTaskDelay(ticks)` | Çağıran task'ı belirtilen tick sayısı kadar bloklar, CPU'yu bırakır |
 | `vTaskDelayUntil(...)` | Sabit periyotlu gecikme; zamanlama kaymasını (drift) önler |
 | `xQueueCreate(length, size)` | Belirtilen kapasitede mesaj kuyruğu oluşturur |

@@ -18,7 +18,7 @@ değiştirir.
 
 {{svg:sema-07-adres-kapi.svg|Şekil 7 — "Adres = kapı numarası": bir okuma/yazma işleminin CPU'dan adres yolu üzerinden çevre birimi register'ına giden yolu.}}
 
-Benzetmek gerekirse durum sokak adresi bulmaya benzer: CPU adres yoluna
+Durum, sokak adresi bulmaya benzer: CPU adres yoluna
 bir "kapı numarası" (adres) koyar, o numaradaki "bina" (çevre birimi)
 cevap verir. `0xFF00_0000` numaralı kapıyı çalarsan UART0 açar;
 `0xFF0A_0000` numaralı kapıyı çalarsan GPIO açar. Yanlış numara
@@ -73,7 +73,7 @@ gerçek register map'inden küçük bir kesit:
 
 Dört sütunun dördü de kritiktir: **offset**, taban adrese eklenecek
 sayıdır; **erişim**, register'la ne yapabileceğini söyler; **reset
-değeri**, kart enerjilendiği anda register'da ne bulacağını söyler;
+değeri**, karta güç verildiği anda register'da ne bulacağını söyler;
 **açıklama**, register'ın ne işe yaradığını. Bunları okumadan kod
 yazmak, bir cihazı kılavuzunu okumadan devreye almaya benzer — bazen
 tutar, çok daha sık saatlerine mal olur.
@@ -89,7 +89,7 @@ actual_address = base_address + offset
 Örnek: GPIO denetleyicisinin taban adresi `0xFF0A_0000`. Bank 0'ın veri
 register'ı (DATA_0) offset `0x40`'ta. Gerçek adres:
 `0xFF0A_0000 + 0x40 = 0xFF0A_0040`. Bu toplamayı her seferinde elle
-yapman gerekmez — birazdan göreceğin gibi sürücü fonksiyonları ya da
+yapman gerekmez — birazdan göreceğin gibi driver fonksiyonları ya da
 hazır sabitler senin yerine yapar — ama formülün kendisini anlamadan
 register map okumak mümkün değildir.
 
@@ -112,7 +112,7 @@ arasında biraz farklıdır:
 
 - **Klasik akış** (Vitis Classic, 2023.1 ve öncesi): her aygıt bir
   **DEVICE_ID** ile tanınır, örn. `XPAR_XUARTPS_0_DEVICE_ID`. Bu
-  kimliği sürücünün `LookupConfig` fonksiyonuna verirsin; fonksiyon
+  kimliği driver'ın `LookupConfig` fonksiyonuna verirsin; fonksiyon
   taban adresi içeren yapılandırma yapısını döndürür.
 - **SDT akışı** (System Device Tree — Vitis Unified IDE'nin kullandığı
   güncel yöntem): aygıtlara doğrudan taban adresle atıf yapılır, örn.
@@ -129,7 +129,7 @@ güncellenir.
 
 Şimdi tüm bu kavramları tek bir somut işleme bağlayalım: 'A'
 karakterini UART0 (`0xFF00_0000`) üzerinden register düzeyinde
-göndermek. Sürücü fonksiyonlarının arkasında olan tam olarak şudur:
+göndermek. Driver fonksiyonlarının arkasında olan tam olarak şudur:
 
 1. **SR register'ını oku** (taban + `0x2C`).
 2. **TXFULL bitini kontrol et** (mask `0x10`). Bit 1 ise gönderim
@@ -143,8 +143,9 @@ Gerisini donanım devralır: karakteri fiziksel TX pininden seri olarak
 dışarı aktarır. Bu üç adım — durumu oku, bekle, yaz — gömülü
 sistemlerde sayamayacağın kadar çok karşına çıkacak bir desendir.
 
-Yeterince kuram biriktirdin. Sıra uygulamada: ilk görevin, bu bölümdeki
-register mantığını gerçek bir LED'e uygulamak.
+Yeterince teori biriktirdin. İlk görevin, bu bölümdeki register
+mantığını gerçek bir LED'e uygulamak — ama önce görevde kullanacağın
+aracı kısaca tanıman gerekiyor.
 
 ## Vitis'e İlk Bakış: Proje Açmak, Derlemek, Karta Yüklemek
 
@@ -164,9 +165,9 @@ tasarlar, sen listeden seçersin.
 
 Platform seçiliyken yeni bir **empty application** projesi açarsın:
 "empty application" şablonu örnek kod getirmez — sıfırdan doldurduğun
-bir iskelet verir ve bu program boyunca hemen her zaman seçeceğin
+bir iskelet verir ve bu yolculuk boyunca hemen her zaman seçeceğin
 şablon budur. Vitis bu projeyi seçtiğin platforma otomatik bağlar ve
-hangi işlemci çekirdeğinde çalışacağını sorar (bu program boyunca hemen
+hangi işlemci çekirdeğinde çalışacağını sorar (bu yolculuk boyunca hemen
 her zaman APU'nun Cortex-A53 çekirdeklerinden biri olacak).
 
 Proje açıldıktan sonra kaynak dosyalarını projenin `src/` klasörüne
@@ -213,7 +214,7 @@ bağlantısı hazır).
    "Task 1" satırının basıldığını doğrula.
 
    :::derin-dalis Aynı İşi Doğrudan Register'larla Yapmak
-   `XGpioPs_WritePin` gibi sürücü fonksiyonları, Bölüm 4'te öğrendiğin
+   `XGpioPs_WritePin` gibi driver fonksiyonları, Bölüm 4'te öğrendiğin
    taban+offset aritmetiğini ve read-modify-write işlemini senin yerine
    yapar. Bu çağrıların arkasında ne olduğunu görmek istersen, aynı
    LED'i `volatile` bir pointer üzerinden (volatile — derleyici bu
@@ -256,7 +257,7 @@ Terminalde hiçbir şey görünmüyorsa Görev 0'daki port/baud ayarlarına
 dön — kod sorunsuz çalışırken terminal yanlış porta bakıyor olabilir.
 ::/
 ::cozum Tam Çözüm — lab01-led
-Aşağıdaki dosya DS50'yi `XGpioPs` sürücüsüyle 500 ms periyotla yakıp
+Aşağıdaki dosya DS50'yi `XGpioPs` driver'ıyla 500 ms periyotla yakıp
 söndürür; klasik (DEVICE_ID) akışını kullanır, SDT farkı yorumda
 belirtilmiştir.
 {{kod:lab01-led/src/main.c}}

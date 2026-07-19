@@ -1,4 +1,4 @@
-# lab09-queue — Görev 9 çözümü: Queue ile Producer/Consumer
+# lab09-queue — Görev 9: Queue ile Üretici/Tüketici
 
 ## Ne yapar
 
@@ -54,6 +54,6 @@ Terminale düzenli aralıklarla zaman damgalı mV satırları akar:
 
 Producer ile consumer farklı hızlarda koşsa bile (örneğin consumer
 UART'a yazarken kısa süre geride kalsa), kuyruk tampon görevi görür;
-veri kaybolmaz — kuyruk gerçekten dolarsa Producer bunu sessizce veri
-atmak yerine `[Producer] queue full, this measurement was dropped`
+veri kaybolmaz — kuyruk gerçekten dolarsa producer, veriyi sessizce atmak
+yerine bunu `[Producer] queue full, this measurement was dropped`
 satırıyla açıkça bildirir.

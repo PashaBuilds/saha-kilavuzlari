@@ -55,7 +55,7 @@
   <text x="460" y="196" text-anchor="middle" class="svg-metin" font-size="11">olay</text>
 
   <path d="M468 261 L520 261" stroke="var(--yesil)" stroke-width="1.5" fill="none" marker-end="url(#s14-ok-yesil)"/>
-  <text x="580" y="265" text-anchor="middle" fill="var(--yesil)" font-size="11" font-weight="600">anında tepki — gecikme yok</text>
+  <text x="580" y="265" text-anchor="middle" fill="var(--yesil)" font-size="11" font-weight="600">tepki mikrosaniyeler içinde</text>
 
   <defs>
     <marker id="s14-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">

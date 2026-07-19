@@ -1,7 +1,7 @@
 # Bölüm 7 — Interrupt: Olay Gerçekleştiğinde Haber Almak
 
 Görev 3'te SW19'u polling ile okudun: ana döngü durmaksızın
-`buttonRead()` çağırıp fiilen "basıldı mı, basıldı mı, basıldı mı" diye
+`buttonRead()` çağırıp fiilen "basıldı mı" diye
 sordu. Çalıştı, ama bir bedeli vardı — ana döngünün başka işi olmadığı
 için belki fark etmedin. Bu bölüm o bedeli görünür kılar ve onu ortadan
 kaldıran mekanizmayı tanıtır: **interrupt** (kesme).
@@ -21,7 +21,7 @@ var:
   fark edilme ânı arasına bir **gecikme** girer.
 
 Sistem büyüyüp izlenecek "olay" sayısı arttıkça (buton basışları, timer
-tikleri, UART'tan gelen veri, I2C işlem tamamlanmaları...), polling'e
+tick'leri, UART'tan gelen veri, I2C işlem tamamlanmaları...), polling'e
 giden pay da büyür; CPU zamanının giderek artan bir bölümü "sormakla"
 tükenir. {{svg:sema-14-polling-interrupt.svg|Şekil 14 — Polling ile interrupt karşılaştırması: aynı olayın iki CPU çalışma kipinde fark edilme hızı.}}
 
@@ -34,7 +34,7 @@ böler, kısa süreliğine yönlendirir, CPU sonra kaldığı yerden sürer.
 Polling, kargonun gelip gelmediğini birkaç dakikada bir kapıya çıkıp
 denetlemektir. Interrupt, kapıya zil takmaktır: kargo gelene kadar
 kendi işini yaparsın; zil çaldığında — donanım seni böldüğünde — kapıya
-gidersin. Zilin kendisi bir donanım parçasıdır; bizim ortamda o
+gidersin. Zilin kendisi bir donanım parçasıdır; bizim ortamımızda o
 donanımın adı **GIC**'tir.
 :::
 
@@ -102,7 +102,7 @@ giriyordur. Acknowledge eksikliği, bu meslekte "neden hiçbir şey
 ilerlemiyor" sorusunun klasik kök nedenlerindendir.
 :::
 
-{{svg:sema-15-interrupt-yasam.svg|Şekil 15 — Kesme yaşam döngüsü: olaydan ana döngünün bayrağı işlemesine altı adım; ISR'yi kısa tutma zorunluluğu ve yanlış bir örnek vurgulanıyor.}}
+{{svg:sema-15-interrupt-yasam.svg|Şekil 15 — Interrupt yaşam döngüsü: olaydan ana döngünün bayrağı işlemesine altı adım; ISR'yi kısa tutma zorunluluğu ve yanlış bir örnek vurgulanıyor.}}
 
 ## Interrupt Latency: "Anında" Ne Kadar Anında?
 
@@ -230,7 +230,7 @@ bayrak set eder; heartbeat ile basış sayacını ana döngüde yönetir.
 
 :::gorev no=5 zorluk=2 baslik="Timer ile Heartbeat" kisa="Timer Heartbeat"
 [Hedef]
-TTC0 kanal 0'ı 1 Hz periyodik kesme üretecek şekilde kur; her tikte
+TTC0 kanal 0'ı 1 Hz periyodik kesme üretecek şekilde kur; her tick'te
 UART'a bir satır yazdır ve DS50'yi heartbeat deseninde sür — tamamı
 kesme güdümlü, ana döngüde bekleme yok.
 
@@ -256,7 +256,7 @@ kısmı okundu.
 5. Sayacı `XTtcPs_Start` ile başlat. ISR'de yalnızca `G_ucTickFlag = 1`
    yap ve durumu `XTtcPs_InterruptHandler` üzerinden (ya da ISR bitini
    doğrudan okuyarak) acknowledge et.
-6. `main()` döngüsünde bayrağı görünce: tik sayacını artır, UART'a
+6. `main()` döngüsünde bayrağı görünce: tick sayacını artır, UART'a
    `"tick N"` yaz ve DS50'yi toggle et — heartbeat etkisini yaratan
    budur.
 
@@ -270,21 +270,21 @@ görülür, düzenli bir heartbeat ritmiyle yanıp söner.
   kodun hesapladığıyla tutuyor mu?
 - Interval değerini yanlışlıkla iki katına çıkarsaydın (örneğin
   `-1`'i unutmak gibi bir hatayla değil, düpedüz iki katını yazarak),
-  tik hızı hangi yöne ve ne kadar değişirdi?
+  tick hızı hangi yöne ve ne kadar değişirdi?
 - Prescaler'ı hiç kullanmadık — 32 bitlik interval register'ı bunu
-  neden gereksiz kıldı? Çok daha düşük bir tik frekansında (örneğin
+  neden gereksiz kıldı? Çok daha düşük bir tick frekansında (örneğin
   0.001 Hz) da böyle olur muydu?
 
 [Takıldıysan]
-::ipucu İpucu 1 — Hiç Tik Gelmiyor ya da Tek Tik, Sonrası Yok
+::ipucu İpucu 1 — Hiç Tick Gelmiyor ya da Tek Tick, Sonrası Yok
 `XTtcPs_Start` çağrısını ya da "interval mode" seçeneğini
 (`XTTCPS_OPTION_INTERVAL_MODE`) unutmak yaygın bir hatadır — kip
 ayarlanmazsa sayaç, interval'i geçip serbestçe saymaya devam edebilir
 ve kesme üretmez.
 ::/
-::ipucu İpucu 2 — Hız Yanlış (Tik Çok Hızlı ya da Çok Yavaş)
+::ipucu İpucu 2 — Hız Yanlış (Tick Çok Hızlı ya da Çok Yavaş)
 `XPAR_XTTCPS_0_CLOCK_HZ` makrosunun gerçek değerini `xparameters.h`'de
-bul ve hesabı elle doğrula; interval hesabındaki `-1`'i unutmak tik
+bul ve hesabı elle doğrula; interval hesabındaki `-1`'i unutmak tick
 periyodunu gözle fark edilir ölçüde kaydırmaz, ama düz bir aritmetik
 hata (yanlış makro, yanlış birim) genellikle büyük sapma yaratır.
 ::/

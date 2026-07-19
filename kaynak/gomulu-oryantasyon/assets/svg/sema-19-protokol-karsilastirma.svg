@@ -97,7 +97,7 @@
   <g class="svg-soluk" font-size="10.5" text-anchor="middle">
     <text x="632" y="105">2 (SDA, SCL)</text>
     <text x="632" y="119">+ GND</text>
-    <text x="632" y="164">100 kHz standart /</text>
+    <text x="632" y="164">100 kHz standard-mode /</text>
     <text x="632" y="178">400 kHz fast-mode</text>
     <text x="632" y="211">ortak veriyolu</text>
     <text x="632" y="225">(multi-drop), adresle seçim</text>

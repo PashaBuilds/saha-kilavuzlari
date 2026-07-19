@@ -42,7 +42,7 @@
   <rect x="388" y="60" width="110" height="90" rx="8" class="svg-kutu" style="stroke:var(--altin); stroke-width:2"/>
   <text x="443" y="90" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">ISR</text>
   <text x="443" y="106" text-anchor="middle" class="svg-soluk" font-size="10">flag'i set et</text>
-  <text x="443" y="120" text-anchor="middle" class="svg-soluk" font-size="10">+ interrupt'ı ack'le</text>
+  <text x="443" y="120" text-anchor="middle" class="svg-soluk" font-size="10">+ interrupt'ı acknowledge et</text>
   <text x="443" y="136" text-anchor="middle" fill="var(--yesil)" font-size="10">bu kadar, çık</text>
 
   <path d="M498 105 L512 105" stroke="var(--vurgu)" stroke-width="2" marker-end="url(#s15-ok)"/>

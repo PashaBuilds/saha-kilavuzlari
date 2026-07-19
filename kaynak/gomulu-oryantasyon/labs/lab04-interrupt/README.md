@@ -1,4 +1,4 @@
-# lab04-interrupt — GÖREV 4: Buton Interrupt'ı
+# lab04-interrupt — Görev 4: Buton Interrupt'ı
 
 ## Ne yapar
 

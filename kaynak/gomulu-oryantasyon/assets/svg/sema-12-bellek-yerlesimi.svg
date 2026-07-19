@@ -1,5 +1,5 @@
-<svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s13-baslik">
-  <title id="s13-baslik">Şekil 12 — Stack/heap/statik bellek yerleşimi ve linker script eşlemesi: ELF bölümlerinin RAM'de nereye indiği</title>
+<svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s12-baslik">
+  <title id="s12-baslik">Şekil 12 — Stack/heap/statik bellek yerleşimi ve linker script eşlemesi: ELF bölümlerinin RAM'de nereye indiği</title>
   <text x="115.0" y="28" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">application.elf</text>
   <text x="535.0" y="28" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">RAM (DDR / OCM)</text>
   <rect x="460" y="46" width="150" height="328" rx="6" class="svg-kutu"/>
