@@ -1,81 +1,75 @@
-# lab10-bughunt — Bug Hunt (Task 10)
+# lab10-bughunt — Bug Hunt (Görev 10)
 
-This project was left behind by the intern who preceded you. Before
-leaving the team, this was their last piece of work: a TTC0-based
-counter, the SW19 button, and UART status lines — sounds familiar,
-because it is built from the same pieces as Task 4 and Task 5. The code
-**compiles** and **loads** onto the board. But when you run the project,
-you will see that something is going wrong in four places.
+Bu proje senden önceki stajyerden kaldı. Ekipten ayrılmadan önceki son
+işiydi: TTC0 tabanlı bir sayaç, SW19 butonu ve UART durum satırları —
+tanıdık geliyor, çünkü Görev 4 ve Görev 5 ile aynı parçalardan kurulu.
+Kod **derleniyor** ve karta **yükleniyor**. Ama projeyi çalıştırınca
+dört yerde bir şeylerin ters gittiğini göreceksin.
 
-What is asked of you: act like a detective. Do not stare at the symptom
-and change code blindly; first decide which weapon (printf, LED,
-debugger, logic analyzer — Chapter 11) fits which symptom, then follow
-the trail.
+Senden istenen: dedektif gibi davran. Belirtiye bakıp körlemesine kod
+değiştirme; önce hangi silahın (printf, LED, debugger, logic analyzer —
+Bölüm 11) hangi belirtiye uyduğuna karar ver, sonra izi sür.
 
-> **Find it yourself first.** This README gives you the **specification**
-> and the **observed symptoms**, not the solution. You can reach the
-> solution through the hint ladder of the Task 10 card in Chapter 11, or
-> through `SOLUTION.md` in this folder — but do not jump there before
-> struggling on your own for at least half an hour. The real learning
-> happens when you find the bug yourself.
+> **Önce kendin bul.** Bu README sana çözümü değil, **spesifikasyonu**
+> ve **gözlenen belirtileri** verir. Çözüme Bölüm 11'deki Görev 10
+> kartının ipucu merdiveninden ya da bu klasördeki `SOLUTION.md`'den
+> ulaşabilirsin — ama en az yarım saat kendi başına didinmeden oraya
+> atlama. Gerçek öğrenme, hatayı kendin bulduğunda gerçekleşir.
 
-## Project structure
+## Proje yapısı
 
 ```
 lab10-bughunt/
-├── README.md            (this file)
-├── SOLUTION.md              (full solution to the 4 bugs — the bottom of the hint ladder)
+├── README.md            (bu dosya)
+├── SOLUTION.md              (4 hatanın tam çözümü — ipucu merdiveninin dibi)
 └── src/
-    ├── main.c            main loop, GIC setup, system health summary
-    ├── uart_ps.h/.c       minimal driver for PS UART0 (register level)
-    ├── gpio_led_button.h/.c  DS50 LED + SW19 button, interrupt-based
-    ├── timer.h/.c   TTC0 channel 0, interrupt once per second
-    └── lscript.ld         stack/heap sizing section (see note below)
+    ├── main.c            ana döngü, GIC kurulumu, sistem sağlık özeti
+    ├── uart_ps.h/.c       PS UART0 için minimal sürücü (register seviyesi)
+    ├── gpio_led_button.h/.c  DS50 LED + SW19 buton, interrupt tabanlı
+    ├── timer.h/.c   TTC0 kanal 0, saniyede bir interrupt
+    └── lscript.ld         stack/heap boyutlandırma bölümü (aşağıdaki nota bak)
 ```
 
-## How to build
+## Nasıl derlenir
 
-In Vitis, open a new **application component** (platform: standalone,
-processor: `psu_cortexa53_0`, empty template — do not select Hello
-World, you will use your own sources). Copy all files under `src/` into
-the project's source folder, and build. Compare `lscript.ld` against
-your project's own linker script's relevant STACK/HEAP section — Vitis
-generates a complete `lscript.ld` for you from the platform; the file
-here is only a summary showing the part relevant to this lab.
+Vitis'te yeni bir **application component** aç (platform: standalone,
+işlemci: `psu_cortexa53_0`, boş şablon — Hello World seçme, kendi
+kaynaklarını kullanacaksın). `src/` altındaki tüm dosyaları projenin
+kaynak klasörüne kopyala ve build et. `lscript.ld`'yi kendi projenin
+linker script'indeki ilgili STACK/HEAP bölümüyle karşılaştır — Vitis,
+platformdan senin için eksiksiz bir `lscript.ld` üretir; buradaki dosya
+yalnızca bu lab'i ilgilendiren kısmı gösteren bir özettir.
 
-## Specification (expected behavior)
+## Spesifikasyon (beklenen davranış)
 
-- **TTC0 channel 0** prints a `tick N` line to UART once per second (N
-  an increasing counter).
-- Pressing **SW19** prints a `button: M` line to UART (M the total press
-  count) and toggles the **DS50** LED's state.
-- The counters (`tick` and `button`) always increment correctly and
-  completely.
-- The system runs stably, uninterrupted, for hours.
+- **TTC0 kanal 0**, saniyede bir UART'a `tick N` satırı basar (N artan
+  bir sayaç).
+- **SW19**'a basınca UART'a `button: M` satırı basılır (M toplam basış
+  sayısı) ve **DS50** LED'inin durumu toggle'lanır.
+- Sayaçlar (`tick` ve `button`) her zaman doğru ve eksiksiz artar.
+- Sistem saatlerce kesintisiz, kararlı çalışır.
 
-## Observed symptoms
+## Gözlenen belirtiler
 
-The intern's notes read as follows (complaints you need to verify
-yourself):
+Stajyerin notları şöyle (kendin doğrulaman gereken şikâyetler):
 
-1. **"The button does not respond at all in the optimized build."** In
-   the debug build (`-O0`) the button appears to work, but in the
-   release build (`-O2`) nothing happens when SW19 is pressed.
-2. **"Ticks sometimes skip or arrive late."** `tick N` lines mostly come
-   in correctly, but occasionally a number is skipped or a line comes
-   out later than expected — especially worsening when the button is
-   pressed frequently.
-3. **"DS50 lights up once and never turns off again."** On the first
-   button press the LED lights up, but on subsequent presses, when it
-   should turn off, it stays lit.
-4. **"The system crashes randomly after a few minutes."** Sometimes
-   five minutes, sometimes twenty — there seems to be no fixed trigger,
-   but sooner or later the system locks up or starts printing
-   nonsensical values.
+1. **"Optimize build'de buton hiç tepki vermiyor."** Debug build'de
+   (`-O0`) buton çalışır görünüyor, ama release build'de (`-O2`)
+   SW19'a basınca hiçbir şey olmuyor.
+2. **"Tick'ler bazen atlıyor ya da geç geliyor."** `tick N` satırları
+   çoğunlukla düzgün geliyor, ama ara sıra bir numara atlanıyor ya da
+   bir satır beklenenden geç çıkıyor — özellikle butona sık basılınca
+   kötüleşiyor.
+3. **"DS50 bir kez yanıyor, bir daha hiç sönmüyor."** İlk buton
+   basışında LED yanıyor, ama sonraki basışlarda sönmesi gerekirken
+   yanık kalıyor.
+4. **"Sistem birkaç dakika sonra rastgele çöküyor."** Bazen beş dakika,
+   bazen yirmi — sabit bir tetikleyici yok gibi görünüyor, ama er ya da
+   geç sistem kilitleniyor ya da anlamsız değerler basmaya başlıyor.
 
-## Task
+## Görev
 
-Find the four different root causes behind these four symptoms, fix
-them, and write a one-sentence root cause for each. The full task
-description, success criteria, and self-check questions are on the
-**Task 10 — Bug Hunt** card in Chapter 11.
+Bu dört belirtinin arkasındaki dört farklı kök nedeni bul, düzelt ve
+her biri için tek cümlelik bir kök neden yaz. Görevin tam tanımı,
+başarı kriterleri ve kendini sına soruları Bölüm 11'deki
+**Görev 10 — Bug Hunt** kartındadır.

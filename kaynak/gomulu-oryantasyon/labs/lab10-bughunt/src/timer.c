@@ -1,11 +1,10 @@
 /* ============================================================
- * timer.c — TTC0 channel 0, interrupt once per second
+ * timer.c — TTC0 kanal 0, saniyede bir interrupt
  *
- * lab10-bughunt (Task 10 - Bug Hunt). TTC0 channel 0's GIC interrupt ID
- * is 68 (XPAR_XTTCPS_0_INTR).
+ * lab10-bughunt (Gorev 10 - Bug Hunt). TTC0 kanal 0'in GIC interrupt
+ * ID'si 68'dir (XPAR_XTTCPS_0_INTR).
  *
- * The ISR is kept short: increments the counter, clears the interrupt
- * status, exits.
+ * ISR kisa tutulur: sayaci artirir, interrupt durumunu temizler, cikar.
  * ============================================================ */
 #include "timer.h"
 #include "xparameters.h"
@@ -15,7 +14,7 @@ volatile unsigned int G_uiTickCount = 0;
 
 
 /* ------------------------------------------------------------
- * ttcIsr — called by the GIC when the TTC0 channel 0 interval elapses.
+ * ttcIsr — TTC0 kanal 0 araligi dolunca GIC tarafindan cagrilir.
  * ------------------------------------------------------------ */
 static void ttcIsr(void* pvCallBackRef)
 {
@@ -33,7 +32,7 @@ static void ttcIsr(void* pvCallBackRef)
 
 
 /**
- * @brief Configures TTC0 channel 0 for 1 Hz, connects it to the GIC.
+ * @brief TTC0 kanal 0'i 1 Hz icin yapilandirir, GIC'e baglar.
  */
 int timerInit(XTtcPs* spTtc, XScuGic* spGic)
 {
@@ -58,10 +57,9 @@ int timerInit(XTtcPs* spTtc, XScuGic* spGic)
     XTtcPs_SetOptions(spTtc, XTTCPS_OPTION_INTERVAL_MODE |
                               XTTCPS_OPTION_WAVE_DISABLE);
 
-    /* Instead of computing the input clock frequency by hand, we use the
-       driver's helper function — it works out the Interval/Prescaler
-       pair itself for a 1.0 Hz target (see embeddedsw
-       ttcps_intr_example). */
+    /* Giris saat frekansini elle hesaplamak yerine surucunun yardimci
+       fonksiyonunu kullaniyoruz — 1.0 Hz hedefi icin Interval/Prescaler
+       ciftini kendisi cikarir (bkz. embeddedsw ttcps_intr_example). */
     XTtcPs_CalcIntervalFromFreq(spTtc, 1.0, &intervalValue, &ucPrescaler);
     XTtcPs_SetInterval(spTtc, intervalValue);
     XTtcPs_SetPrescaler(spTtc, ucPrescaler);

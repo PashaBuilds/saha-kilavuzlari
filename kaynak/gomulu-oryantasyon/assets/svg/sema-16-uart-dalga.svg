@@ -1,7 +1,7 @@
 <svg viewBox="0 0 740 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s16-baslik">
-  <title id="s16-baslik">UART square wave: idle-high line, start bit, 8 data bits (LSB first, example byte 'A' = 0x41), stop bit; bit time illustrated with a 115200 baud example</title>
+  <title id="s16-baslik">Şekil 16 — UART kare dalgası: idle-high hat, start bit, 8 veri biti (önce LSB, örnek bayt 'A' = 0x41), stop bit; bit süresi 115200 baud örneğiyle</title>
 
-  <text x="20" y="20" class="svg-metin" font-size="12" font-weight="700">Example byte: 'A' = 0x41 = 0100 0001₂ — sent LSB first (D0 → D7)</text>
+  <text x="20" y="20" class="svg-metin" font-size="12" font-weight="700">Örnek bayt: 'A' = 0x41 = 0100 0001₂ — önce LSB gönderilir (D0 → D7)</text>
 
   <!-- background highlight regions -->
   <rect x="90"  y="68" width="55"  height="74" fill="var(--kirmizi-soluk)"/>
@@ -49,11 +49,11 @@
     <text x="670"  y="158">idle</text>
   </g>
 
-  <text x="365" y="52" text-anchor="middle" class="svg-soluk" font-size="10">8 data bits (LSB → MSB transmission order)</text>
+  <text x="365" y="52" text-anchor="middle" class="svg-soluk" font-size="10">8 veri biti (LSB → MSB gönderim sırası)</text>
 
   <!-- bit-time double arrow -->
   <path d="M200 184 L255 184" stroke="var(--altin)" stroke-width="1.5" marker-start="url(#s16-ok-sol)" marker-end="url(#s16-ok-sag)"/>
-  <text x="265" y="188" text-anchor="start" fill="var(--altin)" font-size="11" font-weight="600">bit time = 1 / baud ≈ 8.68 µs @ 115200 baud</text>
+  <text x="265" y="188" text-anchor="start" fill="var(--altin)" font-size="11" font-weight="600">bit süresi = 1 / baud ≈ 8.68 µs @ 115200 baud</text>
 
   <defs>
     <marker id="s16-ok-sag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">

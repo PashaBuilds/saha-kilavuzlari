@@ -1,8 +1,8 @@
 <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s4-baslik">
-  <title id="s4-baslik">ZCU111 board anatomy (representative sketch): U1 RFSoC at the center, the DS50/SW19 pair as a gold-highlighted PS access point, the LED/DIP/button cluster on the PL side, USB-UART/JTAG, SD card, PMOD, and power input along the edges, XM500/RF shown dimmed</title>
+  <title id="s4-baslik">Şekil 4 — ZCU111 kart anatomisi (temsili kroki): merkezde U1 RFSoC, altın vurgulu PS erişim noktası olarak DS50/SW19 çifti, PL tarafında LED/DIP/buton kümesi, kenarlarda USB-UART/JTAG, SD kart, PMOD ve güç girişi; XM500/RF soluk gösterilmiş</title>
 
-  <text x="380" y="25" text-anchor="middle" class="svg-metin" font-size="14" font-weight="700">ZCU111 BOARD ANATOMY (representative sketch)</text>
-  <text x="380" y="42" text-anchor="middle" class="svg-soluk" font-size="11">component placement is representative, identities are real</text>
+  <text x="380" y="25" text-anchor="middle" class="svg-metin" font-size="14" font-weight="700">ZCU111 KART ANATOMİSİ (temsili kroki)</text>
+  <text x="380" y="42" text-anchor="middle" class="svg-soluk" font-size="11">yerleşim temsilidir, kimlikler gerçektir</text>
 
   <!-- board body -->
   <rect x="170" y="55" width="420" height="345" rx="14" fill="var(--kart-2)" stroke="var(--cizgi)" stroke-width="2"/>
@@ -32,7 +32,7 @@
   <text x="400" y="190" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">U1</text>
   <text x="400" y="210" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">RFSoC</text>
   <text x="400" y="228" text-anchor="middle" class="svg-soluk" font-size="10.5">(XCZU28DR)</text>
-  <text x="400" y="250" text-anchor="middle" class="svg-soluk" font-size="9.5" font-style="italic">PS + PL — one package</text>
+  <text x="400" y="250" text-anchor="middle" class="svg-soluk" font-size="9.5" font-style="italic">PS + PL — tek paket</text>
 
   <!-- 8x user LEDs (DS11-18) — PL -->
   <g class="svg-kutu">
@@ -107,7 +107,7 @@
   <!-- XM500 / RF — outside this journey (faded) -->
   <rect x="250" y="400" width="260" height="40" rx="8" fill="var(--kart-2)" stroke="var(--cizgi)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7"/>
   <text x="380" y="417" text-anchor="middle" class="svg-soluk" font-size="11" font-weight="700">XM500 / RF</text>
-  <text x="380" y="433" text-anchor="middle" class="svg-soluk" font-size="10">— outside the scope of this journey</text>
+  <text x="380" y="433" text-anchor="middle" class="svg-soluk" font-size="10">— bu yolculuğun kapsamı dışında</text>
 
   <!-- ================= left side labels ================= -->
   <g text-anchor="end">
@@ -117,14 +117,14 @@
     <text x="152" y="150" class="svg-soluk" font-size="11">DIP switch (SW14)</text>
     <text x="152" y="164" class="svg-soluk" font-size="11">— PL</text>
 
-    <text x="152" y="210" class="svg-soluk" font-size="11">5× button</text>
+    <text x="152" y="210" class="svg-soluk" font-size="11">5× buton</text>
     <text x="152" y="224" class="svg-soluk" font-size="11">(SW9–13) — PL</text>
 
     <text x="152" y="256" font-size="11" font-weight="700" fill="var(--altin)">DS50 + SW19</text>
-    <text x="152" y="270" font-size="11" fill="var(--altin)">PS — accessible</text>
-    <text x="152" y="284" font-size="11" fill="var(--altin)">without a bitstream</text>
+    <text x="152" y="270" font-size="11" fill="var(--altin)">PS — bitstream'siz</text>
+    <text x="152" y="284" font-size="11" fill="var(--altin)">erişilebilir</text>
 
-    <text x="152" y="330" class="svg-soluk" font-size="11">power input</text>
+    <text x="152" y="330" class="svg-soluk" font-size="11">güç girişi</text>
   </g>
 
   <!-- ================= right side labels ================= -->
@@ -139,9 +139,9 @@
     <text x="622" y="234" class="svg-soluk" font-size="11">USB-UART/JTAG</text>
 
     <text x="622" y="290" class="svg-soluk" font-size="11">J100</text>
-    <text x="622" y="304" class="svg-soluk" font-size="11">SD card</text>
+    <text x="622" y="304" class="svg-soluk" font-size="11">SD kart</text>
 
     <text x="622" y="350" class="svg-soluk" font-size="11">SW6</text>
-    <text x="622" y="364" class="svg-soluk" font-size="11">boot switch</text>
+    <text x="622" y="364" class="svg-soluk" font-size="11">boot anahtarı</text>
   </g>
 </svg>

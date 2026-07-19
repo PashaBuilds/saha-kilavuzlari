@@ -1,16 +1,15 @@
 /* ============================================================
- * main.c — lab10-bughunt: counter + button + UART status (Task 10, Bug Hunt)
+ * main.c — lab10-bughunt: sayac + buton + UART durum (Gorev 10, Bug Hunt)
  *
- * Expected behavior (see README.md):
- *   - TTC0 channel 0 prints a "tick N" line once per second
- *   - a "button: M" line + DS50 toggle on an SW19 press
- *   - counters increment correctly, system runs stably for hours
+ * Beklenen davranis (bkz. README.md):
+ *   - TTC0 kanal 0 saniyede bir "tick N" satiri basar
+ *   - SW19 basisinda "button: M" satiri + DS50 toggle
+ *   - sayaclar dogru artar, sistem saatlerce kararli calisir
  *
- * This project was left behind by the intern who preceded you: it
- * compiles, it loads onto the board, but something isn't working as
- * expected in four places. Try to find them yourself first — hints and
- * the full solution are on the Chapter 11 / Task 10 card and in
- * SOLUTION.md.
+ * Bu proje senden onceki stajyerden kaldi: derleniyor, karta
+ * yukleniyor, ama dort yerde bir seyler beklendigi gibi calismiyor.
+ * Once kendin bulmayi dene — ipuclari ve tam cozum Bolum 11 / Gorev 10
+ * kartinda ve SOLUTION.md'de.
  * ============================================================ */
 #include <stdio.h>
 #include "xparameters.h"
@@ -23,7 +22,7 @@
 #include "gpio_led_button.h"
 #include "timer.h"
 
-/* How many ticks between printing a system health summary. */
+/* Kac tick'te bir sistem saglik ozeti basilacagi. */
 #define SUMMARY_TICK_INTERVAL   10U
 
 
@@ -33,15 +32,15 @@ static XTtcPs  S_sTtc;
 
 
 /* ------------------------------------------------------------
- * printHealthSummary — periodic summary line.
+ * printHealthSummary — periyodik ozet satiri.
  *
- * Previous intern's note: uses a work buffer kept wide "in case a
- * multi-line history log gets added later."
+ * Onceki stajyerin notu: "ileride cok satirli bir gecmis logu
+ * eklenirse diye" genis tutulmus bir calisma buffer'i kullanir.
  * ------------------------------------------------------------ */
 static void printHealthSummary(unsigned int uiTick, unsigned int uiButton)
 {
-    /* Wide work area allocated to print the history summary in one shot
-       (room was left in case multiple lines are added later). */
+    /* Gecmis ozetini tek seferde basmak icin ayrilan genis calisma
+       alani (ileride birden cok satir eklenirse diye yer birakildi). */
     char cArrHistoryBuffer[8192];
 
     snprintf(cArrHistoryBuffer, sizeof(cArrHistoryBuffer),
@@ -60,7 +59,7 @@ int main(void)
     uartInit();
     uartSendString("lab10-bughunt started\r\n");
 
-    /* GIC: must be set up before either peripheral. */
+    /* GIC: iki cevre biriminden once kurulmus olmali. */
     spGicConfig = XScuGic_LookupConfig(XPAR_SCUGIC_SINGLE_DEVICE_ID);
     if (spGicConfig == NULL)
     {
@@ -97,7 +96,7 @@ int main(void)
 
     for (;;)
     {
-        /* Print if a new tick has arrived. */
+        /* Yeni bir tick geldiyse bas. */
         if (G_uiTickCount != uiLastSeenTick)
         {
             char cArrLine[32];
@@ -108,7 +107,7 @@ int main(void)
                       (unsigned long)uiLastSeenTick);
             uartSendString(cArrLine);
 
-            /* Print a system health summary at regular intervals. */
+            /* Duzenli araliklarla sistem saglik ozeti bas. */
             if ((uiLastSeenTick % SUMMARY_TICK_INTERVAL) == 0U &&
                 uiLastSeenTick != uiLastSummaryTick)
             {
@@ -117,7 +116,7 @@ int main(void)
             }
         }
 
-        /* Handle it if the button flag has been set. */
+        /* Buton bayragi kurulduysa isle. */
         if (G_ucButtonFlag)
         {
             char cArrLine[32];
@@ -131,5 +130,5 @@ int main(void)
         }
     }
 
-    /* Never reached. */
+    /* Buraya asla ulasilmaz. */
 }

@@ -1,183 +1,173 @@
-# Chapter 12 — Professional Culture: The Effective Embedded Engineer
+# Bölüm 12 — Meslek Kültürü: Etkili Gömülü Mühendis
 
-In Task 10 you tracked down four defects; this chapter contains no task
-card, because the subject at hand is not a skill learned once in a lab but
-a habit that settles in a little more each day. What distinguishes a
-capable embedded engineer is not working code alone, but the discipline
-surrounding that code — writing defensively, keeping it readable, and
-communicating effectively with the team.
+Görev 10'da dört hatayı tek tek yakaladın; bu bölümde görev kartı yok,
+çünkü buradaki konu lab'da bir kez öğrenilen bir beceri değil, her gün
+biraz daha yerleşen bir alışkanlıktır. İyi bir gömülü mühendisi ayıran
+şey yalnızca çalışan kod değil, o kodun etrafındaki disiplindir:
+savunmacı yazmak, okunur tutmak, ekiple etkili iletişim kurmak.
 
-## Defensive programming: assume that not everything will go as expected
+## Savunmacı programlama: her şeyin beklendiği gibi gitmeyeceğini varsay
 
-In desktop code, when a function fails it throws an exception, someone
-catches it, and execution continues. In embedded systems, that "someone" is
-frequently absent — if you do not check, no one does. Three habits form the
-foundation of this discipline:
+Masaüstü kodunda bir fonksiyon başarısız olduğunda exception (istisna)
+fırlatır, biri onu yakalar, yürütme devam eder. Gömülü sistemde o "biri"
+çoğu zaman yoktur — sen kontrol etmezsen kimse etmez. Bu disiplinin
+temelini üç alışkanlık oluşturur:
 
-- **Check the return value.** As `_stil.md` emphasizes, the `XST_SUCCESS`
-  pattern in this codebase is not decoration; it is a rule. If a driver
-  function returns an error code, proceeding to the next line without
-  reading that value is a bet that things probably went fine. Building a
-  calculation on an I2C register read that failed silently is considerably
-  worse than printing an incorrect temperature value to UART knowingly.
-- **Make your assumptions visible with `assert`.** If you believe a pointer
-  passed into a function will never be NULL, state it explicitly:
-  `assert(pDurum != NULL);`. An assert is the cheapest way to say "an
-  assumption exists here — report it immediately if it breaks"; it warns
-  you early in debug builds and is typically disabled in release builds
-  (which is why it complements, rather than replaces, genuine error
-  handling).
-- **Unbounded waiting without a timeout is not permitted.** In Task 6, you
-  were asked to bound the `while` loop waiting for a response from the
-  INA226 with a retry limit rather than letting it run indefinitely (add
-  this now if it was not already present) — if the hardware fails to
-  respond, the program hanging indefinitely is unacceptable. The same
-  discipline applies to every hardware wait: do not write "wait until a
-  response arrives"; write "wait N attempts or M milliseconds, then return
-  an error."
+- **Dönüş değerini kontrol et.** `_stil.md`'nin vurguladığı gibi, bu kod
+  tabanındaki `XST_SUCCESS` deseni süs değil kuraldır. Bir sürücü
+  fonksiyonu hata kodu döndürüyorsa, o değeri okumadan bir sonraki satıra
+  geçmek "muhtemelen iyi gitmiştir" bahsine girmektir. Sessizce başarısız
+  olmuş bir I2C register okuması üzerine hesap kurmak, UART'a bile bile
+  yanlış sıcaklık değeri basmaktan çok daha kötüdür.
+- **Varsayımlarını `assert` ile görünür kıl.** Bir fonksiyona gelen
+  pointer'ın asla NULL olmayacağına inanıyorsan bunu açıkça yaz:
+  `assert(pDurum != NULL);`. Assert, "burada bir varsayım var, bozulursa
+  hemen haber ver" demenin en ucuz yoludur; debug build'de seni erken
+  uyarır, release build'de genellikle kapalıdır (bu yüzden gerçek hata
+  yönetiminin yerine değil, yanına konur).
+- **Timeout'suz sınırsız bekleme yasak.** Görev 6'da INA226'dan yanıt
+  bekleyen `while` döngüsünü süresiz döndürmek yerine deneme sayısıyla
+  sınırlaman istenmişti (yoksa şimdi ekle) — donanım yanıt vermezse
+  programın sonsuza kadar asılı kalması kabul edilemez. Aynı disiplin her
+  donanım beklemesi için geçerli: "yanıt gelene kadar bekle" yazma;
+  "N deneme ya da M milisaniye bekle, sonra hata döndür" yaz.
 
-:::tuzak "Working" and "correct" are not the same thing
-Observing that code runs successfully once does not mean the code is
-correct — it means only that it worked at that moment, under those
-conditions. Code left without consideration for what happens when hardware
-fails to respond, a cable connection loosens, or a temperature sensor
-returns an unexpected value will, sooner or later, encounter one of these
-scenarios in the field.
+:::tuzak "Çalışıyor" ile "doğru" aynı şey değil
+Kodun bir kez sorunsuz koştuğunu görmek kodun doğru olduğu anlamına
+gelmez — yalnızca o an, o koşullarda çalıştığı anlamına gelir. Donanım
+yanıt vermezse, kablo bağlantısı gevşerse, sıcaklık sensörü beklenmedik
+bir değer döndürürse ne olacağı düşünülmeden bırakılmış kod, sahada er
+ya da geç bu senaryolardan biriyle karşılaşır.
 :::
 
-## Code readability and commenting culture
+## Kod okunurluğu ve yorum kültürü
 
-The code itself already states *what* it does — anyone reading a line can
-see what a variable holds or how many times a loop executes. The purpose of
-a comment is different: to explain **why**, not **what**. A comment like
-`i++; /* increment i by one */` wastes time; but a comment like `/* GIC
-must be enabled first, otherwise the TTC interrupt never arrives */` saves
-the next person (who may well be you, six months later) hours of
-rediscovery. The hard lesson from Task 10 resurfaces here: a misleading or
-incomplete comment is more dangerous than no comment at all — no comment
-can tell a reader that the line claiming "the main loop reads this flag"
-may have forgotten `volatile`.
+Kodun *ne* yaptığını zaten kodun kendisi söyler — satırı okuyan herkes
+bir değişkenin ne tuttuğunu, bir döngünün kaç kez döndüğünü görür.
+Yorumun görevi farklıdır: **neden**i açıklamak, **ne**yi değil.
+`i++; /* i'yi bir artir */` gibi bir yorum zaman kaybıdır; ama
+`/* once GIC etkinlesmeli, yoksa TTC interrupt'i hic gelmez */` gibi bir
+yorum, bir sonraki kişiye (altı ay sonra o kişi büyük ihtimalle sensin)
+saatlerce sürecek bir yeniden keşfi bağışlar. Görev 10'un acı dersi
+burada yeniden karşına çıkıyor: yanıltıcı ya da eksik yorum, hiç yorum
+olmamasından daha tehlikelidir — "bu bayrağı ana döngü okuyor" diyen
+satırın `volatile`'ı unutmuş olabileceğini hiçbir yorum söyleyemez.
 
-## Version control fundamentals
+## Sürüm kontrolünün temelleri
 
-This is not the place to re-teach the finer points of a Git workflow — you
-are already familiar with them from university — but two habits carry
-particular weight in embedded work:
+Git iş akışının inceliklerini burada yeniden öğretecek değiliz —
+üniversiteden zaten biliyorsun — ama iki alışkanlığın gömülü işlerde
+ağırlığı özellikle büyüktür:
 
-- **Small branches, small changes.** The longer a branch lives, the further
-  it drifts from the main codebase, and the more painful the eventual
-  merge becomes. A peripheral driver, a bug fix — each should remain in its
-  own branch, sized to be reviewed on its own.
-- **Meaningful commit messages.** Messages like "fix", "wip", or "asdf"
-  tell anyone looking at `git log` six months later (including you)
-  nothing. A message such as "Fix TTC0 interrupt mask: incorrect bit count
-  was doubling the rate" both records your intent at the time and directly
-  answers the next person searching for the same bug.
+- **Küçük branch, küçük değişiklik.** Bir branch ne kadar uzun yaşarsa
+  ana kod tabanından o kadar uzaklaşır ve eninde sonunda gelecek merge o
+  kadar sancılı olur. Bir çevre birimi sürücüsü, bir hata düzeltmesi —
+  her biri kendi branch'inde, tek başına review edilebilecek boyutta
+  kalmalı.
+- **Anlamlı commit mesajı.** "fix", "wip", "asdf" gibi mesajlar, altı ay
+  sonra `git log`a bakan kişiye (sana dahil) hiçbir şey söylemez.
+  "TTC0 interrupt maskesi düzeltildi: yanlış bit sayısı frekansı iki
+  katına çıkarıyordu" gibi bir mesaj hem o anki niyetini kayda geçirir
+  hem de aynı hatayı arayan bir sonraki kişiye doğrudan cevap verir.
 
-:::ekip-notu Broken builds are never pushed
-On our team, there is one non-negotiable rule: the branch you push must
-build. A broken build left with the intention of fixing it "later" costs
-everyone who pulls that branch afterward a wasted day. Run your local build
-one more time before pushing. "Builds but does not work correctly," as in
-Task 10, is a different category and less severe — but "does not build" is
-never acceptable.
+:::ekip-notu Bozuk build asla push edilmez
+Ekibimizde pazarlığı olmayan tek kural şudur: push ettiğin branch build
+olmak zorundadır. "Sonra düzeltirim" niyetiyle bırakılan bozuk build, o
+branch'i çeken herkese birer kayıp gün olarak yansır. Push etmeden önce
+yerel build'ini bir kez daha çalıştır. Görev 10'daki gibi "build oluyor
+ama doğru çalışmıyor" ayrı ve daha hafif bir kategoridir — ama "build
+olmuyor" hiçbir zaman kabul edilmez.
 :::
 
-## Submitting code for review
+## Kodu review'a sunmak
 
-Code being ready for review means more than "done, submitted." Do not skip
-these three steps:
+Kodun review'a hazır olması "bitti, gönderdim"den fazlasıdır. Şu üç
+adımı atlama:
 
-- **Prepare a small PR (pull request).** No one can genuinely review an
-  800-line change; it gets skimmed and approved, and defects slip through.
-  A 100-to-200-line PR serving a single purpose is faster and safer both
-  for you and for the reviewer.
-- **Review your own code first.** Look through the diff yourself before
-  opening the PR. A forgotten `xil_printf` line, test code left commented
-  out, a misspelled identifier — catching these yourself lets the reviewer
-  spend their time on the logic that actually matters.
-- **Follow team style.** The Hungarian notation, `module_object_action()`
-  naming, and Allman braces introduced in Chapter 5 are not decorative;
-  they are a convention that keeps the entire codebase readable through a
-  single lens. A PR that does not follow style is returned with "fix the
-  style first," regardless of whether the logic is correct.
+- **Küçük PR (pull request) hazırla.** 800 satırlık bir değişikliği
+  kimse gerçekten review edemez; şöyle bir bakılır, onaylanır ve hatalar
+  aradan sızar. Tek bir amaca hizmet eden 100-200 satırlık bir PR hem
+  senin hem review eden için daha hızlı ve daha güvenlidir.
+- **Önce kendi kodunu kendin review et.** PR'ı açmadan önce diff'i baştan
+  sona kendin gez. Unutulmuş bir `xil_printf` satırı, yorum içinde
+  bırakılmış test kodu, yanlış yazılmış bir tanımlayıcı — bunları kendin
+  yakalarsan, review eden kişi zamanını asıl önemli olan mantığa harcar.
+- **Ekip stiline uy.** Bölüm 5'te tanıtılan Hungarian notation,
+  `module_object_action()` adlandırması ve Allman braces süs değildir;
+  tüm kod tabanını tek bir gözlükle okunur tutan bir sözleşmedir. Stile
+  uymayan PR, mantığı doğru olsa bile "önce stili düzelt" diye geri döner.
 
-:::ekip-notu What to expect from review, and what not to expect
-On our team, the purpose of review is to strengthen the code, not to
-diminish the author. Receiving a comment is not a reason to become
-defensive — the question "why did you do it this way?" is usually genuine
-curiosity, not an accusation. The same applies when you are the reviewer:
-ask "why is this line here?" rather than stating "this line makes no
-sense." Technical disagreement can be rigorous; it should never become
-personal.
+:::ekip-notu Review'dan ne beklenir, ne beklenmez
+Ekibimizde review'ın amacı kodu güçlendirmektir, yazanı küçültmek değil.
+Yorum almak savunmaya geçme sebebi değildir — "bunu neden böyle yaptın"
+sorusu çoğu zaman gerçek bir meraktır, suçlama değil. Aynısı review eden
+taraf için de geçerli: "bu satır saçma" demek yerine "bu satır neden
+burada" diye sor. Teknik tartışma sert olabilir; kişisel olamaz.
 :::
 
-## A strategy for reading datasheets and user guides
+## Datasheet ve user guide okuma stratejisi
 
-You experienced this firsthand in Task 6: knowing where to begin when
-facing a document dozens of pages long is a skill in its own right.
-Moreover, a single document is rarely sufficient in embedded work — this
-journey has had you working with a triangle of three sources: **UG1271**
-describes the board itself (which device connects to which pin), **UG1085**
-describes the internals of the chip (register maps, interrupt numbers,
-memory addresses), and the device's own datasheet (for example, the
-INA226's) describes that device's own register set. The answer to a
-problem is rarely found in just one of the three — it is usually found at
-the intersection of two: the answer to "which device is this I2C address
-assigned to" lies in the board documentation, while the answer to "what
-does this register mean" lies in the device datasheet.
+Görev 6'da bunu bizzat yaşadın: onlarca sayfalık bir dokümanın karşısında
+nereden başlayacağını bilmek başlı başına bir beceridir. Üstelik gömülü
+işlerde tek doküman nadiren yeter — bu yolculuk boyunca üç kaynaklı bir
+üçgenle çalıştın: **UG1271** kartın kendisini anlatır (hangi cihaz hangi
+pine bağlı), **UG1085** çipin içini anlatır (register haritaları,
+interrupt numaraları, bellek adresleri), cihazın kendi datasheet'i
+(örneğin INA226'nınki) o cihazın kendi register setini anlatır. Bir
+sorunun cevabı nadiren üçünden yalnız birinde bulunur — çoğu zaman
+ikisinin kesişimindedir: "bu I2C adresi hangi cihaza atanmış" sorusunun
+cevabı kart dokümanında, "bu register ne anlama geliyor" sorusunun
+cevabı cihaz datasheet'indedir.
 
-Regardless of the document, the reading order stays the same:
+Doküman hangisi olursa olsun okuma sırası değişmez:
 
-1. **Start with the table of contents.** Locate which section holds the
-   register map, which holds electrical characteristics, and which holds
-   timing diagrams before reading a single line of body text.
-2. **Jump to the register summary.** Most datasheets and user guides
-   include a "register summary" or "memory map" table; this table is a map
-   to the rest of the document.
-3. **Return to the body text only when the table is insufficient.** When a
-   table alone does not explain the meaning of a field (for example, under
-   which condition a given bit is meaningful), go to the relevant
-   paragraph — do not attempt to read the document cover to cover; no one
-   actually does that.
+1. **İçindekiler tablosuyla başla.** Tek satır gövde metni okumadan önce
+   register haritasının hangi bölümde, elektriksel karakteristiklerin
+   hangi bölümde, zamanlama diyagramlarının hangi bölümde olduğunu tespit
+   et.
+2. **Register özetine atla.** Çoğu datasheet ve user guide bir "register
+   summary" ya da "memory map" tablosu içerir; bu tablo dokümanın geri
+   kalanının haritasıdır.
+3. **Gövde metnine yalnızca tablo yetmediğinde dön.** Bir alanın anlamını
+   tablo tek başına açıklamıyorsa (örneğin bir bitin hangi koşulda
+   anlamlı olduğunu), ilgili paragrafa git — dokümanı baştan sona okumaya
+   kalkma; bunu gerçekte kimse yapmaz.
 
-:::saha-notu Table footnotes are where the real information hides
-The habit of skipping the fine-print footnotes beneath a register table is
-one of the most costly traps in this profession. Sentences such as "this
-bit is valid only when mode X is active" or "the reset value varies by
-revision" are precisely what those footnotes contain. When a value behaves
-unexpectedly, the first place to check is not the main table — it is the
-footnote.
+:::saha-notu Asıl bilgi tablo dipnotlarında saklanır
+Register tablosunun altındaki küçük puntolu dipnotları atlama alışkanlığı
+bu mesleğin en pahalı tuzaklarından biridir. "Bu bit yalnızca X modu
+etkinken geçerlidir" ya da "reset değeri revizyona göre değişir" gibi
+cümleler tam olarak o dipnotlarda durur. Bir değer beklenmedik
+davrandığında ilk bakılacak yer ana tablo değil, dipnottur.
 :::
 
-## The art of asking a question: the "what have you tried" template
+## Soru sorma sanatı: "ne denedin" şablonu
 
-Chapter 0 stated that asking for help is not a weakness; but how you ask
-matters as well. The statement "it's not working, help" forces the other
-person to start from zero and repeat work you have already done. Instead,
-use a four-part template:
+Bölüm 0'da yardım istemenin zayıflık olmadığını söylemiştik; ama nasıl
+sorduğun da önemlidir. "Çalışmıyor, yardım eder misin" cümlesi karşı
+tarafı sıfırdan başlamaya ve senin zaten yaptığın işi tekrarlamaya
+zorlar. Bunun yerine dört parçalı bir şablon kullan:
 
-- **Symptom:** What are you observing, precisely? (Not "nothing appears on
-  UART," but "the terminal is open, the baud rate is correct, but no
-  character has arrived since the board was powered on.")
-- **Expected:** What did you expect to happen?
-- **Attempts:** Which possibilities have you already ruled out? (Have you
-  swapped the cable, tried a different port, confirmed in the debugger
-  that the PC reaches `main()`?)
-- **Hypothesis:** Where do you suspect the problem lies, if you have a
-  guess?
+- **Belirti:** Tam olarak ne gözlemliyorsun? ("UART'ta bir şey
+  görünmüyor" değil; "terminal açık, baud hızı doğru, ama kart
+  açıldığından beri tek karakter gelmedi.")
+- **Beklenen:** Ne olmasını bekliyordun?
+- **Denemeler:** Hangi ihtimalleri şimdiden eledin? (Kabloyu değiştirdin
+  mi, başka bir port denedin mi, debugger'da PC'nin `main()`'e ulaştığını
+  doğruladın mı?)
+- **Hipotez:** Bir tahminin varsa, sorunun nerede olduğundan
+  şüpheleniyorsun?
 
-:::ekip-notu Come prepared for "what have you tried"
-On our team, responding to a question with "what have you tried" is
-standard practice — not to test you, but to avoid duplicating the same
-search twice. A question that arrives with the four parts above already
-prepared typically gets answered in the second minute rather than the
-fifth, because the other person can immediately see where you have not
-yet looked.
+:::ekip-notu "Ne denedin"e hazır gel
+Ekibimizde bir soruya "ne denedin" diye karşılık vermek standart
+uygulamadır — seni sınamak için değil, aynı aramayı iki kez yapmamak
+için. Yukarıdaki dört parçası hazır gelen bir soru, genellikle beşinci
+dakikada değil ikinci dakikada cevap bulur; çünkü karşı taraf henüz
+bakmadığın yeri hemen görür.
 :::
 
-These habits do not settle in a single day; but now that you know their
-names, you will start noticing them — in your own code and in your
-teammates' code alike. The technical core of this journey concludes here;
-the final stop is a brief tour of concepts beyond the scope of this
-document that you will nonetheless encounter by name.
+Bu alışkanlıklar bir günde yerleşmez; ama artık adlarını bildiğine göre
+onları fark etmeye başlayacaksın — hem kendi kodunda hem ekip
+arkadaşlarının kodunda. Bu yolculuğun teknik çekirdeği burada bitiyor;
+son durak, bu dokümanın kapsamı dışında kalan ama adıyla mutlaka
+karşılaşacağın kavramların kısa bir turu.

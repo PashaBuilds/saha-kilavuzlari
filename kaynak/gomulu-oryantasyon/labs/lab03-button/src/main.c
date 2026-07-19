@@ -1,15 +1,14 @@
 /* ============================================================================
- * main.c — TASK 3 solution: Read Button (Polling)
+ * main.c — GOREV 3 cozumu: Butonu Oku (Polling)
  *
- * Reads SW19 (PS MIO22) via continuous polling, reflects its state onto
- * DS50 (PS MIO23), and prints the "number of times pressed" to UART using
- * counter-based debounce.
+ * SW19'u (PS MIO22) surekli polling ile okur, durumunu DS50'ye
+ * (PS MIO23) yansitir ve sayac tabanli debounce kullanarak "kac kez
+ * basildi" bilgisini UART'a basar.
  *
- * NOTE: the 8 LEDs, 5 buttons, and DIP switch on the board are on PL pins
- * (as seen in Chapter 2); we cannot access them without a bitstream. This
- * is why we work with only the single PS button (SW19) and single PS LED
- * (DS50) — you will get the 8-LED chaser once the PL gate opens in
- * Chapter 9.
+ * NOT: karttaki 8 LED, 5 buton ve DIP switch PL pinlerindedir (Bolum
+ * 2'de gorulur); bitstream olmadan onlara erisemeyiz. Bu yuzden
+ * yalnizca tek PS butonu (SW19) ve tek PS LED'i (DS50) ile calisiyoruz
+ * — 8'li LED karasimsegi PL kapisi Bolum 9'da acilinca gelecek.
  * ============================================================================ */
 
 #include "xstatus.h"
@@ -17,20 +16,19 @@
 #include "uart_ps.h"
 #include "button_ps.h"
 
-/* Sampling interval: read SW19 once every 5 ms. A mechanical button
- * typically finishes "bouncing" within a few ms; we do not count a
- * transition as real unless we see the same new value for DEBOUNCE_ESIK
- * CONSECUTIVE rounds. */
+/* Ornekleme araligi: SW19'u her 5 ms'de bir oku. Mekanik buton tipik
+ * olarak birkac ms icinde "sekmeyi" bitirir; ayni yeni degeri
+ * DEBOUNCE_ESIK tur ART ARDA gormeden bir gecisi gercek saymayiz. */
 #define DEBOUNCE_SAMPLE_INTERVAL_US   5000U   /* 5 ms */
-#define DEBOUNCE_ESIK               4U      /* 4 * 5 ms = 20 ms stability window */
+#define DEBOUNCE_ESIK               4U      /* 4 * 5 ms = 20 ms kararlilik penceresi */
 
-/* xil_printf did not support %f (Task 2); here we make the opposite
- * trade-off: we write the number->string conversion OURSELVES so that
- * all output goes through the uart_ps module (i.e. our own code) without
- * needing a ready-made printf. */
+/* xil_printf %f desteklemiyordu (Gorev 2); burada ters yonde bir takas
+ * yapiyoruz: sayi->string cevirimini KENDIMIZ yaziyoruz ki tum cikti
+ * hazir bir printf'e ihtiyac duymadan uart_ps modulunden (yani kendi
+ * kodumuzdan) gecsin. */
 static void printNumber(unsigned int uiValue)
 {
-    char cArrBuffer[11];   /* a 32-bit number is at most 10 digits + '\0' */
+    char cArrBuffer[11];   /* 32-bit sayi en fazla 10 basamak + '\0' */
     int iIndex = 10;
 
     cArrBuffer[10] = '\0';
@@ -53,10 +51,10 @@ static void printNumber(unsigned int uiValue)
 
 int main(void)
 {
-    unsigned int uiStableState;    /* debounced (accepted-as-stable) button state */
-    unsigned int uiRawState;       /* raw state read this round (may be bouncing) */
-    unsigned int uiUnstableCount;  /* count of consecutive readings that differ from uiStableState */
-    unsigned int uiPressCount;     /* debounced, real press count */
+    unsigned int uiStableState;    /* debounce edilmis (kararli kabul edilen) buton durumu */
+    unsigned int uiRawState;       /* bu tur okunan ham durum (sekiyor olabilir) */
+    unsigned int uiUnstableCount;  /* uiStableState'ten farkli cikan art arda okuma sayisi */
+    unsigned int uiPressCount;     /* debounce edilmis, gercek basma sayisi */
 
     uartInit();
 
@@ -72,9 +70,8 @@ int main(void)
     uartSendString("\n--- TASK 3: Read Button (Polling) ---\n");
     uartSendString("Press SW19: DS50 turns on. Release: it turns off. Count is debounced.\n\n");
 
-    /* Read the initial state and sync the LED to it — the button may
-     * already be held down when the board boots, so assuming "always
-     * off" would be wrong. */
+    /* Baslangic durumunu oku ve LED'i ona esitle — kart acilirken buton
+     * zaten basili olabilir; "her zaman sonuk" varsaymak yanlis olurdu. */
     uiStableState = buttonRead();
     uiUnstableCount = 0U;
     uiPressCount = 0U;
@@ -86,10 +83,10 @@ int main(void)
 
         if (uiRawState == uiStableState)
         {
-            /* No change — either the button never moved, or a bounce
-             * returned to its previous state. Either way we reset the
-             * counter; we never count a half-finished transition as
-             * real. */
+            /* Degisiklik yok — ya buton hic oynamadi ya da bir sekme
+             * onceki durumuna geri dondu. Iki durumda da sayaci
+             * sifirliyoruz; yarim kalmis bir gecisi asla gercek
+             * saymayiz. */
             uiUnstableCount = 0U;
         }
         else
@@ -98,9 +95,8 @@ int main(void)
 
             if (uiUnstableCount >= DEBOUNCE_ESIK)
             {
-                /* We saw the same new value for DEBOUNCE_ESIK consecutive
-                 * rounds — this is no longer a bounce, it is a real
-                 * transition. */
+                /* Ayni yeni degeri DEBOUNCE_ESIK tur art arda gorduk —
+                 * bu artik sekme degil, gercek bir gecis. */
                 uiStableState = uiRawState;
                 uiUnstableCount = 0U;
 
@@ -120,10 +116,9 @@ int main(void)
             }
         }
 
-        /* This is exactly the cost of polling: the CPU does nothing
-         * other than this wait, constantly querying SW19. In Chapter 7
-         * you will do the same job with an interrupt and eliminate this
-         * cost. */
+        /* Polling'in maliyeti tam olarak budur: CPU bu beklemeden baska
+         * hicbir sey yapmadan surekli SW19'u sorgular. Bolum 7'de ayni
+         * isi interrupt ile yapip bu maliyeti ortadan kaldiracaksin. */
         usleep(DEBOUNCE_SAMPLE_INTERVAL_US);
     }
 

@@ -1,27 +1,25 @@
-# Chapter 5 — Embedded C Practices I: Where the Language Meets Hardware
+# Bölüm 5 — Gömülü C Pratikleri I: Dilin Donanımla Buluştuğu Yer
 
-You have read registers from the register map and addressed them by hand;
-but the C language's relationship with hardware at this level is full of
-subtleties — this chapter covers the first of them. The C you learned at
-university mostly operates on the assumption that "values sit in memory,
-and I read/write them." Hardware registers break this assumption: the
-value of a register can change in the background, without a single line
-of your code executing — a button is pressed, an interrupt arrives, a DMA
-(DMA — Direct Memory Access; hardware that writes directly to memory,
-bypassing the CPU; details in Chapters 6 and 9) transfers data. In this
-chapter, you will learn the tools that let C communicate with this
-reality.
+Register'ları register map'ten okudun ve elle adresledin; ama C dilinin
+donanımla bu düzeydeki ilişkisi inceliklerle doludur — bu bölüm
+bunların ilkini ele alır. Üniversitede öğrendiğin C çoğunlukla
+"değerler bellekte durur, ben okur/yazarım" varsayımıyla çalışır.
+Donanım register'ları bu varsayımı bozar: bir register'ın değeri, senin
+kodundan tek satır çalışmadan, arka planda değişebilir — bir düğmeye
+basılır, bir interrupt gelir, bir DMA (Direct Memory Access — CPU'yu
+araya sokmadan belleğe doğrudan yazan donanım; ayrıntısı Bölüm 6 ve
+9'da) veri aktarır. Bu bölümde C'nin bu gerçeklikle konuşmasını
+sağlayan araçları öğreneceksin.
 
-## volatile: Telling the Compiler That Its Optimizations Do Not Apply Here
+## volatile: Derleyiciye "Optimizasyonların Burada Geçmez" Demek
 
-Compilers are not lazy — quite the opposite, they perform aggressive
-optimization. If a compiler observes that a variable is read several
-times in succession and can "prove" that the variable does not change in
-between (it sees no write in the code's own flow), it does not repeat the
-read: it holds the value once in a CPU register and silently eliminates
-the subsequent reads. For an ordinary variable, this is an excellent
-optimization — it avoids unnecessary memory accesses. But consider the
-following code:
+Derleyiciler tembel değildir — tam tersine, saldırgan optimizasyon
+yapar. Derleyici bir değişkenin art arda birkaç kez okunduğunu görür ve
+arada değişmediğini "kanıtlayabilirse" (kodun kendi akışında yazma
+görmüyorsa) okumayı tekrarlamaz: değeri bir kez CPU register'ında tutar
+ve sonraki okumaları sessizce eler. Sıradan bir değişken için bu
+mükemmel bir optimizasyondur — gereksiz bellek erişimini önler. Ama şu
+koda bak:
 
 ```c
 unsigned int uiFlag = 0;
@@ -31,53 +29,51 @@ while (uiFlag == 0)
 }
 ```
 
-The compiler sees that `uiFlag` is never written inside the loop and may
-reason, "this value never changes, so I will evaluate the condition once
-and fix the result" — the outcome is either never entering the loop, or
-being stuck in it forever, even though an ISR or hardware may actually
-change `uiFlag`. The `volatile` keyword prevents exactly this: it tells
-the compiler, "the value at this address can change from somewhere you
-cannot see; genuinely read/write it on every access, and do not rely on a
-previous read."
+Derleyici `uiFlag`'in döngü içinde hiç yazılmadığını görür ve "bu değer
+hiç değişmiyor, koşulu bir kez değerlendirip sonucu sabitlerim" diye
+akıl yürütebilir — sonuç, bir ISR ya da donanım `uiFlag`'i gerçekte
+değiştirse bile döngüye hiç girmemek ya da içinde sonsuza dek
+kalmaktır. `volatile` anahtar sözcüğü tam olarak bunu engeller:
+derleyiciye "bu adresteki değer senin göremediğin bir yerden
+değişebilir; her erişimde gerçekten oku/yaz, önceki okumaya güvenme"
+der.
 
-{{svg:sema-10-volatile.svg|Figure 10 — The story of volatile: the same -O2 optimization eliminates the read in code without volatile, and forces a fresh read on every iteration in code with volatile.}}
+{{svg:sema-10-volatile.svg|Şekil 10 — volatile'ın öyküsü: aynı -O2 optimizasyonu volatile'sız kodda okumayı eler, volatile'lı kodda her turda taze okuma yapmaya zorlanır.}}
 
-There are two typical places where you need `volatile`: **hardware
-registers** (every read must be a genuine query of hardware state) and
-**variables shared between an ISR (interrupt service routine) and the
-main code** (you will experience this firsthand in Chapter 7). In both
-cases, the common thread is the same: the value can be changed by someone
-"from the outside."
+`volatile`'a ihtiyaç duyacağın iki tipik yer var: **donanım
+register'ları** (her okuma, donanım durumunun gerçek bir sorgusu
+olmalı) ve **ISR (interrupt service routine — kesme servis rutini) ile
+ana kod arasında paylaşılan değişkenler** (bunu Bölüm 7'de kendi
+elinle yaşayacaksın). İkisinde de ortak nokta aynıdır: değer
+"dışarıdan" biri tarafından değiştirilebilir.
 
-:::tuzak A Flag Without volatile Is a Bug That "Appears to Work"
-If you read a flag set by an ISR in the main loop without `volatile`, the
-code compiles, and may even appear to work at -O0 (an unoptimized build)
-— because -O0 does not eliminate redundant reads in the first place. The
-instant you enable optimization (such as -O2), the same code appears to
-hang. This is one of the most frequent root causes of the classic "works
-in debug, fails in release" problem; we will discuss that classic problem
-firsthand in Chapter 6.
+:::tuzak volatile'sız Bayrak, "Çalışıyor Görünen" Bir Hatadır
+ISR'nin kurduğu bir bayrağı ana döngüde `volatile` olmadan okursan kod
+derlenir, hatta -O0'da (optimizasyonsuz derleme) çalışıyor bile
+görünebilir — çünkü -O0 gereksiz okumaları zaten elemez. Optimizasyonu
+açtığın anda (örn. -O2) aynı kod takılmış görünür. Bu, klasik "debug'da
+çalışıyor, release'te bozuluyor" probleminin en sık kök nedenlerinden
+biridir; o klasik problemi Bölüm 6'da yakından ele alacağız.
 :::
 
-## Bit Operations: Addressing a Single Bit of a Register
+## Bit İşlemleri: Register'ın Tek Bitine Dokunmak
 
-Most of a register's 32 bits each (or each group of bits) carries a
-separate meaning — TXFULL is one bit, RXEMPTY is another. Four basic
-operations are enough to address a single bit without disturbing the rest
-of the register:
+Bir register'ın 32 bitinin çoğu, bit ya da bit grubu olarak ayrı bir
+anlam taşır — TXFULL bir bit, RXEMPTY başka bir bit. Register'ın
+kalanını bozmadan tek bir bite dokunmak için dört temel işlem yeter:
 
-| Operation | Expression | What it does |
+| İşlem | İfade | Ne yapar |
 |---|---|---|
-| SET | `uiReg |= MASK;` | Sets the relevant bit to 1, leaves the others untouched |
-| CLEAR | `uiReg &= ~MASK;` | Sets the relevant bit to 0, leaves the others untouched |
-| TOGGLE | `uiReg ^= MASK;` | Inverts the relevant bit |
-| TEST | `if (uiReg & MASK)` | Asks whether the relevant bit is 1, changes nothing |
+| SET | `uiReg |= MASK;` | İlgili biti 1 yapar, diğerlerine dokunmaz |
+| CLEAR | `uiReg &= ~MASK;` | İlgili biti 0 yapar, diğerlerine dokunmaz |
+| TOGGLE | `uiReg ^= MASK;` | İlgili biti tersler |
+| TEST | `if (uiReg & MASK)` | İlgili bitin 1 olup olmadığını sorar, hiçbir şeyi değiştirmez |
 
-{{svg:sema-11-bit-islemleri.svg|Figure 11 — Visual reference for bit operations: before/mask/after 8-bit boxes for SET, CLEAR, TOGGLE, and TEST.}}
+{{svg:sema-11-bit-islemleri.svg|Şekil 11 — Bit işlemleri görsel referansı: SET, CLEAR, TOGGLE ve TEST için önce/mask/sonra 8 bitlik kutular.}}
 
-Generating the mask from a bit number, rather than writing it by hand as
-`0x10`, significantly improves readability. On our team, nearly every
-project includes the following macro set:
+Mask'i `0x10` gibi elle yazmak yerine bit numarasından üretmek
+okunabilirliği ciddi biçimde artırır. Ekibimizde hemen her projede şu
+makro seti bulunur:
 
 ```c
 #define BIT(n)          (1u << (n))
@@ -87,52 +83,49 @@ project includes the following macro set:
 #define BIT_TEST(reg, n)    (((reg) & BIT(n)) != 0u)
 ```
 
-Writing `BIT_SET(UART0_SR, 4)` is both more readable than writing
-`UART0_SR |= 0x10` and directly shows the link between the bit number and
-the register map document — if the document says "bit 4 = TXFULL," having
-your code also say "bit 4" saves time for you (or a colleague) reading
-the code again six months later.
+`BIT_SET(UART0_SR, 4)` yazmak hem `UART0_SR |= 0x10` yazmaktan daha
+okunaklıdır hem de bit numarası ile register map dokümanı arasındaki
+bağı doğrudan gösterir — doküman "bit 4 = TXFULL" diyorsa kodun da
+"bit 4" demesi, altı ay sonra kodu yeniden okuyan sana (ya da bir ekip
+arkadaşına) zaman kazandırır.
 
-## Type Width: Why You Should Care (and Why We Use Plain Types)
+## Tip Genişliği: Neden Önemsemelisin (ve Neden Düz Tip Kullanıyoruz)
 
-The C standard does not guarantee how many bits `int` has — it may be 16,
-32, or even 64 bits on some platforms; it depends on the compiler and the
-platform. If a register is 32 bits wide and you access it with a type
-whose width you do not know, you may silently read or write the wrong
-number of bytes — hardware never forgives this. The real lesson here is
-not a specific type name: it is **being certain how many bits the access
-is.**
+C standardı `int`'in kaç bit olduğunu garanti etmez — derleyiciye ve
+platforma göre 16, 32, hatta 64 bit olabilir. Register 32 bit
+genişliğindeyse ve ona genişliğini bilmediğin bir tiple erişiyorsan,
+sessizce yanlış sayıda byte okuyup yazabilirsin — donanım bunu asla
+affetmez. Buradaki asıl ders belirli bir tip adı değildir: **erişimin
+kaç bit olduğundan emin olmaktır.**
 
-The advice you will generally hear is: "use `<stdint.h>`'s fixed-width
-types (such as `uint32_t`)." **Our team resolves this differently:** our
-standard forbids `stdint.h` types and uses **plain C types** —
-`unsigned char`, `unsigned short`, `unsigned int`, `unsigned long long`.
-Why is this safe? Because you are writing for a single target: ZynqMP
-plus a single toolchain. In that fixed world, the width of every plain
-type is certain and known — `unsigned int` is **always 32 bits** on your
-target. Since the width is already fixed, there is no need for
-`uint32_t`'s extra abstraction; plain types give the codebase a single,
-consistent type vocabulary. In other words, you access a register with
-`unsigned int` — not a blind `int`, but a type whose width you have
-chosen *knowingly*.
+Genellikle duyacağın öğüt şudur: "`<stdint.h>`'in sabit genişlikli
+tiplerini (`uint32_t` gibi) kullan." **Ekibimiz bu işi farklı çözer:**
+standardımız `stdint.h` tiplerini yasaklar ve **düz C tiplerini**
+kullanır — `unsigned char`, `unsigned short`, `unsigned int`,
+`unsigned long long`. Bu neden güvenli? Çünkü tek bir hedef için
+yazıyorsun: ZynqMP artı tek bir toolchain. O sabit dünyada her düz
+tipin genişliği kesin ve bilinir — `unsigned int`, hedefinde **her
+zaman 32 bittir**. Genişlik zaten sabitken `uint32_t`'nin ek
+soyutlamasına gerek kalmaz; düz tipler kod tabanına tek ve tutarlı bir
+tip sözlüğü kazandırır. Yani register'a `unsigned int` ile erişirsin —
+kör bir `int` değil, genişliğini *bilerek* seçtiğin bir tip.
 
-:::ekip-notu No stdint — but Understand the Principle
-One day, on a different team, you will see `uint32_t`, and that is
-correct too — both worlds are different implementations of the same
-principle: "access with a type whose width you know." On our team, the
-rule is clear: `unsigned char`/`unsigned short`/`unsigned int`/
-`unsigned long long` in place of
-`uint8_t`/`uint16_t`/`uint32_t`/`uint64_t`. The one exception is **Xilinx
-library signatures:** Xilinx headers define their own typedefs,
-`u8`/`u32` (these are not `stdint` — they are the library's own types);
-when you encounter a signature such as `XUartPs_Send(..., u8* ...)`, you
-use Xilinx's type for that parameter. But in your **own** variables, you
-always fall back to the plain type (`unsigned int uiOffset`).
+:::ekip-notu stdint Yok — ama İlkeyi Anla
+Bir gün başka bir ekipte `uint32_t` göreceksin ve o da doğrudur — iki
+dünya aynı ilkenin farklı uygulamalarıdır: "genişliğini bildiğin tiple
+eriş." Ekibimizde kural nettir: `uint8_t`/`uint16_t`/`uint32_t`/
+`uint64_t` yerine `unsigned char`/`unsigned short`/`unsigned int`/
+`unsigned long long`. Tek istisna **Xilinx kütüphane imzalarıdır:**
+Xilinx başlıkları kendi typedef'lerini tanımlar, `u8`/`u32` (bunlar
+`stdint` değildir — kütüphanenin kendi tipleridir);
+`XUartPs_Send(..., u8* ...)` gibi bir imzayla karşılaştığında o
+parametre için Xilinx'in tipini kullanırsın. Ama **kendi**
+değişkenlerinde her zaman düz tipe dönersin (`unsigned int uiOffset`).
 :::
 
-## Bitfield Structs: Their Appeal and Their Pitfalls
+## Bitfield Struct'lar: Cazibesi ve Tuzakları
 
-C lets you define bit fields inside a struct:
+C, struct içinde bit alanı tanımlamana izin verir:
 
 ```c
 typedef struct
@@ -143,169 +136,166 @@ typedef struct
 } SUartCrBits;
 ```
 
-At first glance, this is appealing: writing `sCr.uiEnable = 1;` looks far
-more readable than dealing with masks. But the C standard does not define
-the order in which these bits are packed inside the struct (from the
-front or from the back, and how alignment works) — this is a decision
-left to the compiler and the platform ("implementation-defined"). The
-same struct may pack its bits in the reverse order on a different
-compiler or a different architecture; your code then silently reads and
-writes the wrong bits.
+İlk bakışta cazip: `sCr.uiEnable = 1;` yazmak mask'lerle uğraşmaktan
+çok daha okunaklı görünür. Ama C standardı bu bitlerin struct içinde
+hangi sırayla paketlendiğini (önden mi arkadan mı, hizalamanın nasıl
+işlediğini) tanımlamaz — karar derleyiciye ve platforma bırakılmıştır
+("implementation-defined"). Aynı struct, farklı bir derleyicide ya da
+farklı bir mimaride bitlerini ters sırada paketleyebilir; kodun o
+zaman sessizce yanlış bitleri okuyup yazar.
 
-:::tuzak A Bitfield's Bit Order Is Not Portable
-Even if modeling a register with a bitfield struct appears to "work" on
-your desktop, the bit-packing order can change when that code is moved to
-a different compiler or a different architecture; the code then silently
-reads and writes the wrong bits. This is an unavoidable side effect of
-bitfields — a cost you must be aware of when using them.
+:::tuzak Bitfield'ın Bit Sırası Taşınabilir Değildir
+Bir register'ı bitfield struct'la modellemek masanın üzerinde
+"çalışıyor" görünse bile, o kod farklı bir derleyiciye ya da mimariye
+taşındığında bit paketleme sırası değişebilir; kod o zaman sessizce
+yanlış bitleri okuyup yazar. Bu, bitfield'ların kaçınılmaz yan
+etkisidir — kullanırken farkında olman gereken bir maliyettir.
 :::
 
-**On our team, bitfield structs are common practice.** Writing
-`sCr.uiEnable = 1;` is both far more readable than mask arithmetic and
-makes the intent immediately clear; as a codebase grows, this readability
-is a genuine gain. We accept the portability warning above knowingly: our
-product code is compiled for a single toolchain (AMD/Xilinx) and a single
-target architecture (ZynqMP) — the bit order does not change in a fixed
-world we control, so that risk is effectively eliminated for us. Still,
-remember two rules: **(1)** never use a bitfield struct for a data format
-that moves across compilers or architectures (a network packet, a record
-written to a file, a structure shared with another chip) — there, the
-lack of a bit-order guarantee turns into a real bug; **(2)** when you
-model a new register with a bitfield, verify once, during initial
-bring-up, that the fields genuinely align with the hardware layout. The
-mask macros (`BIT_SET`/`BIT_CLEAR`/`BIT_TEST`) remain within reach: for
-isolated bit touches, or when absolute portability is required, they are
-the more direct tool. The two are not competitors — they are two tools in
-the same kit.
+**Ekibimizde bitfield struct yaygın pratiktir.** `sCr.uiEnable = 1;`
+yazmak hem mask aritmetiğinden çok daha okunaklıdır hem de niyeti
+anında gösterir; kod tabanı büyüdükçe bu okunabilirlik gerçek bir
+kazançtır. Yukarıdaki taşınabilirlik uyarısını bilerek kabul ediyoruz:
+ürün kodumuz tek bir toolchain (AMD/Xilinx) ve tek bir hedef mimari
+(ZynqMP) için derlenir — kontrol ettiğimiz bu sabit dünyada bit sırası
+değişmez, dolayısıyla o risk bizim için fiilen ortadan kalkar. Yine de
+iki kuralı unutma: **(1)** derleyiciler ya da mimariler arasında
+dolaşan bir veri formatı için (ağ paketi, dosyaya yazılan kayıt, başka
+bir çiple paylaşılan yapı) asla bitfield struct kullanma — orada bit
+sırası garantisinin yokluğu gerçek bir hataya dönüşür; **(2)** yeni
+bir register'ı bitfield'la modellediğinde, alanların donanım
+yerleşimiyle gerçekten örtüştüğünü ilk bring-up sırasında bir kez
+doğrula. Mask makroları (`BIT_SET`/`BIT_CLEAR`/`BIT_TEST`) el altında
+durur: tekil bit dokunuşlarında ya da mutlak taşınabilirlik
+gerektiğinde daha doğrudan araç onlardır. İkisi rakip değildir — aynı
+çantadaki iki alettir.
 
-## Pointer-Based Register Access Patterns
+## Pointer Tabanlı Register Erişim Desenleri
 
-The C equivalent of the base + offset arithmetic you saw in Chapter 4 is
-a `volatile` pointer pointing at a fixed address:
+Bölüm 4'te gördüğün taban + offset aritmetiğinin C karşılığı, sabit
+bir adresi gösteren `volatile` bir pointer'dır:
 
 ```c
 #define UART0_SR (*(volatile unsigned int*)(0xFF000000U + 0x2CU))
 ```
 
-Read this line piece by piece: `0xFF000000U + 0x2CU` computes the actual
-address; `(volatile unsigned int*)` interprets this address as "a 32-bit
-location that must genuinely be read/written on every access"; the
-leading `*` **dereferences** that address, meaning "the value at that
-location itself." The result: every time you use the name `UART0_SR`, the
-compiler takes you directly to that address — `UART0_SR & 0x10` is a
-read, `UART0_SR = 0` is a write. You will use this exact pattern in the
-`uart_ps.c` module (Task 2).
+Bu satırı parça parça oku: `0xFF000000U + 0x2CU` gerçek adresi
+hesaplar; `(volatile unsigned int*)` bu adresi "her erişimde gerçekten
+okunup yazılması gereken 32 bitlik bir konum" olarak yorumlar; baştaki
+`*` o adresi **dereference** eder, yani adresin gösterdiği değerin
+kendisine ulaşır. Sonuç: `UART0_SR` adını her kullandığında derleyici
+seni doğrudan o adrese götürür — `UART0_SR & 0x10` bir okumadır,
+`UART0_SR = 0` bir yazmadır. Aynı deseni `uart_ps.c` modülünde
+(Görev 2) birebir kullanacaksın.
 
-Some registers are read-only (recall the RO access type from Chapter 4)
-— hardware updates them, and you cannot write to them. The way to express
-this in C is the `const volatile` combination:
+Bazı register'lar yalnızca okunur (Bölüm 4'teki RO erişim tipini
+hatırla) — donanım günceller, sen yazamazsın. Bunu C'de ifade etmenin
+yolu `const volatile` bileşimidir:
 
 ```c
 #define UART0_SR_RO (*(const volatile unsigned int*)(0xFF000000U + 0x2CU))
 ```
 
-`volatile` still says "genuinely read on every access"; `const` adds the
-instruction "produce a compile error if there is any attempt to write
-through this pointer." The two do not conflict — one guarantees the
-*frequency* of access, the other guarantees its *direction*.
+`volatile` yine "her erişimde gerçekten oku" der; `const` buna "bu
+pointer üzerinden yazma girişimi olursa derleme hatası üret"
+talimatını ekler. İkisi çelişmez — biri erişimin *sıklığını*, diğeri
+*yönünü* garanti eder.
 
-:::ekip-notu These Are Checked in Code Review
-On our team, code is also checked by machine (a naming linter plus
-clang-format/clang-tidy); violations do not pass review. In summary:
+:::ekip-notu Bunlar Code Review'da Denetlenir
+Ekibimizde kod makineyle de denetlenir (adlandırma linter'ı artı
+clang-format/clang-tidy); ihlaller review'dan geçmez. Özetle:
 
-- **Function names** are camelCase, no underscores, English:
-  `uartSendChar`, `ina226Init` — not snake_case, such as
-  `uart_send_char`.
-- **Variables** use a type prefix plus a camelCase body: `uc` (unsigned
-  char), `c` (char), `us`/`s` (short), `ui`/`i` (int), `ul`/`ull` (the
-  `long` types). A pointer adds `p` to the type prefix (`char*` → `cp`,
-  `unsigned int*` → `uip`); a struct pointer uses `sp` (`XIicPs* spIic`);
-  an array adds `Arr`; `static` → `S_`, global → `G_` goes at the very
-  front (`G_uiTickCount`). Examples: `unsigned int uiIndex`,
+- **Fonksiyon adları** camelCase, alt çizgisiz, İngilizce:
+  `uartSendChar`, `ina226Init` — `uart_send_char` gibi snake_case
+  değil.
+- **Değişkenler** tip öneki artı camelCase gövde: `uc` (unsigned
+  char), `c` (char), `us`/`s` (short), `ui`/`i` (int), `ul`/`ull`
+  (`long` tipleri). Pointer, tip önekine `p` ekler (`char*` → `cp`,
+  `unsigned int*` → `uip`); struct pointer `sp` kullanır
+  (`XIicPs* spIic`); dizi `Arr` ekler; `static` → `S_`, global → `G_`
+  en başa gelir (`G_uiTickCount`). Örnekler: `unsigned int uiIndex`,
   `char* cpString`.
-- **Types** are plain C types; `stdint.h` (`uint32_t`) is forbidden (see
-  the note above).
+- **Tipler** düz C tipleridir; `stdint.h` (`uint32_t`) yasaktır
+  (yukarıdaki nota bak).
 - **typedef**: struct → `S` (`SUartCrBits`), enum → `E` (`EState`).
-- **Format:** Allman braces, 4-space indentation, lines ≤ 100 characters,
-  a space after control keywords, the pointer asterisk attached to the
-  type (`XIicPs* sp`), CRLF line endings, `\r\n` in `printf` output.
-- **Doxygen** is mandatory on public functions (`@brief`, `@param`,
+- **Biçim:** Allman brace, 4 boşluk girinti, satır ≤ 100 karakter,
+  kontrol anahtar sözcüklerinden sonra boşluk, pointer yıldızı tipe
+  bitişik (`XIicPs* sp`), CRLF satır sonları, `printf` çıktısında
+  `\r\n`.
+- **Doxygen** public fonksiyonlarda zorunludur (`@brief`, `@param`,
   `@return`).
 
-These are not an aesthetic fixation: in a codebase spanning hundreds of
-files, you can tell what a variable holds and what a function does just
-by its name, without opening the file — and because the linter enforces
-this for you, review time is spent on substance rather than formatting.
+Bunlar estetik takıntısı değildir: yüzlerce dosyalık bir kod tabanında,
+dosyayı açmadan yalnızca adına bakarak bir değişkenin ne tuttuğunu ve
+bir fonksiyonun ne yaptığını söyleyebilirsin — ve linter bunu senin
+yerine dayattığı için review süresi biçime değil öze harcanır.
 :::
 
-You have now learned the basic vocabulary of C that speaks to hardware:
-`volatile`, bit operations, correctly sized types, and pointer-based
-addressing. It is time for practice: time to print something from the
-UART with your own hands.
+Donanımla konuşan C'nin temel sözlüğünü artık öğrendin: `volatile`,
+bit işlemleri, doğru genişlikte tipler ve pointer tabanlı adresleme.
+Sıra pratikte: UART'tan kendi elinle bir şey basma vakti.
 
-:::gorev no=2 zorluk=1 baslik="UART Hello World and What Lies Behind printf" kisa="UART Hello World"
-[Objective]
-Print a line from UART0 with `xil_printf`, then print a multi-line
-welcome banner using your own register-level `uart_ps` module.
+:::gorev no=2 zorluk=1 baslik="UART Hello World ve printf'in Arkasındakiler" kisa="UART Hello World"
+[Hedef]
+`xil_printf` ile UART0'dan bir satır bas; ardından kendi register
+düzeyindeki `uart_ps` modülünle çok satırlı bir karşılama banner'ı
+bas.
 
-[Prerequisites]
-Chapters 4 and 5 read; Task 1 completed (the flow for opening an empty
-application project in Vitis is familiar to you).
+[Ön koşul]
+Bölüm 4 ve 5 okundu; Görev 1 tamamlandı (Vitis'te empty application
+projesi açma akışına aşinasın).
 
-[Steps]
-1. Open a new **empty application** project in Vitis and link it to your
-   team's platform.
-2. Copy this task's solution files — `lab02-uart/src/uart_ps.h`,
-   `uart_ps.c`, and `main.c` — into the project's `src/` folder. If you
-   would rather try it yourself first, attempt writing your own
-   `uart_ps.c` before using the hint ladder below.
-3. In `uartSendChar()`, first read the **SR register** (base
-   `0xFF000000` + offset `0x2C`), wait until the **TXFULL bit** (mask
-   `0x10`) is zero, then write the character to the **FIFO register**
-   (offset `0x30`) — this is exactly Chapter 4's final example.
-4. Write `uartSendString()` so that it sends the string character by
-   character to `uartSendChar()`, sending `'\r'` before `'\n'` whenever
-   it encounters `'\n'` (explain why this is necessary in a code
-   comment).
-5. In `main()`, first print a single line with `xil_printf`, then print
-   a several-line welcome banner using your own `uartInit()` /
-   `uartSendString()` functions.
-6. Build the project, deploy it to the board over JTAG, and open the
-   terminal with the settings from Task 0.
+[Adımlar]
+1. Vitis'te yeni bir **empty application** projesi aç ve ekibinin
+   platformuna bağla.
+2. Bu görevin çözüm dosyaları `lab02-uart/src/uart_ps.h`, `uart_ps.c`
+   ve `main.c`'yi projenin `src/` klasörüne kopyala. Önce kendin
+   denemek istersen, aşağıdaki ipucu merdivenine başvurmadan kendi
+   `uart_ps.c` dosyanı yazmayı dene.
+3. `uartSendChar()` içinde önce **SR register'ını** oku (taban
+   `0xFF000000` + offset `0x2C`), **TXFULL biti** (mask `0x10`)
+   sıfırlanana kadar bekle, sonra karakteri **FIFO register'ına**
+   (offset `0x30`) yaz — bu, Bölüm 4'ün son örneğinin ta kendisidir.
+4. `uartSendString()` fonksiyonunu, string'i karakter karakter
+   `uartSendChar()`'a gönderecek ve her `'\n'` gördüğünde önce `'\r'`
+   gönderecek şekilde yaz (bunun neden gerekli olduğunu kod yorumunda
+   açıkla).
+5. `main()` içinde önce `xil_printf` ile tek satır bas, ardından kendi
+   `uartInit()` / `uartSendString()` fonksiyonlarınla birkaç satırlık
+   karşılama banner'ını bas.
+6. Projeyi derle, JTAG üzerinden karta yükle ve terminali Görev 0'daki
+   ayarlarla aç.
 
-[Success Criteria]
-On the terminal, you see the `xil_printf` line first, followed by the
-multi-line welcome banner printed by your own functions.
+[Başarı kriteri]
+Terminalde önce `xil_printf` satırını, ardından kendi fonksiyonlarının
+bastığı çok satırlı karşılama banner'ını görürsün.
 
-[Self-Check]
-- What would happen if you did not wait for the TXFULL bit to drop
-  (skipped the check)? What happens to characters you write while the
-  FIFO is full?
-- Why does `%f` not work inside `xil_printf`? (Hint: the answer is in a
-  comment in `main.c`, but make your own guess first.)
-- Your `uartInit()` function is in fact almost empty — explain in one
-  sentence why this is a deliberate design choice rather than something
-  "missing."
+[Kendini sına]
+- TXFULL bitinin düşmesini beklemeseydin (kontrolü atlasaydın) ne
+  olurdu? FIFO doluyken yazdığın karakterlere ne olur?
+- `xil_printf` içinde `%f` neden çalışmaz? (İpucu: cevap `main.c`'deki
+  bir yorumda; ama önce kendi tahminini yap.)
+- `uartInit()` fonksiyonun aslında neredeyse boş — bunun bir eksik
+  değil bilinçli bir tasarım tercihi olduğunu tek cümleyle açıkla.
 
-[If You Get Stuck]
-::ipucu Hint 1 — The TXFULL Wait Loop Does Not Work / Never Ends
-Are you applying the mask (`0x10`) to the correct address of the SR
-register (base + `0x2C`, not `0x30`)? Did you write the `while` condition
-as "wait while TXFULL is 1," or did you accidentally write the reverse?
-Are you reading SR through a `volatile` pointer — if not, the compiler
-may eliminate the read and leave you in an infinite loop (Chapter 5's
-central lesson shows up right here).
+[Takıldıysan]
+::ipucu İpucu 1 — TXFULL Bekleme Döngüsü Çalışmıyor / Hiç Bitmiyor
+Mask'i (`0x10`) SR register'ının doğru adresine mi uyguluyorsun (taban
++ `0x2C`, `0x30` değil)? `while` koşulunu "TXFULL 1 iken bekle" diye
+mi yazdın, yoksa yanlışlıkla tersini mi? SR'yi `volatile` bir pointer
+üzerinden mi okuyorsun — değilse derleyici okumayı eleyip seni sonsuz
+döngüde bırakabilir (Bölüm 5'in ana dersi tam burada karşına çıkar).
 ::/
-::ipucu Hint 2 — I'm Sending '\n' but the Terminal Line Does Not Return to Column Zero
-Terminals interpret `'\n'` (line feed) as "move down one line, same
-column"; to actually return the line to the start, you also need to send
-`'\r'` (carriage return). In `uartSendString()`, try calling
-`uartSendChar('\r')` first the instant you see a `'\n'` character, then
-sending the `'\n'`.
+::ipucu İpucu 2 — '\n' Gönderiyorum ama Terminal Satır Başına Dönmüyor
+Terminaller `'\n'` (line feed) karakterini "bir satır aşağı in, sütun
+aynı" diye yorumlar; satırı gerçekten başa döndürmek için `'\r'`
+(carriage return) karakterini de göndermen gerekir. `uartSendString()`
+içinde, bir `'\n'` gördüğün anda önce `uartSendChar('\r')` çağırmayı,
+sonra `'\n'` göndermeyi dene.
 ::/
-::cozum Full Solution — lab02-uart
-The three files below drive UART0 at the register level and print the
-welcome banner:
+::cozum Tam Çözüm — lab02-uart
+Aşağıdaki üç dosya UART0'ı register düzeyinde sürer ve karşılama
+banner'ını basar:
 {{kod:lab02-uart/src/uart_ps.h}}
 {{kod:lab02-uart/src/uart_ps.c}}
 {{kod:lab02-uart/src/main.c}}

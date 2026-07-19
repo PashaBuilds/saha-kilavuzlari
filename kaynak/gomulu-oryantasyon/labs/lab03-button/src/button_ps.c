@@ -1,14 +1,14 @@
 /* ============================================================================
- * button_ps.c — SW19 (PS MIO22) / DS50 (PS MIO23) mini driver module
- * (TASK 3 solution)
+ * button_ps.c — SW19 (PS MIO22) / DS50 (PS MIO23) mini surucu modulu
+ * (GOREV 3 cozumu)
  *
- * POLARITY NOTE: UG1271 does not explicitly state whether SW19/DS50 is
- * active-high or active-low (see the independent verification attempt
- * and rationale in content/_arastirma-ek-C.md §C.1). This file uses the
- * convention already adopted in the Task 3/4 chain of this document —
- * SW19 reads 1 while pressed, and DS50 turns on when written 1. If you
- * observe the exact opposite on your board, the single place to change
- * is: invert the return line of buttonRead() with `!`.
+ * POLARITE NOTU: UG1271, SW19/DS50'nin active-high mi active-low mu
+ * oldugunu acikca soylemez (bagimsiz teyit denemesi ve gerekce icin
+ * bkz. content/_arastirma-ek-C.md §C.1). Bu dosya, dokumanin Gorev 3/4
+ * zincirinde zaten benimsenen kabulu kullanir — SW19 basiliyken 1
+ * okunur, DS50'ye 1 yazilinca yanar. Kartinda tam tersini gozlersen
+ * degistirilecek tek yer: buttonRead() icindeki return satirini `!`
+ * ile tersle.
  * ============================================================================ */
 
 #include "button_ps.h"
@@ -16,23 +16,23 @@
 #include "xparameters.h"
 #include "xstatus.h"
 
-#define BUTTON_PS_PIN_SW19   22U   /* SW19 button → PS MIO22 (input) */
-#define BUTTON_PS_PIN_DS50   23U   /* DS50 LED    → PS MIO23 (output) */
+#define BUTTON_PS_PIN_SW19   22U   /* SW19 buton → PS MIO22 (giris) */
+#define BUTTON_PS_PIN_DS50   23U   /* DS50 LED   → PS MIO23 (cikis) */
 
 static XGpioPs S_sGpio;
 
 /**
- * @brief Prepares the PS GPIO hardware: sets SW19 as input, DS50 as output.
+ * @brief PS GPIO donanimini hazirlar: SW19'u giris, DS50'yi cikis yapar.
  */
 int buttonInit(void)
 {
     int iStatus;
     XGpioPs_Config* spConfig;
 
-    /* Classic (DEVICE_ID) flow — one of the two patterns from Chapter 4.
-     * In the SDT flow this is replaced by
-     * XGpioPs_LookupConfig(XPAR_XGPIOPS_0_BASEADDR), and CfgInitialize is
-     * given the base address directly. */
+    /* Klasik (DEVICE_ID) akis — Bolum 4'teki iki kaliptan biri. SDT
+     * akisinda bunun yerini
+     * XGpioPs_LookupConfig(XPAR_XGPIOPS_0_BASEADDR) alir ve
+     * CfgInitialize'a taban adres dogrudan verilir. */
     spConfig = XGpioPs_LookupConfig(XPAR_XGPIOPS_0_DEVICE_ID);
     if (spConfig == NULL)
     {
@@ -45,10 +45,9 @@ int buttonInit(void)
         return iStatus;
     }
 
-    /* Reading/writing is meaningless without correctly setting the
-     * direction register (DIRM) first — the lesson from Task 1. Without
-     * SW19 as input (0), DS50 as output (1), and output enable (OEN),
-     * the value you write never reaches the pin. */
+    /* Once yon register'ini (DIRM) dogru kurmadan okumak/yazmak
+     * anlamsizdir — Gorev 1'in dersi. SW19 giris (0), DS50 cikis (1)
+     * ve output enable (OEN) olmadan yazdigin deger pine asla ulasmaz. */
     XGpioPs_SetDirectionPin(&S_sGpio, BUTTON_PS_PIN_SW19, 0U);
     XGpioPs_SetDirectionPin(&S_sGpio, BUTTON_PS_PIN_DS50, 1U);
     XGpioPs_SetOutputEnablePin(&S_sGpio, BUTTON_PS_PIN_DS50, 1U);
@@ -57,7 +56,7 @@ int buttonInit(void)
 }
 
 /**
- * @brief Reads the INSTANTANEOUS (raw, non-debounced) state of SW19.
+ * @brief SW19'un ANLIK (ham, debounce'suz) durumunu okur.
  */
 unsigned int buttonRead(void)
 {
@@ -65,7 +64,7 @@ unsigned int buttonRead(void)
 }
 
 /**
- * @brief Writes DS50.
+ * @brief DS50'yi yazar.
  */
 void ledPsWrite(unsigned int uiState)
 {

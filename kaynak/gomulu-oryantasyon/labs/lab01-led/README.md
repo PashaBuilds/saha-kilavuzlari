@@ -1,56 +1,53 @@
-# lab01-led — Task 1: Turn On the LED (Hello Hardware)
+# lab01-led — Görev 1: LED'i Yak (Merhaba Donanım)
 
-## What it does
+## Ne yapar
 
-Blinks the DS50 LED (PS `MIO23`) with a 500 ms on / 500 ms off period. Since
-this is the only LED accessible from the PS without loading a bitstream onto
-the board, it is the centerpiece of our first lab (see Chapter 2 and Chapter
-4 — the 8 user LEDs are on PL pins, and we return to them in Task 7 using AXI
-GPIO).
+DS50 LED'ini (PS `MIO23`) 500 ms yanık / 500 ms sönük periyotla yakıp
+söndürür. Karta bitstream yüklemeden PS'ten erişilebilen tek LED bu
+olduğundan ilk laboratuvarın merkezindedir (bkz. Bölüm 2 ve Bölüm 4 —
+8 kullanıcı LED'i PL pinlerindedir; onlara Görev 7'de AXI GPIO ile
+döneceğiz).
 
-There are two alternative source files, and **they are not compiled at the
-same time**:
+İki alternatif kaynak dosya vardır ve **aynı anda derlenmezler**:
 
-- `src/main.c` — the **primary solution**. Written using the `XGpioPs`
-  driver (`LookupConfig` → `CfgInitialize` → `SetDirectionPin` →
+- `src/main.c` — **birincil çözüm**. `XGpioPs` sürücüsüyle yazılmıştır
+  (`LookupConfig` → `CfgInitialize` → `SetDirectionPin` →
   `SetOutputEnablePin` → `WritePin`).
-- `src/main_registers.c` — the deep dive from Chapter 4: performs the same
-  task without using any driver, by writing directly to the `DIRM_0`/`OEN_0`/
-  `DATA_0` registers through a `volatile` pointer. Place this file in a
-  separate, empty application project to see what happens behind the
-  driver's abstraction.
+- `src/main_registers.c` — Bölüm 4'teki derin dalış: aynı işi hiçbir
+  sürücü kullanmadan, `volatile` pointer üzerinden doğrudan
+  `DIRM_0`/`OEN_0`/`DATA_0` register'larına yazarak yapar. Sürücünün
+  soyutlamasının arkasında ne döndüğünü görmek için bu dosyayı ayrı,
+  boş bir uygulama projesine koy.
 
-## How to build in Vitis
+## Vitis'te nasıl derlenir
 
-This document covers the full details of Vitis in Chapter 11; here you will
-find only the steps needed to complete this task:
+Vitis'in tüm ayrıntısı bu dokümanın Bölüm 11'inde; burada yalnızca bu
+görevi tamamlamak için gereken adımlar var:
 
-1. Select the ready-made **platform** (hardware definition, `.xsa`) provided
-   by the team.
-2. Open a new **empty application** project and link it to this platform.
-3. Copy `src/main.c` into the project's `src/` folder (or
-   `main_registers.c` — do not copy both together, since both define
-   `main()` and cannot be compiled in the same project).
-4. **Build** the project.
-5. **Load it onto the board via JTAG and run it** (Run As → Launch on
+1. Ekibin sağladığı hazır **platform**u (donanım tanımı, `.xsa`) seç.
+2. Yeni bir **boş uygulama** projesi aç ve bu platforma bağla.
+3. `src/main.c`'yi projenin `src/` klasörüne kopyala (ya da
+   `main_registers.c` — ikisini birlikte kopyalama; ikisi de `main()`
+   tanımlar ve aynı projede derlenemezler).
+4. Projeyi **build** et.
+5. **JTAG üzerinden karta yükle ve çalıştır** (Run As → Launch on
    Hardware).
 
-## Expected behavior
+## Beklenen davranış
 
-The DS50 LED blinks at a steady one-second rate: 500 ms on, 500 ms off. If
-you open the UART terminal (using the settings from Task 0), you will also
-see a welcome line — but the task's success criterion is the LED itself; the
-terminal output is an optional verification.
+DS50 LED'i düzenli bir saniyelik tempoda yanıp söner: 500 ms yanık,
+500 ms sönük. UART terminalini açarsan (Görev 0'daki ayarlarla) bir
+karşılama satırı da görürsün — ama görevin başarı kriteri LED'in
+kendisidir; terminal çıktısı isteğe bağlı bir doğrulamadır.
 
-## Notes / verified values
+## Notlar / teyitli değerler
 
-- `DS50_LED_PIN_MIO = 23`, the `XGpioPs` APIs, and the classic
-  `LookupConfig` pattern: from `content/_arastirma.md` §1 and §5.
-- The `DIRM_0`/`OEN_0`/`DATA_0` offsets in `main_registers.c` (Bank 0:
-  `0x204`/`0x208`/`0x040`) were pulled directly from the Xilinx/AMD
-  embeddedsw `xgpiops_hw.h` and verified during this session — details and
-  formulas are in `content/_arastirma-ek-B.md`.
-- `usleep()` (`sleep.h`, standalone BSP, routed to `usleep_A53` on the A53
-  target) was also verified from the embeddedsw source during this session —
-  see `content/_arastirma-ek-B.md`. No additional library or BSP
-  configuration is required.
+- `DS50_LED_PIN_MIO = 23`, `XGpioPs` API'leri ve klasik `LookupConfig`
+  kalıbı: `content/_arastirma.md` §1 ve §5'ten.
+- `main_registers.c`'deki `DIRM_0`/`OEN_0`/`DATA_0` offset'leri (Bank 0:
+  `0x204`/`0x208`/`0x040`) doğrudan Xilinx/AMD embeddedsw
+  `xgpiops_hw.h`'den alındı ve bu oturumda teyit edildi — ayrıntılar ve
+  formüller `content/_arastirma-ek-B.md`'de.
+- `usleep()` (`sleep.h`, standalone BSP, A53 hedefinde `usleep_A53`'e
+  yönlenir) de bu oturumda embeddedsw kaynağından teyit edildi — bkz.
+  `content/_arastirma-ek-B.md`. Ek kütüphane ya da BSP ayarı gerekmez.

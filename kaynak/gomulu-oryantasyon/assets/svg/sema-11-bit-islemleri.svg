@@ -1,9 +1,9 @@
 <svg viewBox="0 0 740 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s11-baslik">
-  <title id="s11-baslik">Bit operations visual reference: before/mask/after 8-bit boxes for SET, CLEAR, TOGGLE, and TEST</title>
+  <title id="s11-baslik">Şekil 11 — Bit işlemleri görsel referansı: SET, CLEAR, TOGGLE ve TEST için önce/mask/sonra 8-bit kutuları</title>
   <g>
   <rect x="20" y="20" width="330" height="172" rx="10" class="svg-kutu"/>
     <text x="185.0" y="42" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">SET — reg |= BIT(4)</text>
-    <text x="34" y="50" class="svg-soluk" font-size="11">BEFORE</text>
+    <text x="34" y="50" class="svg-soluk" font-size="11">ÖNCE</text>
     <rect x="98.0" y="54" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="108.0" y="68.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="120.0" y="54" width="20" height="20" rx="2" class="svg-kutu"/>
@@ -37,7 +37,7 @@
     <text x="240.0" y="110.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="252.0" y="96" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="262.0" y="110.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
-    <text x="34" y="134" class="svg-soluk" font-size="11">AFTER</text>
+    <text x="34" y="134" class="svg-soluk" font-size="11">SONRA</text>
     <rect x="98.0" y="138" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="108.0" y="152.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="120.0" y="138" width="20" height="20" rx="2" class="svg-kutu"/>
@@ -56,7 +56,7 @@
     <text x="262.0" y="152.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
   <rect x="390" y="20" width="330" height="172" rx="10" class="svg-kutu"/>
     <text x="555.0" y="42" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">CLEAR — reg &amp;= ~BIT(5)</text>
-    <text x="404" y="50" class="svg-soluk" font-size="11">BEFORE</text>
+    <text x="404" y="50" class="svg-soluk" font-size="11">ÖNCE</text>
     <rect x="468.0" y="54" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="478.0" y="68.0" text-anchor="middle" class="svg-kod" font-size="11">1</text>
     <rect x="490.0" y="54" width="20" height="20" rx="2" class="svg-kutu"/>
@@ -90,7 +90,7 @@
     <text x="610.0" y="110.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="622.0" y="96" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="632.0" y="110.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
-    <text x="404" y="134" class="svg-soluk" font-size="11">AFTER</text>
+    <text x="404" y="134" class="svg-soluk" font-size="11">SONRA</text>
     <rect x="468.0" y="138" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="478.0" y="152.0" text-anchor="middle" class="svg-kod" font-size="11">1</text>
     <rect x="490.0" y="138" width="20" height="20" rx="2" class="svg-kutu"/>
@@ -109,7 +109,7 @@
     <text x="632.0" y="152.0" text-anchor="middle" class="svg-kod" font-size="11">1</text>
   <rect x="20" y="208" width="330" height="172" rx="10" class="svg-kutu"/>
     <text x="185.0" y="230" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">TOGGLE — reg ^= BIT(0)</text>
-    <text x="34" y="238" class="svg-soluk" font-size="11">BEFORE</text>
+    <text x="34" y="238" class="svg-soluk" font-size="11">ÖNCE</text>
     <rect x="98.0" y="242" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="108.0" y="256.0" text-anchor="middle" class="svg-kod" font-size="11">1</text>
     <rect x="120.0" y="242" width="20" height="20" rx="2" class="svg-kutu"/>
@@ -143,7 +143,7 @@
     <text x="240.0" y="298.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="252.0" y="284" width="20" height="20" rx="2" class="svg-kutu" style="fill: var(--vurgu-soluk); stroke: var(--vurgu)"/>
     <text x="262.0" y="298.0" text-anchor="middle" class="svg-kod" font-size="11">1</text>
-    <text x="34" y="322" class="svg-soluk" font-size="11">AFTER</text>
+    <text x="34" y="322" class="svg-soluk" font-size="11">SONRA</text>
     <rect x="98.0" y="326" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="108.0" y="340.0" text-anchor="middle" class="svg-kod" font-size="11">1</text>
     <rect x="120.0" y="326" width="20" height="20" rx="2" class="svg-kutu"/>
@@ -162,7 +162,7 @@
     <text x="262.0" y="340.0" text-anchor="middle" class="svg-kod" font-size="11">1</text>
   <rect x="390" y="208" width="330" height="172" rx="10" class="svg-kutu"/>
     <text x="555.0" y="230" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">TEST — if (reg &amp; BIT(2))</text>
-    <text x="404" y="238" class="svg-soluk" font-size="11">BEFORE</text>
+    <text x="404" y="238" class="svg-soluk" font-size="11">ÖNCE</text>
     <rect x="468.0" y="242" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="478.0" y="256.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="490.0" y="242" width="20" height="20" rx="2" class="svg-kutu"/>
@@ -196,7 +196,7 @@
     <text x="610.0" y="298.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="622.0" y="284" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="632.0" y="298.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
-    <text x="404" y="322" class="svg-soluk" font-size="11">RESULT (reg &amp; MASK)</text>
+    <text x="404" y="322" class="svg-soluk" font-size="11">SONUÇ (reg &amp; MASK)</text>
     <rect x="468.0" y="326" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="478.0" y="340.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="490.0" y="326" width="20" height="20" rx="2" class="svg-kutu"/>
@@ -213,6 +213,6 @@
     <text x="610.0" y="340.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
     <rect x="622.0" y="326" width="20" height="20" rx="2" class="svg-kutu"/>
     <text x="632.0" y="340.0" text-anchor="middle" class="svg-kod" font-size="11">0</text>
-    <text x="555.0" y="368" text-anchor="middle" class="svg-metin" font-size="11">result ≠ 0 → bit SET (1)</text>
+    <text x="555.0" y="368" text-anchor="middle" class="svg-metin" font-size="11">sonuç ≠ 0 → bit SET (1)</text>
   </g>
 </svg>

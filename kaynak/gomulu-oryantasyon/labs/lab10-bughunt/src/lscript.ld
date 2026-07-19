@@ -1,20 +1,20 @@
 /* ============================================================
- * lscript.ld — stack/heap sizing section (lab10-bughunt)
+ * lscript.ld — stack/heap boyutlandirma bolumu (lab10-bughunt)
  *
- * NOTE: Vitis generates its own complete lscript.ld for each platform
- * (the memory regions depend on the .xsa); only the STACK/HEAP sizing
- * section is shown here. In a real project you see this file in full in
- * the Vitis Explorer.
+ * NOT: Vitis her platform icin kendi eksiksiz lscript.ld'sini uretir
+ * (bellek bolgeleri .xsa'ya baglidir); burada yalnizca STACK/HEAP
+ * boyutlandirma bolumu gosterilir. Gercek projede bu dosyanin tamamini
+ * Vitis Explorer'da gorursun.
  *
- * In this lab the stack size is deliberately kept small — this is the
- * lab's own choice, not Vitis's general default. In a real project,
- * always check the _STACK_SIZE value in your own lscript.ld.
+ * Bu lab'de stack boyutu bilerek kucuk tutulmustur — bu lab'in kendi
+ * tercihi, Vitis'in genel varsayilani degil. Gercek projede her zaman
+ * kendi lscript.ld'ndeki _STACK_SIZE degerini kontrol et.
  * ============================================================ */
 
 _STACK_SIZE = DEFINED(_STACK_SIZE) ? _STACK_SIZE : 0x4000;   /* 16 KB */
 _HEAP_SIZE  = DEFINED(_HEAP_SIZE)  ? _HEAP_SIZE  : 0x2000;   /*  8 KB */
 
-/* Local variables (including arrays declared inside functions) are not
-   allocated here; they are allocated on the stack at run time. That is
-   why an overflow goes unnoticed at compile time and only surfaces at
-   run time. */
+/* Yerel degiskenler (fonksiyon icinde bildirilen diziler dahil) burada
+   ayrilmaz; calisma zamaninda stack'te ayrilirlar. Bir tasmanin derleme
+   zamaninda fark edilmeyip ancak calisma zamaninda ortaya cikmasinin
+   sebebi budur. */

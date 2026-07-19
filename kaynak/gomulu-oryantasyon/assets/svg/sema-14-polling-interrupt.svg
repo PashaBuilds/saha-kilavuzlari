@@ -1,13 +1,13 @@
 <svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s14-baslik">
-  <title id="s14-baslik">Polling versus interrupt comparison: how quickly the same event is detected under two CPU operating modes, shown on two timelines</title>
+  <title id="s14-baslik">Şekil 14 — Polling ile interrupt karşılaştırması: aynı olayın iki CPU çalışma kipinde ne hızla fark edildiği, iki zaman çizgisinde</title>
 
   <!-- shared vertical guide: the actual moment of the event -->
   <line x1="460" y1="60" x2="460" y2="300" stroke="var(--kirmizi)" stroke-width="1.5" stroke-dasharray="4 4"/>
-  <text x="460" y="50" text-anchor="middle" class="svg-soluk" font-size="11">event occurs</text>
+  <text x="460" y="50" text-anchor="middle" class="svg-soluk" font-size="11">olay anı</text>
 
   <!-- ================= STRIP 1: POLLING ================= -->
   <text x="20" y="26" class="svg-metin" font-size="15" font-weight="700" fill="var(--vurgu)">POLLING</text>
-  <text x="20" y="42" class="svg-soluk" font-size="11">CPU cannot do other work; it continuously asks "has it happened?" in a loop</text>
+  <text x="20" y="42" class="svg-soluk" font-size="11">CPU başka iş yapamaz; döngüde sürekli "oldu mu?" diye sorar</text>
 
   <line x1="150" y1="118" x2="700" y2="118" class="svg-cizgi" stroke-width="2"/>
   <text x="90" y="122" text-anchor="end" class="svg-soluk" font-size="11">CPU</text>
@@ -32,19 +32,19 @@
 
   <!-- event: star below -->
   <path d="M460 150 l4 8 9 1 -6.5 6.5 1.5 9 -8 -4.5 -8 4.5 1.5 -9 -6.5 -6.5 9 -1 z" fill="var(--altin)"/>
-  <text x="460" y="176" text-anchor="middle" class="svg-metin" font-size="11">event occurred here</text>
+  <text x="460" y="176" text-anchor="middle" class="svg-metin" font-size="11">olay burada gerçekleşti</text>
 
   <!-- latency bridge -->
   <path d="M460 128 L460 136 L506 136 L506 128" fill="none" stroke="var(--kirmizi)" stroke-width="1.5"/>
-  <text x="483" y="149" text-anchor="middle" fill="var(--kirmizi)" font-size="11" font-weight="600">latency</text>
-  <text x="506" y="92" text-anchor="middle" fill="var(--kirmizi)" font-size="10">detected</text>
+  <text x="483" y="149" text-anchor="middle" fill="var(--kirmizi)" font-size="11" font-weight="600">gecikme</text>
+  <text x="506" y="92" text-anchor="middle" fill="var(--kirmizi)" font-size="10">fark edildi</text>
 
   <!-- ================= STRIP 2: INTERRUPT ================= -->
   <text x="20" y="206" class="svg-metin" font-size="15" font-weight="700" fill="var(--vurgu)">INTERRUPT</text>
-  <text x="20" y="222" class="svg-soluk" font-size="11">CPU performs its primary task; the event interrupts it with a brief diversion</text>
+  <text x="20" y="222" class="svg-soluk" font-size="11">CPU asıl işini yapar; olay onu kısa bir sapmayla böler</text>
 
   <rect x="150" y="254" width="550" height="26" rx="4" class="svg-kutu" style="fill:var(--vurgu-soluk); stroke:var(--vurgu)"/>
-  <text x="160" y="271" class="svg-soluk" font-size="10">CPU busy with primary task</text>
+  <text x="160" y="271" class="svg-soluk" font-size="10">CPU asıl işiyle meşgul</text>
 
   <!-- ISR slice -->
   <rect x="454" y="254" width="14" height="26" fill="var(--altin)"/>
@@ -52,10 +52,10 @@
 
   <!-- event arrow -->
   <path d="M460 200 L460 250" stroke="var(--kirmizi)" stroke-width="2" fill="none" marker-end="url(#s14-ok)"/>
-  <text x="460" y="196" text-anchor="middle" class="svg-metin" font-size="11">event</text>
+  <text x="460" y="196" text-anchor="middle" class="svg-metin" font-size="11">olay</text>
 
   <path d="M468 261 L520 261" stroke="var(--yesil)" stroke-width="1.5" fill="none" marker-end="url(#s14-ok-yesil)"/>
-  <text x="580" y="265" text-anchor="middle" fill="var(--yesil)" font-size="11" font-weight="600">immediate response — no latency</text>
+  <text x="580" y="265" text-anchor="middle" fill="var(--yesil)" font-size="11" font-weight="600">anında tepki — gecikme yok</text>
 
   <defs>
     <marker id="s14-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">

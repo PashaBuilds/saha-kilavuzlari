@@ -1,5 +1,5 @@
 <svg viewBox="0 0 740 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s12-baslik">
-  <title id="s12-baslik">Cache hierarchy and coherency: the CPU-cache-DDR-DMA quadrilateral; the CPU reading a stale value from cache after a DMA write, and the fix via invalidate</title>
+  <title id="s12-baslik">Şekil 13 — Cache hiyerarşisi ve tutarlılık: CPU-cache-DDR-DMA dörtgeni; DMA yazımından sonra CPU'nun cache'ten bayat değer okuması ve invalidate ile çözüm</title>
 
   <!-- four boxes -->
   <rect x="50" y="50" width="160" height="64" rx="8" class="svg-kutu"/>
@@ -16,32 +16,32 @@
 
   <rect x="530" y="350" width="160" height="64" rx="8" class="svg-kutu"/>
   <text x="610" y="376" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">DDR</text>
-  <text x="610" y="394" text-anchor="middle" class="svg-soluk" font-size="11">main memory</text>
+  <text x="610" y="394" text-anchor="middle" class="svg-soluk" font-size="11">ana bellek</text>
 
   <!-- neutral data buses of the quadrilateral -->
   <line x1="210" y1="82" x2="530" y2="82" class="svg-cizgi" stroke-width="1.5"/>
   <line x1="610" y1="114" x2="610" y2="350" class="svg-cizgi" stroke-width="1.5"/>
   <line x1="210" y1="382" x2="530" y2="382" class="svg-cizgi" stroke-width="1.5"/>
   <line x1="130" y1="114" x2="130" y2="350" class="svg-cizgi" stroke-width="1.5"/>
-  <text x="26" y="232" text-anchor="middle" class="svg-soluk" font-size="11" transform="rotate(-90 26 232)">AXI interconnect (shared bus)</text>
+  <text x="26" y="232" text-anchor="middle" class="svg-soluk" font-size="11" transform="rotate(-90 26 232)">AXI interconnect (ortak veriyolu)</text>
 
   <!-- scenario 1: DMA writes the new data to DDR -->
   <path d="M 216 396 L 524 396" stroke="var(--vurgu)" stroke-width="2" fill="none" marker-end="url(#s12-ok-vurgu)"/>
   <circle cx="290" cy="396" r="10" class="svg-kutu" style="fill: var(--vurgu-soluk); stroke: var(--vurgu)"/>
   <text x="290" y="400" text-anchor="middle" font-size="11" style="fill: var(--vurgu); font-family: inherit">1</text>
-  <text x="370" y="416" text-anchor="middle" class="svg-soluk" font-size="11">DMA writes new data to DDR</text>
+  <text x="370" y="416" text-anchor="middle" class="svg-soluk" font-size="11">DMA yeni veriyi DDR'a yazar</text>
 
   <!-- scenario 2: CPU reads but the OLD value returns from cache -->
   <path d="M 524 68 L 216 68" stroke="var(--kirmizi)" stroke-width="2" fill="none" marker-end="url(#s12-ok-kirmizi)"/>
   <circle cx="450" cy="68" r="10" class="svg-kutu" style="fill: var(--kirmizi-soluk); stroke: var(--kirmizi)"/>
   <text x="450" y="72" text-anchor="middle" font-size="11" style="fill: var(--kirmizi); font-family: inherit">2</text>
-  <text x="370" y="40" text-anchor="middle" font-size="11" style="fill: var(--kirmizi); font-family: inherit">STALE value returned from cache (never reaches DDR)</text>
+  <text x="370" y="40" text-anchor="middle" font-size="11" style="fill: var(--kirmizi); font-family: inherit">cache'ten BAYAT değer döner (DDR'a hiç inilmez)</text>
 
   <!-- scenario 3: correct read after invalidate -->
   <path d="M 624 344 L 624 96 L 216 96" stroke="var(--yesil)" stroke-width="2" fill="none" marker-end="url(#s12-ok-yesil)"/>
   <circle cx="624" cy="220" r="10" class="svg-kutu" style="fill: var(--yesil-soluk); stroke: var(--yesil)"/>
   <text x="624" y="224" text-anchor="middle" font-size="11" style="fill: var(--yesil); font-family: inherit">3</text>
-  <text x="400" y="126" text-anchor="middle" font-size="11" style="fill: var(--yesil); font-family: inherit">after invalidate, CPU reads fresh data from DDR</text>
+  <text x="400" y="126" text-anchor="middle" font-size="11" style="fill: var(--yesil); font-family: inherit">invalidate sonrası CPU taze veriyi DDR'dan okur</text>
 
   <defs>
     <marker id="s12-ok-vurgu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--vurgu)"/></marker>
@@ -49,5 +49,5 @@
     <marker id="s12-ok-yesil" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--yesil)"/></marker>
   </defs>
 
-  <text x="370" y="444" text-anchor="middle" class="svg-soluk" font-size="11">Cache speeds up the CPU, but with a second writer like DMA, resolving "whose data is current" is up to you.</text>
+  <text x="370" y="444" text-anchor="middle" class="svg-soluk" font-size="11">Cache CPU'yu hızlandırır; ama DMA gibi ikinci bir yazar varken "güncel veri kimde" sorusunu çözmek sana düşer.</text>
 </svg>

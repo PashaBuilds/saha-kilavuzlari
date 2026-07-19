@@ -1,9 +1,9 @@
 /* ============================================================
- * gpio_led_button.h — DS50 LED (MIO23) and SW19 button (MIO22)
+ * gpio_led_button.h — DS50 LED (MIO23) ve SW19 buton (MIO22)
  *
- * lab10-bughunt (Task 10 - Bug Hunt). Drives DS50 via PS GPIO, watches
- * SW19 via interrupt. The GIC binding is done through XPS_GPIO_INT_ID
- * (48).
+ * lab10-bughunt (Gorev 10 - Bug Hunt). DS50'yi PS GPIO uzerinden surer,
+ * SW19'u interrupt ile izler. GIC baglantisi XPS_GPIO_INT_ID (48)
+ * uzerinden yapilir.
  * ============================================================ */
 #ifndef GPIO_LED_BUTTON_H
 #define GPIO_LED_BUTTON_H
@@ -11,27 +11,27 @@
 #include "xgpiops.h"
 #include "xscugic.h"
 
-#define DS50_PIN_NO   23U   /* PS MIO23 — user LED */
-#define SW19_PIN_NO   22U   /* PS MIO22 — user button */
+#define DS50_PIN_NO   23U   /* PS MIO23 — kullanici LED'i */
+#define SW19_PIN_NO   22U   /* PS MIO22 — kullanici butonu */
 
-/* State shared between the ISR and the main loop.
-   NOTE: the qualifiers for these lines are defined below (in the .c file). */
-extern unsigned char G_ucButtonFlag;      /* set in the button ISR */
-extern unsigned int  G_uiButtonCount;     /* total press counter */
+/* ISR ile ana dongu arasinda paylasilan durum.
+   NOT: bu satirlarin niteleyicileri asagida (.c dosyasinda) tanimlidir. */
+extern unsigned char G_ucButtonFlag;      /* buton ISR'sinde kurulur */
+extern unsigned int  G_uiButtonCount;     /* toplam basis sayaci */
 
 /**
- * @brief Sets up GPIO and the GIC binding (DS50 output, SW19 interrupt input).
+ * @brief GPIO ve GIC baglantisini kurar (DS50 cikis, SW19 interrupt girisi).
  *
- * @param spGpio The GPIO driver object to initialize.
- * @param spGic The GIC object the interrupt will be connected to.
- * @return XST_SUCCESS on success, otherwise a Xilinx error code.
+ * @param spGpio Ilklendirilecek GPIO surucu nesnesi.
+ * @param spGic Interrupt'in baglanacagi GIC nesnesi.
+ * @return Basarida XST_SUCCESS, aksi halde bir Xilinx hata kodu.
  */
 int  gpioLedButtonInit(XGpioPs* spGpio, XScuGic* spGic);
 
 /**
- * @brief Inverts DS50's state.
+ * @brief DS50'nin durumunu tersler.
  *
- * @param spGpio The GPIO driver object to operate on.
+ * @param spGpio Uzerinde islem yapilacak GPIO surucu nesnesi.
  */
 void ledDs50Toggle(XGpioPs* spGpio);
 

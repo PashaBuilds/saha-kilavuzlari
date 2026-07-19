@@ -1,7 +1,7 @@
 <svg viewBox="0 0 740 410" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s17-baslik">
-  <title id="s17-baslik">SPI waveform: CS, SCLK, MOSI, MISO lines and sampling edges; CPOL/CPHA differences for modes 0-3 shown below in four mini panels</title>
+  <title id="s17-baslik">Şekil 17 — SPI dalga şekli: CS, SCLK, MOSI, MISO hatları ve örnekleme kenarları; altta mod 0-3 için CPOL/CPHA farkları dört mini panelde</title>
 
-  <text x="20" y="20" class="svg-metin" font-size="12" font-weight="700">Example frame: MOSI = 0xA5, MISO = 0x3C, mode 0 (CPOL=0, CPHA=0)</text>
+  <text x="20" y="20" class="svg-metin" font-size="12" font-weight="700">Örnek frame: MOSI = 0xA5, MISO = 0x3C, mod 0 (CPOL=0, CPHA=0)</text>
 
   <!-- cell guide lines -->
   <g class="svg-cizgi" stroke-dasharray="2 3">
@@ -24,7 +24,7 @@
 
   <!-- CS -->
   <path d="M50,40 L100,40 L100,60 L610,60 L610,40 L690,40" fill="none" stroke="var(--vurgu)" stroke-width="2"/>
-  <text x="105" y="53" class="svg-soluk" font-size="9">active-low (selected)</text>
+  <text x="105" y="53" class="svg-soluk" font-size="9">active-low (seçili)</text>
 
   <!-- SCLK -->
   <path d="M100,110 L120,110 L120,90 L150,90 L150,110 L180,110 L180,90 L210,90 L210,110 L240,110 L240,90 L270,90 L270,110 L300,110 L300,90 L330,90 L330,110 L360,110 L360,90 L390,90 L390,110 L420,110 L420,90 L450,90 L450,110 L480,110 L480,90 L510,90 L510,110 L540,110 L540,90 L570,90 L570,110 L600,110 L620,110"
@@ -54,59 +54,59 @@
     <path d="M240 78 l5 8 l-10 0 z"/>
     <path d="M480 78 l5 8 l-10 0 z"/>
   </g>
-  <text x="700" y="80" text-anchor="end" fill="var(--yesil)" font-size="9">▼ sampling (mode 0: rising edge)</text>
+  <text x="700" y="80" text-anchor="end" fill="var(--yesil)" font-size="9">▼ örnekleme (mod 0: yükselen kenar)</text>
 
   <!-- ================= MODE 0-3 MINI PANELS ================= -->
-  <text x="20" y="258" class="svg-metin" font-size="12" font-weight="700">CPOL / CPHA four combinations</text>
+  <text x="20" y="258" class="svg-metin" font-size="12" font-weight="700">CPOL / CPHA dört kombinasyon</text>
 
   <!-- Panel template repeats: each panel's local x0 changes -->
   <!-- MODE 0: CPOL=0 CPHA=0, idle low, sampling rising edge (leading) -->
   <g>
     <rect x="15" y="268" width="170" height="120" rx="8" class="svg-kutu" style="stroke:var(--vurgu)"/>
-    <text x="100" y="286" text-anchor="middle" fill="var(--vurgu)" font-size="11" font-weight="700">Mode 0</text>
+    <text x="100" y="286" text-anchor="middle" fill="var(--vurgu)" font-size="11" font-weight="700">Mod 0</text>
     <text x="100" y="300" text-anchor="middle" class="svg-soluk" font-size="9">CPOL=0, CPHA=0</text>
     <path d="M25,340 L35,340 L35,320 L55,320 L55,340 L75,340 L75,320 L95,320 L95,340 L115,340 L115,320 L135,320 L135,340 L145,340"
           fill="none" stroke="var(--vurgu)" stroke-width="2"/>
     <g fill="var(--yesil)"><circle cx="35" cy="330" r="3"/><circle cx="75" cy="330" r="3"/><circle cx="115" cy="330" r="3"/></g>
-    <text x="100" y="360" text-anchor="middle" class="svg-soluk" font-size="9">idle low</text>
-    <text x="100" y="374" text-anchor="middle" fill="var(--yesil)" font-size="9">sampling: rising edge</text>
+    <text x="100" y="360" text-anchor="middle" class="svg-soluk" font-size="9">idle düşük</text>
+    <text x="100" y="374" text-anchor="middle" fill="var(--yesil)" font-size="9">örnekleme: yükselen kenar</text>
   </g>
 
   <!-- MODE 1: CPOL=0 CPHA=1, idle low, sampling falling edge (trailing) -->
   <g>
     <rect x="195" y="268" width="170" height="120" rx="8" class="svg-kutu" style="stroke:var(--vurgu)"/>
-    <text x="280" y="286" text-anchor="middle" fill="var(--vurgu)" font-size="11" font-weight="700">Mode 1</text>
+    <text x="280" y="286" text-anchor="middle" fill="var(--vurgu)" font-size="11" font-weight="700">Mod 1</text>
     <text x="280" y="300" text-anchor="middle" class="svg-soluk" font-size="9">CPOL=0, CPHA=1</text>
     <path d="M205,340 L215,340 L215,320 L235,320 L235,340 L255,340 L255,320 L275,320 L275,340 L295,340 L295,320 L315,320 L315,340 L325,340"
           fill="none" stroke="var(--vurgu)" stroke-width="2"/>
     <g fill="var(--yesil)"><circle cx="55" cy="330" r="3" transform="translate(160,0)"/><circle cx="95" cy="330" r="3" transform="translate(160,0)"/><circle cx="135" cy="330" r="3" transform="translate(160,0)"/></g>
-    <text x="280" y="360" text-anchor="middle" class="svg-soluk" font-size="9">idle low</text>
-    <text x="280" y="374" text-anchor="middle" fill="var(--yesil)" font-size="9">sampling: falling edge</text>
+    <text x="280" y="360" text-anchor="middle" class="svg-soluk" font-size="9">idle düşük</text>
+    <text x="280" y="374" text-anchor="middle" fill="var(--yesil)" font-size="9">örnekleme: düşen kenar</text>
   </g>
 
   <!-- MODE 2: CPOL=1 CPHA=0, idle high, sampling falling edge (leading) -->
   <g>
     <rect x="375" y="268" width="170" height="120" rx="8" class="svg-kutu" style="stroke:var(--vurgu)"/>
-    <text x="460" y="286" text-anchor="middle" fill="var(--vurgu)" font-size="11" font-weight="700">Mode 2</text>
+    <text x="460" y="286" text-anchor="middle" fill="var(--vurgu)" font-size="11" font-weight="700">Mod 2</text>
     <text x="460" y="300" text-anchor="middle" class="svg-soluk" font-size="9">CPOL=1, CPHA=0</text>
     <path d="M385,320 L395,320 L395,340 L415,340 L415,320 L435,320 L435,340 L455,340 L455,320 L475,320 L475,340 L495,340 L495,320 L505,320"
           fill="none" stroke="var(--vurgu)" stroke-width="2"/>
     <g fill="var(--yesil)"><circle cx="395" cy="330" r="3"/><circle cx="435" cy="330" r="3"/><circle cx="475" cy="330" r="3"/></g>
-    <text x="460" y="360" text-anchor="middle" class="svg-soluk" font-size="9">idle high</text>
-    <text x="460" y="374" text-anchor="middle" fill="var(--yesil)" font-size="9">sampling: falling edge</text>
+    <text x="460" y="360" text-anchor="middle" class="svg-soluk" font-size="9">idle yüksek</text>
+    <text x="460" y="374" text-anchor="middle" fill="var(--yesil)" font-size="9">örnekleme: düşen kenar</text>
   </g>
 
   <!-- MODE 3: CPOL=1 CPHA=1, idle high, sampling rising edge (trailing) -->
   <g>
     <rect x="555" y="268" width="170" height="120" rx="8" class="svg-kutu" style="stroke:var(--vurgu)"/>
-    <text x="640" y="286" text-anchor="middle" fill="var(--vurgu)" font-size="11" font-weight="700">Mode 3</text>
+    <text x="640" y="286" text-anchor="middle" fill="var(--vurgu)" font-size="11" font-weight="700">Mod 3</text>
     <text x="640" y="300" text-anchor="middle" class="svg-soluk" font-size="9">CPOL=1, CPHA=1</text>
     <path d="M565,320 L575,320 L575,340 L595,340 L595,320 L615,320 L615,340 L635,340 L635,320 L655,320 L655,340 L675,340 L675,320 L685,320"
           fill="none" stroke="var(--vurgu)" stroke-width="2"/>
     <g fill="var(--yesil)"><circle cx="615" cy="330" r="3"/><circle cx="655" cy="330" r="3"/><circle cx="695" cy="330" r="3"/></g>
-    <text x="640" y="360" text-anchor="middle" class="svg-soluk" font-size="9">idle high</text>
-    <text x="640" y="374" text-anchor="middle" fill="var(--yesil)" font-size="9">sampling: rising edge</text>
+    <text x="640" y="360" text-anchor="middle" class="svg-soluk" font-size="9">idle yüksek</text>
+    <text x="640" y="374" text-anchor="middle" fill="var(--yesil)" font-size="9">örnekleme: yükselen kenar</text>
   </g>
 
-  <text x="20" y="402" class="svg-soluk" font-size="10">CPOL = idle level of the clock line · CPHA = which edge data is sampled on (0 = leading edge, 1 = trailing edge)</text>
+  <text x="20" y="402" class="svg-soluk" font-size="10">CPOL = clock hattının idle seviyesi · CPHA = verinin hangi kenarda örneklendiği (0 = ön kenar, 1 = art kenar)</text>
 </svg>

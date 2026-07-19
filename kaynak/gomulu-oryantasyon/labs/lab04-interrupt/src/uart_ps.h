@@ -1,8 +1,8 @@
 /* ============================================================================
- * uart_ps.h — UART0 register-level mini driver module (TASK 2 solution)
+ * uart_ps.h — UART0 register seviyesi mini surucu modulu (GOREV 2 cozumu)
  *
- * An exact copy from lab02-uart — per the _gorev-zinciri.md contract,
- * every lab folder carries its own copy and builds independently.
+ * lab02-uart'tan birebir kopya — _gorev-zinciri.md sozlesmesi geregi
+ * her lab klasoru kendi kopyasini tasir ve bagimsiz derlenir.
  * ============================================================================ */
 #ifndef UART_PS_H
 #define UART_PS_H
@@ -10,30 +10,29 @@
 #include "xil_types.h"
 
 /**
- * @brief Prepares UART0 for use.
+ * @brief UART0'i kullanima hazirlar.
  *
- * NOTE: this function does NOT reconfigure the baud rate or frame format
- * (115200-8N1) — the FSBL and the standalone BSP's stdout setup already
- * leave UART0 configured this way when the board boots (see the file
- * header comment in uart_ps.c below). Here we simply treat the register
- * base used by our own module as "ready".
+ * NOT: bu fonksiyon baud hizini ya da cerceve bicimini (115200-8N1)
+ * yeniden yapilandirmaz — kart acildiginda FSBL ve standalone BSP'nin
+ * stdout kurulumu UART0'i zaten bu sekilde birakir (asagida uart_ps.c
+ * dosya basligi yorumuna bak). Burada kendi modulumuzun kullandigi
+ * register tabanini yalnizca "hazir" kabul ediyoruz.
  */
 void uartInit(void);
 
 /**
- * @brief Sends a single character to the UART0 TX FIFO; waits until the
- * FIFO is no longer full (TXFULL) before sending.
+ * @brief UART0 TX FIFO'ya tek karakter gonderir; gondermeden once
+ * FIFO'nun dolu olmamasini (TXFULL) bekler.
  *
- * @param cChar The character to send.
+ * @param cChar Gonderilecek karakter.
  */
 void uartSendChar(char cChar);
 
 /**
- * @brief Sends a null-terminated string character by character; sends
- * '\r' before '\n' whenever '\n' is encountered (see the explanation in
- * uart_ps.c).
+ * @brief Null ile sonlanan string'i karakter karakter gonderir; '\n' ile
+ * karsilastiginda once '\r' gonderir (uart_ps.c'deki aciklamaya bak).
  *
- * @param cpString The null-terminated string to send.
+ * @param cpString Gonderilecek, null ile sonlanan string.
  */
 void uartSendString(const char* cpString);
 

@@ -1,21 +1,21 @@
 /* ============================================================================
- * main.c — TASK 5 solution: Heartbeat via Timer
+ * main.c — GOREV 5 cozumu: Timer ile Heartbeat
  *
- * Configures TTC0 channel 0 (base 0xFF11_0000) to generate a periodic 1 Hz
- * interrupt; on every tick it toggles DS50 (PS MIO23) and prints a
- * "tick N" line to UART. The setup order is the five-step GIC pattern
- * from Chapter 7; this time the interrupt source is not a GPIO but TTC0
- * channel 0 (GIC ID 68).
+ * TTC0 kanal 0'i (taban 0xFF11_0000) periyodik 1 Hz interrupt uretecek
+ * sekilde yapilandirir; her tick'te DS50'yi (PS MIO23) toggle'lar ve
+ * UART'a bir "tick N" satiri basar. Kurulum sirasi Bolum 7'deki bes
+ * adimli GIC kalibidir; bu kez interrupt kaynagi GPIO degil TTC0
+ * kanal 0'dir (GIC ID 68).
  *
- * INTERVAL CALCULATION (Chapter 7 / content/_arastirma-ek-D.md §D.3):
- *   The TTC's Interval register is 32-bit on the ZynqMP, so at typical
- *   LPD clock speeds (tens of MHz) a low frequency like 1 Hz can be
- *   reached even without a prescaler:
+ * INTERVAL HESABI (Bolum 7 / content/_arastirma-ek-D.md §D.3):
+ *   TTC'nin Interval register'i ZynqMP'de 32-bit'tir; tipik LPD saat
+ *   hizlarinda (onlarca MHz) 1 Hz gibi dusuk bir frekansa prescaler
+ *   olmadan bile inilebilir:
  *
- *       Interval = (XPAR_XTTCPS_0_CLOCK_HZ / target_tick_hz) - 1
+ *       Interval = (XPAR_XTTCPS_0_CLOCK_HZ / hedef_tick_hz) - 1
  *
- *   XPAR_XTTCPS_0_CLOCK_HZ varies according to the platform's .xsa — no
- *   MHz figure is hardcoded here; it is read from xparameters.h.
+ *   XPAR_XTTCPS_0_CLOCK_HZ platformun .xsa'sina gore degisir — burada
+ *   hicbir MHz degeri hard-code edilmemistir; xparameters.h'den okunur.
  * ============================================================================ */
 
 #include "xparameters.h"
@@ -27,15 +27,15 @@
 #include "uart_ps.h"
 
 #define KESME_PS_PIN_DS50        23U   /* DS50 LED -> PS MIO23 (heartbeat) */
-#define KESME_GIC_ID_TTC0_CH0    68U   /* GIC interrupt ID: TTC0 channel 0 (Chapter 7) */
-#define TIMER_TARGET_TICK_HZ      1U    /* one tick per second */
+#define KESME_GIC_ID_TTC0_CH0    68U   /* GIC interrupt ID: TTC0 kanal 0 (Bolum 7) */
+#define TIMER_TARGET_TICK_HZ      1U    /* saniyede bir tick */
 
 static XGpioPs S_sGpio;
 static XTtcPs  S_sTtc;
 static XScuGic S_sGic;
 
-/* The ONE channel between the ISR and the main loop. volatile is
- * MANDATORY (Chapter 5/7). */
+/* ISR ile ana dongu arasindaki TEK kanal. volatile ZORUNLUDUR
+ * (Bolum 5/7). */
 static volatile unsigned char G_ucTickFlag = 0U;
 
 static void printNumber(unsigned int uiValue)
@@ -61,7 +61,7 @@ static void printNumber(unsigned int uiValue)
     uartSendString(&cArrBuffer[iIndex]);
 }
 
-/* --- ISR: SHORT. Read+ack the status, set the flag, exit. --- */
+/* --- ISR: KISA. Durumu oku+alindi bilgisi ver, bayragi kur, cik. --- */
 static void tickIsr(void* pvCallBackRef)
 {
     XTtcPs* spTtc = (XTtcPs*)pvCallBackRef;
@@ -117,7 +117,7 @@ int main(void)
 
     uartInit();
 
-    /* --- PS GPIO: DS50 output only (heartbeat indicator) --- */
+    /* --- PS GPIO: yalnizca DS50 cikis (heartbeat gostergesi) --- */
     spGpioConfig = XGpioPs_LookupConfig(XPAR_XGPIOPS_0_DEVICE_ID);
     if (spGpioConfig == NULL)
     {
@@ -135,7 +135,7 @@ int main(void)
     XGpioPs_SetDirectionPin(&S_sGpio, KESME_PS_PIN_DS50, 1U);
     XGpioPs_SetOutputEnablePin(&S_sGpio, KESME_PS_PIN_DS50, 1U);
 
-    /* --- TTC0 channel 0: interval mode, 1 Hz --- */
+    /* --- TTC0 kanal 0: interval modu, 1 Hz --- */
     spTtcConfig = XTtcPs_LookupConfig(XPAR_XTTCPS_0_DEVICE_ID);
     if (spTtcConfig == NULL)
     {
@@ -152,9 +152,8 @@ int main(void)
 
     XTtcPs_SetOptions(&S_sTtc, XTTCPS_OPTION_INTERVAL_MODE);
 
-    /* Manual calculation — the code counterpart of the formula in the
-     * file header comment. XPAR_XTTCPS_0_CLOCK_HZ is generated from the
-     * .xsa, not made up here. */
+    /* Elle hesap — dosya basligi yorumundaki formulun koddaki karsiligi.
+     * XPAR_XTTCPS_0_CLOCK_HZ .xsa'dan uretilir, burada uydurulmaz. */
     uiInterval = (XPAR_XTTCPS_0_CLOCK_HZ / TIMER_TARGET_TICK_HZ) - 1U;
     XTtcPs_SetInterval(&S_sTtc, uiInterval);
 
@@ -178,8 +177,8 @@ int main(void)
     {
         if (G_ucTickFlag != 0U)
         {
-            G_ucTickFlag = 0U;   /* clear first, process second (same
-                                    * rationale as the race risk in Task 4) */
+            G_ucTickFlag = 0U;   /* once temizle, sonra isle (Gorev 4'teki
+                                    * yaris riskiyle ayni gerekce) */
 
             uiTickCount++;
             uiLedState ^= 1U;

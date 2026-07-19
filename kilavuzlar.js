@@ -49,28 +49,24 @@ window.KILAVUZLAR = [
     sira: 0,
     slug: "oryantasyon",
     kaynak: "gomulu-oryantasyon",
-    baslik: "Introduction to Embedded Systems",
-    altBaslik: "A Team Onboarding Journey",
-    gozkasi: "Guided Journey · For newcomers",
+    baslik: "Gömülü Sistemlere Giriş",
+    altBaslik: "Ekip Oryantasyon Yolculuğu",
     aciklama:
-      "A hand-holding curriculum for the fresh graduate joining the team on " +
-      "day one. A ZCU111 board sits on the desk; reading chapters and hands-on " +
-      "labs alternate — from the Zynq PS/PL split to register programming, " +
-      "from interrupts to I2C/SPI, from FreeRTOS to Vitis debug. Not a " +
-      "reference; a journey that turns \"this board scares me\" into \"I get " +
-      "work done with this board\" in two weeks.",
-    etiketler: ["Zynq · ZCU111", "Bare-metal C", "Registers & Interrupts", "I2C · SPI · UART", "FreeRTOS", "Vitis Debug"],
-    rota: ["Welcome", "LED", "UART", "Interrupt", "Timer", "I2C", "AXI GPIO", "FreeRTOS", "Queue", "Bug Hunt", "Capstone"],
-    bolum: "17 chapters",
+      "Üniversiteden yeni mezun, ekibe yeni katılan mühendis için hazırlanmış " +
+      "müfredat: masadaki ZCU111 üzerinde okuma bölümleri ile uygulamalı " +
+      "görevler dönüşümlü ilerler — Zynq PS/PL ayrımı, boot süreci, register " +
+      "programlama, interrupt, I2C/SPI/UART, FreeRTOS ve Vitis debug. Referans " +
+      "değil; iki hafta sonunda kartla iş yapar hale getiren rehberli bir yolculuk.",
+    etiketler: ["Zynq · ZCU111", "Bare-metal C", "Register & Interrupt", "I2C · SPI · UART", "FreeRTOS", "Vitis Debug"],
+    rota: ["Hoş geldin", "LED", "UART", "Interrupt", "Timer", "I2C", "PL LED'leri", "FreeRTOS", "Queue", "Hata Avı", "Mezuniyet"],
+    bolum: "15 bölüm + 2 ek",
     bolumSayi: 17,
     lab: 10,
-    labEtiket: "hands-on labs",
     sema: 25,
-    kelime: 33709,
-    final: "Capstone Project",
-    cta: "Start the journey",
-    boyut: "572 KB",
-    guncelleme: "2026-07-14",
+    kelime: 25399,
+    final: "Mezuniyet Görevi",
+    boyut: "567 KB",
+    guncelleme: "2026-07-19",
     yol: "kilavuzlar/oryantasyon/index.html",
     renk: 40,
   },

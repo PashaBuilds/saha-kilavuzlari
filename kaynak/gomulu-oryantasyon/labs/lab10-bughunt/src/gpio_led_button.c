@@ -1,25 +1,24 @@
 /* ============================================================
- * gpio_led_button.c — DS50 LED and SW19 button, interrupt-based
+ * gpio_led_button.c — DS50 LED ve SW19 buton, interrupt tabanli
  *
- * lab10-bughunt (Task 10 - Bug Hunt).
+ * lab10-bughunt (Gorev 10 - Bug Hunt).
  * ============================================================ */
 #include "gpio_led_button.h"
 #include "uart_ps.h"
 #include "xparameters.h"
 #include "xil_exception.h"
 
-/* The flag through which the button ISR talks to the main loop. The main
-   loop reads the flag, the ISR writes it — the classic producer/consumer
-   pattern. */
+/* Buton ISR'sinin ana donguyle konustugu bayrak. Ana dongu bayragi
+   okur, ISR yazar — klasik producer/consumer kalibi. */
 unsigned char G_ucButtonFlag  = 0;
 unsigned int  G_uiButtonCount = 0;
 
-/* DS50's software-side shadow state: 0 off, 1 lit. */
+/* DS50'nin yazilim tarafindaki golge durumu: 0 sonuk, 1 yanik. */
 static unsigned int G_uiDs50State = 0;
 
 
 /* ------------------------------------------------------------
- * buttonIsr — called by the GIC when the SW19 interrupt fires.
+ * buttonIsr — SW19 interrupt'i tetiklendiginde GIC tarafindan cagrilir.
  * ------------------------------------------------------------ */
 static void buttonIsr(void* pvCallBackRef)
 {
@@ -31,23 +30,23 @@ static void buttonIsr(void* pvCallBackRef)
         XGpioPs_IntrClearPin(spGpio, SW19_PIN_NO);
 
         G_uiButtonCount++;
-        G_ucButtonFlag = 1;   /* the main loop reads the flag */
+        G_ucButtonFlag = 1;   /* bayragi ana dongu okur */
 
-        /* A brief settling delay for the button's mechanical bounce
-           (debounce), and a quick status line — during development we
-           wanted to see that the interrupt was actually arriving, and
-           it proved useful. */
+        /* Butonun mekanik sekmesi (debounce) icin kisa bir oturma
+           beklemesi ve hizli bir durum satiri — gelistirme sirasinda
+           interrupt'in gercekten geldigini gormek istedik, ise de
+           yaradi. */
         uartSendString("button interrupt received\r\n");
         for (uiDelayCount = 0; uiDelayCount < 200000U; uiDelayCount++)
         {
-            /* empty body: a brief settling delay */
+            /* bos govde: kisa bir oturma beklemesi */
         }
     }
 }
 
 
 /**
- * @brief Sets up GPIO and the GIC binding (DS50 output, SW19 interrupt input).
+ * @brief GPIO ve GIC baglantisini kurar (DS50 cikis, SW19 interrupt girisi).
  */
 int gpioLedButtonInit(XGpioPs* spGpio, XScuGic* spGic)
 {
@@ -67,22 +66,22 @@ int gpioLedButtonInit(XGpioPs* spGpio, XScuGic* spGic)
         return iStatus;
     }
 
-    /* DS50: output, initially off. */
+    /* DS50: cikis, baslangicta sonuk. */
     XGpioPs_SetDirectionPin(spGpio, DS50_PIN_NO, 1);
     XGpioPs_SetOutputEnablePin(spGpio, DS50_PIN_NO, 1);
     XGpioPs_WritePin(spGpio, DS50_PIN_NO, 0);
     G_uiDs50State = 0;
 
-    /* SW19: input, generates an interrupt on the rising edge. */
+    /* SW19: giris, yukselen kenarda interrupt uretir. */
     XGpioPs_SetDirectionPin(spGpio, SW19_PIN_NO, 0);
     XGpioPs_SetIntrTypePin(spGpio, SW19_PIN_NO,
                             XGPIOPS_IRQ_TYPE_EDGE_RISING);
     XGpioPs_IntrClearPin(spGpio, SW19_PIN_NO);
     XGpioPs_IntrEnablePin(spGpio, SW19_PIN_NO);
 
-    /* Connect to the GIC: XPS_GPIO_INT_ID (48) — on ZynqMP this is PS
-       GPIO's single interrupt source; we distinguish which pin triggered
-       it inside the ISR (see buttonIsr). */
+    /* GIC'e baglan: XPS_GPIO_INT_ID (48) — ZynqMP'de PS GPIO'nun tek
+       interrupt kaynagi budur; hangi pinin tetikledigini ISR icinde
+       ayirt ederiz (bkz. buttonIsr). */
     iStatus = XScuGic_Connect(spGic, XPS_GPIO_INT_ID,
                                (Xil_ExceptionHandler)buttonIsr,
                                (void*)spGpio);
@@ -97,11 +96,11 @@ int gpioLedButtonInit(XGpioPs* spGpio, XScuGic* spGic)
 
 
 /**
- * @brief Inverts DS50's state.
+ * @brief DS50'nin durumunu tersler.
  */
 void ledDs50Toggle(XGpioPs* spGpio)
 {
-    /* invert the state */
+    /* durumu tersle */
     G_uiDs50State |= 1U;
     XGpioPs_WritePin(spGpio, DS50_PIN_NO, G_uiDs50State);
 }

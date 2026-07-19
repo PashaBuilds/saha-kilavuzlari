@@ -1,9 +1,9 @@
 /* ============================================================
- * timer.h — TTC0 channel 0, interrupt once per second
+ * timer.h — TTC0 kanal 0, saniyede bir interrupt
  *
- * lab10-bughunt (Task 10 - Bug Hunt). The same pattern as Task 5's
- * "Heartbeat with a Timer" setup: TTC0 channel 0, configured for a
- * 1 Hz interval, incrementing G_uiTickCount on every interrupt.
+ * lab10-bughunt (Gorev 10 - Bug Hunt). Gorev 5'in "Timer ile
+ * Heartbeat" kurulumuyla ayni kalip: TTC0 kanal 0, 1 Hz araliga
+ * yapilandirilir, her interrupt'ta G_uiTickCount artar.
  * ============================================================ */
 #ifndef TIMER_H
 #define TIMER_H
@@ -11,15 +11,15 @@
 #include "xttcps.h"
 #include "xscugic.h"
 
-/* Counter shared between the ISR and the main loop — the qualifier here is correct. */
+/* ISR ile ana dongu arasinda paylasilan sayac — buradaki niteleyici dogrudur. */
 extern volatile unsigned int G_uiTickCount;
 
 /**
- * @brief Configures TTC0 channel 0 for 1 Hz, connects it to the GIC.
+ * @brief TTC0 kanal 0'i 1 Hz icin yapilandirir, GIC'e baglar.
  *
- * @param spTtc The TTC driver object to initialize.
- * @param spGic The GIC object the interrupt will be connected to.
- * @return XST_SUCCESS on success, otherwise a Xilinx error code.
+ * @param spTtc Ilklendirilecek TTC surucu nesnesi.
+ * @param spGic Interrupt'in baglanacagi GIC nesnesi.
+ * @return Basarida XST_SUCCESS, aksi halde bir Xilinx hata kodu.
  */
 int timerInit(XTtcPs* spTtc, XScuGic* spGic);
 

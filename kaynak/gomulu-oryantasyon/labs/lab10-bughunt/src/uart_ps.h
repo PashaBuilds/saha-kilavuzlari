@@ -1,14 +1,14 @@
 /* ============================================================
- * uart_ps.h — minimal, register-level driver for PS UART0
+ * uart_ps.h — PS UART0 icin minimal, register seviyesi surucu
  *
- * Part of the lab10-bughunt (Task 10 - Bug Hunt) project. The contract
- * matches exactly what is learned in Chapter 5 / Task 2:
- *   uartInit()            -> prepares UART0 for 115200 8N1
- *   uartSendChar()        -> sends a single character (waits if the TX FIFO is full)
- *   uartSendString()      -> sends a string ending in '\0' character by character
+ * lab10-bughunt (Gorev 10 - Bug Hunt) projesinin parcasi. Sozlesme,
+ * Bolum 5 / Gorev 2'de ogrenilenle birebir aynidir:
+ *   uartInit()            -> UART0'i 115200 8N1 icin hazirlar
+ *   uartSendChar()        -> tek karakter gonderir (TX FIFO doluysa bekler)
+ *   uartSendString()      -> '\0' ile biten string'i karakter karakter gonderir
  *
- * The module is redefined here so this lab can be built standalone;
- * each lab folder carries its own copy.
+ * Bu lab bagimsiz derlenebilsin diye modul burada yeniden tanimlidir;
+ * her lab klasoru kendi kopyasini tasir.
  * ============================================================ */
 #ifndef UART_PS_H
 #define UART_PS_H
@@ -16,23 +16,23 @@
 #include "xil_types.h"
 
 /**
- * @brief Prepares UART0 for use.
+ * @brief UART0'i kullanima hazirlar.
  */
 void uartInit(void);
 
 /**
- * @brief Sends a single character to the UART0 TX FIFO.
+ * @brief UART0 TX FIFO'ya tek karakter gonderir.
  *
- * Waits until it drains if the FIFO is full.
+ * FIFO doluysa bosalana kadar bekler.
  *
- * @param cChar The character to send.
+ * @param cChar Gonderilecek karakter.
  */
 void uartSendChar(char cChar);
 
 /**
- * @brief Sends a NUL-terminated string character by character.
+ * @brief NUL ile sonlanan string'i karakter karakter gonderir.
  *
- * @param cpString The NUL-terminated string to send.
+ * @param cpString Gonderilecek, NUL ile sonlanan string.
  */
 void uartSendString(const char* cpString);
 

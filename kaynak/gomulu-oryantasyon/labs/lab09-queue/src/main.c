@@ -1,21 +1,20 @@
 /*
  * lab09-queue / main.c
  *
- * TASK 9 -- "Producer/Consumer with a Queue" solution.
+ * GOREV 9 -- "Queue ile Producer/Consumer" cozumu.
  *
- * Two tasks talk to each other through a FreeRTOS queue:
- *   - producerTask : measures the VCCINT bus voltage (mV) every 500 ms
- *                    with ina226ReadBusVoltageMv(), and puts it on the
- *                    queue as a packet, together with a timestamp, via
- *                    xQueueSend.
- *   - consumerTask : waits with xQueueReceive, formats the incoming
- *                    packet, and prints it to UART.
+ * Iki task bir FreeRTOS queue uzerinden konusur:
+ *   - producerTask : VCCINT bus gerilimini (mV) her 500 ms'de bir
+ *                    ina226ReadBusVoltageMv() ile olcer ve zaman
+ *                    damgasiyla birlikte paket olarak xQueueSend ile
+ *                    kuyruga koyar.
+ *   - consumerTask : xQueueReceive ile bekler, gelen paketi bicimler
+ *                    ve UART'a basar.
  *
- * Deliberate design: only consumerTask writes to UART. If both tasks
- * called xil_printf at the same time, lines could interleave (UART is a
- * single resource that cannot be shared without locking); a
- * single-consumer design eliminates this problem architecturally --
- * "natural serialization."
+ * Bilincli tasarim: UART'a yalnizca consumerTask yazar. Iki task ayni
+ * anda xil_printf cagirsaydi satirlar ic ice gecebilirdi (UART,
+ * kilitsiz paylasilaMAYAN tek bir kaynaktir); tek-tuketici tasarim bu
+ * sorunu mimari duzeyde ortadan kaldirir -- "dogal serilestirme".
  */
 
 #include "FreeRTOS.h"
@@ -33,8 +32,8 @@
 #define ONCELIK_URETICI        (tskIDLE_PRIORITY + 1)
 #define ONCELIK_TUKETICI       (tskIDLE_PRIORITY + 1)
 
-/* SMeasurementPacket -- the sole contract between the producer and the
- * consumer. The queue carries this struct by value (by copying it). */
+/* SMeasurementPacket -- producer ile consumer arasindaki tek sozlesme.
+ * Queue bu struct'i degerle (kopyalayarak) tasir. */
 typedef struct
 {
     unsigned int uiTimestampMs;
@@ -44,7 +43,7 @@ typedef struct
 static QueueHandle_t G_sMeasurementQueue;
 
 
-/* producerTask -- takes periodic measurements, puts them on the queue. */
+/* producerTask -- periyodik olcum alir, kuyruga koyar. */
 static void
 producerTask(void* pvParameters)
 {
@@ -60,9 +59,9 @@ producerTask(void* pvParameters)
             sPacket.uiTimestampMs = (unsigned int)(xTaskGetTickCount() * portTICK_PERIOD_MS);
             sPacket.uiVccintMv    = uiMilliVolt;
 
-            /* We allow a short grace period (50 ms); if the queue is
-             * still full, we drop this measurement -- we prefer to keep
-             * the data flowing rather than accumulate the newest data. */
+            /* Kisa bir tolerans (50 ms) taniyoruz; kuyruk hala doluysa
+             * bu olcumu atiyoruz -- en yeni veriyi biriktirmek yerine
+             * verinin akmaya devam etmesini tercih ediyoruz. */
             if (xQueueSend(G_sMeasurementQueue, &sPacket, pdMS_TO_TICKS(50)) != pdTRUE)
             {
                 xil_printf("[Producer] queue full, this measurement was dropped\r\n");
@@ -78,7 +77,7 @@ producerTask(void* pvParameters)
 }
 
 
-/* consumerTask -- waits for a packet on the queue, formats and prints it. */
+/* consumerTask -- kuyruktan paket bekler, bicimleyip basar. */
 static void
 consumerTask(void* pvParameters)
 {

@@ -1,7 +1,7 @@
 <svg viewBox="0 0 740 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s18-baslik">
-  <title id="s18-baslik">I2C waveform: START condition, 7-bit address + R/W (example 0x40 write), slave ACK, one data byte, STOP condition; open-drain line and pull-up resistor intuition shown below</title>
+  <title id="s18-baslik">Şekil 18 — I2C dalga şekli: START koşulu, 7-bit adres + R/W (örnek 0x40 yazma), slave ACK'i, bir veri baytı, STOP koşulu; altta open-drain hat ve pull-up direnci sezgisi</title>
 
-  <text x="20" y="20" class="svg-metin" font-size="12" font-weight="700">Example frame: START → address 0x40 + W → ACK → DATA (8 bit) → ACK → STOP</text>
+  <text x="20" y="20" class="svg-metin" font-size="12" font-weight="700">Örnek frame: START → adres 0x40 + W → ACK → DATA (8 bit) → ACK → STOP</text>
 
   <text x="15" y="103" class="svg-soluk" font-size="11">SCL</text>
   <text x="15" y="163" class="svg-soluk" font-size="11">SDA</text>
@@ -53,11 +53,11 @@
   <!-- START / STOP highlights -->
   <circle cx="70" cy="160" r="5" fill="var(--kirmizi)"/>
   <text x="70" y="45" text-anchor="middle" fill="var(--kirmizi)" font-size="11" font-weight="700">S (START)</text>
-  <text x="70" y="58" text-anchor="middle" class="svg-soluk" font-size="9">SDA falls while SCL is high</text>
+  <text x="70" y="58" text-anchor="middle" class="svg-soluk" font-size="9">SCL yüksekken SDA düşer</text>
 
   <circle cx="640" cy="160" r="5" fill="var(--kirmizi)"/>
   <text x="655" y="45" text-anchor="middle" fill="var(--kirmizi)" font-size="11" font-weight="700">P (STOP)</text>
-  <text x="655" y="58" text-anchor="middle" class="svg-soluk" font-size="9">SDA rises while SCL is high</text>
+  <text x="655" y="58" text-anchor="middle" class="svg-soluk" font-size="9">SCL yüksekken SDA yükselir</text>
 
   <!-- address + R/W bit labels -->
   <g class="svg-soluk" font-size="9" text-anchor="middle">
@@ -70,18 +70,18 @@
     <text x="360" y="195">A0=0</text>
     <text x="400" y="195">W=0</text>
   </g>
-  <text x="260" y="215" text-anchor="middle" class="svg-metin" font-size="10">7-bit address 0x40 + write bit (R/W=0)</text>
+  <text x="260" y="215" text-anchor="middle" class="svg-metin" font-size="10">7-bit adres 0x40 + yazma biti (R/W=0)</text>
 
   <text x="440" y="195" text-anchor="middle" fill="var(--yesil)" font-size="9" font-weight="600">ACK</text>
-  <text x="440" y="70"  text-anchor="middle" fill="var(--yesil)" font-size="9">slave pulls low (0)</text>
+  <text x="440" y="70"  text-anchor="middle" fill="var(--yesil)" font-size="9">slave hattı düşürür (0)</text>
 
   <text x="510" y="195" text-anchor="middle" fill="var(--mor)" font-size="9" font-weight="600">DATA (8 bit)</text>
-  <text x="500" y="56"  text-anchor="middle" fill="var(--mor)" font-size="9">compressed for readability</text>
+  <text x="500" y="56"  text-anchor="middle" fill="var(--mor)" font-size="9">sıkıştırılmış gösterim</text>
 
   <text x="580" y="195" text-anchor="middle" fill="var(--yesil)" font-size="9" font-weight="600">ACK</text>
 
   <!-- ================= OPEN-DRAIN / PULL-UP MINI CROSS-SECTION ================= -->
-  <text x="20" y="250" class="svg-metin" font-size="12" font-weight="700">Open-drain line and pull-up resistor</text>
+  <text x="20" y="250" class="svg-metin" font-size="12" font-weight="700">Open-drain hat ve pull-up direnci</text>
 
   <line x1="170" y1="270" x2="570" y2="270" class="svg-cizgi" stroke-width="2"/>
   <text x="150" y="274" text-anchor="end" class="svg-soluk" font-size="10">VCC</text>
@@ -98,19 +98,19 @@
   <circle cx="230" cy="354" r="5" class="svg-kutu"/>
   <line x1="234" y1="350" x2="248" y2="340" stroke="var(--yesil)" stroke-width="2"/>
   <line x1="230" y1="359" x2="230" y2="372" class="svg-cizgi" stroke-width="2"/>
-  <text x="230" y="390" text-anchor="middle" class="svg-soluk" font-size="9">Device A: released</text>
-  <text x="230" y="402" text-anchor="middle" class="svg-soluk" font-size="9">(high impedance)</text>
+  <text x="230" y="390" text-anchor="middle" class="svg-soluk" font-size="9">Aygıt A: bırakmış</text>
+  <text x="230" y="402" text-anchor="middle" class="svg-soluk" font-size="9">(yüksek empedans)</text>
 
   <!-- Device B: pulling (closed) -->
   <line x1="510" y1="325" x2="510" y2="348" class="svg-cizgi" stroke-width="2"/>
   <circle cx="510" cy="354" r="5" class="svg-kutu"/>
   <line x1="510" y1="348" x2="510" y2="360" stroke="var(--kirmizi)" stroke-width="2"/>
   <line x1="510" y1="359" x2="510" y2="372" class="svg-cizgi" stroke-width="2"/>
-  <text x="510" y="390" text-anchor="middle" fill="var(--kirmizi)" font-size="9">Device B: pulling low</text>
-  <text x="510" y="402" text-anchor="middle" fill="var(--kirmizi)" font-size="9">(pulls line to 0)</text>
+  <text x="510" y="390" text-anchor="middle" fill="var(--kirmizi)" font-size="9">Aygıt B: çekiyor</text>
+  <text x="510" y="402" text-anchor="middle" fill="var(--kirmizi)" font-size="9">(hattı 0'a çeker)</text>
 
   <line x1="150" y1="372" x2="590" y2="372" class="svg-cizgi" stroke-width="2"/>
   <text x="605" y="376" class="svg-soluk" font-size="10">GND</text>
 
-  <text x="20" y="418" class="svg-soluk" font-size="9.5">Each device can only pull the line LOW; if no one pulls it, Rp carries the line HIGH — this is how the shared bus works without collisions.</text>
+  <text x="20" y="418" class="svg-soluk" font-size="9.5">Her aygıt hattı yalnızca AŞAĞI çekebilir; kimse çekmiyorsa hattı Rp YUKARI taşır — ortak veriyolu çarpışmasız böyle çalışır.</text>
 </svg>

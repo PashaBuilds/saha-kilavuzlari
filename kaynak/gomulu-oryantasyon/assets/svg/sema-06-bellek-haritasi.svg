@@ -1,5 +1,5 @@
 <svg viewBox="0 0 740 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s06-baslik">
-  <title id="s06-baslik">Memory map vertical address bar: OCM, peripheral register blocks, PL address windows, and DDR Low; DDR High shown in a separate bar on the right.</title>
+  <title id="s06-baslik">Şekil 6 — Bellek haritası dikey adres çubuğu: OCM, çevre birimi register blokları, PL adres pencereleri ve DDR Low; DDR High sağda ayrı çubukta.</title>
 
   <!-- address increase direction -->
   <path d="M70 558 L 70 45" class="svg-cizgi" fill="none" marker-end="url(#s06-ok)"/>
@@ -8,8 +8,8 @@
       <path d="M0 8 L5 0 L10 8 z" fill="var(--metin-soluk)"/>
     </marker>
   </defs>
-  <text x="55" y="300" text-anchor="middle" class="svg-soluk" font-size="11">address</text>
-  <text x="55" y="314" text-anchor="middle" class="svg-soluk" font-size="11">increasing</text>
+  <text x="55" y="300" text-anchor="middle" class="svg-soluk" font-size="11">adres</text>
+  <text x="55" y="314" text-anchor="middle" class="svg-soluk" font-size="11">artıyor</text>
 
   <!-- main bar outer frame -->
   <rect x="100" y="40" width="240" height="520" class="svg-kutu"/>
@@ -22,12 +22,12 @@
 
   <!-- PL address windows -->
   <rect x="100" y="260" width="240" height="140" style="fill: var(--mor-soluk)"/>
-  <text x="220" y="325" text-anchor="middle" class="svg-metin" font-size="13">PL address windows</text>
-  <text x="220" y="343" text-anchor="middle" class="svg-soluk" font-size="11">(varies by bitstream)</text>
+  <text x="220" y="325" text-anchor="middle" class="svg-metin" font-size="13">PL adres pencereleri</text>
+  <text x="220" y="343" text-anchor="middle" class="svg-soluk" font-size="11">(bitstream'e göre değişir)</text>
 
   <!-- Peripheral region -->
   <rect x="100" y="90" width="240" height="170" style="fill: var(--vurgu-soluk)"/>
-  <text x="220" y="104" text-anchor="middle" class="svg-metin" font-size="12">peripherals — 0xFF00_0000</text>
+  <text x="220" y="104" text-anchor="middle" class="svg-metin" font-size="12">çevre birimleri — 0xFF00_0000</text>
 
   <rect x="110" y="110" width="220" height="30" rx="4" class="svg-kutu"/>
   <text x="220" y="129" text-anchor="middle" class="svg-kod" font-size="11">UART0 — 0xFF00_0000</text>
@@ -52,7 +52,7 @@
   <path d="M100 400 L 340 400" class="svg-cizgi"/>
 
   <!-- discontinuity indicator: no address continuity between DDR Low and DDR High -->
-  <text x="410" y="465" text-anchor="middle" class="svg-soluk" font-size="11">not address-contiguous</text>
+  <text x="410" y="465" text-anchor="middle" class="svg-soluk" font-size="11">adres olarak bitişik değil</text>
   <path d="M340 480 L 480 480" class="svg-cizgi" fill="none" style="stroke-dasharray:4 4"/>
   <path d="M400 472 L 408 488" class="svg-cizgi" fill="none"/>
   <path d="M412 472 L 420 488" class="svg-cizgi" fill="none"/>
@@ -60,8 +60,8 @@
   <!-- DDR High: separate mini bar -->
   <text x="550" y="450" text-anchor="middle" class="svg-metin" font-size="13">DDR High</text>
   <rect x="480" y="460" width="140" height="100" style="fill: var(--yesil-soluk)" class="svg-cizgi"/>
-  <text x="550" y="500" text-anchor="middle" class="svg-soluk" font-size="11">32 GB window</text>
+  <text x="550" y="500" text-anchor="middle" class="svg-soluk" font-size="11">32 GB pencere</text>
   <text x="550" y="518" text-anchor="middle" class="svg-kod" font-size="11">0x8_0000_0000 –</text>
   <text x="550" y="533" text-anchor="middle" class="svg-kod" font-size="11">0xF_FFFF_FFFF</text>
-  <text x="550" y="583" text-anchor="middle" class="svg-soluk" font-size="11">(upper 2 GB of the same SODIMM)</text>
+  <text x="550" y="583" text-anchor="middle" class="svg-soluk" font-size="11">(aynı SODIMM'in üst 2 GB'ı)</text>
 </svg>

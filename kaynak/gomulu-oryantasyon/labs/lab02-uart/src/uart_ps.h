@@ -1,10 +1,10 @@
 /* ============================================================================
- * uart_ps.h — UART0 register-level mini driver module (TASK 2 solution)
+ * uart_ps.h — UART0 register seviyesi mini surucu modulu (GOREV 2 cozumu)
  *
- * Three functions that drive PS UART0 through direct register access, in
- * order to show what happens behind xil_printf and the XUartPs driver.
- * The API signatures match the contract in _gorev-zinciri.md exactly;
- * lab03+ carries a copy of this file (see that lab's README).
+ * xil_printf ve XUartPs surucusunun arkasinda ne oldugunu gostermek
+ * icin PS UART0'i dogrudan register erisimiyle suren uc fonksiyon.
+ * API imzalari _gorev-zinciri.md'deki sozlesmeyle birebir aynidir;
+ * lab03+ bu dosyanin bir kopyasini tasir (ilgili lab'in README'sine bak).
  * ============================================================================ */
 #ifndef UART_PS_H
 #define UART_PS_H
@@ -12,32 +12,32 @@
 #include "xil_types.h"
 
 /**
- * @brief Prepares UART0 for use.
+ * @brief UART0'i kullanima hazirlar.
  *
- * NOTE: this function does NOT reconfigure the baud rate or frame format
- * (115200-8N1) — the FSBL and the standalone BSP's stdout setup already
- * leave UART0 configured this way when the board boots (see the file
- * header comment in uart_ps.c below). Here we simply treat the register
- * base used by our own module as "ready".
+ * NOT: bu fonksiyon baud hizini ya da cerceve bicimini (115200-8N1)
+ * yeniden yapilandirmaz — kart acildiginda FSBL ve standalone BSP'nin
+ * stdout kurulumu UART0'i zaten bu sekilde birakir (asagida uart_ps.c
+ * dosya basligi yorumuna bak). Burada kendi modulumuzun kullandigi
+ * register tabanini yalnizca "hazir" kabul ediyoruz.
  */
 void uartInit(void);
 
 /**
- * @brief Sends a single character to the UART0 TX FIFO.
+ * @brief UART0 TX FIFO'ya tek karakter gonderir.
  *
- * Waits until the FIFO is no longer full (TXFULL) before sending.
+ * Gondermeden once FIFO'nun dolu olmamasini (TXFULL) bekler.
  *
- * @param cChar The character to send.
+ * @param cChar Gonderilecek karakter.
  */
 void uartSendChar(char cChar);
 
 /**
- * @brief Sends a null-terminated string character by character.
+ * @brief Null ile sonlanan string'i karakter karakter gonderir.
  *
- * Sends '\r' before '\n' whenever '\n' is encountered (see the
- * explanation in uart_ps.c).
+ * '\n' ile karsilastiginda once '\r' gonderir (uart_ps.c'deki
+ * aciklamaya bak).
  *
- * @param cpString The null-terminated string to send.
+ * @param cpString Gonderilecek, null ile sonlanan string.
  */
 void uartSendString(const char* cpString);
 

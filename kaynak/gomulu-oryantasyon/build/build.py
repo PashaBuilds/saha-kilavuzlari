@@ -28,9 +28,9 @@ CSS = KOK / "assets" / "css" / "kilavuz.css"
 JS = KOK / "assets" / "js" / "kilavuz.js"
 CIKTI = KOK / "dist" / "index.html"
 
-BASLIK = "Introduction to Embedded Systems"
-ALT_BASLIK = "A Team Onboarding Journey"
-SERI = "Field Guide Series — Guided Learning Path"
+BASLIK = "Gömülü Sistemlere Giriş"
+ALT_BASLIK = "Ekip Oryantasyon Yolculuğu"
+SERI = "Saha Kılavuzları · Gömülü Sistemler Serisi"
 
 UYARILAR: list[str] = []
 
@@ -124,13 +124,13 @@ def kod_kutusu(kod: str, dil: str, etiket: str) -> str:
 MD_UZANTILAR = ["tables", "sane_lists"]
 
 KUTU_ETIKETLERI = {
-    "saha-notu": ("Field Note",
+    "saha-notu": ("Saha Notu",
                   '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1l2 4.3 4.7.6-3.4 3.2.9 4.6L8 11.5l-4.2 2.2.9-4.6L1.3 5.9 6 5.3z"/></svg>'),
-    "tuzak": ("Pitfall",
+    "tuzak": ("Tuzak",
               '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1L1 14h14L8 1zm0 4.5l.4 5h-.8l.4-5zM8 12.8a.9.9 0 110-1.8.9.9 0 010 1.8z"/></svg>'),
-    "analoji": ("Analogy",
+    "analoji": ("Analoji",
                 '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1a5 5 0 00-2.5 9.3V12h5v-1.7A5 5 0 008 1zM6 13h4v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-1z"/></svg>'),
-    "ekip-notu": ("Team Note",
+    "ekip-notu": ("Ekip Notu",
                   '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M6 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5zm5 1a2 2 0 100 4 2 2 0 000-4zM1.5 13c0-2.2 2-4 4.5-4s4.5 1.8 4.5 4v1h-9v-1zm10.5 1v-1c0-1.1-.4-2.1-1-2.9.3-.1.7-.1 1-.1 1.9 0 3.5 1.4 3.5 3.1V14h-3.5z"/></svg>'),
 }
 
@@ -211,8 +211,8 @@ class Isleyici:
             return self._gorev_karti(arg, govde)
         ic = Isleyici().cevir(govde)
         if ad == "derin-dalis":
-            baslik = html.escape(arg or "Deep Dive")
-            return (f'<details class="derin-dalis"><summary>Deep Dive — {baslik}'
+            baslik = html.escape(arg or "Derin Dalış")
+            return (f'<details class="derin-dalis"><summary>Derin Dalış — {baslik}'
                     f'</summary><div class="derin-icerik">{ic}</div></details>')
         if ad in KUTU_ETIKETLERI:
             etiket, ikon = KUTU_ETIKETLERI[ad]
@@ -282,24 +282,24 @@ class Isleyici:
             f'<svg viewBox="0 0 10 10" aria-hidden="true">'
             f'<circle cx="5" cy="5" r="4" class="{"dolu" if k < zorluk else "bos"}"/></svg>'
             for k in range(3))
-        zorluk_adi = {1: "easy", 2: "medium", 3: "hard"}[zorluk]
-        rozet_no = "C" if mezuniyet else no
-        ust_etiket = "Capstone Project" if mezuniyet else f"Task {no}"
+        zorluk_adi = {1: "kolay", 2: "orta", 3: "zor"}[zorluk]
+        rozet_no = "M" if mezuniyet else no
+        ust_etiket = "Mezuniyet Görevi" if mezuniyet else f"Görev {no}"
 
         return (
             f'<section class="gorev-karti{" mezuniyet" if mezuniyet else ""}" id="{gid}">'
             f'<div class="gorev-baslik">'
-            f'<div class="gorev-rozet" aria-hidden="true"><span class="no">{rozet_no}</span>TASK</div>'
+            f'<div class="gorev-rozet" aria-hidden="true"><span class="no">{rozet_no}</span>GÖREV</div>'
             f'<div class="gorev-baslik-metin">'
             f'<div class="gorev-ust-etiket">{ust_etiket}</div>'
             f'<h3>{html.escape(baslik)}'
-            f'<span class="zorluk" role="img" aria-label="difficulty: {zorluk_adi}" '
-            f'title="difficulty: {zorluk_adi}">{noktalar}</span></h3></div>'
+            f'<span class="zorluk" role="img" aria-label="zorluk: {zorluk_adi}" '
+            f'title="zorluk: {zorluk_adi}">{noktalar}</span></h3></div>'
             f'<label class="gorev-tamam"><input type="checkbox" class="gorev-kutucuk" '
             f'data-gorev="{gid}"><span class="kutucuk"><svg viewBox="0 0 12 12" '
             f'aria-hidden="true"><path d="M2 6.5L5 9l5-6" fill="none" stroke-width="2" '
             f'stroke="currentColor"/></svg></span>'
-            f'<span class="gorev-tamam-yazi">Mark complete</span></label>'
+            f'<span class="gorev-tamam-yazi">Tamamlandı işaretle</span></label>'
             f'</div><div class="gorev-govde">{"".join(govde_html)}</div></section>'
         )
 
@@ -331,18 +331,18 @@ class Isleyici:
             ic = Isleyici().cevir(govde)
             if tur == "ipucu":
                 parcalar.append(
-                    f'<details class="ipucu"><summary>{html.escape(arg or "Hint")}'
+                    f'<details class="ipucu"><summary>{html.escape(arg or "İpucu")}'
                     f'</summary><div class="ipucu-icerik">{ic}</div></details>')
             else:
-                baslik = arg or "Full Solution"
+                baslik = arg or "Tam Çözüm"
                 parcalar.append(
                     f'<details class="cozum"><summary>{html.escape(baslik)}'
                     f'</summary><div class="cozum-icerik">{ic}</div></details>')
             i = j + 1
         serbesti_bosalt()
         # merdiven dışarıdan tek bir katlanabilir "Takıldıysan" içinde sunulur
-        return ('<details class="ipucu takildiysan-dis"><summary>If You Get Stuck — '
-                'hint ladder (try it yourself first)</summary>'
+        return ('<details class="ipucu takildiysan-dis"><summary>Takıldıysan — '
+                'ipucu merdiveni (önce kendin dene)</summary>'
                 f'<div class="ipucu-icerik">{"".join(parcalar)}</div></details>')
 
     # --- adım 3: {{...}} direktifleri ---
@@ -365,7 +365,7 @@ class Isleyici:
                 uyar(f"SVG'de hard-coded renk ({renk}): {dosya}")
             bas_html = ""
             if aciklama:
-                m2 = re.match(r"^(Figure\s+\d+)\s*[—-]\s*(.*)$", aciklama)
+                m2 = re.match(r"^((?:Şekil|Figure)\s+\d+)\s*[—-]\s*(.*)$", aciklama)
                 if m2:
                     bas_html = (f'<figcaption><span class="sekil-no">{m2.group(1)}.</span> '
                                 f'{html.escape(m2.group(2))}</figcaption>')
@@ -471,13 +471,13 @@ def pano_uret(gorevler: list[dict]) -> str:
     ilk_parca = (f'<circle cx="{duraklar[0][0]}" cy="{duraklar[0][1]}" r="0"/>')
     return (
         '<div class="ilerleme-panosu" id="ilerleme-panosu">'
-        '<div class="pano-baslik"><h3>Journey Map</h3>'
+        '<div class="pano-baslik"><h3>Yolculuk Haritası</h3>'
         '<span class="pano-durum" id="pano-durum"></span></div>'
         '<div class="pano-ilerleme-cizgi"><div class="pano-ilerleme-dolu" '
         'id="pano-ilerleme-dolu"></div></div>'
         f'<svg viewBox="0 0 {GEN} {yukseklik}" xmlns="http://www.w3.org/2000/svg" '
-        f'role="img" aria-label="Task progress map">'
-        f'<title>Journey map: task milestones</title>'
+        f'role="img" aria-label="Görev ilerleme haritası">'
+        f'<title>Yolculuk haritası: görev durakları</title>'
         f'{"".join(taban)}{"".join(dolgular)}{ilk_parca}{"".join(durak_html)}</svg>'
         "</div>"
     )
@@ -525,13 +525,13 @@ def bolumleri_derle() -> tuple[str, list[dict]]:
                                       "sira": m2.start()})
             return (f'<h{seviye} id="{hid}">{ic}'
                     f'<a class="baslik-anchor" href="#{hid}" '
-                    f'aria-label="link">#</a></h{seviye}>')
+                    f'aria-label="bağlantı">#</a></h{seviye}>')
 
         icerik_html = re.sub(r"<h([34])>(.*?)</h\1>", id_ver, icerik_html,
                              flags=re.DOTALL)
 
         # bölüm başlığı görünümü: "Bölüm N — Ad" / "Ek A — Ad"
-        m3 = re.match(r"^((?:Chapter|Appendix)\s+\S+)\s*[—-]\s*(.+)$",bolum_basligi)
+        m3 = re.match(r"^((?:Bölüm|Ek|Chapter|Appendix)\s+\S+)\s*[—-]\s*(.+)$",bolum_basligi)
         if m3:
             baslik_html = (f'<span class="bolum-no">{html.escape(m3.group(1))}</span>'
                            f'{html.escape(m3.group(2))}')
@@ -541,7 +541,7 @@ def bolumleri_derle() -> tuple[str, list[dict]]:
         govdeler.append(
             f'<section class="bolum" id="{bolum_id}">'
             f'<h2 id="{bolum_id}-baslik">{baslik_html}'
-            f'<a class="baslik-anchor" href="#{bolum_id}" aria-label="link">#</a>'
+            f'<a class="baslik-anchor" href="#{bolum_id}" aria-label="bağlantı">#</a>'
             f"</h2>{icerik_html}</section>")
 
         # TOC girdileri: alt başlıklar + bu bölümdeki görevler, belge sırasıyla
@@ -550,8 +550,8 @@ def bolumleri_derle() -> tuple[str, list[dict]]:
             if g["bolum"] == bolum_basligi:
                 konum = icerik_html.find(f'id="{g["id"]}"')
                 girdiler.append({"id": g["id"],
-                                 "baslik": ("Capstone Project" if g["mezuniyet"]
-                                            else f'Task {g["no"]} — {g["kisa"]}'),
+                                 "baslik": ("Mezuniyet Görevi" if g["mezuniyet"]
+                                            else f'Görev {g["no"]} — {g["kisa"]}'),
                                  "sira": konum, "gorev": True})
         girdiler.sort(key=lambda x: x["sira"])
         toc.append({"id": bolum_id, "baslik": bolum_basligi, "altlar": girdiler})
@@ -562,7 +562,7 @@ def bolumleri_derle() -> tuple[str, list[dict]]:
 def toc_uret(toc: list[dict]) -> str:
     parcalar = ["<ol>"]
     for b in toc:
-        m = re.match(r"^((?:Chapter|Appendix)\s+\S+)\s*[—-]\s*(.+)$",b["baslik"])
+        m = re.match(r"^((?:Bölüm|Ek|Chapter|Appendix)\s+\S+)\s*[—-]\s*(.+)$",b["baslik"])
         gorunen = f'{m.group(1)} · {m.group(2)}' if m else b["baslik"]
         parcalar.append(f'<li><a href="#{b["id"]}">{html.escape(gorunen)}</a>')
         if b["altlar"]:
@@ -592,25 +592,25 @@ def sayfa_uret(govde: str, toc_html: str, pano_html: str) -> str:
 <div class="kapak">
   <div class="seri-etiket">{html.escape(SERI)}</div>
   <h1>{html.escape(BASLIK)}</h1>
-  <p class="kapak-alt">{html.escape(ALT_BASLIK)} — a guided path from bare-metal to
-  FreeRTOS on the Zynq UltraScale+ RFSoC (ZCU111), from your first day to the
-  capstone project.</p>
+  <p class="kapak-alt">{html.escape(ALT_BASLIK)} — Zynq UltraScale+ RFSoC (ZCU111)
+  üzerinde bare-metal'den FreeRTOS'a uzanan rehberli bir yol; ilk günden
+  Mezuniyet Görevi'ne.</p>
   <div class="kapak-meta">
-    <span><strong>Audience:</strong> electrical/electronics engineer joining the team</span>
-    <span><strong>Hardware:</strong> ZCU111 development board</span>
-    <span><strong>Tasks:</strong> {gorev_sayisi}</span>
+    <span><strong>Hedef kitle:</strong> ekibe katılan elektrik/elektronik mühendisi</span>
+    <span><strong>Donanım:</strong> ZCU111 geliştirme kartı</span>
+    <span><strong>Görev:</strong> {gorev_sayisi}</span>
   </div>
 </div>"""
 
     govde = govde.replace("PANO-YERI", pano_html)
 
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(BASLIK)} — {html.escape(ALT_BASLIK)}</title>
-<meta name="description" content="A guided onboarding journey into embedded systems on the ZCU111.">
+<meta name="description" content="ZCU111 üzerinde gömülü sistemlere rehberli bir oryantasyon yolculuğu.">
 <style>
 {css}
 </style>
@@ -620,14 +620,14 @@ def sayfa_uret(govde: str, toc_html: str, pano_html: str) -> str:
   <span class="baslik-kisa">{html.escape(BASLIK)} · {html.escape(ALT_BASLIK)}</span>
   <span class="bosluk"></span>
   <span class="gorev-sayac" id="gorev-sayac"></span>
-  <button type="button" class="tema-dugme" id="tema-dugme" aria-label="Toggle theme">
+  <button type="button" class="tema-dugme" id="tema-dugme" aria-label="Tema değiştir">
     <svg id="tema-gunes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
     <svg id="tema-ay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M20.5 14.5A8.5 8.5 0 019.5 3.5a8.5 8.5 0 1011 11z"/></svg>
   </button>
   <div class="okuma-bar" id="okuma-bar"></div>
 </header>
 <div class="sayfa">
-<nav class="toc" aria-label="Contents">
+<nav class="toc" aria-label="İçindekiler">
 {toc_html}
 </nav>
 <main>

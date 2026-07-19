@@ -1,9 +1,9 @@
 /* ============================================================================
- * main.c — TASK 6 solution: Talk to a Real Chip over I2C
+ * main.c — GOREV 6 cozumu: I2C ile Gercek Bir Ciple Konus
  *
- * Uses ina226Init() to set up the PS I2C0 -> PCA9544A mux (channel 0) ->
- * INA226 (0x40) chain and verify its identity; then reads the VCCINT bus
- * voltage once per second and prints it to UART as "VCCINT = NNN mV".
+ * ina226Init() ile PS I2C0 -> PCA9544A mux (kanal 0) -> INA226 (0x40)
+ * zincirini kurar ve kimligini dogrular; sonra VCCINT bus gerilimini
+ * saniyede bir okuyup UART'a "VCCINT = NNN mV" olarak basar.
  * ============================================================================ */
 
 #include "xstatus.h"
@@ -68,7 +68,7 @@ int main(void)
             uartSendString("WARNING: measurement read failed (I2C timeout).\n");
         }
 
-        usleep(1000000U);   /* once per second */
+        usleep(1000000U);   /* saniyede bir */
     }
 
     return 0;

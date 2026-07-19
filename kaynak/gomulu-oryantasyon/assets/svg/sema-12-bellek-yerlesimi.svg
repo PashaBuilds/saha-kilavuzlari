@@ -1,5 +1,5 @@
 <svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s13-baslik">
-  <title id="s13-baslik">Stack/heap/static memory layout and linker script mapping: where ELF sections land in RAM</title>
+  <title id="s13-baslik">Şekil 12 — Stack/heap/statik bellek yerleşimi ve linker script eşlemesi: ELF bölümlerinin RAM'de nereye indiği</title>
   <text x="115.0" y="28" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">application.elf</text>
   <text x="535.0" y="28" text-anchor="middle" class="svg-metin" font-size="13" font-weight="600">RAM (DDR / OCM)</text>
   <rect x="460" y="46" width="150" height="328" rx="6" class="svg-kutu"/>
@@ -14,13 +14,13 @@
   <rect x="460" y="196" width="150" height="70" class="svg-cizgi" fill="none" stroke-width="1" style="fill: var(--yesil-soluk)"/>
   <text x="535.0" y="235.0" text-anchor="middle" class="svg-kod" font-size="12">heap</text>
   <rect x="460" y="266" width="150" height="46" class="svg-cizgi" fill="none" stroke-width="1" style="fill: none" stroke-dasharray="3,3"/>
-  <text x="535.0" y="293.0" text-anchor="middle" class="svg-kod" font-size="12">gap</text>
+  <text x="535.0" y="293.0" text-anchor="middle" class="svg-kod" font-size="12">boşluk</text>
   <rect x="460" y="312" width="150" height="62" class="svg-cizgi" fill="none" stroke-width="1" style="fill: var(--vurgu-soluk)"/>
   <text x="535.0" y="347.0" text-anchor="middle" class="svg-kod" font-size="12">stack</text>
   <path d="M 588 256 L 588 206" stroke="var(--yesil)" stroke-width="2" fill="none" marker-end="url(#s13-ok-yesil)"/>
   <path d="M 588 322 L 588 364" stroke="var(--vurgu)" stroke-width="2" fill="none" marker-end="url(#s13-ok-vurgu)"/>
-  <text x="452" y="50" text-anchor="end" class="svg-soluk" font-size="11">low address</text>
-  <text x="452" y="374" text-anchor="end" class="svg-soluk" font-size="11">high address</text>
+  <text x="452" y="50" text-anchor="end" class="svg-soluk" font-size="11">düşük adres</text>
+  <text x="452" y="374" text-anchor="end" class="svg-soluk" font-size="11">yüksek adres</text>
   <rect x="40" y="46" width="150" height="34" rx="4" class="svg-kutu"/>
   <text x="115.0" y="68" text-anchor="middle" class="svg-kod" font-size="12">.text</text>
   <path d="M 190 63 C 260 63, 390 71.0, 460 71.0" stroke="var(--cizgi)" stroke-width="1" fill="none" marker-end="url(#s13-ok-soluk)"/>
@@ -46,6 +46,6 @@
     <marker id="s13-ok-yesil" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--yesil)"/></marker>
     <marker id="s13-ok-vurgu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--vurgu)"/></marker>
   </defs>
-  <text x="360" y="402" text-anchor="middle" class="svg-soluk" font-size="11">The linker (lscript.ld) places each ELF section at an address in RAM —</text>
-  <text x="360" y="418" text-anchor="middle" class="svg-soluk" font-size="11">the OCM/DDR windows from Chapter 3 reappear here.</text>
+  <text x="360" y="402" text-anchor="middle" class="svg-soluk" font-size="11">Linker (lscript.ld) her ELF bölümünü RAM'de bir adrese yerleştirir —</text>
+  <text x="360" y="418" text-anchor="middle" class="svg-soluk" font-size="11">Bölüm 3'teki OCM/DDR pencereleri burada yeniden karşına çıkar.</text>
 </svg>

@@ -1,281 +1,265 @@
-# Chapter 8 — Serial Protocols: UART, SPI, I2C
+# Bölüm 8 — Seri Protokoller: UART, SPI, I2C
 
-You have learned to work with interrupts — the CPU now detects events
-immediately. But where do those events originate? Frequently, from
-another chip on the board, carried as bits across a small number of
-wires. This chapter examines how three serial protocols operate at the
-wire level: **UART**, **SPI**, and **I2C**. All three are different
-solutions to the same idea — transmitting 1s and 0s over a wire — and
-understanding their differences means knowing which protocol to use with
-which chip.
+Kesmelerle çalışmayı öğrendin — CPU artık olayları anında fark ediyor.
+Peki o olaylar nereden geliyor? Çoğu zaman karttaki başka bir çipten, az
+sayıda tel üzerinde bit bit taşınarak. Bu bölüm üç seri protokolün tel
+seviyesinde nasıl işlediğini inceler: **UART**, **SPI** ve **I2C**. Üçü
+de aynı fikrin — 1'leri ve 0'ları bir tel üzerinden iletmenin — farklı
+çözümleridir; farklarını anlamak, hangi çiple hangi protokolün
+kullanılacağını bilmek demektir.
 
-## Common Ground: Voltage, Timing, Agreement
+## Ortak Zemin: Gerilim, Zamanlama, Anlaşma
 
-At their core, all serial protocols work the same way: a line is driven
-to a high (1) or low (0) voltage at specific instants, and the receiving
-side must sample that voltage at the correct moment. The difference lies
-in who determines "the correct moment": in UART, both sides rely on their
-own clock and agree on the timing in advance (**asynchronous**); in SPI
-and I2C, one of the wires directly carries the clock signal, which every
-party observes (**synchronous**). This single distinction accounts for
-nearly all of the behavioral differences among the three protocols.
+Özünde bütün seri protokoller aynı şekilde çalışır: bir hat belirli
+anlarda yüksek (1) ya da düşük (0) gerilime sürülür; alıcı taraf o
+gerilimi doğru anda örneklemek zorundadır. Fark, "doğru an"ı kimin
+belirlediğindedir: UART'ta iki taraf kendi saatine güvenir ve
+zamanlamada önceden anlaşır (**asenkron**); SPI ile I2C'de tellerden
+biri saat sinyalini doğrudan taşır ve herkes ona bakar (**senkron**).
+Üç protokol arasındaki davranış farklarının neredeyse tamamı bu tek
+ayrımdan doğar.
 
-## UART: Two Wires, No Clock, a Prior Agreement
+## UART: İki Tel, Saat Yok, Önceden Anlaşma
 
-You have been using UART since Task 2 — the serial port to which you
-print text in your terminal is precisely this. This section moves down to
-the wire level: what actually happens on the physical wire beneath that
-port? The line is **idle-high** when not in use. Sending a byte proceeds
-as follows: a **start bit** (the line goes low for one bit period),
-followed by the **data bits** (typically 8, **LSB first**), an optional
-**parity bit**, and finally a **stop bit** (the line returns high). The
-configuration used in this document is **115200-8N1**: 115200 baud, 8
-data bits, no parity (None), 1 stop bit.
+UART'ı Görev 2'den beri kullanıyorsun — terminalde metin bastığın seri
+port tam olarak bu. Bu kısım tel seviyesine iner: o portun altındaki
+fiziksel telde gerçekte ne oluyor? Hat, kullanılmadığında
+**idle-high**'dır (boşta yüksek). Bir bayt göndermek şöyle ilerler: bir
+**start biti** (hat bir bit süresi boyunca düşüğe iner), ardından
+**veri bitleri** (tipik olarak 8, **LSB first** — önce en düşük anlamlı
+bit), isteğe bağlı bir **parity biti** (eşlik) ve son olarak bir **stop
+biti** (hat yeniden yükseğe döner). Bu dokümanda kullanılan
+konfigürasyon **115200-8N1**: 115200 baud, 8 veri biti, parity yok
+(None), 1 stop biti.
 
-{{svg:sema-16-uart-dalga.svg|Figure 16 — UART square wave: start bit, 8 data bits (LSB first, example byte 'A' = 0x41), stop bit; bit time = 1/baud, 115200 example.}}
+{{svg:sema-16-uart-dalga.svg|Şekil 16 — UART kare dalgası: start biti, 8 veri biti (LSB first, örnek bayt 'A' = 0x41), stop biti; bit süresi = 1/baud, 115200 örneği.}}
 
-**Baud rate** denotes "bits per second"; both sides must agree on the
-same value because there is no shared clock — the receiver, upon
-detecting the start bit, uses its own internal clock to determine "I am
-now at the midpoint" and samples accordingly. If the baud rates do not
-match, the line appears electrically sound, but the receiver samples at
-the wrong instants, producing meaningless characters ("garbage") in the
-terminal — this is the classic symptom of "the wiring is correct but the
-configuration is wrong." UART operates **point-to-point**: a TX line
-always connects to a single RX line, and there is no concept of
-addressing.
+**Baud rate**, "saniyedeki bit sayısı" demektir; ortak saat olmadığı
+için iki taraf aynı değerde anlaşmak zorundadır — alıcı, start bitini
+yakaladığında kendi iç saatiyle "şimdi bit ortasındayım" hesabını yapar
+ve öyle örnekler. Baud'lar uyuşmazsa hat elektriksel olarak sağlam
+görünür ama alıcı yanlış anlarda örnekler; terminale anlamsız
+karakterler ("garbage") düşer — "kablolama doğru ama konfigürasyon
+yanlış"ın klasik belirtisi budur. UART **noktadan noktaya** çalışır:
+bir TX hattı her zaman tek bir RX hattına bağlanır; adresleme kavramı
+yoktur.
 
-:::saha-notu Quick Summary — UART
-- **Wire count:** 2 (TX, RX) + common ground.
-- **Timing:** asynchronous — no shared clock; both sides agree on the
-  baud rate in advance.
-- **Addressing:** none — point-to-point; a TX line always connects to the
-  same RX line.
-- **Typical speed:** on the order of kilobits per second (our
-  configuration: 115200 baud).
-- **When to choose:** for a simple serial link or console with few
-  devices, where speed is not critical.
+:::saha-notu Hızlı Özet — UART
+- **Tel sayısı:** 2 (TX, RX) + ortak toprak.
+- **Zamanlama:** asenkron — ortak saat yok; iki taraf baud rate'te
+  önceden anlaşır.
+- **Adresleme:** yok — noktadan noktaya; bir TX hattı hep aynı RX
+  hattına bağlıdır.
+- **Tipik hız:** kilobit/saniye mertebesi (bizim konfigürasyon: 115200
+  baud).
+- **Ne zaman seçilir:** az cihazlı, hızın kritik olmadığı basit seri
+  bağlantı ya da konsol için.
 :::
 
-## SPI: Four Wires for Speed
+## SPI: Hız İçin Dört Tel
 
-SPI (Serial Peripheral Interface) is a synchronous protocol using
-**SCLK** (clock), **MOSI** (Master Out Slave In), **MISO** (Master In
-Slave Out, the counterpart of MOSI), and a separate **CS** (Chip Select,
-active-low) line for each slave. The clock is generated by the master;
-one bit shifts on each clock pulse — because MOSI and MISO transfer data
-**simultaneously**, SPI is inherently **full-duplex**. There is no
-addressing; you determine "who you are talking to" by pulling the CS line
-low for that particular slave.
+SPI (Serial Peripheral Interface); **SCLK** (saat), **MOSI** (Master
+Out Slave In), **MISO** (Master In Slave Out, MOSI'nin karşılığı) ve
+her slave için ayrı bir **CS** (Chip Select, aktif-düşük) hattı
+kullanan senkron bir protokoldür. Saati master üretir; her saat
+vuruşunda bir bit kayar — MOSI ile MISO veriyi **aynı anda**
+taşıdığından SPI, doğası gereği **full-duplex**'tir (iki yönde
+eşzamanlı). Adresleme yoktur; "kiminle konuştuğunu", o slave'in CS
+hattını düşüğe çekerek belirlersin.
 
-{{svg:sema-17-spi-dalga.svg|Figure 17 — SPI waveform: CS, SCLK, MOSI, MISO, and sampling edges; below, the CPOL/CPHA differences for modes 0-3.}}
+{{svg:sema-17-spi-dalga.svg|Şekil 17 — SPI dalga biçimi: CS, SCLK, MOSI, MISO ve örnekleme kenarları; altta mod 0-3 için CPOL/CPHA farkları.}}
 
-There are four variants in the clock's detail — **mode 0-3** — formed
-from a combination of two parameters: **CPOL** (Clock Polarity — whether
-the clock is high or low when idle) and **CPHA** (Clock Phase — whether
-data is sampled on the leading or the trailing edge). If two chips expect
-different modes, data still flows but is meaningless — a bit shift
-occurs, and everything appears offset by one position. Connecting to an
-SPI chip without first locating the "SPI Mode" or "CPOL/CPHA" line in its
-datasheet is comparable to trying the wrong key against a lock you merely
-presume is the correct one. SPI is typically used in fast ADCs/DACs,
-flash memory, and displays — clock frequencies can reach tens of MHz,
-well above UART.
+Saatin ayrıntısında dört varyant vardır — **mod 0-3** — iki
+parametrenin kombinasyonundan oluşur: **CPOL** (Clock Polarity — saat
+boşta yüksek mi, düşük mü) ve **CPHA** (Clock Phase — veri ön kenarda
+mı, arka kenarda mı örneklenir). İki çip farklı mod beklerse veri yine
+akar ama anlamsızdır — bir bit kayması olur, her şey bir konum
+ötelenmiş görünür. Bir SPI çipine, datasheet'inde "SPI Mode" ya da
+"CPOL/CPHA" satırını bulmadan bağlanmaya kalkmak, şartnameyi okumadan
+sahaya çıkmaktır. SPI tipik olarak hızlı ADC/DAC'lerde, flash bellekte
+ve ekranlarda kullanılır — saat frekansı onlarca MHz'e çıkabilir;
+UART'ın çok üstünde.
 
-:::saha-notu Quick Summary — SPI
-- **Wire count:** 4 (SCLK, MOSI, MISO) + a separate CS line for each
-  slave.
-- **Timing:** synchronous — the clock is generated by the master and
-  observed by all parties; full-duplex, since MOSI/MISO transfer
-  simultaneously.
-- **Addressing:** none — you determine "who you are talking to" by
-  pulling that slave's CS line low.
-- **Typical speed:** can reach tens of MHz — the fastest of the three.
-- **When to choose:** when speed is critical (fast ADCs/DACs, flash
-  memory, displays) and dedicating one pin per slave is acceptable.
+:::saha-notu Hızlı Özet — SPI
+- **Tel sayısı:** 4 (SCLK, MOSI, MISO) + her slave için ayrı bir CS
+  hattı.
+- **Zamanlama:** senkron — saati master üretir, herkes ona bakar;
+  MOSI/MISO aynı anda taşıdığından full-duplex.
+- **Adresleme:** yok — "kiminle konuştuğunu" o slave'in CS hattını
+  düşüğe çekerek belirlersin.
+- **Tipik hız:** onlarca MHz'e çıkabilir — üçünün en hızlısı.
+- **Ne zaman seçilir:** hız kritikse (hızlı ADC/DAC, flash bellek,
+  ekran) ve slave başına bir pin ayırmak kabul edilebilirse.
 :::
 
-## I2C: An Entire Tree on Two Wires
+## I2C: İki Tel Üzerinde Koca Bir Ağaç
 
-I2C (Inter-Integrated Circuit) uses only two wires — **SDA** (data) and
-**SCL** (clock) — yet dozens of chips can coexist on these two wires
-simultaneously. This is made possible by an **open-drain** output
-structure: each chip can only pull the line **low**, never drive it high.
-An external **pull-up resistor** is what carries the line high. If no
-chip is pulling, the resistor draws the line high; if any chip pulls, the
-line goes low — this "wired-AND" behavior makes it physically impossible
-for two chips speaking at the same time to place the line into electrical
-conflict.
+I2C (Inter-Integrated Circuit) yalnızca iki tel kullanır — **SDA**
+(veri) ve **SCL** (saat) — ama bu iki telin üzerinde onlarca çip aynı
+anda var olabilir. Bunu mümkün kılan, **open-drain** çıkış yapısıdır:
+her çip hattı yalnızca **düşüğe çekebilir**, asla yükseğe süremez.
+Hattı yükseğe taşıyan, harici bir **pull-up direncidir**. Hiçbir çip
+çekmiyorsa direnç hattı yükseğe çeker; herhangi bir çip çekiyorsa hat
+düşer — bu "wired-AND" davranışı, aynı anda konuşan iki çipin hattı
+elektriksel çatışmaya sokmasını fiziksel olarak imkânsız kılar.
 
-{{svg:sema-18-i2c-dalga.svg|Figure 18 — I2C waveform: START condition, 7-bit address + R/W, slave ACK, one data byte, STOP; below, the intuition behind the open-drain line and pull-up resistor.}}
+{{svg:sema-18-i2c-dalga.svg|Şekil 18 — I2C dalga biçimi: START koşulu, 7 bit adres + R/W, slave ACK'i, bir veri baytı, STOP; altta open-drain hat ve pull-up direncinin sezgisi.}}
 
-The same open-drain logic applies to SCL; this allows a slave that needs
-time to prepare its data to hold the clock low itself (**clock
-stretching**). The master reads this as a "slave busy, wait" signal and
-waits for SCL to genuinely rise. This is a small but elegant detail
-behind how I2C achieves such flexibility with only two simple wires.
+Aynı open-drain mantığı SCL için de geçerlidir; verisini hazırlamak
+için zamana ihtiyaç duyan bir slave, saati kendisi düşükte tutabilir
+(**clock stretching**). Master bunu "slave meşgul, bekle" sinyali
+olarak okur ve SCL gerçekten yükselene kadar bekler. I2C'nin iki basit
+telle bu kadar esneklik sağlamasının arkasındaki küçük ama zarif
+ayrıntılardan biri budur.
 
-An I2C transaction proceeds as follows: **START** (SDA falls while SCL is
-high — the only instant at which both lines change together, which is
-what makes it recognizable), the **7-bit address plus R/W bit**, the
-receiver's **ACK** (holding SDA low for one bit period — "I heard you"),
-then the data bytes (each with its own ACK), and finally **STOP** (SDA
-rises while SCL is high). A clock speed of 100 kHz is typical in standard
-mode, and 400 kHz in fast mode.
+Bir I2C işlemi şöyle ilerler: **START** (SCL yüksekken SDA düşer — iki
+hattın birlikte değiştiği tek an; onu tanınır kılan da budur), **7 bit
+adres artı R/W biti**, alıcının **ACK'i** (SDA'yı bir bit süresi
+düşükte tutmak — "seni duydum"), ardından veri baytları (her biri kendi
+ACK'iyle) ve son olarak **STOP** (SCL yüksekken SDA yükselir). Standart
+modda 100 kHz, fast modda 400 kHz saat hızı tipiktir.
 
-7-bit addressing means a maximum of 128 distinct addresses on a given I2C
-bus — and in practice, many chips have a factory address that is either
-fixed or adjustable via only a few pins. Multiple chips of the same model
-(for example, the 14 INA226 power monitors on this board) cannot share a
-single bus; their addresses would collide. The solution is the **I2C
-mux/switch** chip. These devices themselves reside at one I2C address but
-host several separate I2C branches "behind" them — you first instruct the
-mux to "connect this branch now," then communicate with the chip on that
-branch as usual. This is exactly how it works on the ZCU111: **PS I2C0**
-(MIO14-15) branches, through a **PCA9544A** (4-channel mux, address
-0x75), to the board's INA226 power monitors; **PS I2C1** (MIO16-17)
-branches, through two **TCA9548A** devices (8-channel switches, at 0x74
-and 0x75), to the EEPROM, clock generators, SYSMON, DDR SPD, and SFP
-modules. An entire tree from a single I2C controller.
+7 bit adres, bir I2C hattında en fazla 128 ayrı adres demektir —
+pratikte çoğu çipin fabrika adresi ya sabittir ya da yalnızca birkaç
+pinle ayarlanabilir. Aynı modelden birden çok çip (örneğin bu karttaki
+14 adet INA226 güç monitörü) tek bir hattı paylaşamaz; adresleri
+çakışır. Çözüm, **I2C mux/switch** çipidir. Bu cihazlar kendileri bir
+I2C adresinde oturur ama "arkalarında" birkaç ayrı I2C dalı barındırır
+— önce mux'a "şimdi şu dalı bağla" dersin, sonra o daldaki çiple her
+zamanki gibi konuşursun. ZCU111'de tam olarak böyle çalışır: **PS
+I2C0** (MIO14-15), bir **PCA9544A** (4 kanallı mux, adres 0x75)
+üzerinden kartın INA226 güç monitörlerine dallanır; **PS I2C1**
+(MIO16-17), iki **TCA9548A** (8 kanallı switch, 0x74 ve 0x75) üzerinden
+EEPROM'a, saat üreteçlerine, SYSMON'a, DDR SPD'ye ve SFP modüllerine
+dallanır. Tek I2C denetleyicisinden koca bir ağaç.
 
-:::saha-notu Quick Summary — I2C
-- **Wire count:** 2 (SDA, SCL) — open-drain output plus an external
-  pull-up resistor.
-- **Timing:** synchronous — the clock is carried over SCL; a slave can
-  stretch the clock itself, if needed, via clock stretching.
-- **Addressing:** present — a 7-bit address plus R/W bit; dozens of chips
-  can share a bus, forming an entire tree of branches via mux/switch
-  devices.
-- **Typical speed:** 100 kHz in standard mode, 400 kHz in fast mode.
-- **When to choose:** when you need to manage many low-speed chips using
-  few pins (only 2 wires).
+:::saha-notu Hızlı Özet — I2C
+- **Tel sayısı:** 2 (SDA, SCL) — open-drain çıkış artı harici pull-up
+  direnci.
+- **Zamanlama:** senkron — saat SCL üzerinden taşınır; gerekirse slave,
+  clock stretching ile saati kendisi uzatabilir.
+- **Adresleme:** var — 7 bit adres artı R/W biti; onlarca çip bir hattı
+  paylaşabilir, mux/switch cihazlarıyla dallardan koca bir ağaç
+  kurulur.
+- **Tipik hız:** standart modda 100 kHz, fast modda 400 kHz.
+- **Ne zaman seçilir:** az pinle (yalnızca 2 tel) çok sayıda düşük
+  hızlı çipi yönetmen gerektiğinde.
 :::
 
-{{svg:sema-19-protokol-karsilastirma.svg|Figure 19 — UART, SPI, and I2C comparison: wire count, speed class, topology, synchronous or not, and typical use.}}
+{{svg:sema-19-protokol-karsilastirma.svg|Şekil 19 — UART, SPI ve I2C karşılaştırması: tel sayısı, hız sınıfı, topoloji, senkron olup olmadığı ve tipik kullanım.}}
 
-When the three are placed side by side, the choice becomes clear: choose
-UART for few wires and simplicity, SPI for raw speed, and I2C for
-managing many chips with few pins. On real boards, all three are
-typically used simultaneously for different chips — exactly as on the
-ZCU111.
+Üçü yan yana konduğunda seçim netleşir: az tel ve basitlik için UART,
+ham hız için SPI, az pinle çok çip yönetmek için I2C. Gerçek kartlarda
+üçü de farklı çipler için genellikle aynı anda kullanılır — tıpkı
+ZCU111'de olduğu gibi.
 
-:::saha-notu The Software Engineer Also Holds the Probe
-When an I2C transaction fails because "no ACK is received," reading the
-source code is not sufficient — you need to see what is actually
-happening on the wire. On our team, connecting a logic analyzer or
-oscilloscope to SDA/SCL to visually confirm that START genuinely
-occurred, that the address was sent correctly, and whether the ACK
-arrived is also the software engineer's responsibility — not solely the
-hardware engineer's tool. The ability to read a waveform by hand
-(recognizing the diagrams in this chapter) transfers directly to reading
-a waveform on an actual line; it feels unfamiliar the first time and
-becomes reflexive by the third.
+:::saha-notu Probu Yazılımcı da Tutar
+Bir I2C işlemi "ACK gelmiyor" diye başarısız olduğunda kaynak kodu
+okumak yetmez — telde gerçekte ne olduğunu görmen gerekir. Bizim ekipte
+SDA/SCL'ye logic analyzer ya da osiloskop bağlayıp START'ın gerçekten
+oluştuğunu, adresin doğru gittiğini ve ACK'in gelip gelmediğini gözle
+doğrulamak yazılımcının da işidir — yalnızca donanımcının aleti
+değildir. Dalga biçimini elle okuyabilme becerisi (bu bölümdeki
+şemaları tanımak), gerçek hattaki dalga biçimini okumaya doğrudan
+aktarılır; ilk seferinde yabancı gelir, üçüncüsünde refleks olur.
 :::
 
-The theory ends here; you will now enter an actual I2C tree on your
-board — passing through the mux to read a real measurement from a real
-chip.
+Teori burada bitiyor; şimdi kartındaki gerçek bir I2C ağacına
+gireceksin — mux'tan geçip gerçek bir çipten gerçek bir ölçüm
+okuyacaksın.
 
-:::gorev no=6 zorluk=3 baslik="Communicate with a Real Chip over I2C" kisa="I2C Measurement"
-[Objective]
-Direct the PCA9544A mux to channel 0 over PS I2C0, read the actual
-VCCINT bus voltage from an INA226 power monitor, and print it to the
-UART.
+:::gorev no=6 zorluk=3 baslik="I2C ile Gerçek Bir Çiple Konuş" kisa="I2C Ölçüm"
+[Hedef]
+PS I2C0 üzerinden PCA9544A mux'ı kanal 0'a yönlendir, bir INA226 güç
+monitöründen gerçek VCCINT hat gerilimini oku ve UART'a yazdır.
 
-[Prerequisites]
-Chapter 8 has been read; you have the `uart_ps` module from Task 2
-available; you have developed a habit of register-level hardware
-communication from Tasks 4-5.
+[Ön koşul]
+Bölüm 8 okundu; Görev 2'deki `uart_ps` modülün elinde; Görev 4-5'ten
+register seviyesinde donanım haberleşmesi alışkanlığın oluştu.
 
-[Steps]
-**Phase 1 — Verify the connection.** At the end of this phase, you will
-not yet have any measurement; the only thing you will have proven is that
-the bus genuinely works — that the mux selected the correct channel and
-that the INA226 responds at the correct address. Steps 1-5 will shortly
-be consolidated into a single function, `ina226Init()`.
+[Adımlar]
+**Faz 1 — Bağlantıyı doğrula.** Bu fazın sonunda henüz ölçümün
+olmayacak; kanıtladığın tek şey hattın gerçekten çalıştığı — mux'ın
+doğru kanalı seçtiği ve INA226'nın doğru adresten yanıt verdiği
+olacak. 1-5. adımlar az sonra tek bir fonksiyonda toplanacak:
+`ina226Init()`.
 
-1. **Understand the I2C tree:** PS I2C0 (**MIO14-15**) → **PCA9544A mux,
-   U23, I2C address 0x75** → channel 0 → **INA226, I2C address 0x40**
-   (VCCINT rail, 0.85 V nominal). In this task, you undergo an initiation
-   into reading datasheets: before writing any code at each step, read
-   the relevant register table.
-2. Initialize the `XIicPs` object (`XIicPs_LookupConfig` +
-   `XIicPs_CfgInitialize`) and set the clock speed to **100 kHz**:
+1. **I2C ağacını kavra:** PS I2C0 (**MIO14-15**) → **PCA9544A mux,
+   U23, I2C adresi 0x75** → kanal 0 → **INA226, I2C adresi 0x40**
+   (VCCINT hattı, 0.85 V nominal). Bu görevde datasheet okumaya bir
+   giriş yapıyorsun: her adımda kod yazmadan önce ilgili register
+   tablosunu oku.
+2. `XIicPs` nesnesini başlat (`XIicPs_LookupConfig` +
+   `XIicPs_CfgInitialize`) ve saat hızını **100 kHz** yap:
    `XIicPs_SetSClk(&G_sIic, 100000)`.
-3. **Write the channel-0 select byte to the mux.** In the PCA9544A's
-   8-bit control register, bit 2 is "enable" and bits 1-0 are the channel
-   number — the byte to write for channel 0 derives a single correct
-   value from the datasheet. Do not consult the `lab06-i2c` solution
-   before verifying this yourself; locate the datasheet (PCA9544A, §8.6
-   "Register Map"), read Table 8-1, derive the channel-0 command on your
-   own, then compare it against the solution.
-4. Write to the mux with `XIicPs_MasterSendPolled(&G_sIic, controlByte,
-   1, 0x75)` — and recall that a **STOP** must follow (this API call
-   already constitutes a complete write operation and generates the stop
-   itself).
-5. **Verify the INA226's identity:** write `0xFE` (Manufacturer ID) as
-   the register pointer (`XIicPs_MasterSendPolled`, 1 byte, address
-   0x40), then read 2 bytes (`XIicPs_MasterRecvPolled`). Assemble the two
-   returned bytes in big-endian order (MSB first); the result should be
-   **0x5449** ("TI" in ASCII). If it does not match, do not proceed —
-   this indicates a problem with the mux channel, the address, or the
-   wiring. `ina226Init()` performs exactly these five steps:
-   initialization, mux selection, and identity verification, returning 0
-   (success) or nonzero (failure). Do not move on to Phase 2 until you
-   see the identity verified in the terminal.
+3. **Mux'a kanal-0 seçim baytını yaz.** PCA9544A'nın 8 bitlik kontrol
+   register'ında bit 2 "enable", bit 1-0 kanal numarasıdır — kanal 0
+   için yazılacak bayt, datasheet'ten tek bir doğru değere çıkar. Bunu
+   kendin doğrulamadan `lab06-i2c` çözümüne bakma; datasheet'i
+   (PCA9544A, §8.6 "Register Map") bul, Tablo 8-1'i oku, kanal-0
+   komutunu kendin türet, sonra çözümle karşılaştır.
+4. Mux'a `XIicPs_MasterSendPolled(&G_sIic, controlByte, 1, 0x75)` ile
+   yaz — ve ardından bir **STOP** gerektiğini hatırla (bu API çağrısı
+   zaten eksiksiz bir yazma işlemidir; stop'u kendisi üretir).
+5. **INA226'nın kimliğini doğrula:** register pointer olarak `0xFE`
+   (Manufacturer ID) yaz (`XIicPs_MasterSendPolled`, 1 bayt, adres
+   0x40), sonra 2 bayt oku (`XIicPs_MasterRecvPolled`). Dönen iki
+   baytı big-endian sırayla (önce MSB) birleştir; sonuç **0x5449**
+   olmalı (ASCII'de "TI"). Tutmuyorsa ilerleme — mux kanalında,
+   adreste ya da kablolamada sorun var demektir. `ina226Init()` tam
+   olarak bu beş adımı yapar: başlatma, mux seçimi ve kimlik
+   doğrulama; 0 (başarı) ya da sıfırdan farklı (hata) döndürür.
+   Terminalde kimliğin doğrulandığını görmeden Faz 2'ye geçme.
 
-**Phase 2 — Measure and scale.** The bus is proven; now you add the
-actual measurement on top of it.
+**Faz 2 — Ölç ve ölçekle.** Hat kanıtlandı; şimdi üstüne asıl ölçümü
+ekliyorsun.
 
-6. **Read the Bus Voltage register (0x02)** using the same
-   pointer-write-then-read pattern; multiply the raw 16-bit value by
-   **LSB = 1.25 mV** to convert it to millivolts. Implement this logic in
-   the `ina226ReadBusVoltageMv()` function — again returning 0 (success)
-   / nonzero (failure), with the measurement itself delivered via an
-   output parameter (`unsigned int*`). Print the result with
-   `uartSendString()` in the form `"VCCINT = NNN mV"`; repeat this loop
-   once per second.
+6. **Bus Voltage register'ını (0x02) oku** — aynı
+   pointer-yaz-sonra-oku kalıbıyla; ham 16 bit değeri **LSB = 1.25 mV**
+   ile çarpıp milivolta çevir. Bu mantığı `ina226ReadBusVoltageMv()`
+   fonksiyonunda gerçekle — yine 0 (başarı) / sıfırdan farklı (hata)
+   döndür; ölçümün kendisini çıkış parametresiyle (`unsigned int*`)
+   teslim et. Sonucu `uartSendString()` ile `"VCCINT = NNN mV"`
+   biçiminde yazdır; bu döngüyü saniyede bir tekrarla.
 
-[Success Criteria]
-The terminal outputs a value once per second for VCCINT, approximately
-around 850 mV (it may vary by a few mV depending on the board's actual
-load).
+[Başarı kriteri]
+Terminal, VCCINT için saniyede bir, yaklaşık 850 mV civarında bir değer
+basar (kartın anlık yüküne göre birkaç mV oynayabilir).
 
-[Self-Check]
-- Why did we read the ID register (0xFE) BEFORE the bus voltage — if we
-  skipped this step and the mux/address were wrong, where and how would
-  we notice the error?
-- If there were no mux and two INA226 chips on the board shared the same
-  0x40 address, what would happen electrically if you sent a write
-  request to both simultaneously?
-- If there were no pull-up resistor on the SDA/SCL line, at what level
-  would the line remain (recall the open-drain intuition) — would I2C
-  function at all?
+[Kendini sına]
+- Bus voltage'dan ÖNCE neden ID register'ını (0xFE) okuduk — bu adımı
+  atlasaydık ve mux/adres yanlış olsaydı, hatayı nerede ve nasıl fark
+  ederdik?
+- Mux olmasaydı ve karttaki iki INA226 aynı 0x40 adresini paylaşsaydı,
+  ikisine aynı anda yazma isteği gönderdiğinde elektriksel olarak ne
+  olurdu?
+- SDA/SCL hattında pull-up direnci olmasaydı hat hangi seviyede
+  kalırdı (open-drain sezgisini hatırla) — I2C hiç çalışır mıydı?
 
-[If You Get Stuck]
-::ipucu Hint 1 — The Mux Step May Have Been Skipped
-If you cannot write anything to the INA226 (0x40) via
-`XIicPs_MasterSendPolled`, or it consistently times out, the most likely
-cause is that you never performed the channel selection on the mux, or
-you sent the wrong control byte — on power-on reset (POR), the PCA9544A
-holds no channel selected; you must explicitly select one every time.
+[Takıldıysan]
+::ipucu İpucu 1 — Mux Adımı Atlanmış Olabilir
+`XIicPs_MasterSendPolled` ile INA226'ya (0x40) hiçbir şey yazamıyorsan
+ya da sürekli zaman aşımı alıyorsan, en olası neden mux'ta kanal
+seçimini hiç yapmamış ya da yanlış kontrol baytı göndermiş olmandır —
+power-on reset (POR) sonrasında PCA9544A hiçbir kanalı seçili tutmaz;
+her seferinde açıkça seçmek zorundasın.
 ::/
-::ipucu Hint 2 — Clarify the "Register Pointer" Concept
-The INA226 (like most I2C chips) is a multi-register device; you specify
-which register you want to read by first writing a single-byte
-"pointer," then retrieve that register's contents in a separate read
-operation. In other words, every read is actually two I2C transactions: a
-short write (the pointer) followed by a read (the data).
+::ipucu İpucu 2 — "Register Pointer" Kavramını Netleştir
+INA226 (çoğu I2C çipi gibi) çok register'lı bir cihazdır; hangi
+register'ı okumak istediğini önce tek baytlık bir "pointer" yazarak
+belirtir, o register'ın içeriğini ayrı bir okuma işlemiyle alırsın.
+Yani her okuma aslında iki I2C işlemidir: kısa bir yazma (pointer) ve
+ardından bir okuma (veri).
 ::/
-::ipucu Hint 3 — The mV Conversion Does Not Match
-The Bus Voltage register's LSB is **1.25 mV** — multiply the raw 16-bit
-value using integer arithmetic, such as `(unsigned int)usRaw * 1250 /
-1000` (floating point is not required); since it is an unsigned quantity,
-you do not need to account for negative values.
+::ipucu İpucu 3 — mV Dönüşümü Tutmuyor
+Bus Voltage register'ının LSB'si **1.25 mV**'dir — ham 16 bit değeri
+`(unsigned int)usRaw * 1250 / 1000` gibi tamsayı aritmetiğiyle çarp
+(floating point gerekmez); büyüklük işaretsiz olduğundan negatif
+değerleri hesaba katman gerekmez.
 ::/
-::cozum Full Solution — lab06-i2c
-`ina226.c/.h` covers mux selection and the register-read pattern;
-`main.c` prints the measurement to UART once per second.
+::cozum Tam Çözüm — lab06-i2c
+`ina226.c/.h` mux seçimini ve register okuma kalıbını kapsar; `main.c`
+ölçümü saniyede bir UART'a basar.
 {{kod:lab06-i2c/src/ina226.c}}
 {{kod:lab06-i2c/src/main.c}}
 ::/

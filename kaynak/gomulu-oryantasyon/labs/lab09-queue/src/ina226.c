@@ -1,15 +1,15 @@
 /*
  * lab09-queue / ina226.c
  *
- * Walks the PS I2C0 (MIO14-15) -> PCA9544A mux (U23, I2C address 0x75)
- * -> channel 0 -> INA226 (I2C address 0x40, VCCINT rail) path and reads
- * the Bus Voltage register.
+ * PS I2C0 (MIO14-15) -> PCA9544A mux (U23, I2C adresi 0x75) -> kanal 0
+ * -> INA226 (I2C adresi 0x40, VCCINT rayi) yolunu yurur ve Bus Voltage
+ * register'ini okur.
  *
- * Sources:
- *  - I2C tree, INA226 address/register set, channel-0 path:
+ * Kaynaklar:
+ *  - I2C agaci, INA226 adres/register seti, kanal-0 yolu:
  *    content/_arastirma.md §4.
- *  - PCA9544A control byte (0x04 = enable + channel 0):
- *    content/_arastirma-ek-E.md §E.2 (confirmed via web search).
+ *  - PCA9544A kontrol bayti (0x04 = enable + kanal 0):
+ *    content/_arastirma-ek-E.md §E.2 (web aramasiyla teyitli).
  */
 
 #include "ina226.h"
@@ -20,7 +20,7 @@
 #include "xil_printf.h"
 
 #define I2C0_CIHAZ_KIMLIGI            XPAR_XIICPS_0_DEVICE_ID
-#define I2C_HIZI_HZ                   100000U   /* standard mode, 100 kHz */
+#define I2C_HIZI_HZ                   100000U   /* standart mod, 100 kHz */
 
 #define PCA9544A_MUX_I2C_ADDR       0x75U
 #define PCA9544A_CHANNEL0_SELECT           0x04U     /* B2=1 (enable), B1=0, B0=0 */
@@ -30,14 +30,14 @@
 #define INA226_REG_MANUFACTURER_ID    0xFEU
 #define INA226_MANUFACTURER_ID_EXPECTED 0x5449U   /* ASCII "TI" */
 
-/* G_ prefix: driver instance used from a single point within the module. */
+/* G_ oneki: modul icinde tek noktadan kullanilan surucu ornegi. */
 static XIicPs G_sIic;
 
 
-/* ina226SelectMuxChannel0 -- writes a single-byte control word to the
- * PCA9544A, enabling channel 0. Calling this before every measurement is
- * safe against the possibility that another I2C0 user has changed the
- * mux in the meantime. */
+/* ina226SelectMuxChannel0 -- PCA9544A'ya tek baytlik kontrol sozcugu
+ * yazip kanal 0'i etkinlestirir. Her olcumden once cagirmak, baska bir
+ * I2C0 kullanicisinin mux'u bu arada degistirmis olma ihtimaline karsi
+ * guvenlidir. */
 static int
 ina226SelectMuxChannel0(void)
 {
@@ -58,8 +58,8 @@ ina226SelectMuxChannel0(void)
 }
 
 
-/* ina226ReadRegister -- writes the 8-bit register address, then reads
- * back 16 bits (big-endian/MSB-first, the INA226's native format). */
+/* ina226ReadRegister -- 8-bit register adresini yazar, sonra 16 bit
+ * geri okur (big-endian/MSB-once, INA226'nin dogal bicimi). */
 static int
 ina226ReadRegister(unsigned char ucRegAddress, unsigned short* uspValue)
 {
@@ -159,9 +159,9 @@ ina226ReadBusVoltageMv(unsigned int* uipMilliVolt)
         return XST_FAILURE;
     }
 
-    /* LSB = 1.25 mV = 5/4 mV. Integer arithmetic instead of floating
-     * point: the habit of avoiding float where possible in embedded
-     * systems is covered in Chapter 5. */
+    /* LSB = 1.25 mV = 5/4 mV. Kayan nokta yerine tamsayi aritmetigi:
+     * gomulu sistemlerde mumkunse float'tan kacinma aliskanligi Bolum
+     * 5'te islenir. */
     *uipMilliVolt = ((unsigned int)usRaw * 5U) / 4U;
 
     return XST_SUCCESS;

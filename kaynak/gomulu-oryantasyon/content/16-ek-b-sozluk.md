@@ -1,225 +1,212 @@
-# Appendix B — Glossary
+# Ek B — Sözlük
 
-An alphabetical list of technical terms used throughout the document. Each
-entry points to the chapter where the term is first treated in depth — the
-full definition, with context, can be found there.
+Doküman boyunca kullanılan teknik terimlerin alfabetik listesi. Her madde,
+terimin derinlemesine ilk işlendiği bölüme işaret eder — bağlamıyla birlikte
+tam tanım oradadır.
 
-**ACK** — In I2C, the acknowledgment bit by which the receiver pulls the
-SDA line low to signal "byte received"; its counterpart is NACK
-(Chapter 8).
+**ACK** — I2C'de alıcının SDA hattını düşüğe çekerek "byte alındı" dediği
+alındı biti; karşıtı NACK (Bölüm 8).
 
-**AXI** — The standard hardware bus (Advanced eXtensible Interface)
-between the PS and PL, and among IP blocks within the PL; operates over
-read/write channels using a valid/ready handshake (Chapter 9).
+**AXI** — PS ile PL arasında ve PL içindeki IP blokları arasında kullanılan
+standart donanım veriyolu (Advanced eXtensible Interface); okuma/yazma
+kanalları üzerinden valid/ready el sıkışmasıyla çalışır (Bölüm 9).
 
-**bare-metal** — An execution model with no underlying operating system,
-in which the application drives the hardware directly; the environment of
-this document's earliest tasks (Chapter 10).
+**bare-metal** — Altta işletim sistemi olmayan, uygulamanın donanımı
+doğrudan sürdüğü çalışma modeli; bu dokümanın ilk görevlerinin ortamı
+(Bölüm 10).
 
-**baud** — In UART, the number of symbols transmitted per second; both
-ends must agree on the same baud rate before communicating (Chapter 8).
+**baud** — UART'ta saniyede iletilen sembol sayısı; haberleşmeden önce iki
+taraf aynı baud hızında anlaşmalı (Bölüm 8).
 
-**bitstream** — A binary file that configures the PL (the FPGA fabric)
-according to a specific hardware design; loaded by the FSBL during boot
-(Chapter 3).
+**bitstream** — PL'i (FPGA fabric) belirli bir donanım tasarımına göre
+yapılandıran ikili dosya; boot sırasında FSBL tarafından yüklenir (Bölüm 3).
 
-**boot.bin** — The boot image file read by the BootROM from the board,
-bundling the FSBL and, where applicable, the bitstream and application
-(Chapter 3).
+**boot.bin** — BootROM'un karttan okuduğu boot imaj dosyası; FSBL'i ve
+varsa bitstream ile uygulamayı bir arada paketler (Bölüm 3).
 
-**BootROM** — Immutable code embedded in the chip that executes first
-after reset; it examines the boot mode pins and loads the FSBL (Chapter 3).
+**BootROM** — Çipe gömülü, değiştirilemez kod; reset sonrası ilk o çalışır,
+boot mode pinlerine bakar ve FSBL'i yükler (Bölüm 3).
 
-**bring-up** — The process of powering up a new board or subsystem for
-the first time and verifying its basic functions (Chapter 1).
+**bring-up** — Yeni bir kartı veya alt sistemi ilk kez besleyip temel
+işlevlerini doğrulama süreci (Bölüm 1).
 
-**BSP** — Board Support Package; a collection of driver and header files
-generated for a hardware platform; underlies the application project in
-Vitis (Chapter 11).
+**BSP** — Board Support Package; bir donanım platformu için üretilen
+sürücü ve başlık dosyaları topluluğu; Vitis'te uygulama projesinin altında
+yatar (Bölüm 11).
 
-**cache** — A small, fast memory layer that bridges the speed gap between
-the CPU and main memory; can be a source of coherency issues with DMA
-(Chapter 6).
+**cache** — CPU ile ana bellek arasındaki hız farkını kapatan küçük ve
+hızlı bellek katmanı; DMA ile tutarlılık (coherency) sorunlarının kaynağı
+olabilir (Bölüm 6).
 
-**context switch** — The register/state-swap operation by which the
-scheduler suspends one task and begins executing another (Chapter 10).
+**context switch** — Scheduler'ın bir task'ı askıya alıp diğerini
+çalıştırmaya başlarken yaptığı register/durum takası (Bölüm 10).
 
-**datasheet** — A manufacturer document defining a chip's registers,
-electrical characteristics, and behavior; core reading material for
-embedded software engineers (Chapter 8).
+**datasheet** — Bir çipin register'larını, elektriksel özelliklerini ve
+davranışını tanımlayan üretici dokümanı; gömülü yazılımcının temel okuma
+malzemesi (Bölüm 8).
 
-**debounce** — A software or hardware technique for filtering the
-spurious, rapid transitions a mechanical button or switch produces when
-pressed (Chapter 6).
+**debounce** — Mekanik buton veya anahtarın basılınca ürettiği sahte, hızlı
+geçişleri süzen yazılımsal ya da donanımsal teknik (Bölüm 6).
 
-**debugger** — A tool that allows a program to be stepped through,
-breakpoints to be set, and register and memory state to be inspected;
-operates over JTAG in Vitis (Chapter 11).
+**debugger** — Programı adım adım yürütmeyi, breakpoint koymayı, register
+ve bellek durumunu incelemeyi sağlayan araç; Vitis'te JTAG üzerinden
+çalışır (Bölüm 11).
 
-**device tree** — A description tree that tells the Linux kernel which
-addresses and interrupts hardware devices occupy; can be considered the
-Linux counterpart of `xparameters.h` in the bare-metal world (Chapter 13).
+**device tree** — Linux çekirdeğine donanım cihazlarının hangi adres ve
+interrupt'larda oturduğunu anlatan tanım ağacı; bare-metal dünyadaki
+`xparameters.h`'ın Linux karşılığı sayılabilir (Bölüm 13).
 
-**DMA** — Direct Memory Access; hardware that transfers data between
-memories without occupying the CPU (Chapter 6).
+**DMA** — Direct Memory Access; CPU'yu meşgul etmeden bellekler arasında
+veri taşıyan donanım (Bölüm 6).
 
-**driver** — A software layer that wraps a hardware unit's registers and
-exposes a clean function interface to the layers above it (Chapter 1).
+**driver** — Bir donanım biriminin register'larını sarıp üst katmanlara
+temiz bir fonksiyon arayüzü sunan yazılım katmanı (Bölüm 1).
 
-**edge/level triggering** — The distinction between an interrupt
-triggering on a signal transition (edge — rising/falling) versus on a
-signal state (level — as long as it remains high/low) (Chapter 7).
+**edge/level triggering** — Interrupt'ın sinyal geçişinde (edge —
+yükselen/düşen) mi, yoksa sinyal durumunda (level — yüksek/düşük kaldığı
+sürece) mi tetiklendiği ayrımı (Bölüm 7).
 
-**EMIO** — Extended MIO; a means of routing signals such as GPIO out
-through the PL when the PS's built-in MIO pin count is insufficient
-(Chapter 9).
+**EMIO** — Extended MIO; PS'in yerleşik MIO pin sayısı yetmediğinde GPIO
+gibi sinyalleri PL üzerinden dışarı çıkarma yolu (Bölüm 9).
 
-**FIFO** — First In First Out; a hardware buffer, used in peripherals
-such as UART, that accumulates data in order and releases it in the same
-order (Chapter 5).
+**FIFO** — First In First Out; UART gibi çevre birimlerinde kullanılan,
+veriyi sırayla biriktirip aynı sırayla veren donanım tamponu (Bölüm 5).
 
-**FPGA** — Field-Programmable Gate Array; the reconfigurable hardware
-fabric on which the PL physically resides (Chapter 2).
+**FPGA** — Field-Programmable Gate Array; PL'in fiziksel olarak üzerinde
+oturduğu, yeniden yapılandırılabilir donanım dokusu (Bölüm 2).
 
-**FSBL** — First Stage Bootloader; the initial software stage, loaded
-into OCM by the BootROM, that initializes DDR and the PL (with the
-bitstream, if present) and then starts the application (Chapter 3).
+**FSBL** — First Stage Bootloader; BootROM'un OCM'e yüklediği ilk yazılım
+aşaması; DDR'ı ve (bitstream varsa) PL'i başlatır, sonra uygulamayı
+çalıştırır (Bölüm 3).
 
-**GIC** — Generic Interrupt Controller; hardware that prioritizes
-interrupt sources and routes them to the appropriate core (Chapter 7).
+**GIC** — Generic Interrupt Controller; interrupt kaynaklarını
+önceliklendirip uygun çekirdeğe yönlendiren donanım (Bölüm 7).
 
-**GPIO** — General Purpose Input/Output; a general-purpose digital pin
-whose direction and state are configurable in software (Chapter 4).
+**GPIO** — General Purpose Input/Output; yönü ve durumu yazılımla
+ayarlanabilen genel amaçlı sayısal pin (Bölüm 4).
 
-**heap** — A memory region allocated dynamically at run time; used
-cautiously in embedded systems (Chapter 6).
+**heap** — Çalışma zamanında dinamik olarak ayrılan bellek bölgesi; gömülü
+sistemlerde temkinli kullanılır (Bölüm 6).
 
-**I2C** — A two-wire (SDA/SCL) synchronous serial protocol supporting
-multiple devices, with addressing and an ACK/NACK mechanism (Chapter 8).
+**I2C** — İki telli (SDA/SCL), adresleme ve ACK/NACK mekanizmasıyla çok
+cihazı destekleyen senkron seri protokol (Bölüm 8).
 
-**interrupt** — A signal sent by hardware to the CPU to indicate "an
-event has occurred, attend to it immediately"; the alternative to polling
-(Chapter 7).
+**interrupt** — Donanımın CPU'ya "bir olay oldu, hemen ilgilen" demek için
+gönderdiği sinyal; polling'in alternatifi (Bölüm 7).
 
-**IP** — Intellectual Property; a pre-built or custom-designed hardware
-block residing in the PL that performs a specific function, such as AXI
-GPIO (Chapter 9).
+**IP** — Intellectual Property; PL'de oturan, AXI GPIO gibi belirli bir
+işi yapan hazır veya özel tasarım donanım bloğu (Bölüm 9).
 
-**ISR** — Interrupt Service Routine; a dedicated function that executes
-when an interrupt occurs and should be kept short (Chapter 7).
+**ISR** — Interrupt Service Routine; interrupt gerçekleştiğinde çalışan,
+kısa tutulması gereken özel fonksiyon (Bölüm 7).
 
-**JTAG** — An industry-standard serial access interface used for
-programming and debugging the board; on the ZCU111 it is carried over the
-same USB cable (Chapter 2).
+**JTAG** — Kartı programlama ve debug için kullanılan endüstri standardı
+seri erişim arayüzü; ZCU111'de aynı USB kablosu üzerinden taşınır
+(Bölüm 2).
 
-**linker script** — A script that defines where compiled code (ELF
-sections such as `.text`, `.data`, and `.bss`) is placed in the memory
-map (Chapter 6).
+**linker script** — Derlenen kodun (`.text`, `.data`, `.bss` gibi ELF
+bölümlerinin) bellek haritasında nereye yerleşeceğini tanımlayan betik
+(Bölüm 6).
 
-**memory-mapped I/O** — The design principle whereby peripheral registers
-can be read and written as if they were ordinary memory addresses, from
-the CPU's point of view (Chapter 4).
+**memory-mapped I/O** — Çevre birimi register'larının, CPU'nun gözünden
+sıradan bellek adresleri gibi okunup yazılabilmesi tasarım ilkesi
+(Bölüm 4).
 
-**MIO** — Multiplexed I/O; the PS's fixed set of pins that connect
-directly to the outside world, each assignable to one of several
-functions (Chapter 4).
+**MIO** — Multiplexed I/O; PS'in dış dünyaya doğrudan bağlanan, her biri
+birkaç işlevden birine atanabilen sabit pin kümesi (Bölüm 4).
 
-**MOSI/MISO** — In SPI, the two separate lines that carry data from
-master to slave (Master Out Slave In) and from slave to master (Master In
-Slave Out) (Chapter 8).
+**MOSI/MISO** — SPI'da veriyi master'dan slave'e (Master Out Slave In) ve
+slave'den master'a (Master In Slave Out) taşıyan iki ayrı hat (Bölüm 8).
 
-**mutex** — A specialized type of semaphore, held by only one task at a
-time, used to protect a shared resource (Chapter 10).
+**mutex** — Aynı anda yalnızca bir task'ın tutabildiği, paylaşılan kaynağı
+korumak için kullanılan özelleşmiş semaphore türü (Bölüm 10).
 
-**OCM** — On-Chip Memory; small, fast memory inside the chip that does
-not depend on DDR; the FSBL is loaded here (Chapter 3).
+**OCM** — On-Chip Memory; çipin içindeki, DDR'a bağımlı olmayan küçük ve
+hızlı bellek; FSBL buraya yüklenir (Bölüm 3).
 
-**open-drain** — An output type in which a line can only be pulled low
-(to 0) and requires an external pull-up resistor to be pulled high; the
-basic physical layer of I2C (Chapter 8).
+**open-drain** — Hattın yalnızca düşüğe (0'a) çekilebildiği, yükseğe
+çekmek için harici pull-up direnci gereken çıkış türü; I2C'nin temel
+fiziksel katmanı (Bölüm 8).
 
-**parity** — An additional bit added to a UART frame for basic error
-detection, verifying whether the data bits contain an odd or even number
-of 1s (Chapter 8).
+**parity** — UART frame'ine temel hata tespiti için eklenen ek bit; veri
+bitlerindeki 1'lerin tek mi çift mi olduğunu sınar (Bölüm 8).
 
-**PL** — Programmable Logic; the FPGA fabric side of the Zynq, where
-hardware engineers place their own IP blocks (Chapter 2).
+**PL** — Programmable Logic; Zynq'in FPGA fabric tarafı; donanımcıların
+kendi IP bloklarını yerleştirdiği alan (Bölüm 2).
 
-**polling** — Continuous, loop-based querying by the CPU of a condition
-(e.g., a button state or FIFO occupancy); a simple alternative to
-interrupts, but one that occupies the CPU (Chapter 6).
+**polling** — CPU'nun bir koşulu (örn. buton durumu veya FIFO doluluğu)
+döngüyle sürekli sorgulaması; interrupt'a göre basit ama CPU'yu meşgul
+eden alternatif (Bölüm 6).
 
-**priority inversion** — A problem in which a high-priority task waiting
-on a resource held by a low-priority task is effectively delayed by
-intervening medium-priority tasks, behaving as if it had lower priority
-(Chapter 10).
+**priority inversion** — Düşük öncelikli task'ın tuttuğu kaynağı bekleyen
+yüksek öncelikli task'ın, araya giren orta öncelikli task'lar yüzünden
+fiilen geciktiği, düşük öncelikliymiş gibi davrandığı sorun (Bölüm 10).
 
-**PS** — Processing System; the side of the Zynq containing the fixed
-cores (A53/R5) and fixed peripherals (UART, I2C, GPIO, etc.) (Chapter 2).
+**PS** — Processing System; Zynq'in sabit çekirdekleri (A53/R5) ve sabit
+çevre birimlerini (UART, I2C, GPIO vb.) barındıran tarafı (Bölüm 2).
 
-**pull-up** — A resistor that holds a line at a high (1) level by
-default; required on open-drain lines such as I2C (Chapter 8).
+**pull-up** — Hattı varsayılan olarak yüksek (1) seviyede tutan direnç;
+I2C gibi open-drain hatlarda zorunlu (Bölüm 8).
 
-**queue** — In FreeRTOS, a synchronized message box operating on FIFO
-logic, used to pass data between tasks (or between an ISR and a task)
-(Chapter 10).
+**queue** — FreeRTOS'ta task'lar (veya ISR ile task) arasında veri
+aktarmak için kullanılan, FIFO mantığıyla çalışan senkronize mesaj kutusu
+(Bölüm 10).
 
-**register / register map** — A memory cell at a specific address that
-controls a peripheral's behavior or reports its status (register); the
-complete listing of a peripheral's registers, together with their
-offsets, fields, and access type (R/W/RO/W1C) (register map) (Chapter 4).
+**register / register map** — Bir çevre biriminin davranışını kontrol eden
+veya durumunu bildiren, belirli adresteki bellek hücresi (register); bir
+çevre biriminin tüm register'larının offset, alan ve erişim türüyle
+(R/W/RO/W1C) birlikte tam listesi (register map) (Bölüm 4).
 
-**RTOS** — Real-Time Operating System; a task/scheduler-based operating
-system that provides timing guarantees; this document uses FreeRTOS as
-its example (Chapter 10).
+**RTOS** — Real-Time Operating System; zamanlama garantisi veren,
+task/scheduler tabanlı işletim sistemi; bu doküman örnek olarak FreeRTOS
+kullanır (Bölüm 10).
 
-**scheduler** — The core RTOS component that decides which task runs and
-when (Chapter 10).
+**scheduler** — Hangi task'ın ne zaman çalışacağına karar veren çekirdek
+RTOS bileşeni (Bölüm 10).
 
-**semaphore** — A synchronization object used for event signaling or
-resource counting between tasks (or between an ISR and a task)
-(Chapter 10).
+**semaphore** — Task'lar (veya ISR ile task) arasında olay bildirimi ya da
+kaynak sayımı için kullanılan senkronizasyon nesnesi (Bölüm 10).
 
-**SoC** — System-on-Chip; a design approach in which a processor, memory
-controller, and peripherals are integrated on a single chip; the Zynq
-UltraScale+ is one example (Chapter 2).
+**SoC** — System-on-Chip; işlemci, bellek denetleyicisi ve çevre
+birimlerinin tek çipte birleştirildiği tasarım yaklaşımı; Zynq UltraScale+
+bunun bir örneği (Bölüm 2).
 
-**SPI** — A four-wire (SCLK/MOSI/MISO/CS), synchronous, high-speed,
-master-slave serial protocol (Chapter 8).
+**SPI** — Dört telli (SCLK/MOSI/MISO/CS), senkron, yüksek hızlı,
+master-slave seri protokol (Bölüm 8).
 
-**stack** — A memory region that holds the local variables and return
-addresses of function calls, growing and shrinking according to LIFO
-logic (Chapter 6).
+**stack** — Fonksiyon çağrılarının yerel değişkenlerini ve dönüş
+adreslerini tutan, LIFO mantığıyla büyüyüp küçülen bellek bölgesi
+(Bölüm 6).
 
-**task** — In an RTOS, an independently schedulable unit of execution
-with its own stack (Chapter 10).
+**task** — RTOS'ta kendi stack'ine sahip, bağımsız olarak zamanlanabilen
+çalıştırma birimi (Bölüm 10).
 
-**tick** — The periodic interrupt pulse by which the RTOS scheduler
-measures its unit of time (Chapter 10).
+**tick** — RTOS scheduler'ının zaman birimini ölçtüğü periyodik interrupt
+darbesi (Bölüm 10).
 
-**TRM** — Technical Reference Manual; the primary source document
-describing a chip's memory map, register set, and architecture in detail
-(Chapter 3).
+**TRM** — Technical Reference Manual; bir çipin bellek haritasını,
+register kümesini ve mimarisini ayrıntısıyla anlatan birincil kaynak
+doküman (Bölüm 3).
 
-**UART** — Universal Asynchronous Receiver/Transmitter; a two-wire,
-asynchronous serial communication protocol requiring agreement on baud
-rate (Chapter 8).
+**UART** — Universal Asynchronous Receiver/Transmitter; baud hızında
+anlaşma gerektiren, iki telli, asenkron seri haberleşme protokolü
+(Bölüm 8).
 
-**volatile** — A C qualifier that tells the compiler "do not optimize
-this variable; genuinely read/write it on every access"; mandatory for
-register access (Chapter 5).
+**volatile** — Derleyiciye "bu değişkeni optimize etme; her erişimde
+gerçekten oku/yaz" diyen C niteleyicisi; register erişiminde zorunlu
+(Bölüm 5).
 
-**W1C** — Write-1-to-Clear; an access type in which writing 1 to a
-register field clears that bit (sets it to 0), while writing 0 has no
-effect (Chapter 4).
+**W1C** — Write-1-to-Clear; register alanına 1 yazmanın o biti
+temizlediği (0 yaptığı), 0 yazmanın ise etkisiz olduğu erişim türü
+(Bölüm 4).
 
-**watchdog** — A guard timer that automatically resets the system if
-software fails to send periodic "feed" signals (Chapter 13).
+**watchdog** — Yazılım periyodik "besleme" sinyali göndermezse sistemi
+otomatik resetleyen bekçi zamanlayıcı (Bölüm 13).
 
-**XSA** — Xilinx Support Archive; a file exported from Vivado carrying
-the PS/PL hardware definition (with or without a bitstream); serves as
-the input to a Vitis platform project (Chapter 11).
+**XSA** — Xilinx Support Archive; Vivado'dan dışa aktarılan, PS/PL donanım
+tanımını (bitstream'li veya bitstream'siz) taşıyan dosya; Vitis platform
+projesinin girdisidir (Bölüm 11).
 
-**xparameters.h** — A header file automatically generated for a Vitis
-platform, defining all peripheral base addresses and device IDs as
-constants (Chapter 4).
+**xparameters.h** — Vitis platformu için otomatik üretilen, tüm çevre
+birimi taban adreslerini ve cihaz ID'lerini sabit olarak tanımlayan başlık
+dosyası (Bölüm 4).

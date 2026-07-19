@@ -1,169 +1,164 @@
-# Chapter 13 — Horizon Tour
+# Bölüm 13 — Ufuk Turu
 
-Chapter 12 addressed professional culture: defensive code, Git workflow,
-and asking effective questions. You are now equipped to handle the daily
-work of embedded development. This journey has not, however, covered
-everything — nor could it. This chapter is not a conclusion but a horizon
-tour: a brief window into seven concepts you will encounter by name
-throughout your career that this document has not taught you. The goal is
-not to make you an expert in them; it is so that when someone raises these
-terms in a meeting, your response is "I am familiar with it, though I have
-not yet gone deep," rather than "I have never heard of it." One last pause
-before the Capstone Project (Chapter 14).
+Bölüm 12 meslek kültürünü ele aldı: savunmacı kod, Git iş akışı, etkili
+soru sorma. Gömülü geliştirmenin günlük işlerini artık taşıyabilecek
+donanımdasın. Ama bu yolculuk her şeyi anlatmadı — anlatamazdı da. Bu
+bölüm bir kapanış değil, bir ufuk turudur: kariyerin boyunca adıyla
+karşılaşacağın, bu dokümanın öğretmediği yedi kavrama açılan kısa bir
+pencere. Amaç seni bu konularda uzman yapmak değil; biri toplantıda bu
+terimleri andığında cevabının "hiç duymadım" değil, "biliyorum, henüz
+derinine inmedim" olmasını sağlamak. Mezuniyet Görevi'nden (Bölüm 14)
+önceki son mola.
 
-## DMA and Scatter-Gather
+## DMA ve Scatter-Gather
 
-Why this matters: at some point you will need to move data without
-occupying the CPU, and the answer will be DMA (Direct Memory Access —
-hardware that transfers data between memory regions without CPU
-involvement). Chapter 6 touched on the coherency problem between the cache
-and DDR; DMA is precisely the hardware behind that problem — the CPU
-initiates a transfer, moves on to other work, and is notified by an
-interrupt when the transfer completes. In practice, data rarely sits in a
-single contiguous memory block; a network packet or an image frame may be
-scattered across multiple, non-contiguous addresses. **Scatter-gather**
-lets you build a chain of **descriptors** that instruct the DMA controller:
-"read this much from this address, then jump to that address and continue
-reading from there" — a single DMA operation can gather scattered pieces
-into one destination or scatter a single source across multiple
-destinations. When you are ready, consult the series' *Memory Architecture
-Field Guide*; it covers how DMA interacts with the memory map in detail.
+Neden önemli: bir gün veriyi CPU'yu meşgul etmeden taşıman gerekecek ve
+cevap DMA olacak (Direct Memory Access — bellek bölgeleri arasında
+veriyi CPU'suz taşıyan donanım). Bölüm 6, cache ile DDR arasındaki
+coherency (tutarlılık) sorununa değinmişti; DMA tam olarak o sorunun
+arkasındaki donanımdır — CPU transferi başlatır, başka işe geçer,
+transfer bittiğinde interrupt ile haber alır. Pratikte veri nadiren tek
+bir bitişik bellek bloğunda durur; bir ağ paketi ya da görüntü frame'i
+birden çok, bitişik olmayan adrese dağılmış olabilir. **Scatter-gather**,
+DMA denetleyicisine "şu adresten şu kadar oku, sonra şu adrese atla ve
+oradan devam et" talimatını veren bir **descriptor** (tanımlayıcı kayıt)
+zinciri kurmanı sağlar — tek bir DMA işlemi dağınık parçaları tek hedefte
+toplayabilir ya da tek kaynağı birden çok hedefe dağıtabilir. Hazır
+olduğunda serinin *Bellek Mimarisi Saha Kılavuzu*'na başvur; DMA'nın
+bellek haritasıyla ilişkisini ayrıntısıyla orada bulursun.
 
 ## Watchdog
 
-Why this matters: the day your board leaves your desk for the field, at a
-customer site, no one there will be able to press a reset button. A
-**watchdog** is a timer that your software "feeds" (or "kicks") at regular
-intervals to signal "I am still alive"; if a feed does not arrive — because
-the software has locked up, entered an infinite loop, or an ISR never
-returned — the hardware resets itself. The ZynqMP has its own watchdog IP;
-consult the TRM (Technical Reference Manual) for address and register
-details, as this document only introduces the concept. Be aware of the
-pitfall as well: if the feeding logic is placed incorrectly (for example,
-if a task that has genuinely hung is the one performing the feed), the
-watchdog saves nothing — it merely lies. In a correct design, the feed
-originates from a point that verifies the system is genuinely healthy.
+Neden önemli: kartın masandan ayrılıp sahaya, müşteri tesisine gittiği
+gün, orada reset düğmesine basacak kimse olmayacak. **Watchdog**,
+yazılımının düzenli aralıklarla "hâlâ hayattayım" demek için "beslediği"
+(feed/kick) bir zamanlayıcıdır; besleme gelmezse — yazılım kilitlendiği,
+sonsuz döngüye girdiği ya da bir ISR hiç dönmediği için — donanım
+kendini resetler. ZynqMP'nin kendi watchdog IP'si vardır; adres ve
+register ayrıntıları için TRM'ye (Technical Reference Manual) başvur, bu
+doküman yalnızca kavramı tanıtıyor. Tuzağını da bil: besleme mantığı
+yanlış yere konursa (örneğin gerçekten asılı kalmış bir task beslemeyi
+sürdürüyorsa) watchdog hiçbir şeyi kurtarmaz — yalnızca yalan söyler.
+Doğru tasarımda besleme, sistemin gerçekten sağlıklı olduğunu doğrulayan
+bir noktadan çıkar.
 
-## DDR, QSPI, eMMC: Distinguishing the Storage Family
+## DDR, QSPI, eMMC: depolama ailesini ayırt etmek
 
-Why this matters: the question "which memory is used here" will surface in
-your very first hardware-selection meeting, and confusing the three can
-become an expensive mistake. **DDR** (Double Data Rate RAM) is fast but
-**volatile**: its contents are lost when power is removed, and it serves as
-the board's working memory. **QSPI** (Quad SPI flash) is slow but
-persistent; given its small capacity, it typically holds the boot image
-(boot.bin, Chapter 3). **eMMC** (embedded MultiMediaCard) offers far
-greater capacity than QSPI and provides block-based persistent storage —
-large enough to host a Linux root filesystem — but is not as simply
-accessed as QSPI; it requires a controller and a file-system layer. Think
-of the three together: DDR is "your current working memory," QSPI is "the
-recipe for how the board boots," and eMMC is "the storage for persistent
-files." When you are ready, consult the series' *Memory Architecture Field
-Guide*; there you will find a comparative view of where each of the three
-sits in the address map and its speed class.
+Neden önemli: "burada hangi bellek kullanılıyor" sorusu daha ilk donanım
+seçimi toplantısında önüne gelecek ve üçünü karıştırmak pahalı bir
+hataya dönüşebilir. **DDR** (Double Data Rate RAM) hızlıdır ama
+**volatile**'dır (uçucu): güç kesilince içeriği silinir; kartın çalışma
+belleğidir. **QSPI** (Quad SPI flash) yavaştır ama kalıcıdır;
+kapasitesi küçük olduğundan genellikle boot imajını (boot.bin, Bölüm 3)
+tutar. **eMMC** (embedded MultiMediaCard) QSPI'dan çok daha büyük
+kapasiteli, blok tabanlı kalıcı depolama sunar — bir Linux kök dosya
+sistemini barındıracak kadar geniştir — ama erişimi QSPI kadar basit
+değildir; denetleyici ve dosya sistemi katmanı ister. Üçünü birlikte şöyle
+düşün: DDR "o an üzerinde çalıştığın bellek", QSPI "kartın nasıl
+açılacağını tutan talimat", eMMC "kalıcı dosyaların ambarı". Hazır
+olduğunda serinin *Bellek Mimarisi Saha Kılavuzu*'na başvur; üçünün adres
+haritasındaki yeri ve hız sınıfı orada karşılaştırmalı olarak var.
 
-## Device Tree and the Linux-Based Zynq World
+## Device Tree ve Linux tabanlı Zynq dünyası
 
-Why this matters: the world you have inhabited throughout this document has
-been **bare-metal** (no operating system) and FreeRTOS; but the same Zynq
-board can also lead an entirely different life — running a full **Linux**
-kernel. In that world, the way you describe hardware changes: the constants
-in `xparameters.h` are replaced by the **device tree** (`.dts`/`.dtb`
-files); which peripheral sits at which address and uses which interrupt is
-no longer determined by compile-time constants but by this tree, read by
-the kernel at runtime. In the Xilinx/AMD ecosystem, the tool that combines
-this Linux image, root filesystem, and device tree is **PetaLinux** — know
-that it exists; it has its own configuration workflow and learning curve.
-Which world you choose ("bare-metal, RTOS, or Linux") depends on
-requirements: stay close to FreeRTOS if you need strict timing guarantees;
-accept the added complexity of Linux if you need a network stack, a file
-system, or multiple user-space processes. When you are ready, consult the
-series' *Ethernet Field Guide*; networking is frequently the primary reason
-a Linux-based Zynq system exists at all.
+Neden önemli: bu doküman boyunca yaşadığın dünya **bare-metal** (işletim
+sistemsiz) ve FreeRTOS'tu; ama aynı Zynq kartı bambaşka bir hayat da
+sürebilir — üzerinde tam bir **Linux** çekirdeği koşabilir. O dünyada
+donanımı tarif etme biçimin değişir: `xparameters.h` içindeki sabitlerin
+yerini **device tree** (`.dts`/`.dtb` dosyaları) alır; hangi çevre
+biriminin hangi adreste oturduğunu, hangi interrupt'ı kullandığını artık
+derleme zamanı sabitleri değil, çekirdeğin çalışma zamanında okuduğu bu
+ağaç belirler. Xilinx/AMD ekosisteminde bu Linux imajını, kök dosya
+sistemini ve device tree'yi bir arada üreten araç **PetaLinux**'tur —
+varlığını bil; kendi konfigürasyon akışı ve öğrenme eğrisi vardır. Hangi
+dünyayı seçeceğin ("bare-metal mi, RTOS mu, Linux mu") gereksinime
+bağlıdır: sıkı zamanlama garantisi gerekiyorsa FreeRTOS'a yakın dur; ağ
+yığını, dosya sistemi ya da birden çok kullanıcı alanı süreci gerekiyorsa
+Linux'un ek karmaşıklığını kabul et. Hazır olduğunda serinin *Ethernet
+Saha Kılavuzu*'na başvur; Linux tabanlı bir Zynq sisteminin varlık sebebi
+çoğu zaman zaten ağdır.
 
-## Secure Boot and Cryptography
+## Secure Boot ve kriptografi
 
-Why this matters: as long as your board sits on a lab bench connected to
-JTAG, "anyone can load any code" is not a real concern. Once a product
-ships, however, someone loading counterfeit firmware onto your device to
-resell it, or to run malicious code, becomes a serious threat. **Secure
-boot** is the process by which the BootROM you encountered in Chapter 3
-cryptographically verifies the FSBL (and every subsequent image in the
-chain) before executing it: an image is **signed** with a private key, and
-that signature is checked at every boot against a public key or a **hash**
-(a fixed-length fingerprint generated from a piece of data) stored in the
-device's embedded key store or in **e-fuses** (permanent, irreversible bit
-fuses written into the chip); if the signature does not verify, the device
-refuses to boot. This is called a **chain of trust** — no layer executes
-the next without first verifying it. You will not think about this at all
-during the lab phase, but underestimating it once a product ships in the
-field is one of the most expensive mistakes to reverse.
+Neden önemli: kartın JTAG'e bağlı, lab masasında durduğu sürece "isteyen
+istediği kodu yükler" gerçek bir dert değildir. Ürün sahaya çıktığında
+ise birinin cihazına sahte firmware yükleyip yeniden satması ya da
+zararlı kod koşturması ciddi bir tehdide dönüşür. **Secure boot**, Bölüm
+3'te tanıştığın BootROM'un FSBL'yi (ve zincirdeki sonraki her imajı)
+çalıştırmadan önce kriptografik olarak doğrulaması sürecidir: imaj özel
+anahtarla **imzalanır**, her açılışta bu imza, cihazın gömülü anahtar
+deposunda ya da **e-fuse**'larda (çipe yazılan kalıcı, geri döndürülemez
+bit sigortaları) saklanan bir açık anahtara ya da **hash**'e (bir veriden
+üretilen sabit uzunluklu parmak izi) karşı denetlenir; imza doğrulanmazsa
+cihaz açılmayı reddeder. Buna **chain of trust** (güven zinciri) denir —
+hiçbir katman, bir sonrakini doğrulamadan çalıştırmaz. Lab aşamasında
+bunu hiç düşünmeyeceksin; ama ürün sahaya çıktıktan sonra hafife almak,
+geri alması en pahalı hatalardan biridir.
 
-## JESD204 and PCIe: High-Speed Interfaces
+## JESD204 ve PCIe: yüksek hızlı arayüzler
 
-Why this matters: the RF sampling capability of your ZCU111, briefly shown
-as a "superpower" in Chapter 2, operates entirely through these
-interfaces. **JESD204** (revisions B/C) is an industry-standard protocol
-that carries gigabit-scale data over serial lanes between high-speed
-ADC/DAC (analog-to-digital / digital-to-analog converter) chips and an
-FPGA — this is the path through which the RF-ADC/RF-DAC blocks inside the
-RFSoC deliver their data to the PL side. **PCIe** (PCI Express) is more
-general-purpose: a high-bandwidth, packet-based interface for connecting
-cards to each other or to a motherboard, and the standard way to attach
-accelerator cards in server-class systems. What both have in common: they
-are far more complex physical-layer designs than AXI's (Chapter 9)
-straightforward valid/ready handshake — multi-channel, requiring
-synchronization and **link training** (the automatic calibration of a
-connection). This is beyond the scope of this document, but recognizing it
-as "the next tier up from AXI" when you hear the name is enough for now.
-When you are ready, consult the series' *RF Sampling Field Guide*; you will
-find JESD204's actual application on the ZCU111 covered there.
+Neden önemli: ZCU111'inin Bölüm 2'de kısaca "süper güç" olarak gösterilen
+RF örnekleme yeteneği tümüyle bu arayüzler üzerinden işler. **JESD204**
+(B/C revizyonları), yüksek hızlı ADC/DAC (analog-sayısal / sayısal-analog
+çevirici) çipleriyle FPGA arasında gigabit ölçeğinde veriyi seri hatlar
+üzerinden taşıyan endüstri standardı bir protokoldür — RFSoC içindeki
+RF-ADC/RF-DAC bloklarının verisini PL tarafına ulaştıran yol budur.
+**PCIe** (PCI Express) daha genel amaçlıdır: kartları birbirine ya da
+bir anakarta bağlayan yüksek bant genişlikli, paket tabanlı arayüz;
+sunucu sınıfı sistemlerde hızlandırıcı kart bağlamanın standart yolu.
+İkisinin ortak noktası: AXI'nin (Bölüm 9) yalın valid/ready el
+sıkışmasından çok daha karmaşık fiziksel katman tasarımlarıdır — çok
+kanallı, senkronizasyon ve **link training** (bağlantının otomatik
+kalibrasyonu) isteyen yapılar. Bu dokümanın kapsamı dışındadır; adını
+duyduğunda "AXI'nin bir üst ligi" diye tanıman şimdilik yeter. Hazır
+olduğunda serinin *RF Örnekleme Saha Kılavuzu*'na başvur; JESD204'ün
+ZCU111 üzerindeki gerçek uygulamasını orada bulursun.
 
-## Unit Testing and CI
+## Unit Test ve CI
 
-Why this matters: up to now, every line you have written has been run and
-observed directly on real hardware — but as a team grows, manually flashing
-and testing every change on a board no longer scales. A healthy embedded
-codebase deliberately separates the layer that touches hardware (register
-access, driver calls) from the layer that does not (protocol parsing,
-state-machine logic, CLI command parsing — the kind of code you will write
-in Chapter 14). The second layer can be tested with **unit test**
-frameworks on an ordinary computer, without any board attached; this in
-turn connects to **CI** (Continuous Integration): every commit triggers an
-automated build and test run, catching defects before they reach a human.
-On our team, asking "can this function be separated from the hardware" is
-an early step in the design process — the answer is usually yes, and that
-separation improves both testability and code readability at once.
+Neden önemli: şimdiye kadar yazdığın her satırı doğrudan gerçek donanım
+üzerinde koşturup gözledin — ama ekip büyüdükçe her değişikliği karta
+elle yükleyip denemek ölçeklenmez. Sağlıklı bir gömülü kod tabanı,
+donanıma dokunan katmanı (register erişimi, sürücü çağrıları) dokunmayan
+katmandan (protokol ayrıştırma, durum makinesi mantığı, CLI komut
+ayrıştırma — Bölüm 14'te yazacağın türden kod) bilinçli olarak ayırır.
+İkinci katman, karta hiç bağlanmadan sıradan bir bilgisayarda **unit
+test** (birim testi) çerçeveleriyle test edilebilir; bu da **CI**'a
+(Continuous Integration — sürekli tümleştirme) bağlanır: her commit
+otomatik bir build ve test koşusunu tetikler, hatalar bir insana ulaşmadan
+yakalanır. Ekibimizde "bu fonksiyon donanımdan ayrılabilir mi" sorusu
+tasarımın erken adımlarından biridir — cevap çoğunlukla evettir ve bu
+ayrım test edilebilirlikle kod okunurluğunu aynı anda iyileştirir.
 
-## Just Know the Name
+## Adını bilmen yeter
 
-Do not try to memorize the concepts in this chapter — the goal is simply
-that you recall what each one means when someone mentions it by name:
+Bu bölümdeki kavramları ezberlemeye çalışma — amaç yalnızca biri adını
+andığında ne işe yaradığını hatırlaman:
 
-| Concept | One sentence: what it does |
+| Kavram | Tek cümle: ne yapar |
 |---|---|
-| DMA | Hardware unit that transfers data between memory regions without occupying the CPU. |
-| Scatter-gather | A descriptor chain that instructs a DMA controller to gather/scatter non-contiguous memory blocks in a single operation. |
-| Watchdog | A timer that resets the hardware automatically if the software stops signaling "I am still alive." |
-| DDR | The board's fast but volatile (cleared on power loss) working memory. |
-| QSPI | Slow but persistent flash memory, typically holding the boot image (boot.bin). |
-| eMMC | Block-based persistent storage far larger than QSPI; hosts the Linux root filesystem. |
-| Device tree | A hardware tree that tells Linux, at runtime, which peripheral sits at which address/interrupt. |
-| PetaLinux | Xilinx/AMD's tool set for building a Linux image, root filesystem, and device tree together. |
-| Secure boot | A chain in which each boot step verifies the signature of the next before loading it. |
-| e-fuse | Permanent, irreversible bit fuses written into a chip; can store a verification key or hash. |
-| Hash | A fixed-length fingerprint generated from data, used to verify its integrity. |
-| Chain of trust | A security model in which no layer executes the next without first verifying it. |
-| JESD204 | A protocol carrying gigabit-scale data over serial lanes between high-speed ADC/DAC chips and an FPGA. |
-| PCIe | A high-bandwidth, packet-based, general-purpose interface between cards or a card and a motherboard. |
-| Link training | The automatic calibration process of a high-speed serial connection. |
-| Unit test | A method for testing hardware-independent code on an ordinary computer without a board. |
-| CI (Continuous Integration) | A system that runs an automated build and test on every commit, catching defects before they reach a human. |
-| TRM (Technical Reference Manual) | The manufacturer's official, complete source for a chip's register and address details. |
-| Root filesystem | The storage area holding the file/directory hierarchy required for Linux to run. |
+| DMA | CPU'yu meşgul etmeden bellek bölgeleri arasında veri taşıyan donanım birimi. |
+| Scatter-gather | Bitişik olmayan bellek bloklarını tek işlemde toplamayı/dağıtmayı DMA denetleyicisine tarif eden descriptor zinciri. |
+| Watchdog | Yazılım "hâlâ hayattayım" sinyalini kesince donanımı otomatik resetleyen zamanlayıcı. |
+| DDR | Kartın hızlı ama volatile (güç kesilince silinen) çalışma belleği. |
+| QSPI | Yavaş ama kalıcı flash bellek; genellikle boot imajını (boot.bin) tutar. |
+| eMMC | QSPI'dan çok daha büyük, blok tabanlı kalıcı depolama; Linux kök dosya sistemini barındırır. |
+| Device tree | Hangi çevre biriminin hangi adreste/interrupt'ta olduğunu Linux'a çalışma zamanında söyleyen donanım ağacı. |
+| PetaLinux | Xilinx/AMD'nin Linux imajı, kök dosya sistemi ve device tree'yi birlikte üreten araç seti. |
+| Secure boot | Her açılış adımının bir sonrakinin imzasını doğrulayarak yüklediği zincir. |
+| e-fuse | Çipe yazılan kalıcı, geri döndürülemez bit sigortaları; doğrulama anahtarı ya da hash saklayabilir. |
+| Hash | Bir veriden üretilen sabit uzunluklu parmak izi; verinin bütünlüğünü doğrulamakta kullanılır. |
+| Chain of trust | Hiçbir katmanın bir sonrakini doğrulamadan çalıştırmadığı güvenlik modeli. |
+| JESD204 | Yüksek hızlı ADC/DAC çipleriyle FPGA arasında gigabit ölçeğinde veriyi seri hatlar üzerinden taşıyan protokol. |
+| PCIe | Kartlar arası ya da kart-anakart arası yüksek bant genişlikli, paket tabanlı genel amaçlı arayüz. |
+| Link training | Yüksek hızlı seri bağlantının otomatik kalibrasyon süreci. |
+| Unit test | Donanımdan bağımsız kodu, kart olmadan sıradan bilgisayarda test etme yöntemi. |
+| CI (Continuous Integration) | Her commit'te otomatik build ve test koşturup hataları insana ulaşmadan yakalayan sistem. |
+| TRM (Technical Reference Manual) | Bir çipin register ve adres ayrıntıları için üreticinin resmi, eksiksiz kaynağı. |
+| Kök dosya sistemi (root filesystem) | Linux'un çalışması için gereken dosya/dizin hiyerarşisini tutan depolama alanı. |
 
-You are not expected to master all seven concepts today; this chapter's
-only job was to leave a hook in your mind for each one. Now it is time to
-combine every skill you have gained — reading registers, configuring
-interrupts, communicating over I2C, writing FreeRTOS tasks — into a single
-project. The Capstone Project is next.
+Yedi kavramın hepsine bugün hâkim olman beklenmiyor; bu bölümün tek işi
+her biri için zihnine bir kanca bırakmaktı. Şimdi sıra, kazandığın bütün
+becerileri — register okumak, interrupt yapılandırmak, I2C üzerinden
+haberleşmek, FreeRTOS task'ı yazmak — tek bir projede birleştirmekte.
+Sırada Mezuniyet Görevi var.

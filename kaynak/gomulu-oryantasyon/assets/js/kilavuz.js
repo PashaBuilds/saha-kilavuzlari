@@ -83,10 +83,10 @@
     if (!kod) { return; }
     var yaz = function () {
       dugme.classList.add("kopyalandi");
-      dugme.textContent = "copied";
+      dugme.textContent = "kopyalandı";
       setTimeout(function () {
         dugme.classList.remove("kopyalandi");
-        dugme.textContent = "copy";
+        dugme.textContent = "kopyala";
       }, 1600);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -275,9 +275,9 @@
       kutlamaAfis.innerHTML =
         '<span class="kutlama-ikon" aria-hidden="true"><svg viewBox="0 0 24 24" ' +
         'fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12.5l5 5L20 6"/></svg></span>' +
-        '<div class="kutlama-metin"><strong>Journey complete</strong>' +
-        '<span>All tasks are done. You are now equipped to take on real embedded work. Congratulations.</span></div>' +
-        '<button type="button" class="kutlama-kapat" aria-label="Close">&times;</button>';
+        '<div class="kutlama-metin"><strong>Yolculuk tamamlandı</strong>' +
+        '<span>Bütün görevler tamamlandı. Artık gerçek gömülü işleri üstlenecek donanıma sahipsin. Tebrikler.</span></div>' +
+        '<button type="button" class="kutlama-kapat" aria-label="Kapat">&times;</button>';
       document.body.appendChild(kutlamaAfis);
       kutlamaAfis.querySelector(".kutlama-kapat").addEventListener("click", function () {
         kutlamaAfis.classList.remove("gorunur");
@@ -321,7 +321,7 @@
       var etiket = k.closest(".gorev-tamam");
       if (etiket) {
         var yazi = etiket.querySelector(".gorev-tamam-yazi");
-        if (yazi) { yazi.textContent = isaretli ? "Completed" : "Mark complete"; }
+        if (yazi) { yazi.textContent = isaretli ? "Tamamlandı" : "Tamamlandı işaretle"; }
       }
       var tocOge = document.querySelector("nav.toc li[data-gorev='" + id + "']");
       if (tocOge) { tocOge.classList.toggle("tamam", isaretli); }
@@ -338,12 +338,12 @@
     if (ilkEksikDurak) { ilkEksikDurak.classList.add("sirada"); }
 
     var sayac = document.getElementById("gorev-sayac");
-    if (sayac) { sayac.textContent = tamam + " / " + toplamGorev + " tasks"; }
+    if (sayac) { sayac.textContent = tamam + " / " + toplamGorev + " görev"; }
     var oran = toplamGorev ? Math.round((tamam / toplamGorev) * 100) : 0;
     var panoDurum = document.getElementById("pano-durum");
     if (panoDurum) {
       panoDurum.innerHTML = "<span class='oran'>" + tamam + " / " + toplamGorev +
-        "</span> tasks complete (" + oran + "%)";
+        "</span> görev tamamlandı (%" + oran + ")";
     }
     var panoDolu = document.getElementById("pano-ilerleme-dolu");
     if (panoDolu) { panoDolu.style.width = oran + "%"; }

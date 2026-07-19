@@ -1,13 +1,12 @@
 /*
  * lab09-queue / ina226.h
  *
- * INA226 power monitor module -- for the INA226 (0x40, VCCINT rail)
- * sitting on channel 0 of the PCA9544A mux (U23, 0x75), via PS I2C0.
+ * INA226 guc monitoru modulu -- PS I2C0 uzerinden, PCA9544A mux'in
+ * (U23, 0x75) kanal 0'inda oturan INA226 (0x40, VCCINT rayi) icin.
  *
- * The same module as lab06: even if lab06 has not been written yet, the
- * API contract is fixed in content/_gorev-zinciri.md; this file conforms
- * to that contract exactly, so once lab06 is written, they share the same
- * interface.
+ * lab06 ile ayni modul: lab06 henuz yazilmamis olsa bile API sozlesmesi
+ * content/_gorev-zinciri.md'de sabittir; bu dosya o sozlesmeye birebir
+ * uyar, dolayisiyla lab06 yazildiginda ayni arayuzu paylasirlar.
  */
 
 #ifndef INA226_H
@@ -16,17 +15,17 @@
 #include "xil_types.h"
 
 /**
- * @brief Configures I2C0, switches the mux to channel 0, reads the
- * INA226's Manufacturer ID register (0xFE), and verifies it against
- * 0x5449 ("TI").
+ * @brief I2C0'i yapilandirir, mux'u kanal 0'a alir, INA226'nin
+ * Manufacturer ID register'ini (0xFE) okur ve 0x5449 ("TI") ile
+ * dogrular.
  * @return XST_SUCCESS / XST_FAILURE.
  */
 int ina226Init(void);
 
 /**
- * @brief Reads the Bus Voltage register (0x02), converts it to
- * millivolts at 1.25 mV/LSB, and writes it to *uipMilliVolt.
- * @param uipMilliVolt Address to which the measured bus voltage (mV) is written.
+ * @brief Bus Voltage register'ini (0x02) okur, 1.25 mV/LSB ile
+ * milivolta cevirir ve *uipMilliVolt'a yazar.
+ * @param uipMilliVolt Olculen bus geriliminin (mV) yazilacagi adres.
  * @return XST_SUCCESS / XST_FAILURE.
  */
 int ina226ReadBusVoltageMv(unsigned int* uipMilliVolt);

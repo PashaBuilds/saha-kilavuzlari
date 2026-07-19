@@ -1,15 +1,15 @@
 /* ============================================================
- * uart_ps.c — minimal, register-level driver for PS UART0
+ * uart_ps.c — PS UART0 icin minimal, register seviyesi surucu
  *
- * Addresses and offsets are confirmed against UG1085 (Zynq UltraScale+
- * TRM) and embeddedsw xuartps_hw.h:
- *   UART0 base address    : 0xFF00_0000
+ * Adresler ve offset'ler UG1085 (Zynq UltraScale+ TRM) ve embeddedsw
+ * xuartps_hw.h ile teyitlidir:
+ *   UART0 taban adresi    : 0xFF00_0000
  *   SR  (Channel Status)  : offset 0x2C
  *   FIFO (TX_RX)          : offset 0x30
  *   XUARTPS_SR_TXFULL     : 0x10
  *
- * This file is part of lab10-bughunt and contains none of the 4 known
- * bugs — the issue isn't in UART, it's on the interrupt/GPIO side.
+ * Bu dosya lab10-bughunt'in parcasidir ve bilinen 4 hatanin hicbirini
+ * icermez — sorun UART'ta degil, interrupt/GPIO tarafindadir.
  * ============================================================ */
 #include "uart_ps.h"
 #include "xil_io.h"
@@ -21,11 +21,11 @@
 #define UART_OFS_SR     0x2CU   /* Channel Status Register */
 #define UART_OFS_FIFO   0x30U   /* TX_RX FIFO */
 
-#define UART_CR_TXRES   (1U << 2)   /* reset the TX FIFO/logic */
-#define UART_CR_RXRES   (1U << 1)   /* reset the RX FIFO/logic */
-#define UART_CR_TXEN    (1U << 4)   /* transmitter enable */
+#define UART_CR_TXRES   (1U << 2)   /* TX FIFO/mantigini sifirla */
+#define UART_CR_RXRES   (1U << 1)   /* RX FIFO/mantigini sifirla */
+#define UART_CR_TXEN    (1U << 4)   /* verici etkin */
 
-#define UART_MR_8N1     0x00000020U  /* 8 data bits, no parity, 1 stop */
+#define UART_MR_8N1     0x00000020U  /* 8 veri biti, parity yok, 1 stop */
 
 #define UART_SR_TXFULL  0x00000010U
 
@@ -43,31 +43,31 @@ static inline unsigned int uartRegRead(unsigned int uiOffset)
 
 
 /**
- * @brief Prepares UART0 for use.
+ * @brief UART0'i kullanima hazirlar.
  */
 void uartInit(void)
 {
-    /* Reset the TX/RX FIFOs and status logic. */
+    /* TX/RX FIFO'larini ve durum mantigini sifirla. */
     uartRegWrite(UART_OFS_CR, UART_CR_TXRES | UART_CR_RXRES);
 
-    /* 8N1, normal mode. Since the baud rate (115200) is already set by the
-       FSBL at boot, we don't touch the Baud Rate Generator/Divider here;
-       we only concern ourselves with the mode and enabling the
-       transmitter. */
+    /* 8N1, normal mod. Baud hizi (115200) acilista FSBL tarafindan
+       zaten ayarlandigi icin burada Baud Rate Generator/Divider'a
+       dokunmuyoruz; yalnizca mod ve vericinin etkinlestirilmesiyle
+       ilgileniyoruz. */
     uartRegWrite(UART_OFS_MR, UART_MR_8N1);
     uartRegWrite(UART_OFS_CR, UART_CR_TXEN);
 }
 
 
 /**
- * @brief Sends a single character to the UART0 TX FIFO.
+ * @brief UART0 TX FIFO'ya tek karakter gonderir.
  */
 void uartSendChar(char cChar)
 {
-    /* Wait here while the TX FIFO is full. */
+    /* TX FIFO doluyken burada bekle. */
     while ((uartRegRead(UART_OFS_SR) & UART_SR_TXFULL) != 0U)
     {
-        /* empty body: waiting for the FIFO to drain */
+        /* bos govde: FIFO'nun bosalmasini bekliyoruz */
     }
 
     uartRegWrite(UART_OFS_FIFO, (unsigned int)cChar);
@@ -75,7 +75,7 @@ void uartSendChar(char cChar)
 
 
 /**
- * @brief Sends a NUL-terminated string character by character.
+ * @brief NUL ile sonlanan string'i karakter karakter gonderir.
  */
 void uartSendString(const char* cpString)
 {

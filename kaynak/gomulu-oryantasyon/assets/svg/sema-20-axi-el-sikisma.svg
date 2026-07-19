@@ -1,8 +1,8 @@
 <svg viewBox="0 0 720 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s20-baslik">
-  <title id="s20-baslik">AXI valid/ready handshake timing diagram and the journey of a read request from the PS to an AXI GPIO in the PL</title>
+  <title id="s20-baslik">Şekil 20 — AXI valid/ready el sıkışma zamanlama diyagramı ve bir okuma isteğinin PS'ten PL'deki AXI GPIO'ya yolculuğu</title>
 
   <!-- ============ TOP: valid/ready timing diagram ============ -->
-  <text x="20" y="26" class="svg-metin" font-size="14" font-weight="700">Valid/Ready handshake: data does not flow until both sides say "I'm ready"</text>
+  <text x="20" y="26" class="svg-metin" font-size="14" font-weight="700">Valid/Ready el sıkışması: iki taraf da "hazırım" demeden veri akmaz</text>
 
   <!-- time grid -->
   <g stroke-dasharray="2 4">
@@ -42,20 +42,20 @@
   <!-- DATA: preparing (faded) column3-6, valid (solid) only column5-6 -->
   <text x="24" y="196" class="svg-soluk" font-size="12">DATA</text>
   <rect x="202" y="176" width="112" height="26" class="svg-kutu" stroke-dasharray="3 3"/>
-  <text x="258" y="193" text-anchor="middle" class="svg-soluk svg-kod" font-size="10">preparing</text>
+  <text x="258" y="193" text-anchor="middle" class="svg-soluk svg-kod" font-size="10">hazırlanıyor</text>
   <rect x="314" y="176" width="112" height="26" fill="var(--vurgu-soluk)" stroke="var(--vurgu)"/>
-  <text x="370" y="193" text-anchor="middle" class="svg-metin svg-kod" font-size="10">valid data</text>
+  <text x="370" y="193" text-anchor="middle" class="svg-metin svg-kod" font-size="10">geçerli veri</text>
 
   <!-- transfer moment label -->
   <path d="M370 226 L370 214" stroke="var(--altin)" stroke-width="1.6" marker-end="url(#s20-ok-altin)"/>
-  <text x="370" y="240" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">transfer moment — VALID ∧ READY both high</text>
+  <text x="370" y="240" text-anchor="middle" class="svg-metin" font-size="12" font-weight="700">aktarım anı — VALID ∧ READY ikisi de yüksek</text>
 
   <text x="600" y="70" class="svg-soluk" font-size="10">clk</text>
-  <text x="600" y="112" class="svg-soluk" font-size="10">master ready</text>
-  <text x="600" y="154" class="svg-soluk" font-size="10">slave ready</text>
+  <text x="600" y="112" class="svg-soluk" font-size="10">master hazır</text>
+  <text x="600" y="154" class="svg-soluk" font-size="10">slave hazır</text>
 
   <!-- ============ BOTTOM: PS → PL IP read journey ============ -->
-  <text x="20" y="296" class="svg-metin" font-size="14" font-weight="700">Journey of a read request from the PS to an AXI GPIO in the PL</text>
+  <text x="20" y="296" class="svg-metin" font-size="14" font-weight="700">Bir okuma isteğinin PS'ten PL'deki AXI GPIO'ya yolculuğu</text>
 
   <g font-size="12">
     <rect x="20"  y="330" width="130" height="64" rx="10" class="svg-kutu"/>
@@ -64,10 +64,10 @@
 
     <rect x="205" y="330" width="140" height="64" rx="10" class="svg-kutu"/>
     <text x="275" y="358" text-anchor="middle" class="svg-metin">AXI Interconnect</text>
-    <text x="275" y="376" text-anchor="middle" class="svg-soluk" font-size="10">routes the address</text>
+    <text x="275" y="376" text-anchor="middle" class="svg-soluk" font-size="10">adresi yönlendirir</text>
 
     <rect x="400" y="330" width="140" height="64" rx="10" class="svg-kutu"/>
-    <text x="470" y="352" text-anchor="middle" class="svg-metin">Address Window</text>
+    <text x="470" y="352" text-anchor="middle" class="svg-metin">Adres Penceresi</text>
     <text x="470" y="368" text-anchor="middle" class="svg-soluk" font-size="10">C_BASEADDR..HIGHADDR</text>
     <text x="470" y="382" text-anchor="middle" class="svg-soluk" font-size="10">(Vivado Address Editor)</text>
 
@@ -94,9 +94,9 @@
   <path d="M640 394 C 640 440, 85 440, 85 394" fill="none" stroke="var(--altin)" stroke-width="1.8" marker-end="url(#s20-ok-altin)"/>
   <circle cx="362" cy="438" r="10" fill="var(--altin)"/>
   <text x="362" y="442" text-anchor="middle" font-size="11" fill="var(--zemin)" font-weight="700">4</text>
-  <text x="362" y="462" text-anchor="middle" class="svg-soluk" font-size="11">return: register value arrives in the CPU's register</text>
+  <text x="362" y="462" text-anchor="middle" class="svg-soluk" font-size="11">dönüş: register değeri CPU register'ına ulaşır</text>
 
-  <text x="20" y="500" class="svg-soluk" font-size="12">What you see: a single function call. Behind the scenes: steps 1-4, all synchronized via the valid/ready handshake.</text>
+  <text x="20" y="500" class="svg-soluk" font-size="12">Senin gördüğün: tek bir fonksiyon çağrısı. Perde arkası: 1-4 adımları, hepsi valid/ready el sıkışmasıyla senkron.</text>
 
   <defs>
     <marker id="s20-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">

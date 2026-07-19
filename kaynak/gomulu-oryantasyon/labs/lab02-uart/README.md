@@ -1,16 +1,16 @@
-# lab02-uart — TASK 2: UART "Hello World" and What's Behind printf
+# lab02-uart — GÖREV 2: UART "Hello World" ve printf'in Arkasındaki Şey
 
-## What it does
+## Ne yapar
 
-A two-stage demonstration over PS UART0:
+PS UART0 üzerinden iki aşamalı bir gösterim:
 
-1. A single line via `xil_printf` — shows that the ready-made, lightweight
-   printf works out of the box (see the note about lack of `%f` support in
-   the comment inside `main.c`).
-2. A multi-line welcome banner printed by your own `uart_ps` module (at
-   register level, without using the `XUartPs` driver).
+1. `xil_printf` ile tek satır — hazır, hafif printf'in kutudan çıktığı
+   gibi çalıştığını gösterir (`main.c` içindeki yorumda `%f` desteğinin
+   olmadığına dair nota bak).
+2. Kendi `uart_ps` modülünün (register seviyesinde, `XUartPs` sürücüsü
+   kullanmadan) bastığı çok satırlı karşılama afişi.
 
-The `uart_ps` module consists of three functions (`uart_ps.h`):
+`uart_ps` modülü üç fonksiyondan oluşur (`uart_ps.h`):
 
 ```c
 void uartInit(void);
@@ -18,36 +18,35 @@ void uartSendChar(char cChar);
 void uartSendString(const char* cpString);
 ```
 
-`uartSendChar` waits until the TXFULL bit (`0x10`) in UART0's Channel
-Status Register (`SR`, offset `0x2C`) clears, then writes the character to
-the FIFO register (offset `0x30`). `uartSendString` sends `'\r'` before
-`'\n'` whenever it encounters `'\n'` — so the terminal actually returns the
-cursor to the left margin.
+`uartSendChar`, UART0'ın Channel Status Register'ındaki (`SR`, offset
+`0x2C`) TXFULL biti (`0x10`) temizlenene kadar bekler, sonra karakteri
+FIFO register'ına (offset `0x30`) yazar. `uartSendString`, `'\n'` ile
+karşılaştığında önce `'\r'` gönderir — terminal imleci böylece gerçekten
+sol kenara döner.
 
-**Note:** `uartInit()` does not reconfigure UART0's baud rate (115200) or
-frame format (8N1). When the board boots, the FSBL and the standalone BSP
-already leave UART0 configured this way — the fact that `xil_printf` works
-without any additional setup is proof of this. `uartInit()` merely declares
-the register base used by this module as "ready"; if you want a genuine
-from-scratch init (Control/Mode/Baud Rate Generator registers), this is
-where you would add it.
+**Not:** `uartInit()`, UART0'ın baud hızını (115200) ya da çerçeve
+biçimini (8N1) yeniden yapılandırmaz. Kart açıldığında FSBL ve
+standalone BSP, UART0'ı zaten bu şekilde yapılandırılmış bırakır —
+`xil_printf`'in hiçbir ek ayar olmadan çalışması bunun kanıtıdır.
+`uartInit()` yalnızca bu modülün kullandığı register tabanını "hazır"
+ilan eder; sıfırdan gerçek bir init istersen (Control/Mode/Baud Rate
+Generator register'ları), ekleyeceğin yer burasıdır.
 
-## How to build
+## Nasıl derlenir
 
-In the Vitis Unified IDE:
+Vitis Unified IDE'de:
 
-1. Select the ready-made **platform** (.xsa, standalone) provided by the
-   team.
-2. Open a new **empty application** project and link it to this platform.
-3. Copy `src/uart_ps.h`, `src/uart_ps.c`, and `src/main.c` from this folder
-   into the project's `src/` folder.
-4. **Build** the project, then load it onto the board via JTAG and run it
-   (Run As → Launch on Hardware) — the same flow you set up in Task 0/1.
+1. Ekibin sağladığı hazır **platform**u (.xsa, standalone) seç.
+2. Yeni bir **boş uygulama** projesi aç ve bu platforma bağla.
+3. Bu klasördeki `src/uart_ps.h`, `src/uart_ps.c` ve `src/main.c`
+   dosyalarını projenin `src/` klasörüne kopyala.
+4. Projeyi **build** et, sonra JTAG üzerinden karta yükle ve çalıştır
+   (Run As → Launch on Hardware) — Görev 0/1'de kurduğun akışın aynısı.
 
-## Expected output
+## Beklenen çıktı
 
-With the terminal connected at 115200-8N1 (Task 0), running the board
-produces output similar to:
+Terminal 115200-8N1 ile bağlıyken (Görev 0) kartı çalıştırdığında şuna
+benzer bir çıktı alırsın:
 
 ```
 xil_printf ready: UART0 already configured by the platform.
@@ -60,5 +59,4 @@ xil_printf ready: UART0 already configured by the platform.
 
 ```
 
-The first line comes from `xil_printf`; the rest of the banner comes from
-the `uart_ps` module.
+İlk satır `xil_printf`'ten gelir; afişin kalanı `uart_ps` modülünden.

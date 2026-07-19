@@ -1,21 +1,21 @@
-# lab04-interrupt — TASK 4: Button Interrupt
+# lab04-interrupt — GÖREV 4: Buton Interrupt'ı
 
-## What it does
+## Ne yapar
 
-Converts the SW19 button (PS MIO22), which Task 3 read via polling, into
-a **GIC-400** interrupt. The main loop no longer polls the button at all;
-it toggles DS50 (PS MIO23) every 150 ms to simulate a CPU "busy with its
-own real work." Every time SW19 is pressed, the hardware itself generates
-an interrupt, `buttonIsr()` runs, and the main loop prints the press count
-to UART on its next iteration — the heartbeat never stops.
+Görev 3'ün polling ile okuduğu SW19 butonunu (PS MIO22) bir **GIC-400**
+interrupt'ına (kesme) çevirir. Ana döngü butonu artık hiç sorgulamaz;
+"kendi gerçek işiyle meşgul" bir CPU'yu taklit etmek için DS50'yi
+(PS MIO23) her 150 ms'de bir toggle'lar. SW19'a her basıldığında
+interrupt'ı donanımın kendisi üretir, `buttonIsr()` koşar ve ana döngü
+bir sonraki turunda basma sayısını UART'a basar — heartbeat hiç durmaz.
 
-`src/uart_ps.h` and `src/uart_ps.c` are **exact copies from lab02-uart**
-(each lab builds independently per `_gorev-zinciri.md`). There is NO
-separate `button_ps` module for this lab — since GIC/ISR setup requires
-direct access to the `XGpioPs`/`XScuGic` objects, everything is kept in
-one place, inside `main.c`.
+`src/uart_ps.h` ve `src/uart_ps.c`, **lab02-uart'tan birebir kopyadır**
+(`_gorev-zinciri.md` gereği her lab bağımsız derlenir). Bu lab'de ayrı
+bir `button_ps` modülü YOKTUR — GIC/ISR kurulumu `XGpioPs`/`XScuGic`
+nesnelerine doğrudan erişim gerektirdiğinden her şey tek yerde,
+`main.c` içinde tutulur.
 
-## Setup order (Chapter 7's five-step GIC pattern)
+## Kurulum sırası (Bölüm 7'nin beş adımlı GIC kalıbı)
 
 ```c
 XScuGic_LookupConfig(XPAR_SCUGIC_SINGLE_DEVICE_ID);
@@ -27,39 +27,37 @@ XScuGic_Connect(&S_sGic, 48, (Xil_ExceptionHandler)buttonIsr, &S_sGpio);
 XScuGic_Enable(&S_sGic, 48);
 ```
 
-The SW19 pin is configured to trigger on a **rising edge**
-(`XGPIOPS_IRQ_TYPE_EDGE_RISING`); the pin-level interrupt
-(`XGpioPs_IntrEnablePin`) is enabled last, only after the GIC is fully set
-up — order matters here, otherwise there is a risk of generating an
-interrupt that nobody is listening for yet.
+SW19 pini **yükselen kenarda** tetiklenecek şekilde yapılandırılır
+(`XGPIOPS_IRQ_TYPE_EDGE_RISING`); pin seviyesindeki interrupt
+(`XGpioPs_IntrEnablePin`) en son, GIC tamamen kurulduktan sonra
+etkinleştirilir — burada sıra önemlidir, aksi halde henüz kimsenin
+dinlemediği bir interrupt üretme riski doğar.
 
-## Why is the ISR so short?
+## ISR neden bu kadar kısa?
 
-`buttonIsr()` is three lines: verify that the pin actually fired
-(`XGpioPs_IntrGetStatusPin`), set the `volatile` flag, and acknowledge the
-hardware (`XGpioPs_IntrClearPin`). There is NO writing to UART, no
-computation, no delay — this is the code-level embodiment of Chapter 7's
-"no printf in the ISR" rule. It is always the main loop that processes the
-flag, increments the counter, and writes to UART.
+`buttonIsr()` üç satırdır: pinin gerçekten tetiklendiğini doğrula
+(`XGpioPs_IntrGetStatusPin`), `volatile` bayrağı kur ve donanıma alındı
+bilgisi ver (`XGpioPs_IntrClearPin`). UART'a yazma YOK, hesap yok,
+gecikme yok — bu, Bölüm 7'nin "ISR'de printf yok" kuralının kod
+düzeyindeki karşılığıdır. Bayrağı işleyen, sayacı artıran ve UART'a
+yazan her zaman ana döngüdür.
 
-Pay attention to the order in which the flag is cleared in the main loop:
-the code **clears first, then processes**. Had we done the opposite
-(process first, then clear), and the ISR fired again during processing,
-we would unconditionally clear that new press's flag once done and lose
-it.
+Ana döngüde bayrağın temizlenme sırasına dikkat et: kod **önce
+temizler, sonra işler**. Tersini yapsaydık (önce işle, sonra temizle)
+ve işleme sırasında ISR yeniden tetiklenseydi, iş bitince o yeni
+basışın bayrağını koşulsuz temizler ve basışı kaybederdik.
 
-## How to build
+## Nasıl derlenir
 
-In the Vitis Unified IDE:
+Vitis Unified IDE'de:
 
-1. Select the ready-made **platform** (.xsa, standalone) provided by the
-   team.
-2. Open a new **empty application** project and link it to this platform.
-3. Copy the three files under `src/` in this folder (`uart_ps.h`,
-   `uart_ps.c`, `main.c`) into the project's `src/` folder.
-4. **Build** the project, then load it onto the board via JTAG and run it.
+1. Ekibin sağladığı hazır **platform**u (.xsa, standalone) seç.
+2. Yeni bir **boş uygulama** projesi aç ve bu platforma bağla.
+3. Bu klasördeki `src/` altındaki üç dosyayı (`uart_ps.h`, `uart_ps.c`,
+   `main.c`) projenin `src/` klasörüne kopyala.
+4. Projeyi **build** et, sonra JTAG üzerinden karta yükle ve çalıştır.
 
-## Expected output
+## Beklenen çıktı
 
 ```
 --- TASK 4: Button Interrupt ---
@@ -69,9 +67,9 @@ button pressed, count = 1
 button pressed, count = 2
 ```
 
-DS50 blinks continuously every 150 ms throughout the main loop
-(heartbeat); every time you press SW19, a new "button pressed" line
-appears within at most one heartbeat cycle (i.e. with no perceptible
-delay). The counter increments without skipping or missing a press —
-unlike Task 3's debounced polling counter, here the hardware's own edge
-detection counts each press exactly once.
+DS50, ana döngü boyunca her 150 ms'de bir kesintisiz yanıp söner
+(heartbeat); SW19'a her bastığında en geç bir heartbeat turu içinde
+(yani algılanabilir gecikme olmadan) yeni bir "button pressed" satırı
+belirir. Sayaç atlamadan, basış kaçırmadan artar — Görev 3'ün debounce
+edilmiş polling sayacından farklı olarak, burada donanımın kendi kenar
+algılaması her basışı tam bir kez sayar.

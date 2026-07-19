@@ -1,5 +1,5 @@
 <svg viewBox="0 0 740 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s1-baslik">
-  <title id="s1-baslik">Embedded system universe: sensor – MCU/SoC – actuator chain at the center, surrounded by everyday embedded device examples</title>
+  <title id="s1-baslik">Şekil 1 — Gömülü sistem evreni: merkezde sensör – MCU/SoC – aktüatör zinciri, çevresinde günlük hayattan gömülü cihaz örnekleri</title>
 
   <defs>
     <marker id="s1-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -7,7 +7,7 @@
     </marker>
   </defs>
 
-  <text x="370" y="16" text-anchor="middle" class="svg-soluk" font-size="11" letter-spacing="0.04em">EVERY SMART DEVICE AROUND YOU CONTAINS THIS CHAIN</text>
+  <text x="370" y="16" text-anchor="middle" class="svg-soluk" font-size="11" letter-spacing="0.04em">ÇEVRENDEKİ HER AKILLI CİHAZ BU ZİNCİRİ TAŞIR</text>
 
   <!-- connection lines: top row -> center chain -->
   <g class="svg-cizgi" stroke-width="1" stroke-dasharray="3 4" opacity="0.55">
@@ -27,13 +27,13 @@
   <!-- peripheral nodes: top row -->
   <g>
     <rect x="20" y="46" width="155" height="52" rx="10" class="svg-kutu"/>
-    <text x="97.5" y="77" text-anchor="middle" class="svg-soluk" font-size="12">Car ABS</text>
+    <text x="97.5" y="77" text-anchor="middle" class="svg-soluk" font-size="12">Araç ABS'i</text>
 
     <rect x="195" y="30" width="155" height="52" rx="10" class="svg-kutu"/>
-    <text x="272.5" y="61" text-anchor="middle" class="svg-soluk" font-size="12">Washing machine</text>
+    <text x="272.5" y="61" text-anchor="middle" class="svg-soluk" font-size="12">Çamaşır makinesi</text>
 
     <rect x="390" y="30" width="155" height="52" rx="10" class="svg-kutu"/>
-    <text x="467.5" y="61" text-anchor="middle" class="svg-soluk" font-size="12">Wireless headphones</text>
+    <text x="467.5" y="61" text-anchor="middle" class="svg-soluk" font-size="12">Kablosuz kulaklık</text>
 
     <rect x="565" y="46" width="155" height="52" rx="10" class="svg-kutu"/>
     <text x="642.5" y="77" text-anchor="middle" class="svg-soluk" font-size="12">Drone</text>
@@ -42,38 +42,38 @@
   <!-- peripheral nodes: bottom row -->
   <g>
     <rect x="20" y="342" width="155" height="52" rx="10" class="svg-kutu"/>
-    <text x="97.5" y="373" text-anchor="middle" class="svg-soluk" font-size="12">Base station</text>
+    <text x="97.5" y="373" text-anchor="middle" class="svg-soluk" font-size="12">Baz istasyonu</text>
 
     <rect x="195" y="358" width="155" height="52" rx="10" class="svg-kutu"/>
-    <text x="272.5" y="389" text-anchor="middle" class="svg-soluk" font-size="12">Smart thermostat</text>
+    <text x="272.5" y="389" text-anchor="middle" class="svg-soluk" font-size="12">Akıllı termostat</text>
 
     <rect x="390" y="358" width="155" height="52" rx="10" class="svg-kutu"/>
-    <text x="467.5" y="389" text-anchor="middle" class="svg-soluk" font-size="12">Insulin pump</text>
+    <text x="467.5" y="389" text-anchor="middle" class="svg-soluk" font-size="12">İnsülin pompası</text>
 
     <rect x="565" y="342" width="155" height="52" rx="10" class="svg-kutu"/>
-    <text x="642.5" y="373" text-anchor="middle" class="svg-soluk" font-size="12">POS terminal</text>
+    <text x="642.5" y="373" text-anchor="middle" class="svg-soluk" font-size="12">POS terminali</text>
   </g>
 
   <!-- center chain: sensor -> MCU/SoC -> actuator -->
   <g>
     <rect x="25" y="186" width="150" height="68" rx="12" fill="var(--vurgu-soluk)" stroke="var(--vurgu)" stroke-width="2"/>
-    <text x="100" y="214" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">SENSOR</text>
-    <text x="100" y="234" text-anchor="middle" class="svg-soluk" font-size="10.5">senses the world</text>
+    <text x="100" y="214" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">SENSÖR</text>
+    <text x="100" y="234" text-anchor="middle" class="svg-soluk" font-size="10.5">dünyayı algılar</text>
 
     <rect x="270" y="172" width="200" height="96" rx="14" fill="var(--vurgu-soluk)" stroke="var(--vurgu)" stroke-width="3"/>
     <text x="370" y="212" text-anchor="middle" class="svg-metin" font-size="15" font-weight="700">MCU / SoC</text>
-    <text x="370" y="236" text-anchor="middle" class="svg-soluk" font-size="11">reads, decides</text>
+    <text x="370" y="236" text-anchor="middle" class="svg-soluk" font-size="11">okur, karar verir</text>
 
     <rect x="565" y="186" width="150" height="68" rx="12" fill="var(--vurgu-soluk)" stroke="var(--vurgu)" stroke-width="2"/>
-    <text x="640" y="210" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">ACTUATOR</text>
-    <text x="640" y="228" text-anchor="middle" class="svg-soluk" font-size="10.5">acts on</text>
-    <text x="640" y="242" text-anchor="middle" class="svg-soluk" font-size="10.5">the world</text>
+    <text x="640" y="210" text-anchor="middle" class="svg-metin" font-size="13" font-weight="700">AKTÜATÖR</text>
+    <text x="640" y="228" text-anchor="middle" class="svg-soluk" font-size="10.5">dünyaya</text>
+    <text x="640" y="242" text-anchor="middle" class="svg-soluk" font-size="10.5">etki eder</text>
   </g>
 
   <!-- arrows -->
   <path d="M175 220 L266 220" stroke="var(--vurgu)" stroke-width="2.5" fill="none" marker-end="url(#s1-ok)"/>
-  <text x="220" y="208" text-anchor="middle" font-size="10" fill="var(--vurgu)">measurement</text>
+  <text x="220" y="208" text-anchor="middle" font-size="10" fill="var(--vurgu)">ölçüm</text>
 
   <path d="M470 220 L561 220" stroke="var(--vurgu)" stroke-width="2.5" fill="none" marker-end="url(#s1-ok)"/>
-  <text x="516" y="208" text-anchor="middle" font-size="10" fill="var(--vurgu)">command</text>
+  <text x="516" y="208" text-anchor="middle" font-size="10" fill="var(--vurgu)">komut</text>
 </svg>

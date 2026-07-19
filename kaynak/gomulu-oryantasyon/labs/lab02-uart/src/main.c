@@ -1,11 +1,11 @@
 /* ============================================================================
- * main.c — TASK 2 solution: UART "Hello World" and what's behind printf
+ * main.c — GOREV 2 cozumu: UART "Hello World" ve printf'in arkasindaki sey
  *
- * A two-part demonstration:
- *   1) A single line via xil_printf — observe that the ready-made,
- *      lightweight printf already works.
- *   2) A multi-line welcome banner via your own uart_ps module (register
- *      level) — build by hand what is "behind" the printf you just saw.
+ * Iki parcali gosterim:
+ *   1) xil_printf ile tek satir — hazir, hafif printf'in zaten
+ *      calistigini gozle.
+ *   2) Kendi uart_ps modulunle (register seviyesi) cok satirli karsilama
+ *      afisi — az once gordugun printf'in "arkasindakini" elinle kur.
  * ============================================================================ */
 
 #include "xil_printf.h"
@@ -13,19 +13,19 @@
 
 int main(void)
 {
-    /* xil_printf: a lightweight variant of standard printf tailored for
-     * the embedded world. Its format engine is not as rich as standard
-     * printf — the most concrete difference: %f (float/double
-     * formatting) is NOT SUPPORTED. The reason is size: the code that
-     * converts a float to text (a software floating-point formatter)
-     * adds tens of KB to a bare-metal image, and in our world every KB
-     * has a cost, so Xilinx deliberately left this support out. Integer
-     * and string formatting (%d, %u, %x, %s, %c) work without issue. */
+    /* xil_printf: standart printf'in gomulu dunyaya uyarlanmis hafif
+     * varyanti. Format motoru standart printf kadar zengin degildir —
+     * en somut fark: %f (float/double bicimleme) DESTEKLENMEZ. Sebep
+     * boyut: float'i metne ceviren kod (yazilimsal kayan nokta
+     * bicimleyici) bare-metal imaja onlarca KB ekler ve bizim dunyada
+     * her KB'nin maliyeti vardir; Xilinx bu destegi bilerek disarida
+     * birakmistir. Tamsayi ve string bicimleme (%d, %u, %x, %s, %c)
+     * sorunsuz calisir. */
     xil_printf("xil_printf ready: UART0 already configured by the platform.\r\n");
 
-    /* Bring our own module online — per the note in the file header
-     * comment, this does not reconfigure baud/format, it only declares
-     * the base address ready. */
+    /* Kendi modulumuzu devreye al — dosya basligi yorumundaki nota
+     * gore bu cagri baud/bicim ayarini yeniden yapmaz, yalnizca taban
+     * adresi hazir ilan eder. */
     uartInit();
 
     uartSendString("\n");
@@ -36,8 +36,8 @@ int main(void)
     uartSendString("========================================\n");
     uartSendString("\n");
 
-    /* main never returns in bare-metal; in a real application, the main
-     * work loop (or the next task's polling loop) would start here. */
+    /* Bare-metal'de main asla donmez; gercek bir uygulamada ana is
+     * dongusu (ya da sonraki gorevin polling dongusu) burada baslardi. */
     while (1)
     {
         ;

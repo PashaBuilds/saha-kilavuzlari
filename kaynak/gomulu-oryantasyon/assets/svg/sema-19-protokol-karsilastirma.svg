@@ -1,5 +1,5 @@
 <svg viewBox="0 0 740 410" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="s19-baslik">
-  <title id="s19-baslik">UART, SPI, and I2C comparison table: wire count, speed class, topology, whether synchronous, and typical use; each column includes a small topology diagram</title>
+  <title id="s19-baslik">Şekil 19 — UART, SPI ve I2C karşılaştırma tablosu: tel sayısı, hız sınıfı, topoloji, senkron olup olmadığı ve tipik kullanım; her sütunda küçük topoloji krokisi</title>
 
   <!-- header row background -->
   <rect x="10" y="20" width="721" height="60" class="svg-kutu"/>
@@ -58,53 +58,53 @@
 
   <!-- row labels -->
   <g class="svg-metin" font-size="11" font-weight="600">
-    <text x="20" y="115">Wire count</text>
-    <text x="20" y="175">Speed class</text>
-    <text x="20" y="228">Topology</text>
-    <text x="20" y="288">Synchronous?</text>
-    <text x="20" y="348">Typical use</text>
+    <text x="20" y="115">Tel sayısı</text>
+    <text x="20" y="175">Hız sınıfı</text>
+    <text x="20" y="228">Topoloji</text>
+    <text x="20" y="288">Senkron mu?</text>
+    <text x="20" y="348">Tipik kullanım</text>
   </g>
 
   <!-- UART column -->
   <g class="svg-soluk" font-size="10.5" text-anchor="middle">
     <text x="238" y="105">2 (TX, RX)</text>
     <text x="238" y="119">+ GND</text>
-    <text x="238" y="164">typically ≤ 1 Mbaud</text>
-    <text x="238" y="178">(e.g. 115200)</text>
-    <text x="238" y="218">point-to-point</text>
-    <text x="238" y="232">topology</text>
-    <text x="238" y="278">No — asynchronous,</text>
-    <text x="238" y="292">baud rate agreement</text>
-    <text x="238" y="338">console / terminal,</text>
-    <text x="238" y="352">point-to-point links</text>
+    <text x="238" y="164">tipik ≤ 1 Mbaud</text>
+    <text x="238" y="178">(örn. 115200)</text>
+    <text x="238" y="218">noktadan noktaya</text>
+    <text x="238" y="232">topoloji</text>
+    <text x="238" y="278">Hayır — asenkron,</text>
+    <text x="238" y="292">baud hızı anlaşması</text>
+    <text x="238" y="338">konsol / terminal,</text>
+    <text x="238" y="352">noktadan noktaya bağlar</text>
   </g>
 
   <!-- SPI column -->
   <g class="svg-soluk" font-size="10.5" text-anchor="middle">
     <text x="435" y="105">4 (SCLK, MOSI,</text>
     <text x="435" y="119">MISO, CS×N)</text>
-    <text x="435" y="171">up to tens of</text>
-    <text x="435" y="185">MHz (fast)</text>
-    <text x="435" y="211">1 master, N slaves —</text>
-    <text x="435" y="225">separate CS per slave</text>
-    <text x="435" y="285">Yes — separate clock</text>
-    <text x="435" y="299">line (SCLK)</text>
-    <text x="435" y="338">fast ADC/DAC,</text>
-    <text x="435" y="352">flash memory, displays</text>
+    <text x="435" y="171">onlarca MHz'e</text>
+    <text x="435" y="185">kadar (hızlı)</text>
+    <text x="435" y="211">1 master, N slave —</text>
+    <text x="435" y="225">her slave'e ayrı CS</text>
+    <text x="435" y="285">Evet — ayrı clock</text>
+    <text x="435" y="299">hattı (SCLK)</text>
+    <text x="435" y="338">hızlı ADC/DAC,</text>
+    <text x="435" y="352">flash bellek, ekranlar</text>
   </g>
 
   <!-- I2C column -->
   <g class="svg-soluk" font-size="10.5" text-anchor="middle">
     <text x="632" y="105">2 (SDA, SCL)</text>
     <text x="632" y="119">+ GND</text>
-    <text x="632" y="164">100 kHz standard /</text>
+    <text x="632" y="164">100 kHz standart /</text>
     <text x="632" y="178">400 kHz fast-mode</text>
-    <text x="632" y="211">shared bus</text>
-    <text x="632" y="225">(multi-drop), address select</text>
-    <text x="632" y="285">Yes — separate clock</text>
-    <text x="632" y="299">line (SCL)</text>
-    <text x="632" y="331">sensor networks, power</text>
-    <text x="632" y="345">monitoring (e.g. INA226),</text>
-    <text x="632" y="359">EEPROM, mux/switch branching</text>
+    <text x="632" y="211">ortak veriyolu</text>
+    <text x="632" y="225">(multi-drop), adresle seçim</text>
+    <text x="632" y="285">Evet — ayrı clock</text>
+    <text x="632" y="299">hattı (SCL)</text>
+    <text x="632" y="331">sensör ağları, güç</text>
+    <text x="632" y="345">izleme (örn. INA226),</text>
+    <text x="632" y="359">EEPROM, mux/switch dallanması</text>
   </g>
 </svg>

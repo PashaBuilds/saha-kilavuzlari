@@ -1,7 +1,7 @@
 /* ============================================================================
- * button_ps.h — SW19 (PS MIO22) / DS50 (PS MIO23) mini driver module
- * (TASK 3 solution). Wraps the XGpioPs driver; the API signatures match
- * the contract in _gorev-zinciri.md exactly.
+ * button_ps.h — SW19 (PS MIO22) / DS50 (PS MIO23) mini surucu modulu
+ * (GOREV 3 cozumu). XGpioPs surucusunu sarmalar; API imzalari
+ * _gorev-zinciri.md'deki sozlesmeyle birebir aynidir.
  * ============================================================================ */
 #ifndef BUTTON_PS_H
 #define BUTTON_PS_H
@@ -9,28 +9,28 @@
 #include "xil_types.h"
 
 /**
- * @brief Prepares the PS GPIO hardware: sets SW19 as input, DS50 as output.
+ * @brief PS GPIO donanimini hazirlar: SW19'u giris, DS50'yi cikis yapar.
  *
- * @return Returns XST_SUCCESS / XST_FAILURE (or a lower-layer error code)
- *         — the habit of checking return values will be covered in full
- *         in Chapter 12.
+ * @return XST_SUCCESS / XST_FAILURE (ya da alt katman hata kodu) doner
+ *         — donus degeri kontrol etme aliskanligi Bolum 12'de butunuyle
+ *         islenecek.
  */
 int buttonInit(void);
 
 /**
- * @brief Reads the INSTANTANEOUS (raw, non-debounced) state of SW19.
+ * @brief SW19'un ANLIK (ham, debounce'suz) durumunu okur.
  *
- * CONVENTION — active-high, i.e. 1 = pressed, 0 = released (see the file
- * header note in button_ps.c).
+ * KABUL — active-high, yani 1 = basili, 0 = birakilmis (button_ps.c
+ * dosya basligi notuna bak).
  *
- * @return The instantaneous pin state of SW19 (1 = pressed, 0 = released).
+ * @return SW19'un anlik pin durumu (1 = basili, 0 = birakilmis).
  */
 unsigned int buttonRead(void);
 
 /**
- * @brief Writes DS50.
+ * @brief DS50'yi yazar.
  *
- * @param uiState Any nonzero value turns DS50 on; 0 turns it off.
+ * @param uiState Sifir olmayan her deger DS50'yi yakar; 0 sondurur.
  */
 void ledPsWrite(unsigned int uiState);
 
