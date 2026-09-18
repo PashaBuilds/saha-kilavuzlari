@@ -1,0 +1,101 @@
+<svg viewBox="0 0 980 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g01">
+<title id="t-g01">Kavram bağımlılık haritası: bölümler arasındaki ön koşul okları; temel düğümler 1, 2, 4, 9, 12, 14, 18, 21</title>
+<defs>
+  <marker id="g01-ok" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-3)"/></marker>
+</defs>
+<style>
+  .g01 line, .g01 path { stroke: var(--ink-3); stroke-width: 1.1; fill: none; marker-end: url(#g01-ok); opacity: .75; }
+  .g01 .dn { fill: var(--dia-blok); stroke: var(--line-2); stroke-width: 1.2; }
+  .g01 .dn.rf { fill: var(--gold-soft); stroke: var(--gold); }
+  .g01 .dn.adc { fill: var(--dia-blok-2); stroke: var(--ink-2); }
+  .g01 .dn.dsp { fill: var(--accent-soft); stroke: var(--accent); }
+  .g01 .dn.sw { fill: var(--green-soft); stroke: var(--green); }
+  .g01 .dn.temel { stroke-width: 2.6; }
+  .g01 .no { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--ink); }
+  .g01 .ad { font-family: var(--sans); font-size: 10.5px; fill: var(--ink-2); }
+</style>
+<g class="g01">
+<!-- sütunlar: x = kısım; satırlar bölüm -->
+<!-- Kısım I temeller (x 40-140) -->
+<a href="#bolum-1"><rect class="dn rf temel" x="40" y="60" width="92" height="36" rx="6"/><text class="no" x="50" y="76">B1</text><text class="ad" x="50" y="90">Sinyal, dB</text></a>
+<a href="#bolum-2"><rect class="dn dsp temel" x="40" y="130" width="92" height="36" rx="6"/><text class="no" x="50" y="146">B2</text><text class="ad" x="50" y="160">Kompleks, I/Q</text></a>
+<a href="#bolum-3"><rect class="dn rf" x="40" y="200" width="92" height="36" rx="6"/><text class="no" x="50" y="216">B3</text><text class="ad" x="50" y="230">Darbe</text></a>
+<a href="#bolum-4"><rect class="dn rf temel" x="40" y="270" width="92" height="36" rx="6"/><text class="no" x="50" y="286">B4</text><text class="ad" x="50" y="300">Gürültü, SNR</text></a>
+<!-- Kısım II RF (x 190) -->
+<a href="#bolum-5"><rect class="dn rf" x="190" y="60" width="92" height="36" rx="6"/><text class="no" x="200" y="76">B5</text><text class="ad" x="200" y="90">RF yapıtaşları</text></a>
+<a href="#bolum-6"><rect class="dn rf" x="190" y="130" width="92" height="36" rx="6"/><text class="no" x="200" y="146">B6</text><text class="ad" x="200" y="160">RF→IF</text></a>
+<a href="#bolum-7"><rect class="dn rf" x="190" y="200" width="92" height="36" rx="6"/><text class="no" x="200" y="216">B7</text><text class="ad" x="200" y="230">Mimariler</text></a>
+<!-- Kısım III ADC (x 340) -->
+<a href="#bolum-8"><rect class="dn adc" x="340" y="60" width="92" height="36" rx="6"/><text class="no" x="350" y="76">B8</text><text class="ad" x="350" y="90">Örnekleme</text></a>
+<a href="#bolum-9"><rect class="dn adc temel" x="340" y="130" width="92" height="36" rx="6"/><text class="no" x="350" y="146">B9</text><text class="ad" x="350" y="160">ADC metrikleri</text></a>
+<a href="#bolum-10"><rect class="dn adc" x="340" y="200" width="92" height="36" rx="6"/><text class="no" x="350" y="216">B10</text><text class="ad" x="350" y="230">Direct RF ADC</text></a>
+<a href="#bolum-11"><rect class="dn adc" x="340" y="270" width="92" height="36" rx="6"/><text class="no" x="350" y="286">B11</text><text class="ad" x="350" y="300">ADC→FPGA</text></a>
+<!-- Kısım IV zemin (x 490) -->
+<a href="#bolum-12"><rect class="dn dsp temel" x="490" y="60" width="92" height="36" rx="6"/><text class="no" x="500" y="76">B12</text><text class="ad" x="500" y="90">Sabit nokta</text></a>
+<a href="#bolum-13"><rect class="dn dsp" x="490" y="130" width="92" height="36" rx="6"/><text class="no" x="500" y="146">B13</text><text class="ad" x="500" y="160">MATLAB→FPGA</text></a>
+<!-- Kısım V DDC (x 490, alt) -->
+<a href="#bolum-14"><rect class="dn dsp temel" x="490" y="220" width="92" height="36" rx="6"/><text class="no" x="500" y="236">B14</text><text class="ad" x="500" y="250">NCO</text></a>
+<a href="#bolum-15"><rect class="dn dsp" x="490" y="290" width="92" height="36" rx="6"/><text class="no" x="500" y="306">B15</text><text class="ad" x="500" y="320">Mixing</text></a>
+<a href="#bolum-16"><rect class="dn dsp" x="490" y="360" width="92" height="36" rx="6"/><text class="no" x="500" y="376">B16</text><text class="ad" x="500" y="390">Filtre, ↓M</text></a>
+<a href="#bolum-17"><rect class="dn dsp" x="490" y="430" width="92" height="36" rx="6"/><text class="no" x="500" y="446">B17</text><text class="ad" x="500" y="460">Kanallaştırma</text></a>
+<!-- Kısım VI FFT (x 640) -->
+<a href="#bolum-18"><rect class="dn dsp temel" x="640" y="60" width="92" height="36" rx="6"/><text class="no" x="650" y="76">B18</text><text class="ad" x="650" y="90">FFT</text></a>
+<a href="#bolum-19"><rect class="dn dsp" x="640" y="130" width="92" height="36" rx="6"/><text class="no" x="650" y="146">B19</text><text class="ad" x="650" y="160">Pencere</text></a>
+<a href="#bolum-20"><rect class="dn dsp" x="640" y="200" width="92" height="36" rx="6"/><text class="no" x="650" y="216">B20</text><text class="ad" x="650" y="230">FPGA FFT, f ölçümü</text></a>
+<!-- Kısım VII tespit (x 640 alt) -->
+<a href="#bolum-21"><rect class="dn dsp temel" x="640" y="290" width="92" height="36" rx="6"/><text class="no" x="650" y="306">B21</text><text class="ad" x="650" y="320">Tespit teorisi</text></a>
+<a href="#bolum-22"><rect class="dn dsp" x="640" y="360" width="92" height="36" rx="6"/><text class="no" x="650" y="376">B22</text><text class="ad" x="650" y="390">Zarf</text></a>
+<a href="#bolum-23"><rect class="dn dsp" x="640" y="430" width="92" height="36" rx="6"/><text class="no" x="650" y="446">B23</text><text class="ad" x="650" y="460">CFAR</text></a>
+<!-- Kısım VIII PDW (x 790) -->
+<a href="#bolum-24"><rect class="dn sw" x="790" y="200" width="92" height="36" rx="6"/><text class="no" x="800" y="216">B24</text><text class="ad" x="800" y="230">PDW nedir</text></a>
+<a href="#bolum-25"><rect class="dn dsp" x="790" y="290" width="92" height="36" rx="6"/><text class="no" x="800" y="306">B25</text><text class="ad" x="800" y="320">Ölçüm</text></a>
+<a href="#bolum-26"><rect class="dn dsp" x="790" y="360" width="92" height="36" rx="6"/><text class="no" x="800" y="376">B26</text><text class="ad" x="800" y="390">FSM, veri yolu</text></a>
+<a href="#bolum-27"><rect class="dn sw" x="790" y="430" width="92" height="36" rx="6"/><text class="no" x="800" y="446">B27</text><text class="ad" x="800" y="460">Sonrası</text></a>
+<!-- Kısım IX (x 790 üst) -->
+<a href="#bolum-28"><rect class="dn sw" x="790" y="60" width="92" height="36" rx="6"/><text class="no" x="800" y="76">B28–30</text><text class="ad" x="800" y="90">Sistem, debug, PS</text></a>
+
+<!-- oklar (kaynak sağ orta → hedef sol orta) -->
+<line x1="132" y1="78" x2="190" y2="78"/>           <!-- 1→5 -->
+<line x1="132" y1="148" x2="190" y2="148"/>         <!-- 2→6 -->
+<line x1="132" y1="78" x2="340" y2="148"/>          <!-- 1→9 -->
+<path d="M132 288 C160 288 160 230 190 218"/>       <!-- 4→7 -->
+<path d="M132 288 C230 288 230 148 340 148"/>       <!-- 4→9 -->
+<line x1="132" y1="148" x2="340" y2="78"/>          <!-- 2→8 -->
+<line x1="282" y1="148" x2="340" y2="78"/>          <!-- 6→8 -->
+<line x1="132" y1="218" x2="640" y2="218"/>         <!-- 3→20 -->
+<path d="M132 218 C400 218 400 380 640 378"/>       <!-- 3→22 (zarf) -->
+<line x1="432" y1="78" x2="490" y2="238"/>          <!-- 8→14 -->
+<line x1="432" y1="148" x2="490" y2="78"/>          <!-- 9→12 -->
+<line x1="432" y1="148" x2="490" y2="148"/>         <!-- 9→13 -->
+<line x1="432" y1="148" x2="340" y2="218"/>         <!-- 9→10 -->
+<line x1="432" y1="218" x2="340" y2="288"/>         <!-- 10→11 -->
+<line x1="432" y1="288" x2="490" y2="78"/>          <!-- 11→12 -->
+<line x1="582" y1="78" x2="490" y2="238"/>          <!-- 12→14 -->
+<line x1="582" y1="78" x2="640" y2="78"/>           <!-- 12→18 -->
+<line x1="536" y1="256" x2="536" y2="290"/>         <!-- 14→15 -->
+<line x1="536" y1="326" x2="536" y2="360"/>         <!-- 15→16 -->
+<line x1="536" y1="396" x2="536" y2="430"/>         <!-- 16→17 -->
+<line x1="582" y1="448" x2="640" y2="78"/>          <!-- 17→18 -->
+<line x1="132" y1="148" x2="640" y2="78"/>          <!-- 2→18 -->
+<line x1="686" y1="96" x2="686" y2="130"/>          <!-- 18→19 -->
+<line x1="686" y1="166" x2="686" y2="200"/>         <!-- 19→20 -->
+<path d="M132 288 C400 288 400 310 640 308"/>       <!-- 4→21 -->
+<line x1="686" y1="326" x2="686" y2="360"/>         <!-- 21→22 -->
+<line x1="686" y1="396" x2="686" y2="430"/>         <!-- 22→23 -->
+<line x1="732" y1="448" x2="790" y2="308"/>         <!-- 23→25 -->
+<line x1="732" y1="218" x2="790" y2="218"/>         <!-- 20→24 -->
+<line x1="732" y1="218" x2="790" y2="308"/>         <!-- 20→25 -->
+<line x1="836" y1="236" x2="836" y2="290"/>         <!-- 24→25 -->
+<line x1="836" y1="326" x2="836" y2="360"/>         <!-- 25→26 -->
+<line x1="836" y1="396" x2="836" y2="430"/>         <!-- 26→27 -->
+<line x1="836" y1="200" x2="836" y2="96"/>          <!-- 24→28 -->
+<line x1="582" y1="376" x2="640" y2="378"/>         <!-- 16→22 -->
+</g>
+<g>
+  <rect x="40" y="480" width="14" height="14" rx="3" fill="var(--gold-soft)" stroke="var(--gold)"/><text x="60" y="491" class="s-kucuk">RF dünyası</text>
+  <rect x="150" y="480" width="14" height="14" rx="3" fill="var(--dia-blok-2)" stroke="var(--ink-2)"/><text x="170" y="491" class="s-kucuk">veri dönüştürme</text>
+  <rect x="290" y="480" width="14" height="14" rx="3" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="310" y="491" class="s-kucuk">sayısal dünya</text>
+  <rect x="410" y="480" width="14" height="14" rx="3" fill="var(--green-soft)" stroke="var(--green)"/><text x="430" y="491" class="s-kucuk">yazılım / sistem</text>
+  <rect x="540" y="480" width="14" height="14" rx="3" fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="2.6"/><text x="560" y="491" class="s-kucuk">kalın çerçeve: temel düğüm (çok bölüm yaslanır)</text>
+</g>
+</svg>

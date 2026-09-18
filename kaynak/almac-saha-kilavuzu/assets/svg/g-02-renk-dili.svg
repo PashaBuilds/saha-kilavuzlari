@@ -1,0 +1,46 @@
+<svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g02">
+<title id="t-g02">Şema renk dili lejantı: yol renkleri (analog altın, sayısal mavi, kontrol yeşil, saat gri, gürültü kırmızı) ve spektrum renkleri (sinyal mavi, image/spur kırmızı, gürültü tabanı gri, filtre yanıtı altın kesikli)</title>
+<text x="24" y="30" class="s-baslik">Yollar ve bloklar</text>
+<g>
+  <line x1="24" y1="56" x2="120" y2="56" class="yol-analog" marker-end="url(#ok-analog)"/>
+  <text x="134" y="60" class="s-metin">Analog RF / IF yolu</text>
+  <line x1="24" y1="86" x2="120" y2="86" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <text x="134" y="90" class="s-metin">Sayısal veri yolu (örnekler, I/Q)</text>
+  <line x1="24" y1="116" x2="120" y2="116" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+  <text x="134" y="120" class="s-metin">Kontrol / PS / register</text>
+  <line x1="24" y1="146" x2="120" y2="146" class="yol-saat" marker-end="url(#ok-saat)"/>
+  <text x="134" y="150" class="s-metin">Saat / LO / referans</text>
+  <line x1="24" y1="176" x2="120" y2="176" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+  <text x="134" y="180" class="s-metin">Gürültü / istenmeyen bileşen</text>
+</g>
+<g>
+  <rect x="24" y="204" width="60" height="30" rx="5" class="blok-analog"/><text x="94" y="224" class="s-metin2">analog blok</text>
+  <rect x="190" y="204" width="60" height="30" rx="5" class="blok"/><text x="260" y="224" class="s-metin2">sayısal blok</text>
+  <rect x="24" y="246" width="60" height="30" rx="5" class="blok-kontrol"/><text x="94" y="266" class="s-metin2">kontrol bloğu</text>
+  <rect x="190" y="246" width="60" height="30" rx="5" class="blok-aktif"/><text x="260" y="266" class="s-metin2">bu bölümün bloğu (vurgulu)</text>
+</g>
+
+<text x="470" y="30" class="s-baslik">Spektrum çizimleri</text>
+<g transform="translate(470,50)">
+  <rect x="0" y="0" width="360" height="180" rx="8" fill="var(--dia-panel)" stroke="var(--line)"/>
+  <!-- gürültü tabanı -->
+  <path d="M10 150 L20 146 L30 152 L40 147 L50 151 L60 148 L70 153 L80 147 L90 150 L100 146 L110 152 L120 148 L130 151 L140 147 L150 152 L160 148 L170 150 L180 146 L190 152 L200 147 L210 151 L220 148 L230 153 L240 147 L250 150 L260 146 L270 152 L280 148 L290 151 L300 147 L310 152 L320 148 L330 150 L340 147 L350 150 L350 170 L10 170 Z" class="spk-gurultu"/>
+  <!-- sinyal -->
+  <path d="M116 150 L120 40 L124 150 Z" class="spk-sinyal"/>
+  <!-- image -->
+  <path d="M236 150 L240 90 L244 150 Z" class="spk-image"/>
+  <!-- spur -->
+  <path d="M296 150 L298 120 L300 150 Z" class="spk-image"/>
+  <!-- filtre yanıtı -->
+  <path d="M40 50 L170 50 Q200 50 210 100 Q220 140 240 148" class="spk-filtre"/>
+  <line x1="10" y1="170" x2="350" y2="170" class="eksen"/>
+  <text x="120" y="34" text-anchor="middle" class="s-kucuk s-vurgu">istenen sinyal</text>
+  <text x="240" y="84" text-anchor="middle" class="s-kucuk s-kirmizi">image / alias</text>
+  <text x="300" y="114" text-anchor="middle" class="s-kucuk s-kirmizi">spur</text>
+  <text x="60" y="44" class="s-kucuk s-altin">filtre yanıtı</text>
+  <text x="180" y="166" text-anchor="middle" class="s-kucuk">gürültü tabanı</text>
+  <text x="350" y="178" text-anchor="end" class="s-kucuk">f →</text>
+</g>
+<text x="470" y="256" class="s-metin2">Genlik ekseni dB (dBFS / dBm) — referans her çizimde yazılıdır.</text>
+<text x="470" y="276" class="s-metin2">Aynı dil koyu ve açık temada; widget çizimlerinde de geçerlidir.</text>
+</svg>

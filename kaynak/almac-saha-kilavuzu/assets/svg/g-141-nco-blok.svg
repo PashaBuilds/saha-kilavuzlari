@@ -1,0 +1,66 @@
+<svg viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g141">
+<title id="t-g141">NCO iç blok şeması: FTW register → toplayıcı → N-bit faz register (akümülatör) → üst P bit adres (faz kırpma, dither eklenir) → çeyrek dalga LUT (BRAM, iki port) → sin ve cos çıkışları A bit; PS register'ları FTW, POW, CTRL yeşil</title>
+<!-- PS register'ları -->
+<g>
+  <rect x="20" y="20" width="110" height="26" rx="4" class="blok-kontrol"/><text x="75" y="37" text-anchor="middle" class="s-mono">NCO_FTW[31:0]</text>
+  <rect x="20" y="130" width="110" height="26" rx="4" class="blok-kontrol"/><text x="75" y="147" text-anchor="middle" class="s-mono">NCO_POW[15:0]</text>
+  <rect x="20" y="230" width="110" height="26" rx="4" class="blok-kontrol"/><text x="75" y="247" text-anchor="middle" class="s-mono">NCO_CTRL</text>
+  <text x="20" y="276" class="s-kucuk s-yesil">inv · dither_en · sync</text>
+  <text x="20" y="300" class="s-kucuk">PS (AXI-Lite) tarafından yazılır</text>
+</g>
+<!-- toplayıcı + akümülatör -->
+<path d="M130 33 H176" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<circle cx="196" cy="33" r="18" class="blok"/><text x="196" y="38" text-anchor="middle" class="s-metin" style="font-weight:700">+</text>
+<path d="M214 33 H250" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<rect x="250" y="12" width="90" height="42" rx="5" class="blok-aktif"/>
+<text x="295" y="30" text-anchor="middle" class="s-metin">faz reg</text><text x="295" y="46" text-anchor="middle" class="s-mono2">acc[N−1:0]</text>
+<!-- geri besleme -->
+<path d="M340 33 H360 V80 H196 V51" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<text x="240" y="94" class="s-kucuk">her saatte acc ← acc + FTW  (mod 2^N)</text>
+<!-- saat -->
+<path d="M295 -2 V12" class="yol-saat"/>
+<text x="366" y="24" class="s-kucuk">N = 32</text>
+<!-- faz ofseti -->
+<path d="M130 143 H176" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<circle cx="196" cy="143" r="16" class="blok"/><text x="196" y="148" text-anchor="middle" class="s-metin" style="font-weight:700">+</text>
+<path d="M295 54 V120 H196 V127" class="yol-sayisal" fill="none"/>
+<path d="M212 143 H400" class="yol-sayisal"/>
+<!-- kırpma -->
+<rect x="400" y="118" width="120" height="50" rx="5" class="blok"/>
+<text x="460" y="138" text-anchor="middle" class="s-metin">faz kırpma</text>
+<text x="460" y="156" text-anchor="middle" class="s-mono2">acc[N−1 : N−P]</text>
+<!-- atılan bitler -->
+<path d="M460 168 V200" class="yol-gurultu"/>
+<text x="470" y="192" class="s-kucuk s-kirmizi">atılan N−P bit → periyodik hata (spur)</text>
+<!-- dither -->
+<rect x="400" y="212" width="120" height="34" rx="5" class="blok"/>
+<text x="460" y="234" text-anchor="middle" class="s-metin2">dither (LFSR)</text>
+<path d="M400 229 H380 V143" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M130 243 H400" class="yol-kontrol" opacity=".6"/>
+<!-- LUT -->
+<path d="M520 143 H560" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="524" y="136" class="s-kucuk">P = 14</text>
+<rect x="560" y="100" width="150" height="90" rx="6" class="blok"/>
+<text x="635" y="122" text-anchor="middle" class="s-metin" style="font-weight:700">çeyrek dalga LUT</text>
+<text x="635" y="140" text-anchor="middle" class="s-mono2">BRAM 2^(P−2) × A</text>
+<path d="M580 176 Q600 150 620 176" fill="none" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="640" y="176" class="s-kucuk">0–90° saklı</text>
+<text x="635" y="160" text-anchor="middle" class="s-kucuk">üst 2 bit: çeyrek seçimi + işaret</text>
+<!-- iki port -->
+<path d="M710 125 H760" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M710 165 H760" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="714" y="118" class="s-kucuk">port A: addr</text>
+<text x="714" y="182" class="s-kucuk">port B: addr + 90°</text>
+<rect x="760" y="110" width="60" height="28" rx="4" class="blok"/><text x="790" y="129" text-anchor="middle" class="s-mono">sin</text>
+<rect x="760" y="150" width="60" height="28" rx="4" class="blok"/><text x="790" y="169" text-anchor="middle" class="s-mono">cos</text>
+<path d="M820 124 H860" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M820 164 H860" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="826" y="118" class="s-kucuk">Q · A bit</text>
+<text x="826" y="184" class="s-kucuk">I · A bit</text>
+<!-- inversion -->
+<path d="M130 243 H720 V200" class="yol-kontrol" fill="none" opacity=".6"/>
+<text x="600" y="260" class="s-kucuk s-yesil">inv = 1 → sin işareti ters (e^{+jθ} ↔ e^{−jθ}) ya da I/Q yer değişimi</text>
+<!-- latency -->
+<text x="560" y="300" class="s-kucuk">latency: +1 (acc) +1 (kırpma/çeyrek) +2 (BRAM) +1 (işaret) = 5 saat</text>
+<text x="560" y="318" class="s-kucuk">SSR-8: tek acc, her saatte 8·FTW; 8 faz paralel, 8 tablo okuması</text>
+</svg>

@@ -1,0 +1,190 @@
+{
+  "_aciklama": "Referans senaryo — 'Bir Darbenin Yolculuğu'. TEK doğruluk kaynağı: bölüm metinleri ({{s:anahtar}}), widget preset'leri (window.SENARYO) ve build-time üretilen şekiller (gen_figures.py) buradan beslenir. Sayılar öğreticidir, gerçek bir sistemi temsil etmez.",
+  "_not": "Türetilmiş değerler build sırasında yeniden hesaplanır ve buradaki 'beklenen' alanlarla karşılaştırılır (build/check.py → bilinen-cevap kontrolleri).",
+  "sinyal": {
+    "bant": "X-bant",
+    "rf_hz": 9400000000.0,
+    "rf_ghz": 9.4,
+    "pw_s": 1e-06,
+    "pw_us": 1,
+    "pri_s": 0.001,
+    "pri_ms": 1,
+    "prf_hz": 1000,
+    "duty_yuzde": 0.1,
+    "seviye_dbm_giris": -60,
+    "varyant_b": {
+      "mop": "LFM",
+      "chirp_bw_hz": 10000000.0,
+      "chirp_bw_mhz": 10
+    },
+    "rise_time_ns": 50
+  },
+  "on_uc": {
+    "lo_hz": 7600000000.0,
+    "lo_ghz": 7.6,
+    "enjeksiyon": "low-side",
+    "if_hz": 1800000000.0,
+    "if_ghz": 1.8,
+    "image_hz": 5800000000.0,
+    "image_ghz": 5.8,
+    "nf_toplam_db": 6,
+    "kazanc_toplam_db": 40,
+    "kaskad": [
+      {
+        "ad": "Limiter",
+        "kazanc_db": -0.5,
+        "nf_db": 0.5
+      },
+      {
+        "ad": "LNA",
+        "kazanc_db": 20,
+        "nf_db": 2.0
+      },
+      {
+        "ad": "Preselector",
+        "kazanc_db": -2.0,
+        "nf_db": 2.0
+      },
+      {
+        "ad": "Mixer",
+        "kazanc_db": -7.0,
+        "nf_db": 7.0
+      },
+      {
+        "ad": "IF filtre",
+        "kazanc_db": -3.0,
+        "nf_db": 3.0
+      },
+      {
+        "ad": "IF yükselteç",
+        "kazanc_db": 32,
+        "nf_db": 4.0
+      },
+      {
+        "ad": "AAF + sürücü",
+        "kazanc_db": 0.5,
+        "nf_db": 6.0
+      }
+    ],
+    "_kaskad_notu": "Friis ile blok zincirinin NF'i ≈ 3.45 dB. Metindeki 'sistem NF = 6 dB' bütçe değeridir: LNA öncesi kablo/konektör/anten kayıpları (~1 dB, doğrudan eklenir), ADC eşdeğer NF katkısı ve sıcaklık/üretim payı ile. Bölüm 4 ve 9 bu farkı açıkça türetir.",
+    "nf_friis_db": 3.45
+  },
+  "adc": {
+    "tip": "direct IF sampling",
+    "fs_hz": 2400000000.0,
+    "fs_msps": 2400,
+    "bit": 14,
+    "cikis": "real",
+    "tam_olcek_dbm": 4,
+    "tam_olcek_vpp": 1.0,
+    "jitter_s": 1e-13,
+    "jitter_fs": 100,
+    "nyquist_bolgesi": 2,
+    "bolge_alt_mhz": 1200,
+    "bolge_ust_mhz": 2400,
+    "alias_hz": 600000000.0,
+    "alias_mhz": 600,
+    "spektrum_evrik": true,
+    "veri_hizi_gbps_14bit": 33.6,
+    "veri_hizi_gbps_16bit_paket": 38.4
+  },
+  "ddc": {
+    "nco_hz": 600000000.0,
+    "nco_mhz": 600,
+    "nco_isaret": -1,
+    "akumulator_bit": 32,
+    "ftw_hex": "0x40000000",
+    "ftw": 1073741824,
+    "cozunurluk_hz": 0.5587935447692871,
+    "decimation_toplam": 8,
+    "kademeler": [
+      {
+        "ad": "CIC (R=4, N=4)",
+        "oran": 4,
+        "fs_cikis_msps": 600
+      },
+      {
+        "ad": "Halfband",
+        "oran": 2,
+        "fs_cikis_msps": 300
+      }
+    ],
+    "kompanzasyon_fir_tap": 31,
+    "cikis_fs_msps": 300,
+    "cikis_bit_i": 16,
+    "cikis_bit_q": 16,
+    "cikis_bant_mhz": 150,
+    "cikis_veri_hizi_gbps": 9.6,
+    "islem_kazanci_db": 6.02,
+    "ornek_suresi_ns": 3.3333,
+    "darbe_ornek_sayisi": 300
+  },
+  "tespit": {
+    "zarf": "güç (I²+Q²)",
+    "cfar": "CA",
+    "n_ref": 16,
+    "guard": 2,
+    "pfa": 1e-06,
+    "alfa_ca": 21.94,
+    "esik_rayleigh_sigma": 5.257,
+    "tespit_snr_db": 15,
+    "histerezis_db": 3,
+    "min_pw_ornek": 4,
+    "video_filtre_uzunluk": 4,
+    "snr_pd05_db": 11.2,
+    "snr_pd09_db": 13.2
+  },
+  "fft": {
+    "n": 1024,
+    "pencere": "Hann",
+    "overlap_yuzde": 50,
+    "bin_hz": 292968.75,
+    "bin_khz": 293,
+    "islem_kazanci_db": 27.09,
+    "hann_enbw_bin": 1.5,
+    "gozlem_suresi_us": 3.41
+  },
+  "pdw": {
+    "bit": 128,
+    "alanlar": [
+      "TOA",
+      "PW",
+      "PA",
+      "RF",
+      "AOA",
+      "MOP",
+      "BW",
+      "SNR",
+      "kanal",
+      "bayraklar",
+      "sıra no"
+    ],
+    "toa_lsb_ns": 3.3333,
+    "toa_bit": 48,
+    "pw_lsb_ns": 3.3333,
+    "pw_bit": 20,
+    "pa_lsb_db": 0.25,
+    "pa_bit": 10,
+    "rf_lsb_khz": 10,
+    "rf_bit": 20,
+    "aoa_lsb_derece": 0.1,
+    "aoa_bit": 12,
+    "indirgeme_orani": 75000
+  },
+  "turetilmis_beklenen": {
+    "ktb_dbm_hz": -174.0,
+    "gurultu_tabani_dbm": -83.2,
+    "hassasiyet_dbm": -68.2,
+    "snr_ideal_14bit_db": 86.04,
+    "islem_kazanci_1200_300_db": 6.02,
+    "ana_lob_null_null_mhz": 2.0,
+    "rayleigh_esik_sigma": 5.257,
+    "ca_cfar_alfa": 21.94,
+    "friis_ornek_db": 2.24,
+    "jitter_snr_1ghz_100fs_db": 64.04,
+    "ftw_hex": "0x40000000",
+    "nco_cozunurluk_hz": 0.559,
+    "fft_bin_khz": 292.97,
+    "hann_enbw": 1.5
+  }
+}

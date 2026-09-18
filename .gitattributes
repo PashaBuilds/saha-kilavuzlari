@@ -1,0 +1,7 @@
+# Depoda satir sonu daima LF (calisma kopyasi platform ayarini izler);
+# CRLF/LF kaynakli gurultulu diff olusmasin.
+* text=auto
+*.png binary
+*.jpg binary
+*.pdf binary
+*.woff2 binary
