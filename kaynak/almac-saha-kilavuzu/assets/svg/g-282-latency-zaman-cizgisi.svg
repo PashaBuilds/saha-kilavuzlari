@@ -1,4 +1,4 @@
-<svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g282">
+<svg viewBox="0 0 900 342" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g282">
 <title id="t-g282">Latency zaman çizgisi: darbe antene 0 anında çarpar ve 1 µs sürer; ADC+JESD ≈ 0.3 µs, DDC ≈ 0.1 µs, zarf/CFAR ≈ 0.06 µs, darbe FSM darbe bitiminde (1.4 µs) PDW'nin zaman alanlarını üretir; FFT çerçevesi 3.41 µs gözlem + ≈ 0.2 µs işlem ile ≈ 4 µs'de biter; PDW birleştirme zaman kolunu ≈ 2.5 µs bekletir; PDW FIFO'ya ≈ 4.2 µs'de yazılır; PS kesme politikasına göre görür</title>
 <style>
   .lz .t { font-family: var(--sans); font-size: 11px; fill: var(--ink); }
@@ -40,7 +40,8 @@
 <rect class="bar" x="716" y="216" width="8" height="16" fill="var(--green)"/>
 <text class="t" x="20" y="258">PDW FIFO → DMA → PS</text>
 <rect class="bar" x="724" y="246" width="20" height="16" fill="var(--green)" opacity=".8"/>
-<text class="t2" x="750" y="258">FIFO'ya ≈ 4.2 µs; PS'te görünme: kesme eşiği / zaman aşımı (µs … ms)</text>
+<text class="t2" x="750" y="258">FIFO'ya ≈ 4.2 µs</text>
+<text class="t2" x="140" y="330">PS'te görünme kesme politikasına bağlıdır: kesme eşiği / zaman aşımı (µs … ms)</text>
 <text class="t2" x="140" y="24" style="fill:var(--ink-3)">darbe bitti → PDW yazıldı ≈ 3.2 µs; FFT çerçevesini kısaltmak (256 nokta) bunu ≈ 1 µs'ye indirir ama bin 1.2 MHz'e çıkar (B20)</text>
 </g>
 </svg>

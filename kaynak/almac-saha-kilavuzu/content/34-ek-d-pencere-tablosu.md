@@ -14,9 +14,9 @@ DTFT) hesaplanmıştır; literatürdeki tablolarla (harris 1978) ±0.1 dB içind
 | Blackman-Harris (4 terim) | 2.00 | −92.0 | 2.004 | 0.359 | −8.90 | 0.83 |
 | Kaiser β = 8 | 1.63 | −58.7 | 1.667 | 0.435 | −7.22 | 1.18 |
 | Chebyshev −80 dB | 1.75 | −80.0 | 1.743 | 0.414 | −7.66 | 1.09 |
-| Flat-top | 3.75 | −93* | 3.770 | 0.216 | −13.33 | 0.01 |
+| Flat-top | 3.75 | −93 (*) | 3.770 | 0.216 | −13.33 | 0.01 |
 
-\* Flat-top penceresinin ana lobu o kadar geniştir ki yan lob ölçümü ilk
+(*) Flat-top penceresinin ana lobu o kadar geniştir ki yan lob ölçümü ilk
 dipten sonra başlar; pratik değer üretici tanımına göre −70…−95 dB arasında verilir.
 
 ## Nasıl okunur

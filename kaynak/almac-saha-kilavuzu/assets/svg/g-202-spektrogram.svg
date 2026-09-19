@@ -1,4 +1,4 @@
-<svg viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g202">
+<svg viewBox="0 0 900 488" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g202">
 <title id="t-g202">Referans darbenin (solda, 1 µs CW, +10 MHz) ve LFM varyantının (sağda, 10 MHz süpürme) hesaplanmış spektrogramı: STFT N = 128 (bin 2.34 MHz, çerçeve 0.43 µs), adım 32 örnek (%75 overlap), Hann. Üstte darbe zarfı zaman ekseninde. CW darbe yatay bir çizgi olarak görünür (Hann ana lobu ≈ 2 bin genişliğinde); LFM darbe 10 MHz/µs eğimli çapraz bir çizgi çizer: 5 MHz'den 15 MHz'e. Darbe kenarlarında çerçevenin yalnızca bir kısmı dolu olduğu için çizgi soluklaşır ve genişler; koyuluk dB seviyesini gösterir (−50…0 dB).</title>
 <text x="60" y="30" class="s-baslik">Referans darbe: 1 µs CW, +10 MHz</text>
 <rect x="60" y="46" width="360" height="24" class="eksen"/>
@@ -704,6 +704,7 @@
 <text x="660" y="416" text-anchor="middle" class="s-kucuk">çerçeve merkezi zamanı (µs) · sütun = 32 örnek adım (107 ns)</text>
 <text x="436" y="234" text-anchor="middle" class="s-kucuk" transform="rotate(-90 436 234)">frekans (MHz) · bin 2.34 MHz</text>
 <text x="488" y="100" class="s-kucuk s-vurgu">eğim = 10 MHz / 1 µs — anlık frekans zamanla artar</text>
-<text x="60" y="440" class="s-metin2">Koyuluk: −50 dB (saydam) … 0 dB (tam mavi), tam ölçek CW'ye göre. Kenarlarda soluklaşma: çerçeve darbeyi kısmen içeriyor (g-201). Gürültü −25 dB/örnek.</text>
-<text x="60" y="458" class="s-kucuk">Aynı darbeye N = 1024 ile bakılsaydı tek sütun olurdu: zaman bilgisi kaybolur, frekans 293 kHz'e incelir; N = 32 ile bin 9.4 MHz olur, LFM eğimi seçilemez.</text>
+<text x="60" y="442" class="s-metin2">Koyuluk: −50 dB (saydam) … 0 dB (tam mavi), tam ölçek CW'ye göre. Kenarlarda soluklaşma: çerçeve darbeyi kısmen içeriyor (g-201).</text>
+<text x="60" y="460" class="s-kucuk">Gürültü −25 dB/örnek. Aynı darbeye N = 1024 ile bakılsaydı tek sütun olurdu: zaman bilgisi kaybolur, frekans 293 kHz'e incelir;</text>
+<text x="60" y="476" class="s-kucuk">N = 32 ile bin 9.4 MHz olur, LFM eğimi seçilemez.</text>
 </svg>

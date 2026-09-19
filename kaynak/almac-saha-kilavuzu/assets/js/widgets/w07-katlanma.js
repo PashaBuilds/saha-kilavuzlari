@@ -66,7 +66,8 @@ WK.kaydet("w07", function (w) {
     }
     bantlar.forEach(function (b) { if (b.gercek) gu.bant(b.gercek[0] / 1e6, b.gercek[1] / 1e6, "w-dolgu-kirmizi"); });
     gu.bant(fa / 1e6, fb / 1e6, "w-dolgu-sinyal");
-    gu.dikey(f / 1e6, "w-cizgi-sinyal", "f_in");
+    gu.dikey(f / 1e6, "w-cizgi-sinyal");
+    gu.etiket(gu.px(f / 1e6) + 3, gu.y1 + 24, "f_in", "start");   // bölge etiketlerinin (üst satır) altına
     bantlar.forEach(function (b, i) { if (b.gercek) gu.metin(gu.px((b.gercek[0] + b.gercek[1]) / 2e6), gu.y0 - 6 - (i % 2) * 11, b.ad, "w-not", "middle"); });
     // ---- alt panel: 1. bölgeye katlanmış
     WK.temizle(alt);
@@ -79,9 +80,10 @@ WK.kaydet("w07", function (w) {
     satirlar.forEach(function (s, i) {
       var y = ga.y1 + i * hS;
       ga.ekle("rect", { x: ga.px(Math.max(0, s.aralik[0] / 1e6)), y: y + 3, width: Math.max(2, ga.px(Math.min(nyq, s.aralik[1]) / 1e6) - ga.px(Math.max(0, s.aralik[0]) / 1e6)), height: Math.max(4, hS - 6), "class": s.kls });
-      ga.metin(ga.x0 + 4, y + hS / 2 + 4, s.ad + " → " + WK.kisaSayi(s.aralik[0] / 1e6) + "–" + WK.kisaSayi(s.aralik[1] / 1e6), "w-not");
+      ga.etiket(ga.x0 + 4, y + hS / 2 + 4, s.ad + " → " + WK.kisaSayi(s.aralik[0] / 1e6) + "–" + WK.kisaSayi(s.aralik[1] / 1e6), "start");
     });
-    cizgiler.forEach(function (c) { ga.dikey(c.f / 1e6, "w-cizgi-kirmizi", c.ad.replace("ofset ", "")); });
+    // sağ kenara yakın çizgilerin etiketi sola (kırpılmasın)
+    cizgiler.forEach(function (c) { ga.dikey(c.f / 1e6, "w-cizgi-kirmizi", c.ad.replace("ofset ", ""), c.f > 0.72 * nyq ? "sol" : "sag"); });
     ga.dikey(kat.alias / 1e6, "w-cizgi-sinyal", "");
     // sonuç
     var evrikDuzelt = kat.evrik ? "!evrik → NCO işareti ters ya da I/Q swap" : "+düz";

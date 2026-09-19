@@ -16,8 +16,9 @@ bıraktığı yerden başlayıp o planın almaçtaki halini kurar.
 ## Sezgi: kâğıdı katlayınca ne olur
 
 Uzun bir kâğıt şerit düşün; üzerinde frekans ekseni 0'dan sonsuza uzanıyor.
-Örnekleme, bu şeridi fs/2'nin her katında **akordeon gibi katlar**. Katlanmış
-şeride üstten baktığında yalnızca 0 ile fs/2 arasını görürsün; ama o dilimin
+Örnekleme, bu şeridi fs/2'nin her katında **akordeon gibi katlar** — buna
+**katlanma** (folding) denir; katlanan katların üst üste binmesinin adı ise
+**aliasing**'dir. Katlanmış şeride üstten baktığında yalnızca 0 ile fs/2 arasını görürsün; ama o dilimin
 üzerinde kâğıdın *bütün* katları üst üste durur. Tek katlar (1., 3., 5. bölge)
 düz iner; çift katlar (2., 4., 6.) ters çevrilmiş olarak — bir bandın alçak
 kenarı yüksek kenarın yerine geçer. Sinyal 2. bölgedeyse ADC çıkışında
@@ -41,8 +42,10 @@ ayrıntıya gider.
 - **Örnekleme** sinyali fs hızında noktalara indirger; noktaların arasını
   tek anlamlı doldurabilmek için sinyalin *bant genişliği* fs/2'den küçük
   olmalıdır — en yüksek frekansı değil ({{rf:ornekleme-surekli-dunyadan-sayilara|RF Örnekleme: örnekleme teoremi}}).
-- **Aliasing**, fs/2'nin üstündeki her bileşenin 0–fs/2 aralığında bir
-  "takma ad" kazanmasıdır; örneklendikten sonra geri alınamaz.
+- **Aliasing**: fs/2'nin üstündeki her bileşen 0–fs/2 aralığında başka bir
+  frekansın kimliğiyle (alias) görünür; örneklendikten sonra geri alınamaz.
+  Terimi bu kılavuzda İngilizce aslıyla kullanıyoruz: "katlanma" mekanizmayı,
+  "aliasing" sonucu anlatır.
 - **Nyquist bölgeleri**: n. bölge (n−1)·fs/2 ile n·fs/2 arasıdır. Her bölge
   1. bölgeye iner; **çift bölgeler aynalı** iner
   ({{rf:nyquist-bolgeleri-ve-undersampling|RF Örnekleme: Nyquist bölgeleri ve undersampling}}).
@@ -121,7 +124,7 @@ s: k | harmonik derecesi | —
 s: f_{in} | sinyalin gerçek (ADC girişindeki) frekansı | Hz
 s: M | time-interleaved çekirdek sayısı | —
 s: m | interleaving spur indisi | —
-s: katla(·) | F. katlanma kartındaki alias işlemi | Hz → Hz
+s: katla(·) | yukarıdaki katlanma formülündeki alias işlemi (bölge → 0 … f_s/2) | Hz → Hz
 o: IF {{s:on_uc.if_ghz}} GHz: HD2 = 3600 MHz → katla → **1200 MHz** (bölge sınırı); HD3 = 5400 MHz → 5. bölge → **600 MHz** — sinyalin tam üstü.
 o: M = 2: ofset spur'u katla(1200) = **1200 MHz**; image katla(1200 − 1800) = **600 MHz** — yine sinyalin üstü. M = 4: ofset spur'u katla(600) = **600 MHz**.
 o: Bantlar da katlanır: HD2 bandı 3300–3900 → 900–1200 (bandın dışında); HD3 bandı 4950–5850 → 150–1050, üç kat genişleyip 450–750'nin üstüne biner.

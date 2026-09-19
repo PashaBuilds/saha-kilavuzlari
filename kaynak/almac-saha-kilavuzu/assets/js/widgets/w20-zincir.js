@@ -137,7 +137,7 @@ WK.kaydet("w20", function (w) {
       { ad: "Kısa darbe + uzun FFT", param: { seviye: -60, pw: 0.2e-6, fofs: 0, mop: "yok", ikinci: false, nf: 6, kazanc: 40, bit: 14, jitter: 100e-15, ncoOfs: 0, dec: 8, pfaExp: 6, nref: 16, nfft: 2048 } },
       { ad: "Kötü saat (800 fs)", param: { seviye: -40, pw: 1e-6, fofs: 0, mop: "yok", ikinci: false, nf: 6, kazanc: 40, bit: 14, jitter: 800e-15, ncoOfs: 0, dec: 8, pfaExp: 6, nref: 16, nfft: 1024 } },
       { ad: "Doyum (kazanç 58 dB)", param: { seviye: -40, pw: 1e-6, fofs: 0, mop: "yok", ikinci: false, nf: 6, kazanc: 58, bit: 14, jitter: 100e-15, ncoOfs: 0, dec: 8, pfaExp: 6, nref: 16, nfft: 1024 } },
-      { ad: "İki emiter + LFM", param: { seviye: -55, pw: 1e-6, fofs: 5e6, mop: "lfm", ikinci: true, nf: 6, kazanc: 40, bit: 14, jitter: 100e-15, ncoOfs: 0, dec: 8, pfaExp: 6, nref: 16, nfft: 1024 } }
+      { ad: "İki emiter + LFM", param: { seviye: -45, pw: 1e-6, fofs: 5e6, mop: "lfm", ikinci: true, nf: 6, kazanc: 40, bit: 14, jitter: 100e-15, ncoOfs: 0, dec: 8, pfaExp: 6, nref: 16, nfft: 1024 } }
     ]
   };
 });

@@ -52,9 +52,10 @@ WK.kaydet("w09", function (w) {
     ge.cizgi(xs, yt, "w-cizgi-yesil"); ge.metin(ge.x0 + 6, ge.py(t) - 4, "termal " + t.toFixed(1), "w-not");
     ge.cizgi(xs, yj, "w-cizgi-kirmizi");
     ge.cizgi(xs, yb, "w-cizgi-sinyal");
-    ge.metin(ge.px(3000), ge.py(DSP.snrJitter(3e9, p.j)) - 8, "jitter σ = " + WK.kisaSayi(p.j * 1e15) + " fs", "w-not", "middle");
+    ge.etiket(ge.px(300), ge.py(DSP.snrJitter(3e8, p.j)) - 8, "jitter σ = " + WK.kisaSayi(p.j * 1e15) + " fs", "middle");
     ge.nokta(p.f / 1e6, toplam, 5, "w-nokta");
-    ge.metin(ge.px(p.f / 1e6) + 8, ge.py(toplam) + 14, "çalışma noktası " + toplam.toFixed(1) + " dB", "w-not");
+    var cx = ge.px(p.f / 1e6), cSag = cx > ge.x0 + 0.7 * (ge.x1 - ge.x0);   // sağ kenarda etiket sola (kırpılmasın)
+    ge.etiket(cx + (cSag ? -8 : 8), ge.py(toplam) + 16, "çalışma noktası " + toplam.toFixed(1) + " dB", cSag ? "end" : "start");
     // jitter köşesi: jitter SNR'ın termal+kuantizasyon toplamına eşitlendiği f
     var tabanTQ = DSP.snrBirlestir([q, t]);
     var fKose = DSP.lin20(-tabanTQ) / (2 * Math.PI * p.j);

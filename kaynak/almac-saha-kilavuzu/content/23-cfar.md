@@ -42,7 +42,8 @@ manzarasında insanların yüzü karanlık çıkar — çünkü ortalama, sahnen
 maskeleme arızası tam olarak budur: komşu darbeler ortalamaya girer, eşik
 şişer, asıl darbe karanlıkta kalır. Fotoğrafçının çaresi "nokta ölçüm"
 (daha küçük pencere) ya da "en parlak noktaları yok say"dır; CFAR'ın çaresi
-guard hücreleri, küçük yarı (SO) ve sıra istatistiği (OS).
+guard hücreleri, küçük yarıyı seçen SO (smallest-of) ve sıra istatistiği
+kullanan OS (order-statistic) — hepsi aşağıda.
 :::
 
 ## Kavram: sabit eşik neden yetmez
@@ -80,7 +81,7 @@ dört farklı sağlamlık düzeyi:
 |---|---|---|---|
 | **Ortalama** (mean) | K örneğin aritmetik ortalaması | En az varyans (gürültü Gauss ise en iyi) | Darbeler ortalamaya girer, kestirim şişer (maskeleme) |
 | **Medyan** | K örneğin ortanca değeri | Örneklerin yarısından azı darbe olduğu sürece etkilenmez | Üstel dağılımda medyan = ln 2 × ortalama → ×1.44 (1.6 dB) düzeltme gerekir; sıralama ister |
-| **Minimum istatistiği** | K bloğun her birinin ortalamasını al, en küçüğünü seç | Darbe yoğunluğu çok yüksekken bile "en sessiz anı" bulur | Sistematik olarak düşük kestirir (K'ye bağlı düzeltme çarpanı); yavaş |
+| **Minimum istatistiği** (minimum statistics) | K bloğun her birinin ortalamasını al, en küçüğünü seç | Darbe yoğunluğu çok yüksekken bile "en sessiz anı" bulur | Sistematik olarak düşük kestirir (K'ye bağlı düzeltme çarpanı); yavaş |
 | **Histogram / mod** | Güç histogramının tepesi | Darbelerden ve uç değerlerden bağımsız | Bellek, yavaş güncelleme; düşük çözünürlük |
 
 Hepsinin ortak sorunu **darbenin kendisidir**: gürültüyü kestirmek istiyorsun
@@ -108,14 +109,14 @@ Bu tür bir **yavaş kestirici + sabit çarpan** düzeni, CFAR'ın en basit
 halidir: gürültüyü zamanda uzun bir pencereden kestirir, eşiği α katına kurar.
 Hızlı değişen gürültüye (darbeli girişim, tarama sırasında bant değişimi,
 FFT ekseninde filtre kenarı) yetişemez; bunun için kestirimi karar hücresinin
-*hemen komşuluğundan* alan kayan pencereli CFAR gerekir.
+*hemen komşuluğundan* alan kayan pencereli (sliding window) CFAR gerekir.
 
 ## Kavram: CFAR penceresi — referans, guard, test hücresi
 
 {{svg:g-230-cfar-penceresi.svg|CFAR penceresinin anatomisi. Üstte: kayan pencere içinde N/2 = 8 öncü referans hücresi, G = 2 guard, test hücresi (CUT — cell under test), 2 guard, 8 ardıl referans hücresi; referans hücrelerinin ortalaması Z gürültü kestirimi, eşik T = α·Z. Guard hücreleri darbenin yumuşak kenarlarının referansa sızmasını önler. Altta: darbe pencereden uzunsa (300 örneklik darbe, 21 hücrelik pencere) kenarlar referansa taşar, Z şişer ve darbe kendini maskeler — dondurma ya da darbeden uzun pencere gerekir.}}
 
-Pencerenin üç bölgesi vardır. **Test hücresi** (CUT — cell under test) o anda
-karar verilen örnektir. İki yanındaki **guard** (koruma) hücreleri, darbenin
+Pencerenin üç bölgesi vardır. **CUT** (cell under test — test hücresi) o anda
+karar verilen örnektir; bundan sonra kısaca CUT diyeceğiz. İki yanındaki **guard** (koruma) hücreleri, darbenin
 yükselme/düşme kenarlarının ve video filtrenin yaydığı enerjinin referansa
 sızmasını önlemek için *hesaba katılmaz*; sayısı, beklenen kenar
 yayılmasından büyük seçilir (video filtre L = {{s:tespit.video_filtre_uzunluk}}
@@ -180,7 +181,7 @@ eşik daha yüksektir; OS'nin CA'ya göre ek kaybı N = 16'da ≈ 1–1.5 dB'dir
 Karşılığında referans penceresindeki N − k = 4 hücreye kadar yabancı darbe
 kestirimi hiç etkilemez.
 
-{{svg:g-232-cfar-ailesi-sahne.svg|Dört CFAR'ın aynı sahnedeki davranışı (hesaplanmış; N = 16, G = 2, Pfa = 10⁻⁶). Sahne: 6 hücre arayla iki yakın 3 hücrelik darbe (20 dB), yalnız bir darbe, 420. hücrede +8 dB gürültü basamağı ve basamağın içinde bir darbe. CA ve GO yakın çifti tamamen maskeler (0/3, 0/3) ama basamakta temizdir; SO çifti çözer, basamağın hemen sağında 6 yanlış alarm üretir; OS (k = 12) çifti de çözer, basamakta da temiz kalır. Güç gri, eşik altın kesikli, tespit mavi, yanlış alarm kırmızı.}}
+{{svg:g-232-cfar-ailesi-sahne.svg|Dört CFAR'ın aynı sahnedeki davranışı (hesaplanmış; N = 16, G = 2, Pfa = 10⁻⁶). Sahne: 6 hücre arayla iki yakın 3 hücrelik darbe (20 dB), yalnız bir darbe, 420. hücrede +8 dB gürültü basamağı ve basamağın içinde bir darbe. CA ve GO yakın çifti tamamen maskeler (0/3, 0/3) ama basamakta temizdir; SO çifti çözer ama basamağın hemen sağında (420–421. hücreler) 2 yanlış alarm üretir; OS (k = 12) çifti de çözer, basamakta da temiz kalır. Güç gri, eşik altın kesikli, tespit mavi, yanlış alarm kırmızı.}}
 
 :::widget id=w18 ad="CFAR laboratuvarı"
 - **Referans senaryo** preset'i (CA, N = 16, G = 2, Pfa = 10⁻⁶, düz gürültü, seyrek darbeler): α satırında 21.9'u, kayıp satırında 2.0 dB'yi oku; sağ paneldeki sabit eşik ile sol paneldeki CFAR eşiğinin düz gürültüde aynı yükseklikte (13.4 dB'ye karşı 11.4 dB — 2 dB fark) durduğunu gör; ikisi de tüm darbeleri yakalar.
@@ -197,7 +198,7 @@ Yukarıdaki sahne üç arıza modunu birden gösteriyor; sahada karşına çıkm
 sırasıyla:
 
 **1. Maskeleme (masking).** Referans penceresine ikinci bir darbe düşerse Z
-şişer ve test hücresindeki darbe eşiğin altında kalır — iki darbe *birbirini*
+şişer ve CUT'taki darbe eşiğin altında kalır — iki darbe *birbirini*
 maskeler (yoğun ortamda çok yaygın: ardışık iki emiterin darbeleri, çok yollu
 yansımalar, darbe içi ve darbe dışı yan loblar). Uzun bir darbe pencereden
 uzunsa kendi kenarlarıyla *kendini* maskeler (g-230 alt panel). Belirti:
@@ -258,14 +259,14 @@ zaman kolu hızlı ve geniş, FFT kolu yavaş ve hassas; PDW ikisinden beslenir
 CFAR bayrağı tek örneklik bir karardır; darbe değildir. Bayraktan darbeye
 giden yolda dört pratik vardır ve dördü de FAR'ı, Pfa'ya dokunmadan düşürür:
 
-**Histerezis (çift eşik).** Darbe başlangıcı üst eşikle (T) açılır, bitişi
+**Histerezis** (hysteresis — açma/kapama çift eşiği). Darbe başlangıcı üst eşikle (T) açılır, bitişi
 alt eşikle (T − {{s:tespit.histerezis_db}} dB) kapanır. Platodaki gürültü
 dalgalanması (video filtre sonrası ±1.5 dB) tek eşiği defalarca kesip bir
 darbeyi üçe böler; 3 dB'lik boşluk bunu önler. Alt eşik, PW ölçümünün
 düşme kenarını belirler; {{bolum:25}} bunun PW tanımıyla (−3 dB / −6 dB)
 ilişkisini kurar.
 
-**Minimum darbe genişliği (glitch reddi).** Ardışık en az M örnek eşik
+**Minimum darbe genişliği** (min-PW; glitch reddi). Ardışık en az M örnek eşik
 üstünde kalmayan aşımlar reddedilir (referans senaryo M = {{s:tespit.min_pw_ornek}}
 örnek = 13 ns). Bağımsız örneklerde M ardışık yanlış alarm olasılığı Pfaᴹ'dir:
 
@@ -286,7 +287,7 @@ darbelere körlüktür — M, görmek istediğin en kısa darbeden kısa seçili
 
 **M-of-N doğrulama**, min-PW'nin toleranslı halidir: N örneğin M'si yetsin.
 Plato içindeki tek bir gürültü çukurunun darbeyi kesmesini önler; darbe FSM'i
-({{bolum:25}}) genellikle "3-of-4 açar, 4 ardışık alt eşik altı kapatır" gibi
+({{bolum:26}}) genellikle "3-of-4 açar, 4 ardışık alt eşik altı kapatır" gibi
 asimetrik kurulur.
 
 **Maksimum PW / CW bayrağı.** Aşım belirli bir süreyi (örneğin 100 µs) geçerse
@@ -322,7 +323,7 @@ Gecikme: pencere yarısı N/2 + G = 10 hücre + pipeline ≈ 4 saat (TOA düzelt
 
 ## FPGA'da nasıl gerçeklenir
 
-{{svg:g-233-ca-cfar-blok.svg|CA-CFAR donanım blok şeması (referans gerçekleme). Güç örnekleri 21 hücrelik gecikme hattına girer; ardıl ve öncü referans pencereleri için iki kayan toplam tutulur (her saatte yeni hücre eklenir, pencereden çıkan çıkarılır — 16 toplama yerine 4). İki toplam Σ'da birleşir, PS'in yazdığı α (Q6.10) ile çarpılır; test hücresi log₂N kadar kaydırılarak N ile çarpılır ve bölmesiz karşılaştırma x_CUT·N > α·Σ bayrağı üretir. Bayrak tespit sayacına da gider; giriş sonlandırıldığında bu sayaç yanlış alarm sayacıdır. Register'lar yeşil.|kaydir}}
+{{svg:g-233-ca-cfar-blok.svg|CA-CFAR donanım blok şeması (referans gerçekleme). Güç örnekleri 21 hücrelik gecikme hattına girer; ardıl ve öncü referans pencereleri için iki kayan toplam tutulur (her saatte yeni hücre eklenir, pencereden çıkan çıkarılır — 16 toplama yerine 4). İki toplam Σ'da birleşir, PS'in yazdığı α (Q6.10) ile çarpılır; CUT log₂N kadar kaydırılarak N ile çarpılır ve bölmesiz karşılaştırma x_CUT·N > α·Σ bayrağı üretir. Bayrak tespit sayacına da gider; giriş sonlandırıldığında bu sayaç yanlış alarm sayacıdır. Register'lar yeşil.|kaydir}}
 
 :::uc-goz
 ::rf::
@@ -342,11 +343,11 @@ gecikme hattı (bir SRL zinciri ya da küçük bir BRAM); iki kayan toplam
 (20 + 3 = 23 bit; her biri saatte bir toplama bir çıkarma); Σ 24 bit; α
 çarpımı bir DSP slice (24 × 16 bit Q6.10 → 40 bit, üst bitler alınır); CUT
 için 4 bit sola kaydırma (N = 16); 40 bitlik bir karşılaştırıcı. Kayan
-toplamın güzelliği N'den bağımsız maliyetidir; N ve G register'dan
+toplamın (running sum) güzelliği N'den bağımsız maliyetidir; N ve G register'dan
 değişecekse gecikme hattının uçları bir mux ile seçilir — bu yüzden çoğu
 tasarım N ve G'yi yalnızca birkaç 2ⁿ değerle sınırlar. GO/SO, iki yarı
 toplamı arasında bir karşılaştırma ve mux daha. **OS** pahalı olandır:
-N = 16 hücreyi her saatte sıralamak bitonic ağla 10 kademe × 8 = 80
+N = 16 hücreyi her saatte sıralamak bitonic sıralama ağıyla (sorting network) 10 kademe × 8 = 80
 karşılaştır-değiştir birimi (20 bit); alternatif **sayma yöntemi**: yeni
 hücre geldiğinde onu 15 hücreyle karşılaştırıp "kaç tanesinden büyük"
 sayısını hesapla, k'ıncı sırayı bu sayılardan seç — 16 karşılaştırıcı, ama
@@ -508,7 +509,7 @@ C: α = 32·(10^{6/32} − 1) = 32·(1.540 − 1) = 17.28 (12.4 dB); kayıp = 10
 S: Referans pencere 21 hücre (70 ns) iken 1 µs'lik darbe geldiğinde CA-CFAR ne yapar, nasıl düzeltilir?
 C: Darbenin ilk ~10 hücresi tespit edilir (referans henüz gürültü), sonra referans hücreleri darbeyle dolar, Z ≈ darbe gücü, eşik darbenin 13.4 dB üstüne çıkar ve darbenin geri kalanı "kaybolur" (kendini maskeleme) — PW yanlış ölçülür. Düzeltme: tespit bayrağı yükselince kestirimi dondurmak (Z'yi son gürültü değerinde tutmak), ya da darbe FSM'inin kapanışını CFAR eşiğine değil dondurulmuş eşiğe bağlamak; uzun darbeler için yavaş kestirici.
 S: Gürültü tabanı 420. hücrede +8 dB basamak yapıyor. CA, GO, SO basamağın hemen sağındaki hücrelerde ne yapar?
-C: CA: pencerenin yarısı düşük gürültüde olduğundan Z gerçek tabanın altında kalır (≈ ortalama), eşik yetersiz → N/2 hücre boyunca yanlış alarm patlaması olasılığı yüksek. GO: büyük yarıyı (yüksek taban) seçer, eşik doğru, temiz. SO: küçük yarıyı seçer, eşik 8 dB düşük, kesin yanlış alarm patlaması (şekilde 6 alarm). Basamağın solunda ise CA/GO geçici sağırlık gösterir.
+C: CA: pencerenin yarısı düşük gürültüde olduğundan Z gerçek tabanın altında kalır (≈ ortalama), eşik yetersiz → N/2 hücre boyunca yanlış alarm patlaması olasılığı yüksek. GO: büyük yarıyı (yüksek taban) seçer, eşik doğru, temiz. SO: küçük yarıyı seçer, eşik 8 dB düşük, yanlış alarm patlaması (şekilde basamağın hemen sağında 2 alarm). Basamağın solunda ise CA/GO geçici sağırlık gösterir.
 S: Yazılımcı min-PW'yi 4 yapıp örnek başına Pfa'yı 10⁻³'e gevşetti. Eşik kaç dB indi ve FAR ne olur (bağımsız örnek varsayımıyla)? Bu varsayım neden iyimser?
 C: α = 16·(1000^{1/16} − 1) = 8.7 → 9.4 dB; 10⁻⁶'nın 13.4 dB'sine göre 4 dB daha düşük eşik. FAR ≈ 3×10⁸ · (10⁻³)⁴ = 3×10⁻⁴ /s. İyimser, çünkü L = 4 video filtre komşu örnekleri ilişkilendirir: bir aşımı 4 örnek sürdürmek bağımsız 4 aşımdan çok daha olasıdır; gerçek FAR ölçülmeli (giriş sonlandırılmış, DET_CNT).
 S: Giriş sonlandırılmış, `DET_CNT` 10 saniyede 2900 sayıyor (CA, N = 16, α = 21.9, 300 MSPS, min-PW kapalı). CFAR sağlıklı mı?

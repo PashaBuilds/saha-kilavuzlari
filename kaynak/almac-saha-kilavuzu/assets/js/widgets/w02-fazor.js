@@ -97,7 +97,8 @@ WK.kaydet("w02", function (w) {
       gs.metin(gs.px(fTon / 1e6) + 6, gs.py(0) + 12, "ton " + (fTon / 1e6).toFixed(1) + " MHz", "w-not");
       if (irr > -95) {
         gs.nokta(-fTon / 1e6, irr, 4);
-        gs.metin(gs.px(-fTon / 1e6) + 6, gs.py(irr) - 6, "image " + irr.toFixed(1) + " dBc", "w-not");
+        if (fTon > 0) gs.metin(gs.px(-fTon / 1e6) - 6, gs.py(irr) - 6, "image " + irr.toFixed(1) + " dBc", "w-not", "end");   // DC çizgisinin üstüne yazma
+        else gs.metin(gs.px(-fTon / 1e6) + 6, gs.py(irr) - 6, "image " + irr.toFixed(1) + " dBc", "w-not");
       }
     }
     // metrik: image bin gücü

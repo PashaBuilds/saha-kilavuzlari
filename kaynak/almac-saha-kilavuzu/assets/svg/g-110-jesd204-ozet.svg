@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g110">
+<svg viewBox="0 0 1010 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g110">
 <title id="t-g110">JESD204 özet: solda ADC (TX) ve FPGA (RX) tarafında aynalı dört katman — transport, scrambler, data link, PHY — ve aralarındaki L lane; parametre seti (L, M, F, S, N, N′, K) iki uçta aynı olmalı. Sağda subclass 1 zamanlaması: device clock, SYSREF kenarı her iki cihazın LMFC/LEMC sayacını hizalar, SYNC~ bırakılır, ILAS ve veri LMFC sınırında başlar, RX elastik tampon veriyi LMFC + RBD anında bırakır → deterministik gecikme.</title>
 <text x="20" y="22" class="s-baslik">JESD204B/C tek bakışta — katmanlar (sol) ve SYSREF ile deterministik gecikme (sağ)</text>
 <rect x="20" y="60" width="190" height="44" rx="5" class="blok-aktif"/><text x="115.0" y="79.0" text-anchor="middle" class="s-metin2">Transport</text><text x="115.0" y="93.0" text-anchor="middle" class="s-kucuk">M örnek → oktet → frame (F, S, N′)</text>
@@ -23,38 +23,37 @@
 <text x="20" y="332" class="s-kucuk">204C (64b/66b): L = 4 → 9.9 Gb/s/lane; ek yük %3 (204B: %25)</text>
 <text x="20" y="356" class="s-kucuk s-altin">Yazılımcı: SYNC~ / CGS / ILAS / veri durumları, hata sayaçları;</text>
 <text x="20" y="370" class="s-kucuk s-altin">"link kalktı ama veri çöp" → parametre uyuşmazlığı</text>
-<text x="540" y="52" class="s-metin2">Subclass 1 zamanlaması (şematik)</text>
-<text x="534" y="92" text-anchor="end" class="s-kucuk">device clock</text>
-<path d="M540 104 H940" class="izgara"/>
-<text x="534" y="130" text-anchor="end" class="s-kucuk">SYSREF</text>
-<path d="M540 142 H940" class="izgara"/>
-<text x="534" y="168" text-anchor="end" class="s-kucuk">LMFC (TX)</text>
-<path d="M540 180 H940" class="izgara"/>
-<text x="534" y="206" text-anchor="end" class="s-kucuk">LMFC (RX)</text>
-<path d="M540 218 H940" class="izgara"/>
-<text x="534" y="244" text-anchor="end" class="s-kucuk">SYNC~</text>
-<path d="M540 256 H940" class="izgara"/>
-<text x="534" y="282" text-anchor="end" class="s-kucuk">lane verisi</text>
-<path d="M540 294 H940" class="izgara"/>
-<text x="534" y="320" text-anchor="end" class="s-kucuk">RX çıkışı</text>
-<path d="M540 332 H940" class="izgara"/>
-<path d="M540 98H545 V82 H550 V98H555 V82 H560 V98H565 V82 H570 V98H575 V82 H580 V98H585 V82 H590 V98H595 V82 H600 V98H605 V82 H610 V98H615 V82 H620 V98H625 V82 H630 V98H635 V82 H640 V98H645 V82 H650 V98H655 V82 H660 V98H665 V82 H670 V98H675 V82 H680 V98H685 V82 H690 V98H695 V82 H700 V98H705 V82 H710 V98H715 V82 H720 V98H725 V82 H730 V98H735 V82 H740 V98H745 V82 H750 V98H755 V82 H760 V98H765 V82 H770 V98H775 V82 H780 V98H785 V82 H790 V98H795 V82 H800 V98H805 V82 H810 V98H815 V82 H820 V98H825 V82 H830 V98H835 V82 H840 V98H845 V82 H850 V98H855 V82 H860 V98H865 V82 H870 V98H875 V82 H880 V98H885 V82 H890 V98H895 V82 H900 V98H905 V82 H910 V98H915 V82 H920 V98H925 V82 H930 V98H935 V82 H940 V98" class="yol-saat" style="stroke-dasharray:none"/>
-<path d="M540 136 H600 V120 H620 V136 H940" class="yol-saat" style="stroke-dasharray:none"/>
-<path d="M600 112 V344" class="yol-gurultu"/>
-<text x="604" y="114" class="s-kucuk s-kirmizi">SYSREF kenarı: sayaçlar sıfırlanır</text>
-<path d="M540 174H600 V158 H606 V174H690 V158 H696 V174H780 V158 H786 V174H870 V158 H876 V174H940" class="yol-kontrol"/>
-<text x="640" y="168" class="s-kucuk s-yesil">K frame = 1 multiframe</text>
-<path d="M540 212H600 V196 H606 V212H690 V196 H696 V212H780 V196 H786 V212H870 V196 H876 V212H940" class="yol-kontrol"/>
-<text x="640" y="206" class="s-kucuk s-yesil">K frame = 1 multiframe</text>
-<path d="M540 250 H690 V234 H940" class="yol-kontrol"/>
-<text x="694" y="232" class="s-kucuk s-yesil">RX: CGS tamam → SYNC~ bırakılır</text>
-<rect x="540" y="272" width="240" height="16" class="blok"/><text x="660" y="284" text-anchor="middle" class="s-kucuk">K28.5 (CGS)</text>
-<rect x="780" y="272" width="90" height="16" class="spk-filtre" style="fill:var(--gold-soft)"/><text x="825" y="284" text-anchor="middle" class="s-kucuk">ILAS</text>
-<rect x="870" y="272" width="70" height="16" class="spk-sinyal"/><text x="905" y="284" text-anchor="middle" class="s-kucuk">veri</text>
-<text x="780" y="300" class="s-kucuk">TX: bir sonraki LMFC sınırında başlar</text>
-<rect x="900" y="310" width="40" height="16" class="spk-sinyal"/>
-<path d="M870 316 H898" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
-<text x="540" y="322" class="s-kucuk">elastik tampon veriyi LMFC + RBD anında bırakır</text>
-<text x="540" y="350" class="s-kucuk">→ her açılışta, her çipte aynı gecikme; çok çip için ortak SYSREF</text>
-<text x="540" y="368" class="s-kucuk">RFSoC: bu katmanlar yok (AXI-Stream); SYSREF çok tile hizası için kalır</text>
+<text x="590" y="52" class="s-metin2">Subclass 1 zamanlaması (şematik)</text>
+<text x="584" y="92" text-anchor="end" class="s-kucuk">device clock</text>
+<path d="M590 104 H990" class="izgara"/>
+<text x="584" y="130" text-anchor="end" class="s-kucuk">SYSREF</text>
+<path d="M590 142 H990" class="izgara"/>
+<text x="584" y="168" text-anchor="end" class="s-kucuk">LMFC (TX)</text>
+<path d="M590 180 H990" class="izgara"/>
+<text x="584" y="206" text-anchor="end" class="s-kucuk">LMFC (RX)</text>
+<path d="M590 218 H990" class="izgara"/>
+<text x="584" y="244" text-anchor="end" class="s-kucuk">SYNC~</text>
+<path d="M590 256 H990" class="izgara"/>
+<text x="584" y="282" text-anchor="end" class="s-kucuk">lane verisi</text>
+<path d="M590 294 H990" class="izgara"/>
+<text x="584" y="320" text-anchor="end" class="s-kucuk">RX çıkışı</text>
+<path d="M590 332 H990" class="izgara"/>
+<path d="M590 98H595 V82 H600 V98H605 V82 H610 V98H615 V82 H620 V98H625 V82 H630 V98H635 V82 H640 V98H645 V82 H650 V98H655 V82 H660 V98H665 V82 H670 V98H675 V82 H680 V98H685 V82 H690 V98H695 V82 H700 V98H705 V82 H710 V98H715 V82 H720 V98H725 V82 H730 V98H735 V82 H740 V98H745 V82 H750 V98H755 V82 H760 V98H765 V82 H770 V98H775 V82 H780 V98H785 V82 H790 V98H795 V82 H800 V98H805 V82 H810 V98H815 V82 H820 V98H825 V82 H830 V98H835 V82 H840 V98H845 V82 H850 V98H855 V82 H860 V98H865 V82 H870 V98H875 V82 H880 V98H885 V82 H890 V98H895 V82 H900 V98H905 V82 H910 V98H915 V82 H920 V98H925 V82 H930 V98H935 V82 H940 V98H945 V82 H950 V98H955 V82 H960 V98H965 V82 H970 V98H975 V82 H980 V98H985 V82 H990 V98" class="yol-saat" style="stroke-dasharray:none"/>
+<path d="M590 136 H650 V120 H670 V136 H990" class="yol-saat" style="stroke-dasharray:none"/>
+<path d="M650 112 V344" class="yol-gurultu"/>
+<text x="654" y="114" class="s-kucuk s-kirmizi">SYSREF kenarı: sayaçlar sıfırlanır</text>
+<path d="M590 174H650 V158 H656 V174H740 V158 H746 V174H830 V158 H836 V174H920 V158 H926 V174H990" class="yol-kontrol"/>
+<path d="M590 212H650 V196 H656 V212H740 V196 H746 V212H830 V196 H836 V212H920 V196 H926 V212H990" class="yol-kontrol"/>
+<text x="690" y="191" class="s-kucuk s-yesil">K frame = 1 multiframe (LMFC periyodu)</text>
+<path d="M590 250 H740 V234 H990" class="yol-kontrol"/>
+<text x="744" y="232" class="s-kucuk s-yesil">RX: CGS tamam → SYNC~ bırakılır</text>
+<rect x="590" y="272" width="240" height="16" class="blok"/><text x="710" y="284" text-anchor="middle" class="s-kucuk">K28.5 (CGS)</text>
+<rect x="830" y="272" width="90" height="16" class="spk-filtre" style="fill:var(--gold-soft)"/><text x="875" y="284" text-anchor="middle" class="s-kucuk">ILAS</text>
+<rect x="920" y="272" width="70" height="16" class="spk-sinyal"/><text x="955" y="284" text-anchor="middle" class="s-kucuk">veri</text>
+<text x="990" y="300" text-anchor="end" class="s-kucuk">TX: bir sonraki LMFC sınırında başlar</text>
+<rect x="950" y="310" width="40" height="16" class="spk-sinyal"/>
+<path d="M920 316 H948" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<text x="590" y="322" class="s-kucuk">elastik tampon veriyi LMFC + RBD anında bırakır</text>
+<text x="590" y="350" class="s-kucuk">→ her açılışta, her çipte aynı gecikme; çok çip için ortak SYSREF</text>
+<text x="590" y="368" class="s-kucuk">RFSoC: bu katmanlar yok (AXI-Stream); SYSREF çok tile hizası için kalır</text>
 </svg>

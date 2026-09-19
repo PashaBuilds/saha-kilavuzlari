@@ -26,20 +26,21 @@
 <path d="M286.5 330.0 V212.8" style="stroke:var(--red);stroke-width:2"/>
 <text x="291.5" y="192.8" class="s-kucuk s-kirmizi">HD3 (en kötü spur) -73 dBFS</text>
 <path d="M409.5 330.0 V216.3" style="stroke:var(--red);stroke-width:2"/>
-<text x="414.5" y="210.3" class="s-kucuk s-kirmizi">IL image fs/2 − f_in -75 dBFS</text>
+<rect x="354.3" y="219.3" width="53.2" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/><text x="404.5" y="230.3" text-anchor="end" class="s-kucuk s-kirmizi">IL image</text>
+<rect x="283.5" y="232.3" width="124.0" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/><text x="404.5" y="243.3" text-anchor="end" class="s-kucuk s-kirmizi">fs/2 − f_in -75 dBFS</text>
 <path d="M757.0 330.0 V225.2" style="stroke:var(--red);stroke-width:2"/>
-<text x="762.0" y="219.2" class="s-kucuk s-kirmizi">HD2 -79 dBFS</text>
-<text x="832.3" y="226.7" text-anchor="end" class="s-kucuk s-kirmizi">offset spur → fs/2</text>
+<rect x="678.2" y="248.2" width="76.8" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/><text x="752.0" y="259.2" text-anchor="end" class="s-kucuk s-kirmizi">HD2 -79 dBFS</text>
+<rect x="723.1" y="215.7" width="112.2" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/><text x="832.3" y="226.7" text-anchor="end" class="s-kucuk s-kirmizi">offset spur → fs/2</text>
 <path d="M502.5 62.8 V212.8" class="yol-kontrol" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>
 <text x="496.5" y="137.8" text-anchor="end" class="s-metin2 s-yesil">SFDR ≈ 72 dBc</text>
 <path d="M62 212.8 H880" class="yol-saat"/>
 <path d="M62 180.8 H880" class="spk-filtre"/>
 <text x="70" y="175.8" class="s-kucuk s-altin">toplam gürültü gücü (tüm bant, tek sayı): -58 dBFS → SNR = 57 dB</text>
 <path d="M62 246.2 H880" class="spk-filtre"/>
-<text x="70" y="259.2" class="s-kucuk s-altin">FFT gürültü tabanı (bin başına) ≈ -90 dBFS · NSD ≈ -149 dBFS/Hz</text>
-<path d="M266.5 180.8 V246.2" class="yol-kontrol" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>
-<text x="260.5" y="207.5" text-anchor="end" class="s-kucuk s-yesil">FFT işlem kazancı</text>
-<text x="260.5" y="219.5" text-anchor="end" class="s-kucuk s-yesil">10·log(N/2) = 33.1 dB</text>
-<text x="260.5" y="231.5" text-anchor="end" class="s-kucuk s-yesil">(pencere ENBW ≈ −3 dB)</text>
+<rect x="67.0" y="248.2" width="377.7" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/><text x="70.0" y="259.2" text-anchor="start" class="s-kucuk s-altin">FFT gürültü tabanı (bin başına) ≈ -90 dBFS · NSD ≈ -149 dBFS/Hz</text>
+<path d="M198.3 180.8 V246.2" class="yol-kontrol" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>
+<rect x="89.0" y="196.5" width="106.3" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/><text x="192.3" y="207.5" text-anchor="end" class="s-kucuk s-yesil">FFT işlem kazancı</text>
+<rect x="65.4" y="209.5" width="129.9" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/><text x="192.3" y="220.5" text-anchor="end" class="s-kucuk s-yesil">10·log(N/2) = 33.1 dB</text>
+<rect x="59.5" y="222.5" width="135.8" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/><text x="192.3" y="233.5" text-anchor="end" class="s-kucuk s-yesil">(pencere ENBW ≈ −3 dB)</text>
 <text x="62" y="392" class="s-kucuk">Değerler kurgusal bir cihazı temsil eder; kalıp gerçek datasheet grafikleriyle aynıdır. Gürültü gri dolgu, sinyal mavi, spur kırmızı, seviye çizgileri altın kesikli.</text>
 </svg>

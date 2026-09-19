@@ -56,7 +56,8 @@ WK.kaydet("w17", function (w) {
     g2.eksenler({ xAd: "zarf r / σ", yAd: "log10 yoğunluk", baslik: "Aynı dağılımlar logaritmik eksende — kuyruk görünür olur", xAdet: 6, yAdet: 5, yFmt: function (v) { return v.toFixed(0); } });
     g2.cizgi(xs, l0, "w-cizgi-gri"); g2.cizgi(xs, l1, "w-cizgi-sinyal");
     g2.dikey(Tsig, "w-cizgi-altin", "Pfa = exp(−T²/2) = " + pfa.toExponential(1));
-    g2.yatay(Math.log10(pfa), "w-cizgi-kirmizi", "10^" + Math.log10(pfa).toFixed(1));
+    g2.yatay(Math.log10(pfa), "w-cizgi-kirmizi", "");
+    g2.metin(g2.x0 + 6, g2.py(Math.log10(pfa)) - 4, "Pfa = 10^" + Math.log10(pfa).toFixed(1), "w-not");   // sol uçta: sağda eğriyle çakışıyordu
     // --- 3) ROC
     WK.temizle(pRoc);
     var g3 = WK.grafik(pRoc, { W: 640, H: 230, xmin: 1e-9, xmax: 1, ymin: 0, ymax: 1, xlog: true, kenar: { sol: 48, sag: 14, ust: 22, alt: 34 } });
@@ -70,7 +71,7 @@ WK.kaydet("w17", function (w) {
     g3.cizgi(sx, sy, "w-cizgi-gri"); g3.metin(g3.px(1e-3) - 60, g3.py(1e-3) - 6, "Pd = Pfa (yazı-tura)", "w-not");
     g3.cizgi(rx, ry, "w-cizgi-sinyal");
     g3.dikey(pfaRef, "w-cizgi-altin", "referans Pfa");
-    if (pfa >= 1e-9) { g3.nokta(pfa, pd, 5, "w-nokta"); g3.metin(g3.px(pfa) + 8, g3.py(pd) + 4, "Pfa " + pfa.toExponential(1) + ", Pd " + pd.toFixed(3), "w-not"); }
+    if (pfa >= 1e-9) { g3.nokta(pfa, pd, 5, "w-nokta"); g3.metin(g3.px(pfa) + 8, g3.py(pd) + 16, "Pfa " + pfa.toExponential(1) + ", Pd " + pd.toFixed(3), "w-not"); }   /* etiket noktanın altında: üstte "referans Pfa" etiketi var */
     // --- Monte Carlo
     var mcTxt = { pfa: "kapalı", pd: "kapalı" };
     if (p.mc) {

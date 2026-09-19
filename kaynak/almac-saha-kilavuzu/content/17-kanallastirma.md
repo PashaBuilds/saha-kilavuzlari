@@ -12,7 +12,7 @@ zorundadır. Bu pencerelere kanal, işleme kanallaştırma denir. Onlarca DDC'yi
 yan yana koymak işe yarar ama pahalıdır; polyphase filtre bankası aynı işi bir
 prototip filtre ve bir FFT ile yapar. Bu bölüm o yapıyı, kanalların nasıl
 bindirildiğini ve darbelerin kanallaştırıcıda ürettiği tuhaf sanatı — "tavşan
-kulaklarını" — anlatır.
+kulaklarını" (rabbit ears) — anlatır.
 :::
 
 ## Sezgi: bir büyük kulak yerine on altı küçük kulak
@@ -49,7 +49,7 @@ reel bandın tamamı kaplanır. Maliyet K ile doğru orantılıdır: 16 mixer, 1
 kullanır, yalnızca farklı bir frekansa kaydırılmış. İkincisi: mixing ile
 filtreleme yer değiştirebilir ve decimation filtrenin **içine** alınabilir
 (polyphase, {{bolum:16}}). Bu iki dönüşümün sonunda ortaya çıkan yapıda giriş
-örnekleri bir komütatörle K yola dağıtılır, her yol prototip filtrenin bir
+örnekleri bir komütatörle (commutator) K yola dağıtılır, her yol prototip filtrenin bir
 polyphase alt-filtresinden geçer ve K yolun çıkışı **K noktalı bir DFT'ye**
 girer. DFT'nin k. çıkışı, k. DDC'nin çıkışının tam kendisidir. Bu DFT bir
 **FFT** ile hesaplanır — FFT'nin nasıl çalıştığı {{bolum:18}}'in konusudur;
@@ -78,7 +78,7 @@ s: N_p | filtre tap sayısı (banka'da kanal başına, polyphase'de prototip) | 
 o: K = 16, N_p = 128, M = 8: banka ≈ 16 · (2 + 32) = **544** çarpım/örnek; polyphase ≈ 64 + 64 = **128** — dörtte biri, ve NCO'suz. K büyüdükçe fark büyür: K = 256'da banka ≈ 8700, polyphase ≈ 3100.
 :::
 
-Yapının bir inceliği aşırı örneklemedir. **Kritik örnekleme** (M = K): her
+Yapının bir inceliği aşırı örneklemedir (oversampling). **Kritik örnekleme** (critically sampled, M = K): her
 kanalın çıkış hızı tam kanal aralığına eşittir; verimli ama kanal filtresinin
 geçiş bandı decimation'da kanalın kendi içine katlanır ({{bolum:16}}'daki
 katlanma, kanal başına) — kanal kenarındaki sinyaller bozulur. **İki kat aşırı
@@ -89,14 +89,14 @@ kat çıkış verisidir ve polyphase yapıda komütatörün K/2 adımla dönmesi
 girişinde bir dairesel kaydırma gerektirir (harris'in klasik yapısı; ayrıntı
 {{ek:e}}).
 
-## Kavram: kanal yanıtları, bindirme ve komşu sızıntı
+## Kavram: kanal yanıtları, overlap ve komşu kanal sızıntısı
 
-{{svg:g-171-kanal-yanitlari.svg|Kanal yanıtları ve bindirme (hesaplanmış, prototip 128 tap Kaiser). Üstte kritik örnekleme (M = K = 16, kanal fs 150 MSPS): kanal yanıtları (mavi, komşular soluk) ≈ −3.5 dB'de kesişir ve her kanalın kendi Nyquist sınırı ±75 MHz (kesikli) tam bu kesişimden geçer → 75–100 MHz'lik geçiş bandı kanalın içine katlanır (kırmızı taralı). Altta iki kat aşırı örnekleme (M = 8, kanal fs 300 MSPS): aynı yanıtlar, Nyquist sınırı ±150 MHz stopband'de → katlanma yok; 600 MHz'de güçlü bir emiterin (mavi ok) 450 ve 750 MHz kanallarına sızıntısı prototipin stopband seviyesinde (≈ −90 dB, kırmızı ok). Kanal kenarındaki bir sinyal (altın ok, 675 MHz) iki kanalda eşit görünür.|kaydir}}
+{{svg:g-171-kanal-yanitlari.svg|Kanal yanıtları ve overlap (hesaplanmış, prototip 128 tap Kaiser). Üstte kritik örnekleme (M = K = 16, kanal fs 150 MSPS): kanal yanıtları (mavi, komşular soluk) ≈ −3.8 dB'de kesişir ve her kanalın kendi Nyquist sınırı ±75 MHz (kesikli) tam bu kesişimden geçer → 75–100 MHz'lik geçiş bandı kanalın içine katlanır (kırmızı taralı). Altta iki kat aşırı örnekleme (M = 8, kanal fs 300 MSPS): aynı yanıtlar, Nyquist sınırı ±150 MHz stopband'de → katlanma yok; 600 MHz'de güçlü bir emiterin (mavi ok) 450 ve 750 MHz kanallarına sızıntısı prototipin stopband seviyesinde (≈ −94 dB, kırmızı ok). Kanal kenarındaki bir sinyal (altın ok, 675 MHz) iki kanalda eşit görünür.|kaydir}}
 
-Üç kavram şekilden okunur. **Bindirme (overlap)**: aşırı örneklenmiş
+Üç kavram şekilden okunur. **Overlap** (bindirme): aşırı örneklenmiş
 kanallar −3 dB'de kesişir; kenardaki bir sinyal iki kanalda birden, her
 birinde 3 dB düşük görünür. Bu bir hata değil, tasarımdır — ama tespit
-mantığı bunu bilmelidir, yoksa iki PDW üretir. **Komşu kanal sızıntısı**:
+mantığı bunu bilmelidir, yoksa iki PDW üretir. **Komşu kanal sızıntısı** (adjacent-channel leakage):
 güçlü bir emiter komşu kanallarda prototip filtrenin stopband seviyesinde
 görünür; stopband 60 dB ise 70 dB dinamik aralıktaki bir emiter iki komşu
 kanalda "sahte" sinyal üretir. Kanal filtresinin stopband'i, almacın anlık
@@ -104,7 +104,7 @@ dinamik aralığına göre seçilir ({{bolum:9}}: ADC SFDR'ı ile aynı mertebe)
 **Kanal kenarı kaybı**: kritik örneklemede kenardaki sinyal hem zayıflar hem
 katlanır; frekans ölçümü ({{bolum:25}}) kanal kenarında güvenilmez olur.
 
-## Kavram: "tavşan kulakları" (rabbit ears)
+## Kavram: rabbit ears ("tavşan kulakları")
 
 Darbenin kendisi dar bantlı olabilir; **kenarları** değildir. 50 ns'lik bir
 yükselme, spektrumda onlarca MHz'e yayılan bir geçici bileşen üretir
@@ -136,7 +136,7 @@ o: N_p = 128, f_s = 2400 MSPS → T_kulak ≈ **53 ns**: kulaklar minimum PW fil
 o: t_r = {{s:sinyal.rise_time_ns}} ns, Δf = 130 MHz (komşu merkeze) → L ≈ 20·log10(1/(π·50e−9·130e6)) ≈ **−26 dB**; 10 ns kenarla ≈ −12 dB. Kenar ne kadar keskinse kulak o kadar güçlüdür; 60 dB üstünde SNR ile gelen bir darbenin kulakları komşu kanalın eşiğini rahatça aşar.
 :::
 
-Çözüm **kanal hakemliğidir** (channel arbitration): aynı zaman diliminde
+Çözüm **channel arbitration**'dır (kanal hakemliği): aynı zaman diliminde
 birden fazla kanal tetiklendiğinde yalnızca en güçlü kanalın tespiti kabul
 edilir, komşularının tespiti ya bastırılır ya da "komşu" bayrağıyla
 işaretlenir. Üç yaygın kural: (1) **yerel maksimum**: kanal k ancak PA_k >
@@ -147,7 +147,7 @@ tutarlılığı**: komşu kanalın kendi ince frekans ölçümü ({{bolum:25}})
 kanalın dışını gösteriyorsa sinyal ona ait değildir. Kural (1) FPGA'da
 ucuzdur (üç kanalın zarfını karşılaştıran bir devre) ve kulakların çoğunu
 keser; (2) ve (3) PDW üretim FSM'inde ({{bolum:26}}) ya da PS'te uygulanır.
-Bindirme de aynı hakemlikle çözülür: kenardaki sinyal iki kanalda eşit
+Overlap de aynı arbitration ile çözülür: kenardaki sinyal iki kanalda eşit
 göründüğünde yerel maksimum kuralı birini seçer, ideal olarak iki kanalın
 genlik oranından kesirli kanal konumu (dolayısıyla daha iyi frekans)
 türetilir.
@@ -172,18 +172,18 @@ israf eder).
 kullanılamaz), 16 noktalı FFT her saatte bir kez (≈ 32 kompleks çarpım ≈ 100
 DSP, ya da radix-4 ile daha az) → toplam ≈ 230 DSP, 16 kanal × 300 MSPS
 kompleks çıkış = 16 × 9.6 = 154 Gbps iç veri. Karşılaştır: 16 ayrı DDC ≈ 16 ×
-80 = 1280 DSP. Kanal hakemliği (yerel maksimum) her kanal için iki
+80 = 1280 DSP. Channel arbitration (yerel maksimum) her kanal için iki
 karşılaştırıcı: önemsiz. Latency: prototip grup gecikmesi 64 giriş örneği
 (27 ns) + FFT pipeline ≈ 20 saat + polyphase pipeline; latency tablosuna
 yazılır.
 ::yazilim::
 Yazılımcının gördüğü: kanal sayısı ve aralığı sentez sabitidir; register
 olarak kanal başına **enable** biti (bilinen bozucu bantları kapatmak),
-kanal başına CFAR parametreleri ({{bolum:23}}), hakemlik modu (kapalı / yerel
+kanal başına CFAR parametreleri ({{bolum:23}}), arbitration modu (kapalı / yerel
 maksimum / bayrakla) ve PDW'deki **kanal alanı** ({{bolum:26}}). Kanal
 numarasından RF'e dönüş: f_RF = LO + IF ± (f_k − f_NCO,ref + f_ince) — evriklik
 dahil ({{bolum:15}}'teki `bb_to_rf` mantığı kanal merkezine uygulanır).
-Hakemlik kapalıysa PDW akışında kulakları PS'te elemen gerekir: aynı TOA'lı
+Arbitration kapalıysa PDW akışında kulakları PS'te elemen gerekir: aynı TOA'lı
 komşu kanal PDW'leri, PW ≈ T_kulak, PA farkı > 20 dB.
 :::
 
@@ -199,7 +199,7 @@ typedef struct { uint8_t kanal; uint16_t pa_q; uint32_t toa; uint32_t pw; } tesp
 #define KULAK_PW_MAX 20      /* örnek @300 MSPS ≈ 67 ns: T_kulak üstü küçük pay */
 #define KULAK_PA_DB  20      /* komşu, ana kanaldan bu kadar düşükse kulak */
 
-/* Yerel maksimum hakemliği + kulak filtresi.
+/* Yerel maksimum arbitration'ı + kulak filtresi.
  * pa_db[k]: aynı zaman diliminde her kanalın zarf tepe değeri (dB, yoksa -999).
  * Dönüş: kabul edilen kanal maskesi (bit k = kanal k gerçek tespit). */
 uint32_t kanal_hakem(const int16_t *pa_db, const tespit_t *t, int n)
@@ -235,16 +235,16 @@ PDW akışında, güçlü bir emiterin her darbesine eşlik eden, komşu kanalda
 emiter" olarak raporlar; operatör 150 MHz ötede hayalet bir radar görür.
 Teşhis: hayaletin TOA'sı gerçek darbenin başlangıcına (ve ikincisi bitişine)
 örnek hassasiyetinde eşittir; PW'si prototip filtre uzunluğu mertebesindedir;
-PA farkı sabittir. Çözüm: FPGA'da yerel maksimum hakemliği; PS'te aynı zaman
+PA farkı sabittir. Çözüm: FPGA'da yerel maksimum arbitration'ı; PS'te aynı zaman
 dilimli komşu kanal PDW'lerini birleştirme. Çözüm **olmayan**: minimum PW'yi
 60 ns'ye çekmek — gerçek kısa darbeleri de kaybedersin.
 :::
 
 :::tuzak Kanal kenarındaki sinyal iki PDW, iki frekans
 675 MHz'deki bir emiter (4. ve 5. kanalın tam sınırı) iki kanalda birden
-3 dB düşük görünür; hakemlik kapalıysa her darbe için iki PDW üretilir,
+3 dB düşük görünür; arbitration kapalıysa her darbe için iki PDW üretilir,
 biri "kanal 4, 600 + 75 MHz", diğeri "kanal 5, 750 − 75 MHz" — aynı frekans,
-iki kayıt. Hakemlik açık ama eşitlik kuralı yoksa (`>` yerine `>=`) hiçbiri
+iki kayıt. Arbitration açık ama eşitlik kuralı yoksa (`>` yerine `>=`) hiçbiri
 tespit etmez: emiter **kaybolur**. Teşhis: emiter frekansı tam kanal
 sınırındaysa ve PDW sayısı ikiye katlanıyor ya da sıfırlanıyorsa. Çözüm:
 eşitlikte küçük indisi seç (deterministik), ideal olarak iki kanalın genlik
@@ -269,18 +269,18 @@ kanal sayısını azalt, örneklemeyi değil.
 - Kritik örnekleme (M = K) geçiş bandını kanalın içine katlar; iki kat aşırı örnekleme (M = K/2) katlamaz, komşular −3 dB'de kesişir; EH'de standart ikincisidir.
 - Komşu kanal sızıntısı prototipin stopband'i kadardır; stopband ADC SFDR'ı ile eşleşmeli.
 - Rabbit ears: darbe kenarlarının geniş bant spektrumu + komşu filtrenin geçici rejimi → darbenin başında ve sonunda komşu kanallarda ≈ N_p/fs süreli, −20 … −40 dB'lik sahte darbeler; güçlü emiterde eşiği aşar.
-- Kanal hakemliği: yerel maksimum (FPGA, ucuz), zaman örtüşmesi ve frekans tutarlılığı (FSM/PS); eşitlikte deterministik seçim, ideal olarak genlik oranından kesirli kanal.
+- Channel arbitration (kanal hakemliği): yerel maksimum (FPGA, ucuz), zaman örtüşmesi ve frekans tutarlılığı (FSM/PS); eşitlikte deterministik seçim, ideal olarak genlik oranından kesirli kanal.
 :::
 
 :::kendini-sina
 S: fs = 2400 MSPS, K = 16, M = 8. Bir kanalın aralığı, çıkış hızı ve aşırı örnekleme oranı nedir; kanal 6'nın merkezi baseband'e göre nerededir (referans NCO 600 MHz)?
 C: Aralık 150 MHz, çıkış 300 MSPS, OSR = 2. Kanal 6'nın merkezi 900 MHz; referans DDC kanalı (4, 600 MHz) ile arasında +300 MHz — evriklik düzeltilmişse IF'in 300 MHz altına, düzeltilmemişse üstüne karşılık gelir ({{bolum:15}}).
 S: Prototip filtrenin stopband'i 55 dB. 75 dB dinamik aralıklı bir ortamda ne olur?
-C: 75 dB'lik güçlü emiter komşu kanallarda −55 dB'de, yani gürültü tabanının 20 dB üstünde görünür: iki komşu kanal aynı darbeyi tespit eder, hakemlik yoksa üç PDW. Stopband ADC'nin SFDR'ı ve almacın anlık dinamik aralığı ile eşleşmeli (≈ 75–80 dB); bu prototip tap sayısını artırır ({{bolum:16}} Kaiser kestirimi).
+C: 75 dB'lik güçlü emiter komşu kanallarda −55 dB'de, yani gürültü tabanının 20 dB üstünde görünür: iki komşu kanal aynı darbeyi tespit eder, arbitration yoksa üç PDW. Stopband ADC'nin SFDR'ı ve almacın anlık dinamik aralığı ile eşleşmeli (≈ 75–80 dB); bu prototip tap sayısını artırır ({{bolum:16}} Kaiser kestirimi).
 S: Rabbit ear'ları elemek için minimum PW'yi 100 ns yapmak neden kötü bir fikirdir; ne yapılmalı?
-C: Kulakların PW'si filtre uzunluğuyla belirlenir (≈ 50 ns) ve gerçek kısa darbeler de bu aralıktadır; minimum PW'yi yükseltmek gerçek darbeleri kaybettirir. Doğru çözüm, kulağın ayırt edici özelliklerini kullanan hakemliktir: komşu kanalda aynı anda çok daha güçlü bir tespit varsa (yerel maksimum değilse) ve PW ≈ T_kulak ise eleme.
+C: Kulakların PW'si filtre uzunluğuyla belirlenir (≈ 50 ns) ve gerçek kısa darbeler de bu aralıktadır; minimum PW'yi yükseltmek gerçek darbeleri kaybettirir. Doğru çözüm, kulağın ayırt edici özelliklerini kullanan arbitration'dır: komşu kanalda aynı anda çok daha güçlü bir tespit varsa (yerel maksimum değilse) ve PW ≈ T_kulak ise eleme.
 S: Kanal kenarında (675 MHz) bir emiter iki kanalda eşit güçte görünüyor. Bu bilgiden frekansı nasıl iyileştirirsin?
-C: Kanal yanıtları bilindiğinden iki kanalın genlik oranı, sinyalin iki merkez arasındaki kesirli konumunu verir (eşitlik → tam ortada, 675 MHz). Bu, kanal aralığından çok daha ince bir kaba frekanstır; ince ölçüm ({{bolum:25}}) seçilen kanalın içinde tamamlar. Aynı bilgi hakemliğin hangi kanalı seçtiğinden bağımsız olarak PDW'ye yazılmalıdır.
+C: Kanal yanıtları bilindiğinden iki kanalın genlik oranı, sinyalin iki merkez arasındaki kesirli konumunu verir (eşitlik → tam ortada, 675 MHz). Bu, kanal aralığından çok daha ince bir kaba frekanstır; ince ölçüm ({{bolum:25}}) seçilen kanalın içinde tamamlar. Aynı bilgi arbitration'ın hangi kanalı seçtiğinden bağımsız olarak PDW'ye yazılmalıdır.
 :::
 
 :::kopru

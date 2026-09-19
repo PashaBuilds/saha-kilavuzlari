@@ -54,7 +54,7 @@ karşılaştırma bit ile değil NSD ve SFDR ile yapılır.
 Dört özelliğin bir arada olduğu cihaza direct RF-sampling ADC deriz:
 
 1. **Geniş analog giriş bant genişliği** — birkaç GHz'ten 8–10 GHz'e; ADC'nin
-   giriş katı (tampon + örnekle-tut) RF frekansını fs'ten bağımsız olarak
+   giriş katı (giriş tamponu ve **track-and-hold**, T/H — örnekle-tut devresi) RF frekansını fs'ten bağımsız olarak
    *görebilir*. Bu satır olmadan bant geçiren örnekleme ({{bolum:8}}) mümkün
    değildir.
 2. **GSPS sınıfı örnekleme** — 1 ile 10 GSPS arası, içeride time-interleaved
@@ -66,7 +66,7 @@ Dört özelliğin bir arada olduğu cihaza direct RF-sampling ADC deriz:
    AXI-Stream (RFSoC); 30–100 Gbps'lik ham veriyi FPGA'ya taşımanın tek
    pratik yolu ({{bolum:11}}).
 
-{{svg:g-101-direct-rf-adc-blok.svg|Jenerik direct RF-sampling ADC iç yapısı. Analog (altın): giriş tamponu, örnekle-tut, M yollu time-interleaved çekirdekler. Sayısal (mavi): interleave kalibrasyonu, kanal başına DDC (NCO + kompleks mixer + filtre + decimation), bypass yolu (tam hız reel örnek), JESD204 verici ve lane'ler. Saat (gri kesikli): giriş saati, çip içi PLL/bölücü, SYSREF. Kontrol (yeşil): SPI/register — kalibrasyon, NCO FTW, decimation, JESD parametreleri.}}
+{{svg:g-101-direct-rf-adc-blok.svg|Jenerik direct RF-sampling ADC iç yapısı. Analog (altın): giriş tamponu (buffer), T/H (track-and-hold), M yollu time-interleaved çekirdekler. Sayısal (mavi): interleave kalibrasyonu, kanal başına DDC (NCO + kompleks mixer + filtre + decimation), bypass yolu (tam hız reel örnek), JESD204 verici ve lane'ler. Saat (gri kesikli): giriş saati, çip içi PLL/bölücü, SYSREF. Kontrol (yeşil): SPI/register — kalibrasyon, NCO FTW, decimation, JESD parametreleri.}}
 
 Bu cihaz RF zincirinden **neyi siler**: mixer'ı, LO sentezleyicisini, IF
 filtresini ve IF yükseltecini — yani {{bolum:6}}'nın frekans planındaki
@@ -94,9 +94,9 @@ o: 57 dB için σ_j ≤ 10^(−2.85)/(2π · 9.55e9) ≈ **19 fs**; giriş BW �
 
 ## Kavram: avantajlar ve bedeller
 
-**Kazandıkların.** Frekans çevikliği: LO'yu kilitlemeden, tek bir NCO
+**Kazandıkların.** Frekans çevikliği (frequency agility): LO'yu kilitlemeden, tek bir NCO
 register'ıyla ({{bolum:14}}) bantta istediğin yere anında gidersin —
-taramalı EH almacı için büyük fark. Anlık bant: fs/2'lik bölgenin tamamı
+taramalı EH almacı için büyük fark. Anlık bant (instantaneous bandwidth): fs/2'lik bölgenin tamamı
 (2.5 GHz) aynı anda "görünür", DDC kanalları ({{bolum:17}}) bunu paylaşır;
 çoklu emiter ve POI ({{bolum:7}}) kazanır. Kanal eşleşmesi: yön bulma için
 birden çok kanalın kazanç/faz eşleşmesi analog IF zincirinde sıcaklıkla
@@ -134,7 +134,7 @@ içindir.
 | Aile | Çözünürlük | Maks fs | Analog giriş BW | Arayüz | Entegre DSP | Doğrulama |
 |---|---|---|---|---|---|---|
 | AMD Zynq UltraScale+ RFSoC, RF-ADC Gen 1 (ZU2xDR sınıfı) | ≈ 12 bit | ≈ 4 GSPS (ikili) / ≈ 2 GSPS (dörtlü) tile | ≈ 4 GHz | çip içi AXI-Stream → PL | mixer/NCO, decimation, QMC, eşik, MTS | ≈, doğrulanmadı — bkz. DS926 / PG269 |
-| AMD RFSoC RF-ADC Gen 3 (ZU4xDR sınıfı) | ≈ 14 bit | ≈ 5 GSPS | ≈ 6 GHz | çip içi AXI-Stream → PL | Gen 1 + geniş decimation seçenekleri, DSA, çok tile senkron | ≈, doğrulanmadı — bkz. DS926 / PG269 |
+| AMD RFSoC RF-ADC Gen 3 (ZU4xDR sınıfı) | ≈ 14 bit | ≈ 5 GSPS | ≈ 6 GHz | çip içi AXI-Stream → PL | Gen 1 + geniş decimation seçenekleri, DSA (digital step attenuator), çok tile senkron | ≈, doğrulanmadı — bkz. DS926 / PG269 |
 | TI ADC12DJxx00 serisi (ör. ADC12DJ3200 / 5200) | ≈ 12 bit | ≈ 3.2–5.2 GSPS ikili, ≈ 6.4–10.4 GSPS tekli | ≈ 8 GHz | JESD204B / 204C | DDC modları, NCO'lar | ≈, doğrulanmadı — bkz. datasheet |
 | TI ADCxxRF serisi (ör. ADC32RF4x) | ≈ 14 bit | ≈ 3 GSPS ikili | ≈ 3–4 GHz | JESD204B | ikili DDC, NCO, decimation | ≈, doğrulanmadı — bkz. datasheet |
 | ADI AD92xx RF ADC'ler (ör. AD9208, AD9213) | ≈ 14 bit (AD9208) / ≈ 12 bit (AD9213) | ≈ 3 GSPS ikili / ≈ 10 GSPS tekli | ≈ 6–9 GHz | JESD204B | DDC, NCO, decimation (AD9208) | ≈, doğrulanmadı — bkz. datasheet |
@@ -150,7 +150,7 @@ Converter" sürücüsü) verir. Sayısal almaç için ikinci yol çekicidir çü
 {{bolum:11}}'in arayüz ve senkronizasyon derdinin büyük kısmı silikon
 içinde çözülmüştür; bedeli, ADC'yi FPGA'dan bağımsız seçememektir.
 
-{{svg:g-102-rfsoc-tile.svg|RFSoC RF-ADC tile yapısı, jenerik gösterim. Bir tile içinde birden çok RF-ADC bloğu; her blokta ADC çekirdeği, eşik/QMC düzeltme, NCO'lu kompleks mixer, decimation, FIFO ve PL'ye AXI-Stream çıkışı (saat başına N örnek, 16 bit sözcük). Tile ortak kaynakları: giriş saati, çip içi PLL, SYSREF ve çok tile senkron. PS, RF Data Converter sürücüsüyle AXI-Lite üzerinden NCO, decimation, eşik ve kalibrasyonu yapılandırır. Blok sayısı ve adlar nesle göre değişir.}}
+{{svg:g-102-rfsoc-tile.svg|RFSoC RF-ADC tile yapısı, jenerik gösterim. Bir tile içinde birden çok RF-ADC bloğu; her blokta ADC çekirdeği, eşik dedektörü, QMC (quadrature modulator correction — I/Q ofset/kazanç düzeltmesi), NCO'lu kompleks mixer, decimation, FIFO ve PL'ye AXI-Stream çıkışı (saat başına N örnek, 16 bit sözcük). Tile ortak kaynakları: giriş saati, çip içi PLL, SYSREF ve çok tile senkron. PS, RF Data Converter sürücüsüyle AXI-Lite üzerinden NCO, decimation, eşik ve kalibrasyonu yapılandırır. Blok sayısı ve adlar nesle göre değişir.}}
 
 Referans senaryo bir RFSoC'a taşınsaydı: IF 1.8 GHz RF0 girişine,
 fs {{s:adc.fs_msps}} MSPS, tile mixer'ı NCO = {{s:ddc.nco_mhz}} MHz,
@@ -167,8 +167,8 @@ etmek için ikinci yol, kaynak için birinci yol.
 RF tasarımcı için direct sampling, mixer yerine **bant seçici filtre +
 saat** problemidir. Filtre: geçirme bandı hedef Nyquist bölgesinin
 ortasında, komşu bölgeleri (özellikle image'ın düşeceği simetrik frekansı)
-en az 60 dB bastıran; X-bantta bu genellikle boşluk (cavity) ya da
-dalga kılavuzu filtresidir. Saat: hedef SNR için jitter bütçesi
+en az 60 dB bastıran; X-bantta bu genellikle cavity ya da
+waveguide (dalga kılavuzu) filtresidir. Saat: hedef SNR için jitter bütçesi
 (9.5 GHz, 57 dB → ≈ 19 fs) yazılır, saat çipi faz gürültüsü maskesi ve
 kart üstü dağıtım buna göre seçilir; ADC'nin aperture jitter'ı tek başına
 bütçeyi aşıyorsa hedef SNR gerçekçi değildir ve ya IF'li hibrit mimariye
@@ -179,9 +179,9 @@ belirleyen şeydir.
 FPGA tasarımcısı için fark, verinin geldiği kapıdadır. Ayrı ADC'de JESD204
 alıcı IP'si, SYSREF yakalama ve deterministik gecikme yapılandırması
 ({{bolum:11}}) senin sorumluluğundadır; RFSoC'ta üreticinin IP'si
-AXI-Stream verir. Her iki durumda da veri SSR'dır: 2.4 GSPS reel ya da
-300 MSPS I/Q, fabric saatinin katı olarak paralel örnek sözcükleriyle
-({{bolum:12}}). Çip içi DDC kullanıyorsan onun decimation filtrelerinin
+AXI-Stream verir. Her iki durumda da veri **SSR** (super-sample rate — fabric
+saati başına birden çok örnek, {{bolum:11}}) düzenindedir: 2.4 GSPS reel ya da
+300 MSPS I/Q, fabric saatinin katı olarak paralel örnek sözcükleriyle ({{bolum:12}}). Çip içi DDC kullanıyorsan onun decimation filtrelerinin
 geçiş bandını ve grup gecikmesini bil: TOA ölçümü ({{bolum:24}}) o gecikmeyi
 kalibre etmek zorundadır ve decimation oranı değişince gecikme değişir.
 Çok kanallı yön bulma için çip içi NCO'ların **senkron başlatılması**

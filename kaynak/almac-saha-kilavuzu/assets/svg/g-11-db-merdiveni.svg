@@ -1,5 +1,5 @@
 <svg viewBox="0 0 860 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g11">
-<title id="t-g11">dB merdiveni: −180 dBm'den +40 dBm'e düşey eksen. Solda her 10 dB'de mutlak güç (W) ve 50 Ω'daki rms gerilim; sağda kTB (−174 dBm/Hz), 2 MHz ve 300 MHz bantta gürültü tabanı, referans senaryonun MDS'i (−68.2 dBm), gelen darbe (−60 dBm), LNA çıkışı, ADC tam ölçeği (+4 dBm), 1 mW (0 dBm) ve 1 W (+30 dBm) işaretli. Sağ altta 3/6/10/20 dB ezber kartı.</title>
+<title id="t-g11">dB merdiveni: −180 dBm'den +40 dBm'e düşey eksen. Solda her 20 dB'de mutlak güç (W) ve 50 Ω'daki rms gerilim; sağda kTB (−174 dBm/Hz), 2 MHz ve 300 MHz bantta gürültü tabanı, referans senaryonun MDS'i (−68.2 dBm), gelen darbe (−60 dBm), LNA çıkışı, ADC tam ölçeği (+4 dBm), 1 mW (0 dBm) ve 1 W (+30 dBm) işaretli. Sağ altta 3/6/10/20 dB ezber kartı.</title>
 <rect x="320" y="40" width="20" height="480" fill="var(--dia-blok)" stroke="var(--line-2)"/>
 <rect x="320" y="308.8" width="20" height="211.2" class="spk-gurultu"/>
 <rect x="320" y="40" width="20" height="78.5" fill="var(--red)" opacity=".35"/>
@@ -93,20 +93,20 @@
 <text x="376" y="312.8" class="s-metin2 s-kirmizi">gürültü tabanı 300 MHz, NF 6 dB = -83.2 dBm</text>
 <line x1="340" y1="369.5" x2="370" y2="369.5" stroke="var(--ink-3)" stroke-width="1"/>
 <circle cx="340" cy="369.5" r="3" fill="var(--ink-2)"/>
-<text x="376" y="373.5" class="s-metin2">kTB · 2 MHz = -111 dBm (1 µs darbeye eşlenik bant)</text>
+<text x="376" y="373.5" class="s-metin2">kTB · 2 MHz = -111 dBm (1 µs darbenin ana lobu)</text>
 <line x1="340" y1="506.9" x2="370" y2="506.9" stroke="var(--ink-3)" stroke-width="1"/>
 <circle cx="340" cy="506.9" r="3" fill="var(--ink-2)"/>
-<text x="376" y="510.9" class="s-metin2 s-kirmizi">kTB = −174 dBm/Hz (290 K, 1 Hz)</text>
-<rect x="560" y="380" width="280" height="150" rx="6" fill="var(--dia-panel)" stroke="var(--line-2)"/>
-<text x="572" y="400" class="s-baslik">Ezber kartı</text>
-<text x="572" y="422" class="s-mono2">güç ×2</text><text x="650" y="422" class="s-mono s-vurgu">+3 dB</text>
-<text x="710" y="422" class="s-mono2">genlik ×2</text><text x="796" y="422" class="s-mono s-vurgu">+6 dB</text>
-<text x="572" y="443" class="s-mono2">güç ×4</text><text x="650" y="443" class="s-mono s-vurgu">+6 dB</text>
-<text x="710" y="443" class="s-mono2">genlik ×√2</text><text x="796" y="443" class="s-mono s-vurgu">+3 dB</text>
-<text x="572" y="464" class="s-mono2">güç ×10</text><text x="650" y="464" class="s-mono s-vurgu">+10 dB</text>
-<text x="710" y="464" class="s-mono2">genlik ×10</text><text x="796" y="464" class="s-mono s-vurgu">+20 dB</text>
-<text x="572" y="485" class="s-mono2">güç ×100</text><text x="650" y="485" class="s-mono s-vurgu">+20 dB</text>
-<text x="710" y="485" class="s-mono2">genlik ×100</text><text x="796" y="485" class="s-mono s-vurgu">+40 dB</text>
-<text x="572" y="506" class="s-mono2">güç ÷2</text><text x="650" y="506" class="s-mono s-vurgu">−3 dB</text>
-<text x="710" y="506" class="s-mono2">güç ×1000</text><text x="796" y="506" class="s-mono s-vurgu">+30 dB</text>
+<text x="376" y="510.9" class="s-metin2 s-kirmizi">kTB = −174 dBm/Hz (290 K)</text>
+<rect x="560" y="400" width="280" height="150" rx="6" fill="var(--dia-panel)" stroke="var(--line-2)"/>
+<text x="572" y="420" class="s-baslik">Ezber kartı</text>
+<text x="572" y="442" class="s-mono2">güç ×2</text><text x="650" y="442" class="s-mono s-vurgu">+3 dB</text>
+<text x="710" y="442" class="s-mono2">genlik ×2</text><text x="796" y="442" class="s-mono s-vurgu">+6 dB</text>
+<text x="572" y="463" class="s-mono2">güç ×4</text><text x="650" y="463" class="s-mono s-vurgu">+6 dB</text>
+<text x="710" y="463" class="s-mono2">genlik ×√2</text><text x="796" y="463" class="s-mono s-vurgu">+3 dB</text>
+<text x="572" y="484" class="s-mono2">güç ×10</text><text x="650" y="484" class="s-mono s-vurgu">+10 dB</text>
+<text x="710" y="484" class="s-mono2">genlik ×10</text><text x="796" y="484" class="s-mono s-vurgu">+20 dB</text>
+<text x="572" y="505" class="s-mono2">güç ×100</text><text x="650" y="505" class="s-mono s-vurgu">+20 dB</text>
+<text x="710" y="505" class="s-mono2">genlik ×100</text><text x="796" y="505" class="s-mono s-vurgu">+40 dB</text>
+<text x="572" y="526" class="s-mono2">güç ÷2</text><text x="650" y="526" class="s-mono s-vurgu">−3 dB</text>
+<text x="710" y="526" class="s-mono2">güç ×1000</text><text x="796" y="526" class="s-mono s-vurgu">+30 dB</text>
 </svg>

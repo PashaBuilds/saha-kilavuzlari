@@ -40,7 +40,8 @@ WK.kaydet("w01", function (w) {
     g.ekle("rect", { x: g.x0, y: g.y1, width: g.x1 - g.x0, height: g.py(p.fs) - g.y1, "class": "w-dolgu-kirmizi" });
     g.yatay(p.fs, "w-cizgi-altin", "0 dBFS = " + p.fs.toFixed(1) + " dBm (ADC tam ölçek)");
     g.yatay(taban, "w-cizgi-kirmizi", "gürültü tabanı " + taban.toFixed(1) + " dBm (300 MHz, NF " + nfRef + " dB)");
-    g.yatay(0, "w-cizgi-gri", "0 dBm = 1 mW");
+    g.yatay(0, "w-cizgi-gri", "");                                   // etiketi sola: sağda 0 dBFS etiketiyle çakışıyordu
+    g.metin(g.x0 + 6, g.py(0) - 4, "0 dBm = 1 mW", "w-not");
     g.yatay(-174, "w-cizgi-gri", "kTB −174 dBm/Hz");
     // seviye işareti
     var yy = g.py(p.dbm);

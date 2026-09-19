@@ -46,10 +46,10 @@
 <!-- yakalama araçları -->
 <rect x="620" y="150" width="90" height="46" rx="6" class="blok"/><text x="665" y="168" text-anchor="middle" class="s-kucuk">ILA</text><text x="665" y="182" text-anchor="middle" class="s-kucuk">JTAG, sığ, tetikli</text>
 <rect x="720" y="150" width="100" height="46" rx="6" class="blok-aktif"/><text x="770" y="168" text-anchor="middle" class="s-kucuk">snapshot buffer</text><text x="770" y="182" text-anchor="middle" class="s-kucuk">BRAM/DDR, PS okur</text>
-<rect x="830" y="150" width="90" height="46" rx="6" class="blok"/><text x="875" y="168" text-anchor="middle" class="s-kucuk">DMA akışı</text><text x="875" y="182" text-anchor="middle" class="s-kucuk">uzun kayıt, 9.6 Gbps</text>
+<rect x="828" y="150" width="104" height="46" rx="6" class="blok"/><text x="880" y="168" text-anchor="middle" class="s-kucuk">DMA akışı</text><text x="880" y="182" text-anchor="middle" class="s-kucuk">uzun kayıt, 9.6 Gbps</text>
 <path d="M657 250 V200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <path d="M770 250 V200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<path d="M875 250 V200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M880 250 V200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <!-- karşılaştırma -->
 <rect x="740" y="40" width="200" height="80" rx="8" class="blok-aktif"/>
 <text x="840" y="62" text-anchor="middle" class="s-metin" style="font-weight:700">Karşılaştırma betiği</text>

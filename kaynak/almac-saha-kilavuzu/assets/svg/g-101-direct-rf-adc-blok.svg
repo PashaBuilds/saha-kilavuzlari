@@ -61,8 +61,8 @@
 <rect x="142" y="280" width="110" height="40" rx="4" class="blok"/><text x="197.0" y="297.0" text-anchor="middle" class="s-metin2">PLL / bölücü</text><text x="197.0" y="311.0" text-anchor="middle" class="s-kucuk">çip içi (opsiyonel)</text>
 <path d="M252 300 H700" class="yol-saat"/>
 <path d="M254 300 V168" class="yol-saat" marker-end="url(#ok-saat)"/>
-<text x="142" y="336" class="s-kucuk">örnekleme saati → T/H ve çekirdekler</text>
-<text x="142" y="350" class="s-kucuk">sayısal saat → DDC, JESD</text>
+<text x="164" y="336" class="s-kucuk">örnekleme saati → T/H ve çekirdekler</text>
+<text x="164" y="350" class="s-kucuk">sayısal saat → DDC, JESD</text>
 <path d="M700 300 V212" class="yol-saat" marker-end="url(#ok-saat)"/>
 <path d="M860 300 V172" class="yol-saat" marker-end="url(#ok-saat)"/>
 <path d="M700 300 H860" class="yol-saat"/>

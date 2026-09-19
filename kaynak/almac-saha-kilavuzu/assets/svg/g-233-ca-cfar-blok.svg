@@ -1,8 +1,8 @@
 <svg viewBox="0 0 1000 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g233">
 <title id="t-g233">CA-CFAR donanım blok şeması: güç girişi 21 hücrelik gecikme hattına girer; ardıl ve öncü referans pencereleri için iki kayan toplam (yeni hücre eklenir, pencereden çıkan çıkarılır), toplamları Σ; Σ, PS'in yazdığı α register'ı (Q6.10) ile çarpılır; test hücresi N ile (kaydırma) çarpılır ve bölmesiz karşılaştırma x_CUT·N &gt; α·Σ tespit bayrağını üretir; sağda tespit sayacı ve PS register'ları yeşil</title>
 <!-- giriş -->
-<text x="14" y="52" class="s-kucuk">güç x[n]</text>
-<text x="14" y="64" class="s-mono2">20 bit · 300 MSPS</text>
+<text x="14" y="40" class="s-kucuk">güç x[n]</text>
+<text x="14" y="52" class="s-mono2">20 bit · 300 MSPS</text>
 <path d="M14 80 H70" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <!-- gecikme hattı -->
 <rect x="70" y="58" width="546" height="44" rx="5" class="blok"/>
@@ -21,7 +21,7 @@
 <text x="343" y="84" text-anchor="middle" class="s-kucuk" style="font-weight:700">CUT</text>
 <text x="382" y="84" text-anchor="middle" class="s-kucuk">G</text>
 <text x="512" y="84" text-anchor="middle" class="s-kucuk">öncü referans x[n−13]…x[n−20]</text>
-<text x="343" y="116" text-anchor="middle" class="s-mono2">x[n−10]</text>
+<text x="349" y="135" class="s-mono2 s-altin">x[n−10]</text>
 <!-- kayan toplam: ardıl -->
 <path d="M70 102 V150 H150" class="yol-sayisal" fill="none"/>
 <text x="76" y="140" class="s-kucuk s-vurgu">+ x[n] (yeni)</text>
@@ -65,7 +65,7 @@
 <rect x="650" y="150" width="80" height="34" rx="5" class="blok"/>
 <text x="690" y="166" text-anchor="middle" class="s-metin" style="font-weight:700">≪ log₂N</text>
 <text x="690" y="179" text-anchor="middle" class="s-mono2">x_CUT · 16</text>
-<text x="700" y="116" class="s-kucuk s-altin">test hücresi (gecikmiş güç)</text>
+<text x="700" y="116" class="s-kucuk s-altin">CUT (gecikmiş güç)</text>
 <!-- karşılaştırıcı -->
 <path d="M690 184 V208 H750" class="yol-sayisal" fill="none"/>
 <path d="M504 236 H750" class="yol-sayisal" fill="none"/>
@@ -97,5 +97,5 @@
 <text x="14" y="300" class="s-kucuk">Gecikme: pencere yarısı 10 hücre + pipeline ≈ 4 saat →</text>
 <text x="14" y="314" class="s-kucuk">bayrak gücün 14 hücre gerisinden gelir; TOA bu sabitle düzeltilir.</text>
 <text x="14" y="328" class="s-kucuk">Kaynak: ~1 SRL/BRAM, 3 toplayıcı, 1 DSP slice, 1 karşılaştırıcı.</text>
-<text x="14" y="366" class="s-kucuk">Renk dili: sayısal veri mavi, test hücresi altın, PS register'ları yeşil.</text>
+<text x="14" y="366" class="s-kucuk">Renk dili: sayısal veri mavi, CUT altın, PS register'ları yeşil.</text>
 </svg>

@@ -122,8 +122,9 @@
       ax = ax || {};
       var xt = ax.xTik || WK.tikler(g.xmin, g.xmax, ax.xAdet || 6, g.xlog), yt = ax.yTik || WK.tikler(g.ymin, g.ymax, ax.yAdet || 5);
       var k;
-      for (k = 0; k < xt.length; k++) { var px = g.px(xt[k]); g.ekle("line", { x1: px, y1: g.y1, x2: px, y2: g.y0, "class": "w-izgara" }); g.metin(px, g.y0 + 14, ax.xFmt ? ax.xFmt(xt[k]) : WK.kisaSayi(xt[k]), "w-etiket", "middle"); }
-      for (k = 0; k < yt.length; k++) { var py = g.py(yt[k]); g.ekle("line", { x1: g.x0, y1: py, x2: g.x1, y2: py, "class": "w-izgara" }); g.metin(g.x0 - 6, py + 3.5, ax.yFmt ? ax.yFmt(yt[k]) : WK.kisaSayi(yt[k]), "w-etiket", "end"); }
+      var xf = ax.xFmt || WK.tikFmt(xt), yf = ax.yFmt || WK.tikFmt(yt);
+      for (k = 0; k < xt.length; k++) { var px = g.px(xt[k]); g.ekle("line", { x1: px, y1: g.y1, x2: px, y2: g.y0, "class": "w-izgara" }); g.metin(px, g.y0 + 14, xf(xt[k]), "w-etiket", "middle"); }
+      for (k = 0; k < yt.length; k++) { var py = g.py(yt[k]); g.ekle("line", { x1: g.x0, y1: py, x2: g.x1, y2: py, "class": "w-izgara" }); g.metin(g.x0 - 6, py + 3.5, yf(yt[k]), "w-etiket", "end"); }
       g.ekle("rect", { x: g.x0, y: g.y1, width: g.x1 - g.x0, height: g.y0 - g.y1, "class": "w-eksen" });
       if (ax.xAd) g.metin((g.x0 + g.x1) / 2, g.H - 6, ax.xAd, "w-eksen-ad", "middle");
       if (ax.yAd) { var t = g.metin(12, (g.y0 + g.y1) / 2, ax.yAd, "w-eksen-ad", "middle"); t.setAttribute("transform", "rotate(-90 12 " + (g.y0 + g.y1) / 2 + ")"); }
@@ -153,8 +154,23 @@
       p.setAttribute("clip-path", g.klip());
       return p;
     };
-    g.dikey = function (x, kls, etiket) { var e = g.ekle("line", { x1: g.px(x), y1: g.y1, x2: g.px(x), y2: g.y0, "class": kls || "w-cizgi-gri" }); if (etiket) g.metin(g.px(x) + 3, g.y1 + 11, etiket, "w-not"); return e; };
-    g.yatay = function (y, kls, etiket) { var e = g.ekle("line", { x1: g.x0, y1: g.py(y), x2: g.x1, y2: g.py(y), "class": kls || "w-cizgi-gri" }); if (etiket) g.metin(g.x1 - 3, g.py(y) - 4, etiket, "w-not", "end"); return e; };
+    // etiketli metin: arka plan kutusu ile (çizgilerle çakışmayı azaltır)
+    g.etiket = function (x, y, t, anchor, kls) {
+      var w = 6.2 * String(t).length + 8, h = 14, x0 = anchor === "end" ? x - w : (anchor === "middle" ? x - w / 2 : x - 4);
+      g.ekle("rect", { x: x0, y: y - 11, width: w, height: h, rx: 3, fill: "var(--dia-panel)", opacity: ".85" });
+      return g.metin(x, y, t, kls || "w-not", anchor);
+    };
+    // konum: "ust" | "alt" (yatay için) — "sag" | "sol" (dikey için); varsayılan eski davranış
+    g.dikey = function (x, kls, etiket, konum) {
+      var e = g.ekle("line", { x1: g.px(x), y1: g.y1, x2: g.px(x), y2: g.y0, "class": kls || "w-cizgi-gri" });
+      if (etiket) { if (konum === "sol") g.etiket(g.px(x) - 3, g.y1 + 11, etiket, "end"); else g.etiket(g.px(x) + 3, g.y1 + 11, etiket, "start"); }
+      return e;
+    };
+    g.yatay = function (y, kls, etiket, konum) {
+      var e = g.ekle("line", { x1: g.x0, y1: g.py(y), x2: g.x1, y2: g.py(y), "class": kls || "w-cizgi-gri" });
+      if (etiket) { var yy = konum === "alt" ? g.py(y) + 12 : g.py(y) - 4; var xx = konum === "sol" ? g.x0 + 3 : g.x1 - 3; g.etiket(xx, yy, etiket, konum === "sol" ? "start" : "end"); }
+      return e;
+    };
     g.nokta = function (x, y, r, kls) { return g.ekle("circle", { cx: g.px(x), cy: g.py(y), r: r || 4, "class": kls || "w-nokta" }); };
     g.bant = function (xa, xb, kls) { var e = g.ekle("rect", { x: g.px(Math.max(xa, g.xmin)), y: g.y1, width: Math.max(0, g.px(Math.min(xb, g.xmax)) - g.px(Math.max(xa, g.xmin))), height: g.y0 - g.y1, "class": kls || "w-dolgu-altin" }); return e; };
     g._klipId = null;
@@ -176,6 +192,15 @@
     var t = [], v = Math.ceil(a / adim) * adim;
     for (; v <= b + adim * 1e-6; v += adim) t.push(Math.abs(v) < adim * 1e-6 ? 0 : v);
     return t;
+  };
+  // Tik biçimleyici: eksen değerleri makul aralıktaysa (|v| < 1e5, ≥ 1e-3) SI öneksiz, adıma göre ondalıklı yazar;
+  // aksi halde kisaSayi (SI önekli). "5m"/"1.2k" gibi yanıltıcı etiketleri önler.
+  WK.tikFmt = function (tikler) {
+    var maks = 0, adim = Infinity, k;
+    for (k = 0; k < tikler.length; k++) { maks = Math.max(maks, Math.abs(tikler[k])); if (k > 0) adim = Math.min(adim, Math.abs(tikler[k] - tikler[k - 1])); }
+    if (maks === 0 || maks >= 1e5 || (maks < 1e-3)) return WK.kisaSayi;
+    var hane = adim >= 1 ? 0 : adim >= 0.1 ? 1 : adim >= 0.01 ? 2 : 3;
+    return function (v) { return (Math.abs(v) < 1e-12 ? 0 : v).toFixed(hane); };
   };
   WK.kisaSayi = function (v) {
     var a = Math.abs(v);

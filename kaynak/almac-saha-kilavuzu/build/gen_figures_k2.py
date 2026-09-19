@@ -168,7 +168,7 @@ def g_50():
         ("lpf", "Anti-alias filtre", "fs/2 üstünü ADC'den önce keser", "kesim · durdurma bandı · grup gecikmesi"),
         ("blok", "Balun / ADC sürücü", "Tek uçludan diferansiyele, FS'e ölçekler", "dengesizlik · OIP3 · gürültü"),
     ]
-    W, H = 860, 470
+    W, H = 860, 488
     out = []
     kw, kh = 164, 200
     for i, (s, ad, islev, param) in enumerate(kartlar):
@@ -211,13 +211,13 @@ def g_51():
     xmin, xmax, ymin, ymax = 0, 6000, -110, 10
     out.append(metin(x0, y1 - 12, "1 · Geniş bakış: iki ton ve harmonikleri (yükselteç çıkışı, dBm)", "s-baslik"))
     out.append(izgara(x0, x1, y0, y1, [0, 1000, 2000, 3000, 4000, 5000, 6000], [0, -40, -80], xmin, xmax, ymin, ymax, lambda v: f"{v / 1000:g}", lambda v: f"{v:d}"))
-    out.append(cubuk(x0, x1, y0, y1, xmin, xmax, ymin, ymax, 1800, pout, "spk-sinyal", 4, "f₁, f₂ ≈ 1.8 GHz"))
+    out.append(cubuk(x0, x1, y0, y1, xmin, xmax, ymin, ymax, 1800, pout, "spk-sinyal", 4, None))
     hd2, hd3 = 2 * pout - oip3 - 6, 3 * pout - 2 * oip3 - 9.5   # kaba: HD2 ≈ IMD2 − 6 dB, HD3 ≈ IMD3 − 9.5 dB
     out.append(cubuk(x0, x1, y0, y1, xmin, xmax, ymin, ymax, 3600, hd2, "spk-image", 4, f"2f ≈ {hd2:.0f} dBm"))
     out.append(cubuk(x0, x1, y0, y1, xmin, xmax, ymin, ymax, 5400, hd3, "spk-image", 4, f"3f ≈ {hd3:.0f} dBm"))
     out.append(metin(x1, y0 + 28, "frekans (GHz)", "s-kucuk", "end"))
     out.append(kutu(x0 + (1750 - xmin) / (xmax - xmin) * (x1 - x0), y1, (100) / (xmax - xmin) * (x1 - x0), y0 - y1, "spk-filtre", 0, ' fill="none"'))
-    out.append(metin(x0 + (1800 - xmin) / (xmax - xmin) * (x1 - x0) + 12, y1 + 14, "→ panel 2", "s-kucuk s-altin"))
+    out.append(metin(x0 + (1850 - xmin) / (xmax - xmin) * (x1 - x0) + 10, y1 + 30, "f₁, f₂ ≈ 1.8 GHz → panel 2", "s-kucuk s-altin"))
     # --- panel 2: yakın spektrum 1.77–1.83 GHz
     y0, y1 = 420, 260
     xmin, xmax = 1770, 1830
@@ -243,7 +243,7 @@ def g_51():
     y0, y1 = 720, 480
     xl0, xl1 = 60, 560
     xmin, xmax, ymin, ymax = -50, 20, -100, 40
-    out.append(metin(xl0, y1 - 12, "3 · Kesişim noktası: temel bileşen eğim 1, IMD3 eğim 3; uzantıları IP3'te kesişir (kurgusal yükselteç, G = 20 dB)", "s-baslik"))
+    out.append(metin(xl0, y1 - 12, "3 · Intercept noktası: temel bileşen eğim 1, IMD3 eğim 3; uzantıları IP3'te kesişir (kurgusal yükselteç, G = 20 dB)", "s-baslik"))
     out.append(izgara(xl0, xl1, y0, y1, [-50, -40, -30, -20, -10, 0, 10, 20], [-100, -80, -60, -40, -20, 0, 20, 40], xmin, xmax, ymin, ymax, lambda v: f"{v:d}", lambda v: f"{v:d}"))
     xs = [xmin + k * 0.5 for k in range(int((xmax - xmin) / 0.5) + 1)]
     pc = ip1 + 5.87                               # 1 dB sıkışma noktasını tutturan yumuşak model
@@ -258,10 +258,10 @@ def g_51():
         return (xl0 + (x - xmin) / (xmax - xmin) * (xl1 - xl0), y0 - (y - ymin) / (ymax - ymin) * (y0 - y1))
     px, py = P(iip3, oip3)
     out.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="5" fill="var(--gold)"/>')
-    out.append(metin(px + 8, py - 6, f"IP3 (IIP3 {iip3:+.0f} dBm, OIP3 {oip3:+.0f} dBm)", "s-kucuk s-altin"))
+    out.append(metin(px - 10, py - 8, f"IP3 (IIP3 {iip3:+.0f} dBm, OIP3 {oip3:+.0f} dBm)", "s-kucuk s-altin", "end"))
     px, py = P(ip1, op1)
     out.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="5" fill="var(--gold)"/>')
-    out.append(metin(px + 8, py + 14, f"P1dB (giriş {ip1:+.0f}, çıkış {op1:+.0f} dBm)", "s-kucuk s-altin"))
+    out.append(metin(px - 10, py + 20, f"P1dB (giriş {ip1:+.0f}, çıkış {op1:+.0f} dBm)", "s-kucuk s-altin", "end"))
     out.append(metin(xl1, y0 + 28, "giriş gücü / ton (dBm)", "s-kucuk", "end"))
     out.append(metin(24, (y0 + y1) / 2, "çıkış (dBm)", "s-kucuk", "middle", f' transform="rotate(-90 24 {(y0 + y1) / 2})"'))
     # sağ: SFDR açıklaması
@@ -291,7 +291,7 @@ def g_51():
 def g_52():
     """Seviye planı: scenario.json on_uc.kaskad için sinyal / gürültü / P1dB tavanı, blok blok (hesaplanmış)."""
     K = S["on_uc"]["kaskad"]
-    B = S["ddc"]["cikis_bant_mhz"] * 1e6
+    B = 2 * S["ddc"]["cikis_bant_mhz"] * 1e6                 # ±150 MHz → 300 MHz (başlık ve metinle aynı)
     sig0 = S["sinyal"]["seviye_dbm_giris"]
     guclu0 = -20.0                                           # kurgusal güçlü emiter
     fs_dbm = S["adc"]["tam_olcek_dbm"]
@@ -334,11 +334,14 @@ def g_52():
         out.append(f'<path d="{d}" fill="none" stroke="{cls}" stroke-width="2.2"/>')
         for (x, y) in pts:
             out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.5" fill="{cls}"/>')
-        out.append(metin(pts[-1][0] - 6, pts[-1][1] - 8, f"{seri[-1]:+.0f} dBm", "s-kucuk", "end"))
+        if seri is guclu:   # altın: son nokta OP1dB etiketleriyle çakışır → bir önceki noktanın sol üstüne
+            out.append(metin(pts[-2][0] - 8, pts[-2][1] - 10, f"{seri[-1]:+.0f} dBm", "s-kucuk", "end"))
+        else:
+            out.append(metin(pts[-1][0] - 6, pts[-1][1] - 8, f"{seri[-1]:+.0f} dBm", "s-kucuk", "end"))
         out.append(metin(pts[0][0] + 6, pts[0][1] - 8, ad, "s-kucuk"))
     # gürültü etiketleri
     out.append(metin(gx[0] + 6, gy[0] + 14, f"kTB = {ktb:.1f} dBm", "s-kucuk"))
-    out.append(metin(gx[-1] - 6, gy[-1] + 14, f"{gur[-1]:.1f} dBm (NF {adim[-1][0]:.2f} + G {gkum[-1]:.0f})", "s-kucuk", "end"))
+    out.append(metin(gx[-1] - 6, gy[-1] - 8, f"{gur[-1]:.1f} dBm (NF {adim[-1][0]:.2f} + G {gkum[-1]:.0f})", "s-kucuk", "end"))
     # P1dB tavanları (çıkış) kırmızı kısa çizgi
     for i, b in enumerate(K):
         if b["ad"] in OP1DB:
@@ -347,20 +350,21 @@ def g_52():
             out.append(metin(px + 22, py + 4, f"OP1dB {OP1DB[b['ad']]:+.0f}", "s-kucuk s-kirmizi"))
     # ADC tam ölçek
     px, py = P(n - 1, fs_dbm)
-    out.append(f'<line x1="{px - 30:.1f}" y1="{py:.1f}" x2="{px + 26:.1f}" y2="{py:.1f}" stroke="var(--red)" stroke-width="2.4" stroke-dasharray="5 3"/>')
-    out.append(metin(px - 34, py + 4, f"ADC FS {fs_dbm:+g} dBm", "s-kucuk s-kirmizi", "end"))
+    out.append(f'<line x1="{px - 46:.1f}" y1="{py:.1f}" x2="{px + 26:.1f}" y2="{py:.1f}" stroke="var(--red)" stroke-width="2.4" stroke-dasharray="5 3"/>')
+    out.append(metin(px - 52, py + 4, f"ADC FS {fs_dbm:+g} dBm", "s-kucuk s-kirmizi", "end"))
     # SNR oku
     pa, pb = P(n - 1, sig[-1]), P(n - 1, gur[-1])
     out.append(f'<path d="M{pa[0] + 10:.1f} {pa[1]:.1f} V{pb[1]:.1f}" class="yol-sayisal" marker-end="url(#ok-sayisal)" marker-start="url(#ok-sayisal)"/>')
     out.append(metin(pa[0] + 14, (pa[1] + pb[1]) / 2 + 4, f"SNR {sig[-1] - gur[-1]:.1f} dB", "s-kucuk s-vurgu"))
     # taşma oku
     pg = P(n - 1, guclu[-1])
-    out.append(f'<path d="M{pg[0] - 46:.1f} {py:.1f} V{pg[1]:.1f}" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>')
-    out.append(metin(pg[0] - 50, (pg[1] + py) / 2 + 4, f"{guclu[-1] - fs_dbm:.0f} dB taşma → zayıflatıcı", "s-kucuk s-kirmizi", "end"))
+    out.append(f'<path d="M{pg[0] - 40:.1f} {py:.1f} V{pg[1]:.1f}" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>')
+    out.append(metin(pg[0] - 34, py - 20, f"{guclu[-1] - fs_dbm:.0f} dB taşma", "s-kucuk s-kirmizi"))
+    out.append(metin(pg[0] - 34, py - 7, "→ zayıflatıcı", "s-kucuk s-kirmizi"))
     out.append(metin(24, (y0 + y1) / 2, "seviye (dBm)", "s-kucuk", "middle", f' transform="rotate(-90 24 {(y0 + y1) / 2})"'))
     # alt not
     iip3, _ = ip3_kaskad(K)
-    out.append(metin(x0, 480, f"Friis ile zincir NF = {adim[-1][0]:.2f} dB (bütçe: 6 dB, {{{{bolum:4}}}}). Kurgusal IP3 bütçesiyle zincir IIP3 ≈ {iip3:.1f} dBm; tavan ADC tam ölçeği: giriş {fs_dbm - gkum[-1]:+.0f} dBm.".replace("{{{{bolum:4}}}}", "Bölüm 4"), "s-kucuk"))
+    out.append(metin(x0, 480, f"Friis ile zincir NF = {adim[-1][0]:.2f} dB (bütçe: 6 dB, Bölüm 4). Kurgusal IP3 bütçesiyle zincir IIP3 ≈ {iip3:.1f} dBm; tavan ADC tam ölçeği: giriş {fs_dbm - gkum[-1]:+.0f} dBm.", "s-kucuk"))
     out.append(metin(x0, 498, "Gri: gürültü tabanı (kTB + NF_kum + G_kum). Mavi: −60 dBm referans darbe. Altın: −20 dBm güçlü emiter — son katlar sıkışmadan ADC dolar.", "s-kucuk"))
     out.append(metin(x0, 516, "Kırmızı çizgiler: blokların çıkış P1dB'si; sinyal bu çizgiye 3 dB'den fazla yaklaşınca IMD3 hızla büyür (eğim 3).", "s-kucuk"))
     out.append(metin(x0, 534, "Anlık dinamik aralık ≈ ADC FS girişi (−36 dBm) − MDS (−83 dBm) ≈ 47 dB; zayıflatıcı adımlarıyla 'toplam' dinamik aralık 30 dB daha genişler.", "s-kucuk"))
@@ -395,7 +399,7 @@ def g_60():
     xmin, xmax, ymin, ymax = 0, 18, 0, 1
     py0 = 250
     paneller = [
-        ("① Girişler: RF ve LO (frekans ekseninde iki çizgi)", [(RF, 1.0, "spk-sinyal", "RF 9.4"), (LO, 0.9, "spk-gurultu", "LO 7.6")], None),
+        ("① Girişler: RF ve LO (frekans ekseninde iki çizgi)", [(RF, 0.92, "spk-sinyal", "RF 9.4"), (LO, 0.78, "spk-gurultu", "LO 7.6")], None),
         ("② Çarpım: fark (RF−LO) ve toplam (RF+LO) — her biri ½ genlik; gerçek mixer'da LO ve RF sızıntısı da çıkışta görünür", [(RF - LO, 0.5, "spk-sinyal", "IF = 1.8"), (RF + LO, 0.5, "spk-sinyal", "17.0"), (LO, 0.25, "spk-image", "LO sızıntısı"), (RF, 0.12, "spk-image", "RF sızıntısı")], None),
         ("③ IF filtresi fark ürününü seçer; toplam ürünü, LO ve RF sızıntısı bastırılır", [(RF - LO, 0.5, "spk-sinyal", "IF 1.8"), (RF + LO, 0.06, "spk-image", ""), (LO, 0.04, "spk-image", ""), (RF, 0.03, "spk-image", "")], (IF - 0.3, IF + 0.3)),
     ]
@@ -421,7 +425,7 @@ def g_61():
     RF, LO, IF = S["sinyal"]["rf_ghz"], S["on_uc"]["lo_ghz"], S["on_uc"]["if_ghz"]
     IMG = S["on_uc"]["image_ghz"]
     LOh, IMGh = RF + IF, RF + 2 * IF
-    W, H = 900, 620
+    W, H = 900, 640
     x0, x1 = 60, W - 20
     xmin, xmax, ymin, ymax = 0, 14, 0, 1
     out = []
@@ -460,7 +464,7 @@ def g_61():
     # panel 2: IF ekseni
     y1p, y0p = 220, 320
     ximin, ximax = 0, 4
-    out.append(metin(x0, y1p - 10, "② IF ekseninde ikisi de 1.8 GHz'e düşer — mixer'dan sonra ayırt edilemezler; image düz kalır, sinyal düz kalır (low-side: evrilme yok)", "s-baslik"))
+    out.append(metin(x0, y1p - 10, "② IF ekseninde ikisi de 1.8 GHz'e düşer — mixer'dan sonra ayırt edilemezler (low-side: ikisi de düz, evrilme yok)", "s-baslik"))
     out.append(izgara(x0, x1, y0p, y1p, [0, 1, 2, 3, 4], [], ximin, ximax, ymin, ymax, lambda v: f"{v:d}"))
     out.append(asim_sekil(IF, +1, x0, x1, y0p, y1p, ximin, ximax, 0.8, "spk-sinyal"))
     out.append(asim_sekil(IF + 0.02, +1, x0, x1, y0p, y1p, ximin, ximax, 0.25, "spk-image"))
@@ -483,7 +487,8 @@ def g_61():
     y1p, y0p = 530, 600
     out.append(izgara(x0, x1, y0p, y1p, [0, 1, 2, 3, 4], [], ximin, ximax, ymin, ymax, lambda v: f"{v:d}"))
     out.append(asim_sekil(IF, -1, x0, x1, y0p, y1p, ximin, ximax, 0.8, "spk-sinyal"))
-    out.append(metin(pif + 60, y1p + 20, "LO − RF = 1.8: rampa ters → spektrum evrik; LFM'in yönü, I/Q işareti tersine döner (INV biti)", "s-kucuk s-vurgu"))
+    out.append(metin(pif + 60, y1p + 20, "LO − RF = 1.8: rampa ters → spektrum evrik;", "s-kucuk s-vurgu"))
+    out.append(metin(pif + 60, y1p + 36, "LFM'in yönü ve I/Q işareti tersine döner (INV biti ile düzeltilir)", "s-kucuk s-vurgu"))
     out.append(metin(x1, y0p + 28, "IF ekseni (GHz)", "s-kucuk", "end"))
     yaz("g-61", "image-problemi", W, H,
         "Image problemi: (1) low-side LO 7.6 GHz ile RF 9.4 GHz ve image 5.8 GHz LO'nun iki yanında eşit uzaklıkta, preselector bandı 8–11 GHz altın kesikli; (2) IF ekseninde ikisi de 1.8 GHz'e düşer; (3) high-side LO 11.2 GHz ile image 13.0 GHz'e taşınır ve IF spektrumu evrilir — asimetrik rampa şekli ters döner.", out)
@@ -510,27 +515,30 @@ def g_62():
         a, b = k * fs / 2, (k + 1) * fs / 2
         cls = "spk-sinyal" if k == 1 else "spk-gurultu"
         out.append(f'<rect x="{X(a):.1f}" y="{y0p - 14}" width="{X(b) - X(a):.1f}" height="14" class="{cls}" opacity="{0.35 if k == 1 else 0.15}"/>')
-        out.append(metin((X(a) + X(b)) / 2, y0p - 4, f"NZ{k + 1}", "s-kucuk", "middle"))
+        out.append(metin(X(a) + 5, y0p - 4, f"NZ{k + 1}", "s-kucuk"))
     # preselector
     out.append(f'<path d="M{X(8) - 40:.1f} {y0p} L{X(8):.1f} {y1p + 12} H{X(11):.1f} L{X(11) + 40:.1f} {y0p}" class="spk-filtre" fill="none"/>')
     out.append(metin(X(11) + 6, y1p + 24, "preselector 8–11", "s-kucuk s-altin"))
     # IF bandı
     out.append(f'<rect x="{X(IF - bw):.1f}" y="{y1p + 40}" width="{X(IF + bw) - X(IF - bw):.1f}" height="{y0p - y1p - 40}" class="spk-sinyal" opacity=".18"/>')
-    out.append(metin(X(IF), y1p + 36, f"IF bandı {IF:g} ± {bw:g}", "s-kucuk s-vurgu", "middle"))
+    out.append(metin(X(IF) + 8, y1p + 84, f"IF {IF:g} ± {bw:g} GHz", "s-kucuk s-vurgu"))
+    out.append(metin(X(IF) + 8, y1p + 110, "ADC fs 2.4 GSPS: NZ2 →", "s-kucuk s-vurgu"))
+    out.append(metin(X(IF) + 8, y1p + 124, f"alias {alias:g} GHz, evrik", "s-kucuk s-vurgu"))
+    out.append(metin(X(RF) + 6, y1p + 30, f"RF {RF:g}", "s-kucuk s-vurgu"))
+    out.append(metin(X(LO) - 6, y1p + 30, f"LO {LO:g}", "s-kucuk", "end"))
     # çizgiler
-    cizgiler = [(RF, 0.9, "spk-sinyal", f"RF {RF:g}"), (LO, 0.95, "spk-gurultu", f"LO {LO:g}"), (IMG, 0.7, "spk-image", f"image {IMG:g}"),
-                ((RF + LO) / 2, 0.55, "spk-image", "½-IF 8.5"), (IF, 0.9, "spk-sinyal", f"IF {IF:g}"), (alias, 0.5, "spk-gurultu", f"alias {alias:g} (evrik)"),
+    cizgiler = [(RF, 0.9, "spk-sinyal", None), (LO, 0.95, "spk-gurultu", None), (IMG, 0.65, "spk-image", f"image {IMG:g}"),
+                ((RF + LO) / 2, 0.55, "spk-image", "½-IF 8.5"), (IF, 0.9, "spk-sinyal", None), (alias, 0.5, "spk-gurultu", f"alias {alias:g} (evrik)"),
                 (RF + LO, 0.0, "spk-image", "")]
     for f, g, cls, et in cizgiler:
         if f <= xmax:
             out.append(cubuk(x0, x1, y0p, y1p, xmin, xmax, ymin, ymax, f, g, cls, 5, et))
     # oklar: RF→IF (fark), IF→alias
-    out.append(f'<path d="M{X(RF):.1f} {y1p + 6} Q{(X(RF) + X(IF)) / 2:.1f} {y1p - 30} {X(IF) + 4:.1f} {y1p + 6}" class="yol-analog" marker-end="url(#ok-analog)"/>')
-    out.append(metin((X(RF) + X(IF)) / 2, y1p - 8, "RF − LO = IF (düz)", "s-kucuk s-altin", "middle"))
+    out.append(f'<path d="M{X(RF):.1f} {y1p + 14} Q{(X(RF) + X(IF)) / 2:.1f} {y1p - 16} {X(IF) + 4:.1f} {y1p + 14}" class="yol-analog" marker-end="url(#ok-analog)"/>')
+    out.append(metin((X(RF) + X(IF)) / 2, y1p - 12, "RF − LO = IF (düz)", "s-kucuk s-altin", "middle"))
     out.append(f'<path d="M{X(IMG):.1f} {y1p + 40} Q{(X(IMG) + X(IF)) / 2:.1f} {y1p + 10} {X(IF) + 6:.1f} {y1p + 40}" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>')
-    out.append(metin((X(IMG) + X(IF)) / 2 + 10, y1p + 62, "LO − image = IF de! (preselector bastırır)", "s-kucuk s-kirmizi", "middle"))
+    out.append(metin((X(IMG) + X(IF)) / 2 - 14, y1p + 62, "LO − image = IF de! (preselector bastırır)", "s-kucuk s-kirmizi", "middle"))
     out.append(f'<path d="M{X(IF):.1f} {y0p - 30} Q{(X(IF) + X(alias)) / 2:.1f} {y0p - 70} {X(alias) + 4:.1f} {y0p - 30}" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
-    out.append(metin((X(IF) + X(alias)) / 2, y0p - 74, "ADC fs 2.4 GSPS: NZ2 → alias 0.6, evrik", "s-kucuk s-vurgu", "middle"))
     out.append(metin(x1, y0p + 28, "frekans (GHz)", "s-kucuk", "end"))
     # spur tablosu
     ty = 275
@@ -560,7 +568,8 @@ def g_62():
     out.append(metin(x0, 470, "Okuma: 8.5 GHz'deki bir giriş 2×2 ürünüyle (2·8.5 − 2·7.6 = 1.8) IF'e düşer — 'half-IF spur'. Preselector 8–11 GHz bandının içinde kaldığından", "s-kucuk"))
     out.append(metin(x0, 486, "yalnızca mixer'ın kendi 2×2 bastırması (tipik 50–70 dBc, doğrulanmadı) korur. 10.5 GHz'deki 2×3 ürünü de banttadır ama üçüncü mertebe LO çarpanı zayıftır.", "s-kucuk"))
     out.append(metin(x0, 502, "Image (5.8) ve 1×2 ürünü (13.4) preselector dışındadır: filtre bastırması + mixer izolasyonu yeter. Bu tablo W-05'te canlı olarak yeniden üretilir.", "s-kucuk"))
-    out.append(metin(x0, 530, "Frekans planı bir 'temiz pencere' aramasıdır: IF öyle seçilir ki image ve düşük mertebe spur'lar preselector'ın reddettiği yere düşsün, IF de ADC'nin iyi çalıştığı Nyquist bölgesine otursun.", "s-kucuk s-altin"))
+    out.append(metin(x0, 526, "Frekans planı bir 'temiz pencere' aramasıdır: IF öyle seçilir ki image ve düşük mertebe spur'lar preselector'ın reddettiği yere düşsün,", "s-kucuk s-altin"))
+    out.append(metin(x0, 542, "IF de ADC'nin iyi çalıştığı Nyquist bölgesine otursun.", "s-kucuk s-altin"))
     yaz("g-62", "frekans-plani", W, H,
         "Referans senaryonun frekans planı: RF 9.4 GHz, low-side LO 7.6 GHz, image 5.8 GHz, half-IF spur girişi 8.5 GHz, preselector 8–11 GHz, IF bandı 1.8 ± 0.15 GHz, ilk dört Nyquist bölgesi (fs 2.4 GSPS) ve IF'in 600 MHz'e evrik katlanması; altta m×n ≤ 3 mixer ürünlerinin IF'e düşürdüğü giriş frekansları tablosu.", out)
 
@@ -573,7 +582,7 @@ def anten_etiket(x, y):
 def g_70():
     out = [metin(20, 24, "M-1 · Kristal video almaç (CVR) — RF → doğrudan zarf; frekans bilgisi yok", "s-baslik")]
     z, xe = zincir([dict(sym="anten", ad="anten"), dict(sym="bpf", ad="geniş BPF", alt="2–18 GHz"), dict(sym="amp", ad="RF yükselteç", alt="(isteğe bağlı)"),
-                    dict(sym="diyot", ad="kristal dedektör", alt="kare-yasa"), dict(sym="lpf", ad="video filtre", alt="~MHz"),
+                    dict(sym="diyot", ad="kristal dedektör", alt="square-law"), dict(sym="lpf", ad="video filtre", alt="~MHz"),
                     dict(sym="amp", ad="log video amp", alt="60–70 dB"), dict(sym="cmp", ad="eşik", alt="→ darbe var/yok", cikis="sayisal")], 20, 60)
     out.append(z)
     out.append(ok(xe, 80, xe + 30, 80, "sayisal"))
@@ -588,7 +597,7 @@ def g_71():
     out = [metin(20, 24, "M-2 · Süperheterodin (taramalı, çift dönüşüm) — dar pencere, yüksek hassasiyet", "s-baslik")]
     z, xe = zincir([dict(sym="anten", ad="anten"), dict(sym="bpf", ad="preselector", alt="ayarlı YIG"), dict(sym="amp", ad="LNA"),
                     dict(sym="mixer", ad="mixer 1"), dict(sym="bpf", ad="IF₁ filtre", alt="yüksek IF"), dict(sym="mixer", ad="mixer 2"),
-                    dict(sym="bpf", ad="IF₂ filtre", alt="dar, ~MHz"), dict(sym="amp", ad="IF amp / log"), dict(sym="diyot", ad="dedektör", cikis="analog")], 20, 60, 92)
+                    dict(sym="bpf", ad="IF₂ filtre", alt="dar, ~MHz"), dict(sym="amp", ad="IF amp / log"), dict(sym="diyot", ad="dedektör", alt="video → eşik", cikis="analog")], 20, 60, 92)
     out.append(z)
     # LO'lar
     out.append(sym("lo", 296, 130, "LO₁ (sentezleyici)", "taramalı"))
@@ -598,8 +607,7 @@ def g_71():
     out.append(sym("reg", 140, 130, "tarama kontrolü"))
     out.append(ok(200, 150, 296, 150, "kontrol"))
     out.append(ok(170, 130, 170, 100, "kontrol"))
-    out.append(ok(xe, 80, xe + 26, 80, "analog"))
-    out.append(metin(xe - 40, 118, "video → eşik", "s-kucuk"))
+    out.append(ok(xe, 80, xe + 30, 80, "analog"))
     out.append(kutu(20, 200, 820, 44, "blok", 6, ' opacity=".8"'))
     out.append(metin(30, 218, "Anlık bant IF₂ filtresi kadar dardır; bandı LO₁ ile taramak gerekir → POI düşer. Karşılığında en iyi hassasiyet ve seçicilik, temiz dinamik aralık.", "s-kucuk"))
     out.append(metin(30, 234, "İlk IF yüksek (image uzak, preselector kolay), ikinci IF düşük (dar filtre kolay): çift dönüşümün klasik gerekçesi (Bölüm 6).", "s-kucuk"))
@@ -623,8 +631,8 @@ def g_72():
     out.append(sym("mixer", 360, 110, None))
     out.append(sym("lo", 360, 175, "LO = f_RF"))
     out.append(ok(390, 175, 390, 150, "saat"))
-    out.append(kutu(440, 168, 48, 26, "blok", 4))
-    out.append(metin(464, 185, "0° / 90°", "s-mono2", "middle"))
+    out.append(kutu(292, 168, 56, 26, "blok", 4))
+    out.append(metin(320, 185, "0° / 90°", "s-mono2", "middle"))
     out.append(ok(390, 110, 390, 60, "saat", uc=False))
     out.append(metin(398, 92, "90°", "s-kucuk"))
     for yy, et in ((40, "I"), (130, "Q")):
@@ -636,22 +644,23 @@ def g_72():
         out.append(sym("adc", 660, yy - 20, f"ADC {et}", "düşük fs"))
         out.append(ok(720, yy, 760, yy, "sayisal"))
         out.append(metin(764, yy + 4, f"{et}[n]", "s-mono s-vurgu"))
-    out.append(kutu(20, 218, 820, 58, "blok", 6, ' opacity=".8"'))
-    out.append(metin(30, 236, "Image problemi yok (image = sinyalin kendisi) ama üç yeni dert: DC ofset (LO kendi kendine karışır), I/Q dengesizliği (bir 'iç image' üretir) ve LO sızıntısı.", "s-kucuk"))
-    out.append(metin(30, 252, "1/f gürültüsü baseband'de sinyalin üstüne biner. Entegre alıcılarda (tek çip) standarttır; sayısal I/Q düzeltme ile EH bantlarına da girer.", "s-kucuk"))
-    out.append(metin(30, 268, "Kırmızı olmayan iki yol da analog (altın): I ve Q ayrı ADC'lerle örneklenir — ADC hızı yalnızca sinyal bandı kadar.", "s-kucuk"))
-    yaz("g-72", "zero-if", 860, 288, "M-3 zero-IF/homodyne blok şeması: anten → BPF → LNA → iki mixer (LO = RF, 0° ve 90° faz) → baseband LPF → VGA → iki ADC → I[n] ve Q[n]. Not: image yok, ama DC ofset, I/Q dengesizliği ve LO sızıntısı.", out)
+    out.append(kutu(20, 236, 820, 58, "blok", 6, ' opacity=".8"'))
+    out.append(metin(30, 254, "Image problemi yok (image = sinyalin kendisi) ama üç yeni dert: DC ofset (LO kendi kendine karışır), I/Q dengesizliği (bir 'iç image' üretir) ve LO sızıntısı.", "s-kucuk"))
+    out.append(metin(30, 270, "1/f gürültüsü baseband'de sinyalin üstüne biner. Entegre alıcılarda (tek çip) standarttır; sayısal I/Q düzeltme ile EH bantlarına da girer.", "s-kucuk"))
+    out.append(metin(30, 286, "İki kol da ADC'ye kadar analog (altın): I ve Q ayrı ADC'lerle örneklenir — ADC hızı yalnızca sinyal bandı kadar.", "s-kucuk"))
+    yaz("g-72", "zero-if", 860, 306, "M-3 zero-IF/homodyne blok şeması: anten → BPF → LNA → iki mixer (LO = RF, 0° ve 90° faz) → baseband LPF → VGA → iki ADC → I[n] ve Q[n]. Not: image yok, ama DC ofset, I/Q dengesizliği ve LO sızıntısı.", out)
 
 
 def g_73():
-    out = [metin(20, 24, "M-4 · IFM (anlık frekans ölçer) — gecikme hattı diskriminatörü: faz farkı → frekans", "s-baslik")]
+    out = [metin(20, 24, "M-4 · IFM (anlık frekans ölçer) — gecikme hattı diskriminatörü: faz farkı → frekans", "s-baslik"), '<g transform="translate(0 16)">']
     out.append(sym("anten", 20, 60, "anten"))
     out.append(ok(80, 80, 120, 80))
     out.append(sym("limiter", 120, 60, "limiter / amp", "sabit genlik"))
     out.append(ok(180, 80, 230, 80, uc=False))
     out.append(ok(230, 80, 230, 40, uc=False)); out.append(ok(230, 80, 230, 130, uc=False))
     out.append(ok(230, 40, 300, 40)); out.append(ok(230, 130, 300, 130))
-    out.append(sym("gecikme", 300, 110, "gecikme hattı τ", "faz = 2π·f·τ"))
+    out.append(kutu(300, 110, 60, 40, "blok-analog", 4)); out.append(metin(330, 135, "τ", "s-mono", "middle"))
+    out.append(metin(330, 163, "gecikme hattı τ", "s-kucuk", "middle")); out.append(metin(330, 175, "faz = 2π·f·τ", "s-mono2", "middle"))
     out.append(kutu(300, 22, 60, 36, "blok-analog", 4)); out.append(metin(330, 44, "τ = 0", "s-mono2", "middle"))
     out.append(ok(360, 40, 420, 60, "analog", d="M360 40 L420 66")); out.append(ok(360, 130, 420, 100, "analog", d="M360 130 L420 104"))
     out.append(kutu(420, 50, 100, 70, "blok-analog", 6))
@@ -663,15 +672,16 @@ def g_73():
     out.append(kutu(670, 50, 110, 70, "blok", 6))
     out.append(metin(725, 78, "atan2 / tablo", "s-metin", "middle")); out.append(metin(725, 96, "f = φ / (2π·τ)", "s-mono2", "middle"))
     out.append(ok(780, 85, 830, 85, "sayisal")); out.append(metin(834, 89, "f", "s-mono s-vurgu"))
-    out.append(kutu(20, 176, 820, 58, "blok", 6, ' opacity=".8"'))
-    out.append(metin(30, 194, "Tek darbede (100 ns içinde) frekans verir; genlik bilgisi limiter'da atılır. Belirsizlik aralığı 1/τ: kaba (kısa τ) ve ince (uzun τ) birkaç korelatör birlikte kullanılır.", "s-kucuk"))
-    out.append(metin(30, 210, "Zayıf noktası eşzamanlı sinyal: iki darbe üst üste gelirse tek ve yanlış bir frekans okur. Tipik olarak CVR ile birlikte RWR'lerde kullanılır.", "s-kucuk"))
-    out.append(metin(30, 226, "Sayısal IFM: aynı ilke DDC çıkışında ardışık örneklerin faz farkıyla (anlık frekans) yapılır — Bölüm 25'in konusu.", "s-kucuk"))
-    yaz("g-73", "ifm", 860, 246, "M-4 IFM blok şeması: anten → limiter/yükselteç → ikiye böl → gecikme hattı τ ve gecikmesiz kol → faz korelatörü (cos φ, sin φ) → iki ADC → atan2 tablosu → frekans. Not: tek darbede frekans, eşzamanlı sinyal zayıflığı.", out)
+    out.append("</g>")
+    out.append(kutu(20, 200, 820, 58, "blok", 6, ' opacity=".8"'))
+    out.append(metin(30, 218, "Tek darbede (100 ns içinde) frekans verir; genlik bilgisi limiter'da atılır. Belirsizlik aralığı 1/τ: kaba (kısa τ) ve ince (uzun τ) birkaç korelatör birlikte kullanılır.", "s-kucuk"))
+    out.append(metin(30, 234, "Zayıf noktası eşzamanlı sinyal: iki darbe üst üste gelirse tek ve yanlış bir frekans okur. Tipik olarak CVR ile birlikte RWR'lerde kullanılır.", "s-kucuk"))
+    out.append(metin(30, 250, "Sayısal IFM: aynı ilke DDC çıkışında ardışık örneklerin faz farkıyla (anlık frekans) yapılır — Bölüm 25'in konusu.", "s-kucuk"))
+    yaz("g-73", "ifm", 860, 270, "M-4 IFM blok şeması: anten → limiter/yükselteç → ikiye böl → gecikme hattı τ ve gecikmesiz kol → faz korelatörü (cos φ, sin φ) → iki ADC → atan2 tablosu → frekans. Not: tek darbede frekans, eşzamanlı sinyal zayıflığı.", out)
 
 
 def g_74():
-    out = [metin(20, 24, "M-5 · Analog kanallaştırılmış almaç — filtre bankası: her kanal küçük bir CVR", "s-baslik")]
+    out = [metin(20, 24, "M-5 · Analog kanallaştırılmış almaç — filtre bankası: her kanal küçük bir CVR", "s-baslik"), '<g transform="translate(0 16)">']
     out.append(sym("anten", 20, 100, "anten"))
     out.append(ok(80, 120, 120, 120))
     out.append(sym("amp", 120, 100, "LNA"))
@@ -694,10 +704,11 @@ def g_74():
     out.append(kutu(700, 40, 120, 210, "blok", 6))
     out.append(metin(760, 130, "kodlayıcı /", "s-metin", "middle")); out.append(metin(760, 148, "öncelik mantığı", "s-metin", "middle")); out.append(metin(760, 170, "kanal no → f", "s-mono2", "middle"))
     out.append(ok(820, 145, 850, 145, "sayisal"))
-    out.append(kutu(20, 280, 820, 44, "blok", 6, ' opacity=".8"'))
-    out.append(metin(30, 298, "N kanal aynı anda dinler: eşzamanlı sinyal başarımı ve POI yüksek, hassasiyet kanal bandına göre (dar kanal → iyi). Bedel: N adet filtre + dedektör → hacim, güç, maliyet.", "s-kucuk"))
-    out.append(metin(30, 314, "Kanal kenarındaki sinyal iki kanalda birden görünür ('rabbit ears'); frekans doğruluğu kanal genişliğiyle sınırlı. Sayısal karşılığı M-9.", "s-kucuk"))
-    yaz("g-74", "analog-kanallastirilmis", 860, 336, "M-5 analog kanallaştırılmış almaç blok şeması: anten → LNA → güç bölücü → N paralel kanal (BPF → dedektör → video yükselteç → eşik) → kodlayıcı/öncelik mantığı → kanal numarası. Not: eşzamanlı sinyal ve POI yüksek, hacim ve maliyet yüksek.", out)
+    out.append("</g>")
+    out.append(kutu(20, 296, 820, 44, "blok", 6, ' opacity=".8"'))
+    out.append(metin(30, 314, "N kanal aynı anda dinler: eşzamanlı sinyal başarımı ve POI yüksek, hassasiyet kanal bandına göre (dar kanal → iyi). Bedel: N adet filtre + dedektör → hacim, güç, maliyet.", "s-kucuk"))
+    out.append(metin(30, 330, "Kanal kenarındaki sinyal iki kanalda birden görünür ('rabbit ears'); frekans doğruluğu kanal genişliğiyle sınırlı. Sayısal karşılığı M-9.", "s-kucuk"))
+    yaz("g-74", "analog-kanallastirilmis", 860, 352, "M-5 analog kanallaştırılmış almaç blok şeması: anten → LNA → güç bölücü → N paralel kanal (BPF → dedektör → video yükselteç → eşik) → kodlayıcı/öncelik mantığı → kanal numarası. Not: eşzamanlı sinyal ve POI yüksek, hacim ve maliyet yüksek.", out)
 
 
 def g_75():
@@ -705,19 +716,19 @@ def g_75():
     z, xe = zincir([dict(sym="anten", ad="anten"), dict(sym="amp", ad="LNA"), dict(sym="mixer", ad="mixer"), dict(sym="bpf", ad="IF filtre"),
                     dict(sym="blok", ad="dispersif gecikme", alt="SAW chirp filtre"), dict(sym="diyot", ad="dedektör"), dict(sym="cmp", ad="eşik + zaman", alt="t → f", cikis="sayisal")], 20, 60, 100)
     out.append(z)
-    out.append(metin(450, 76, "τ(f)", "s-mono2", "middle"))
+    out.append(kutu(420, 60, 60, 40, "blok-analog", 6)); out.append(metin(450, 85, "τ(f)", "s-mono2", "middle"))
     out.append(sym("lo", 200, 130, "chirp LO", "hızlı süpürme"))
     out.append(ok(230, 130, 230, 100, "saat"))
-    out.append(kutu(300, 126, 240, 48, "blok", 6, ' opacity=".9"'))
-    out.append(metin(310, 144, "LO frekansı süpürülür; dispersif hat", "s-kucuk")); out.append(metin(310, 160, "chirp'i tek darbeye sıkıştırır → tepe zamanı = frekans", "s-kucuk"))
+    out.append(kutu(300, 138, 240, 48, "blok", 6, ' opacity=".9"'))
+    out.append(metin(310, 156, "LO frekansı süpürülür; dispersif hat", "s-kucuk")); out.append(metin(310, 172, "chirp'i tek darbeye sıkıştırır → tepe zamanı = frekans", "s-kucuk"))
     out.append(ok(xe, 80, xe + 30, 80, "sayisal")); out.append(metin(xe + 34, 84, "f, PA", "s-kucuk s-vurgu"))
     # akusto-optik mini
-    out.append(kutu(20, 196, 820, 70, "blok", 6, ' opacity=".8"'))
-    out.append(metin(30, 214, "Akusto-optik (Bragg cell) almaç — tarih notu: RF sinyali bir kristalde ses dalgasına, lazer ışığı bu 'kırınım ağı'ndan frekansa orantılı açıyla saparak", "s-kucuk"))
-    out.append(metin(30, 230, "fotodedektör dizisine düşer: her piksel bir frekans kanalı. 1970–80'lerde geniş anlık bant + çok sinyal için çekiciydi; dinamik aralığı (~30–40 dB) ve", "s-kucuk"))
-    out.append(metin(30, 246, "kalibrasyon güçlüğü nedeniyle yerini sayısal FFT/kanallaştırıcıya bıraktı. Compressive almaç da aynı kaderi paylaştı: FFT, 'analog Fourier dönüşümü'nü gereksiz kıldı.", "s-kucuk"))
-    out.append(metin(30, 262, "İkisi de Fourier dönüşümünü analog yolla yapıyordu; bugün aynı işlev M-9'un içindedir.", "s-kucuk s-altin"))
-    yaz("g-75", "compressive", 860, 278, "M-6 compressive (microscan) almaç blok şeması: anten → LNA → mixer (hızlı süpürülen chirp LO) → IF filtre → dispersif gecikme hattı (SAW chirp filtre) → dedektör → eşik ve zaman ölçümü, tepe zamanı frekansa karşılık gelir. Altta akusto-optik Bragg cell almacın kısa tarih notu.", out)
+    out.append(kutu(20, 208, 820, 70, "blok", 6, ' opacity=".8"'))
+    out.append(metin(30, 226, "Akusto-optik (Bragg cell) almaç — tarih notu: RF sinyali bir kristalde ses dalgasına, lazer ışığı bu 'kırınım ağı'ndan frekansa orantılı açıyla saparak", "s-kucuk"))
+    out.append(metin(30, 242, "fotodedektör dizisine düşer: her piksel bir frekans kanalı. 1970–80'lerde geniş anlık bant + çok sinyal için çekiciydi; dinamik aralığı (~30–40 dB) ve", "s-kucuk"))
+    out.append(metin(30, 258, "kalibrasyon güçlüğü nedeniyle yerini sayısal FFT/kanallaştırıcıya bıraktı. Compressive almaç da aynı kaderi paylaştı: FFT, 'analog Fourier dönüşümü'nü gereksiz kıldı.", "s-kucuk"))
+    out.append(metin(30, 274, "İkisi de Fourier dönüşümünü analog yolla yapıyordu; bugün aynı işlev M-9'un içindedir.", "s-kucuk s-altin"))
+    yaz("g-75", "compressive", 860, 290, "M-6 compressive (microscan) almaç blok şeması: anten → LNA → mixer (hızlı süpürülen chirp LO) → IF filtre → dispersif gecikme hattı (SAW chirp filtre) → dedektör → eşik ve zaman ölçümü, tepe zamanı frekansa karşılık gelir. Altta akusto-optik Bragg cell almacın kısa tarih notu.", out)
 
 
 def g_76():
@@ -726,87 +737,95 @@ def g_76():
                     dict(sym="mixer", ad="mixer"), dict(sym="bpf", ad="IF filtre", alt="1.8 GHz"), dict(sym="amp", ad="IF amp"), dict(sym="lpf", ad="AAF"),
                     dict(sym="adc", ad="ADC", alt="2.4 GSPS", cikis="sayisal")], 20, 60, 88)
     out.append(z)
-    out.append(sym("lo", 342, 130, "LO 7.6 GHz", "PLL"))
+    out.append(sym("lo", 342, 130, None))
+    out.append(metin(408, 150, "LO 7.6 GHz", "s-kucuk")); out.append(metin(408, 163, "PLL", "s-mono2"))
     out.append(ok(372, 130, 372, 100, "saat"))
-    out.append(sym("saat", 694, 130, "örnekleme saati", "düşük jitter"))
+    out.append(sym("saat", 694, 130, None))
+    out.append(metin(760, 150, "örnekleme saati", "s-kucuk")); out.append(metin(760, 163, "düşük jitter", "s-mono2"))
     out.append(ok(724, 130, 724, 100, "saat"))
-    # sayısal devam (ikinci satır)
-    out.append(ok(xe, 80, 840, 80, "sayisal", uc=False)); out.append(ok(840, 80, 840, 200, "sayisal", uc=False)); out.append(ok(840, 200, 700, 200, "sayisal", uc=False))
-    z2, xe2 = zincir([dict(sym="mixer-d", ad="⊗ NCO", alt="600 MHz", alan="sayisal"), dict(sym="fir", ad="FIR / CIC", alan="sayisal"), dict(sym="dec", ad="↓8", alan="sayisal"),
-                      dict(sym="zarf", ad="zarf", alan="sayisal"), dict(sym="cmp", ad="CFAR", alan="sayisal"), dict(sym="fifo", ad="PDW FIFO", alan="sayisal")], 100, 180, 100)
-    # zinciri sağdan sola göstermek yerine soldan sağa çiz, giriş okunu sola bağla
+    # sayısal devam (ikinci satır): ADC çıkışı sağ kenardan aşağı, sembollerin altından sola, mixer girişine
+    out.append(ok(xe, 80, 100, 216, "sayisal", d=f"M{xe} 80 H848 V178 H60 V216 H100"))
+    z2, xe2 = zincir([dict(sym="mixer-d", alan="sayisal"), dict(sym="fir", ad="FIR / CIC", alan="sayisal"), dict(sym="dec", ad="↓8", alan="sayisal"),
+                      dict(sym="zarf", ad="zarf", alan="sayisal"), dict(sym="cmp", ad="CFAR", alan="sayisal"), dict(sym="fifo", ad="PDW FIFO", alan="sayisal")], 100, 196, 100)
     out.append(z2)
-    out.append(ok(700, 200, 100, 200, "sayisal", d="M700 200 H860 V150 H60 V200 H100"))
-    out.append(sym("nco", 100, 240, None))
-    out.append(ok(130, 240, 130, 220, "sayisal"))
-    out.append(sym("reg", 20, 240, "PS register"))
-    out.append(ok(80, 260, 100, 260, "kontrol"))
-    out.append(kutu(240, 246, 600, 30, "blok", 6, ' opacity=".8"'))
-    out.append(metin(250, 265, "Analog–sayısal sınır IF'te: ADC'den sonrası FPGA. Frekans doğruluğu NCO/FFT'den, kanal seçiciliği sayısal filtreden gelir; bant ADC'nin Nyquist bölgesi kadar.", "s-kucuk"))
-    yaz("g-76", "sayisal-if", 860, 290, "M-7 sayısal IF almaç blok şeması: anten → limiter → LNA → preselector → mixer (LO 7.6 GHz) → IF filtre 1.8 GHz → IF yükselteç → anti-alias → ADC 2.4 GSPS; sayısal tarafta NCO ile kompleks mixer → FIR/CIC → decimation ↓8 → zarf → CFAR → PDW FIFO; PS register'ları yeşil.", out)
+    out.append(ok(xe2, 216, xe2 + 36, 216, "sayisal")); out.append(metin(xe2 + 40, 220, "PDW → PS", "s-kucuk s-vurgu"))
+    out.append(sym("nco", 100, 262, "NCO 600 MHz"))
+    out.append(ok(130, 262, 130, 236, "sayisal"))
+    out.append(metin(124, 252, "kompleks mixer", "s-kucuk", "end"))
+    out.append(sym("reg", 20, 262, "PS register"))
+    out.append(ok(80, 282, 100, 282, "kontrol"))
+    out.append(kutu(250, 294, 590, 44, "blok", 6, ' opacity=".8"'))
+    out.append(metin(260, 312, "Analog–sayısal sınır IF'te: ADC'den sonrası FPGA.", "s-kucuk"))
+    out.append(metin(260, 328, "Frekans doğruluğu NCO/FFT'den, kanal seçiciliği sayısal filtreden gelir; anlık bant ADC'nin Nyquist bölgesi kadar.", "s-kucuk"))
+    yaz("g-76", "sayisal-if", 860, 348, "M-7 sayısal IF almaç blok şeması: anten → limiter → LNA → preselector → mixer (LO 7.6 GHz) → IF filtre 1.8 GHz → IF yükselteç → anti-alias → ADC 2.4 GSPS; sayısal tarafta NCO ile kompleks mixer → FIR/CIC → decimation ↓8 → zarf → CFAR → PDW FIFO; PS register'ları yeşil.", out)
 
 
 def g_77():
     out = [metin(20, 24, "M-8 · Direct RF sampling almaç — mixer yok: LNA'dan sonra doğrudan ADC, kanal seçimi tamamen sayısal", "s-baslik")]
     z, xe = zincir([dict(sym="anten", ad="anten"), dict(sym="limiter", ad="limiter"), dict(sym="amp", ad="LNA"), dict(sym="bpf", ad="Nyquist bandı BPF", alt="bölge seçici"),
-                    dict(sym="att", ad="att / AGC"), dict(sym="amp", ad="ADC sürücü"), dict(sym="adc", ad="RF ADC", alt="çok GSPS", cikis="sayisal"),
-                    dict(sym="mixer-d", ad="⊗ NCO", alan="sayisal"), dict(sym="fir", ad="DDC", alan="sayisal")], 20, 60, 92)
+                    dict(sym="att", ad="att / AGC"), dict(sym="amp", ad="ADC sürücü"), dict(sym="adc", cikis="sayisal"),
+                    dict(sym="mixer-d", alan="sayisal"), dict(sym="fir", ad="DDC", alan="sayisal")], 20, 60, 92)
     out.append(z)
+    out.append(metin(614, 113, "RF ADC", "s-kucuk")); out.append(metin(614, 125, "çok GSPS", "s-mono2"))
     out.append(sym("saat", 550, 130, "örnekleme saati", "jitter kritik"))
     out.append(ok(580, 130, 580, 100, "saat"))
     out.append(sym("nco", 664, 130, None)); out.append(ok(694, 130, 694, 100, "sayisal"))
+    out.append(metin(702, 116, "⊗ NCO", "s-kucuk"))
     out.append(ok(xe, 80, xe + 30, 80, "sayisal")); out.append(metin(xe + 34, 84, "I/Q", "s-mono s-vurgu"))
-    out.append(kutu(20, 196, 820, 74, "blok", 6, ' opacity=".8"'))
-    out.append(metin(30, 214, "Frekans planı ortadan kalkmaz, ADC'ye taşınır: hangi Nyquist bölgesi, harmonikler ve interleaving spur'ları nereye katlanır (Bölüm 8, 10). LO faz gürültüsünün yerini saat jitter'ı alır.", "s-kucuk"))
-    out.append(metin(30, 230, "Kazanç: image yok, LO sızıntısı yok, aynı ADC'den çok kanal (birden fazla NCO), anında yeniden ayar. Bedel: ADC'nin dinamik aralığı bütün bantla paylaşılır — güçlü", "s-kucuk"))
-    out.append(metin(30, 246, "tek sinyal tüm bandı doyurur; analog seçicilik yalnızca Nyquist bandı filtresi kadardır. RFSoC sınıfı çipler bu mimariyi tek yongaya sığdırır.", "s-kucuk"))
-    out.append(metin(30, 262, "Referans senaryodan farkı: mixer ve IF katları yok; 9.4 GHz doğrudan (ör. 5. Nyquist bölgesinden) örneklenir.", "s-kucuk s-altin"))
-    yaz("g-77", "direct-rf", 860, 282, "M-8 direct RF sampling almaç blok şeması: anten → limiter → LNA → Nyquist bandı seçici BPF → zayıflatıcı/AGC → ADC sürücü → çok GSPS RF ADC → NCO ile kompleks mixer → DDC → I/Q; örnekleme saati jitter kritik. Not: frekans planı ADC'ye taşınır, image ve LO sızıntısı yok.", out)
+    out.append(kutu(20, 208, 860, 90, "blok", 6, ' opacity=".8"'))
+    out.append(metin(30, 226, "Frekans planı ortadan kalkmaz, ADC'ye taşınır: hangi Nyquist bölgesi, harmonikler ve interleaving spur'ları nereye katlanır (Bölüm 8, 10).", "s-kucuk"))
+    out.append(metin(30, 242, "LO faz gürültüsünün yerini saat jitter'ı alır.", "s-kucuk"))
+    out.append(metin(30, 258, "Kazanç: image yok, LO sızıntısı yok, aynı ADC'den çok kanal (birden fazla NCO), anında yeniden ayar. Bedel: ADC'nin dinamik aralığı bütün bantla paylaşılır — güçlü", "s-kucuk"))
+    out.append(metin(30, 274, "tek sinyal tüm bandı doyurur; analog seçicilik yalnızca Nyquist bandı filtresi kadardır. RFSoC sınıfı çipler bu mimariyi tek yongaya sığdırır.", "s-kucuk"))
+    out.append(metin(30, 290, "Referans senaryodan farkı: mixer ve IF katları yok; 9.4 GHz doğrudan (ör. 5. Nyquist bölgesinden) örneklenir.", "s-kucuk s-altin"))
+    yaz("g-77", "direct-rf", 900, 310, "M-8 direct RF sampling almaç blok şeması: anten → limiter → LNA → Nyquist bandı seçici BPF → zayıflatıcı/AGC → ADC sürücü → çok GSPS RF ADC → NCO ile kompleks mixer → DDC → I/Q; örnekleme saati jitter kritik. Not: frekans planı ADC'ye taşınır, image ve LO sızıntısı yok.", out)
 
 
 def g_78():
     out = [metin(20, 24, "M-9 · Sayısal kanallaştırılmış almaç — polyphase filtre bankası + FFT: N kanal, tek ADC", "s-baslik")]
-    z, xe = zincir([dict(sym="anten", ad="anten"), dict(sym="amp", ad="LNA"), dict(sym="bpf", ad="BPF"), dict(sym="adc", ad="ADC", alt="geniş bant", cikis="sayisal")], 20, 60, 92)
+    z, xe = zincir([dict(sym="anten", ad="anten"), dict(sym="amp", ad="LNA"), dict(sym="bpf", ad="BPF"), dict(sym="adc", ad="ADC", alt="geniş bant", cikis="sayisal")], 20, 60, 80)
     out.append(z)
-    out.append(kutu(320, 30, 90, 100, "blok", 6)); out.append(metin(365, 70, "seri → paralel", "s-kucuk", "middle")); out.append(metin(365, 86, "(↓M komütatör)", "s-mono2", "middle"))
-    out.append(ok(xe, 80, 320, 80, "sayisal"))
-    out.append(kutu(440, 30, 110, 100, "blok", 6)); out.append(metin(495, 66, "polyphase", "s-metin", "middle")); out.append(metin(495, 82, "FIR bankası", "s-metin", "middle")); out.append(metin(495, 98, "E₀(z) … E_{M−1}(z)", "s-mono2", "middle"))
+    out.append(kutu(332, 30, 90, 100, "blok", 6)); out.append(metin(377, 70, "seri → paralel", "s-kucuk", "middle")); out.append(metin(377, 86, "(↓M komütatör)", "s-mono2", "middle"))
+    out.append(ok(xe, 80, 332, 80, "sayisal"))
+    out.append(kutu(452, 30, 110, 100, "blok", 6)); out.append(metin(507, 66, "polyphase", "s-metin", "middle")); out.append(metin(507, 82, "FIR bankası", "s-metin", "middle")); out.append(metin(507, 98, "E₀(z) … E_{M−1}(z)", "s-mono2", "middle"))
     for yy in (45, 65, 85, 105, 120):
-        out.append(ok(410, yy, 440, yy, "sayisal"))
-        out.append(ok(550, yy, 580, yy, "sayisal"))
-    out.append(sym("fft", 580, 60, "M-nokta FFT", "her M örnekte bir"))
+        out.append(ok(422, yy, 452, yy, "sayisal"))
+        out.append(ok(562, yy, 592, yy, "sayisal"))
+    out.append(sym("fft", 592, 60, None))
+    out.append(metin(622, 146, "M-nokta FFT", "s-kucuk", "middle")); out.append(metin(622, 158, "her M örnekte bir", "s-mono2", "middle"))
     for i, yy in enumerate((45, 65, 85, 105, 120)):
-        out.append(ok(640, yy, 690, yy, "sayisal"))
-        out.append(kutu(690, yy - 8, 70, 16, "blok", 3))
-        out.append(metin(725, yy + 4, f"kanal {i if i < 4 else 'M−1'}" if i != 3 else "⋮", "s-mono2", "middle"))
-        out.append(ok(760, yy, 790, yy, "sayisal"))
-    out.append(kutu(790, 30, 60, 100, "blok", 6)); out.append(metin(820, 74, "zarf +", "s-kucuk", "middle")); out.append(metin(820, 88, "CFAR", "s-kucuk", "middle")); out.append(metin(820, 102, "/ kanal", "s-kucuk", "middle"))
-    out.append(kutu(20, 160, 820, 74, "blok", 6, ' opacity=".8"'))
-    out.append(metin(30, 178, "M-5'in sayısal ikizi: N kanal bir kez tasarlanır, filtre şekli her kanalda birebir aynıdır (analogda imkânsız). Kanal başına hassasiyet dar banda göre, POI ≈ %100,", "s-kucuk"))
-    out.append(metin(30, 194, "eşzamanlı sinyal kanal sayısı kadar. FFT çıkışının her bin'i bir kanal; polyphase FIR, düz FFT'nin yaprak sızıntısını ve kenar 'tavşan kulaklarını' düzeltir.", "s-kucuk"))
-    out.append(metin(30, 210, "Karmaşıklığı en yüksek mimari: bellek, DSP slice ve kanal-arası mantık (aynı darbe komşu kanallarda). Bölüm 17 (kanallaştırma) ve 18 (FFT) ayrıntıyı verir.", "s-kucuk"))
-    out.append(metin(30, 226, "Referans zincirin tek kanallı DDC'si bu yapının M = 1 halidir.", "s-kucuk s-altin"))
-    yaz("g-78", "sayisal-kanallastirilmis", 860, 246, "M-9 sayısal kanallaştırılmış almaç blok şeması: anten → LNA → BPF → geniş bant ADC → seri-paralel komütatör → polyphase FIR bankası → M-nokta FFT → M kanal → kanal başına zarf ve CFAR. Not: analog filtre bankasının sayısal ikizi, en yüksek karmaşıklık.", out)
+        out.append(ok(652, yy, 700, yy, "sayisal"))
+        out.append(kutu(700, yy - 8, 70, 16, "blok", 3))
+        out.append(metin(735, yy + 4, f"kanal {i if i < 4 else 'M−1'}" if i != 3 else "⋮", "s-mono2", "middle"))
+        out.append(ok(770, yy, 796, yy, "sayisal"))
+    out.append(kutu(796, 30, 58, 100, "blok", 6)); out.append(metin(825, 74, "zarf +", "s-kucuk", "middle")); out.append(metin(825, 88, "CFAR", "s-kucuk", "middle")); out.append(metin(825, 102, "/ kanal", "s-kucuk", "middle"))
+    out.append(kutu(20, 174, 820, 74, "blok", 6, ' opacity=".8"'))
+    out.append(metin(30, 192, "M-5'in sayısal ikizi: N kanal bir kez tasarlanır, filtre şekli her kanalda birebir aynıdır (analogda imkânsız). Kanal başına hassasiyet dar banda göre, POI ≈ %100,", "s-kucuk"))
+    out.append(metin(30, 208, "eşzamanlı sinyal kanal sayısı kadar. FFT çıkışının her bin'i bir kanal; polyphase FIR, düz FFT'nin spektral sızıntısını (leakage) ve kenar 'tavşan kulaklarını' düzeltir.", "s-kucuk"))
+    out.append(metin(30, 224, "Karmaşıklığı en yüksek mimari: bellek, DSP slice ve kanal-arası mantık (aynı darbe komşu kanallarda). Bölüm 17 (kanallaştırma) ve 18 (FFT) ayrıntıyı verir.", "s-kucuk"))
+    out.append(metin(30, 240, "Referans zincirin tek kanallı DDC'si bu yapının M = 1 halidir.", "s-kucuk s-altin"))
+    yaz("g-78", "sayisal-kanallastirilmis", 860, 260, "M-9 sayısal kanallaştırılmış almaç blok şeması: anten → LNA → BPF → geniş bant ADC → seri-paralel komütatör → polyphase FIR bankası → M-nokta FFT → M kanal → kanal başına zarf ve CFAR. Not: analog filtre bankasının sayısal ikizi, en yüksek karmaşıklık.", out)
 
 
 def g_79():
     out = [metin(20, 24, "M-10 · Monobit almaç — 1 bitlik ADC + FFT: en ucuz geniş bant frekans ölçer (kavram)", "s-baslik")]
     z, xe = zincir([dict(sym="anten", ad="anten"), dict(sym="limiter", ad="limiter / amp", alt="sabit genlik"), dict(sym="bpf", ad="BPF"),
-                    dict(sym="cmp", ad="1-bit ADC", alt="işaret karşılaştırıcı", cikis="sayisal"), dict(sym="fft", ad="monobit FFT", alt="çarpımsız (±1, ±j)", alan="sayisal"),
-                    dict(sym="cmp", ad="tepe bul", alan="sayisal")], 20, 60, 110)
+                    dict(sym="cmp", cikis="sayisal"), dict(sym="fft", ad="monobit FFT", alt="çarpımsız (±1, ±j)", alan="sayisal"),
+                    dict(sym="cmp", ad="tepe bul", alan="sayisal")], 20, 60, 120)
     out.append(z)
-    out.append(sym("saat", 316, 130, "çok yüksek fs", "(≈ 2.5 GSPS+)")); out.append(ok(346, 130, 346, 100, "saat"))
+    out.append(metin(410, 125, "1-bit ADC", "s-kucuk", "middle")); out.append(metin(410, 137, "işaret karşılaştırıcı", "s-mono2", "middle"))
+    out.append(sym("saat", 300, 150, "çok yüksek fs", "(≈ 2.5 GSPS+)")); out.append(ok(330, 150, 395, 100, "saat", d="M330 150 V110 H395 V100"))
     out.append(ok(xe, 80, xe + 30, 80, "sayisal")); out.append(metin(xe + 34, 84, "f (kaba), TOA", "s-kucuk s-vurgu"))
-    out.append(kutu(20, 190, 820, 60, "blok", 6, ' opacity=".8"'))
-    out.append(metin(30, 208, "Girişin yalnızca işareti örneklenir; FFT'nin twiddle çarpanları da ±1, ±j'ye yuvarlanır → çarpma yok, çok küçük mantık, çok yüksek fs. Tek sinyalde frekans doğruluğu şaşırtıcı iyidir.", "s-kucuk"))
-    out.append(metin(30, 224, "Bedeli dinamik aralık: 1 bit, güçlü sinyalin yanındaki zayıfı yutar (~20 dB anlık DR, doğrulanmadı) ve eşzamanlı iki sinyalde güçlü olan kazanır. Genlik bilgisi yoktur.", "s-kucuk"))
-    out.append(metin(30, 240, "Kavramsal önemi: 'bit sayısı' ile 'bant genişliği' arasındaki takasın en uç noktası; IFM'in sayısal, FFT tabanlı akrabası.", "s-kucuk s-altin"))
-    yaz("g-79", "monobit", 860, 262, "M-10 monobit almaç blok şeması: anten → limiter/yükselteç → BPF → 1-bit ADC (işaret karşılaştırıcı, çok yüksek fs) → çarpımsız monobit FFT → tepe bulma → kaba frekans ve TOA. Not: çok küçük mantık, çok düşük dinamik aralık.", out)
+    out.append(kutu(20, 226, 820, 60, "blok", 6, ' opacity=".8"'))
+    out.append(metin(30, 244, "Girişin yalnızca işareti örneklenir; FFT'nin twiddle çarpanları da ±1, ±j'ye yuvarlanır → çarpma yok, çok küçük mantık, çok yüksek fs. Tek sinyalde frekans doğruluğu şaşırtıcı iyidir.", "s-kucuk"))
+    out.append(metin(30, 260, "Bedeli dinamik aralık: 1 bit, güçlü sinyalin yanındaki zayıfı yutar (~20 dB anlık DR, doğrulanmadı) ve eşzamanlı iki sinyalde güçlü olan kazanır. Genlik bilgisi yoktur.", "s-kucuk"))
+    out.append(metin(30, 276, "Kavramsal önemi: 'bit sayısı' ile 'bant genişliği' arasındaki takasın en uç noktası; IFM'in sayısal, FFT tabanlı akrabası.", "s-kucuk s-altin"))
+    yaz("g-79", "monobit", 860, 298, "M-10 monobit almaç blok şeması: anten → limiter/yükselteç → BPF → 1-bit ADC (işaret karşılaştırıcı, çok yüksek fs) → çarpımsız monobit FFT → tepe bulma → kaba frekans ve TOA. Not: çok küçük mantık, çok düşük dinamik aralık.", out)
 
 
 def g_7a():
     """Tarihsel / evrimsel harita: on yıllar × mimariler, evrim okları."""
-    W, H = 920, 470
+    W, H = 920, 512
     x0, x1 = 60, W - 20
     yillar = list(range(1940, 2030, 10))
     out = [metin(x0, 22, "Almaç mimarilerinin evrim haritası (yaklaşık on yıllar; açık literatüre göre, ± bir on yıl)", "s-baslik")]
@@ -816,21 +835,21 @@ def g_7a():
     for y in yillar:
         out.append(f'<line x1="{X(y):.1f}" y1="40" x2="{X(y):.1f}" y2="{H - 60}" class="izgara"/>')
         out.append(metin(X(y), H - 46, f"{y}", "s-mono2", "middle"))
-    # üç şerit: genlik/zaman (CVR soyu), frekans ölçüm (IFM soyu), süperhet soyu, kanallaştırma soyu
-    seritler = [("zarf soyu", 60), ("anlık frekans soyu", 140), ("süperhet soyu", 220), ("kanallaştırma soyu", 300)]
-    for ad, yy in seritler:
+    # dört şerit: zarf (CVR soyu), anlık frekans (IFM soyu), süperhet soyu (iki sıra), kanallaştırma soyu
+    seritler = [("zarf soyu", 60, 40), ("anlık frekans soyu", 140, 40), ("süperhet soyu", 220, 82), ("kanallaştırma soyu", 342, 40)]
+    for ad, yy, hh in seritler:
         out.append(metin(x0 + 4, yy - 8, ad, "s-kucuk s-altin"))
-        out.append(f'<line x1="{x0}" y1="{yy + 40}" x2="{x1}" y2="{yy + 40}" stroke="var(--line-2)" stroke-dasharray="3 5"/>')
+        out.append(f'<line x1="{x0}" y1="{yy + hh}" x2="{x1}" y2="{yy + hh}" stroke="var(--line-2)" stroke-dasharray="3 5"/>')
     kutular = [  # (id, ad, yıl_bas, şerit_y, alan, genişlik)
         ("M-1", "CVR / TRF", 1942, 60, "analog", 90),
         ("M-4", "IFM", 1957, 140, "analog", 70),
         ("M-2", "süperheterodin (taramalı)", 1945, 220, "analog", 150),
-        ("M-5", "analog kanallaştırılmış", 1968, 300, "analog", 130),
+        ("M-5", "analog kanallaştırılmış", 1968, 342, "analog", 130),
         ("M-6", "compressive · akusto-optik", 1972, 140, "analog", 150),
-        ("M-3", "zero-IF (entegre)", 1988, 220, "analog", 110),
+        ("M-3", "zero-IF (entegre)", 1988, 262, "analog", 110),
         ("M-7", "sayısal IF", 1992, 220, "sayisal", 100),
         ("M-10", "monobit", 1998, 140, "sayisal", 70),
-        ("M-9", "sayısal kanallaştırılmış", 2000, 300, "sayisal", 140),
+        ("M-9", "sayısal kanallaştırılmış", 2000, 342, "sayisal", 140),
         ("M-8", "direct RF sampling", 2012, 220, "sayisal", 110),
     ]
     poz = {}
@@ -850,10 +869,19 @@ def g_7a():
     bag("M-1", "M-4", "analog", "+ frekans")
     bag("M-2", "M-7", "sayisal", "IF'te ADC")
     bag("M-7", "M-8", "sayisal", "ADC RF'e")
-    bag("M-5", "M-9", "sayisal", "filtre bankası → FFT")
-    bag("M-6", "M-9", "sayisal", "analog Fourier → sayısal")
-    bag("M-4", "M-10", "sayisal", "1-bit FFT")
     bag("M-2", "M-3", "analog", "IF = 0")
+    # M-5 → M-9 (yatay, kutunun alt yarısına) ve M-6 → M-9 (M-5'in sağından dikey inip üst yarısına)
+    x5, y5, g5 = poz["M-5"]; x6, y6, g6 = poz["M-6"]; x9, y9, _ = poz["M-9"]
+    out.append(f'<path d="M{x5 + g5:.1f} {y9 + 24} H{x9:.1f}" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>')
+    out.append(metin((x5 + g5 + x9) / 2, y9 + 38, "filtre bankası → FFT", "s-kucuk", "middle"))
+    xd = x5 + g5 + 14
+    out.append(f'<path d="M{xd:.1f} {y6 + 34} V{y9 + 2} Q{xd:.1f} {y9 + 10} {xd + 8:.1f} {y9 + 10} H{x9:.1f}" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>')
+    out.append(metin(xd + 8, y9 - 14, "analog Fourier → sayısal", "s-kucuk"))
+    # M-4 → M-10: M-6 kutusunun üstünden dolaş
+    x4, y4, g4 = poz["M-4"]; x10, y10, _ = poz["M-10"]
+    xm = x6 + g6 / 2
+    out.append(f'<path d="M{x4 + g4:.1f} {y4 + 17} C{x4 + g4 + 40:.1f} {y4 + 17} {x6 - 30:.1f} {y6 - 12} {xm:.1f} {y6 - 12} C{x6 + g6 + 30:.1f} {y6 - 12} {x10 - 40:.1f} {y10 + 17} {x10:.1f} {y10 + 17}" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>')
+    out.append(metin(xm, y6 - 17, "1-bit FFT", "s-kucuk", "middle"))
     # sayısal sınır
     out.append(f'<rect x="{X(1990):.1f}" y="40" width="{x1 - X(1990):.1f}" height="{H - 100}" class="spk-sinyal" opacity=".06"/>')
     out.append(metin(X(1990) + 6, 52, "hızlı ADC + FPGA çağı →", "s-kucuk s-vurgu"))
@@ -872,7 +900,7 @@ def g_7b():
         ("direct RF (M-8)", 2, "ADC LNA'dan hemen sonra: mixer de sayısal"),
         ("sayısal kanallaştırılmış (M-9)", 2, "aynı sınır, ama N kanal paralel"),
     ]
-    W, H = 900, 380
+    W, H = 900, 414
     x0, cw, rh = 230, 82, 46
     out = [metin(20, 22, "Analog–sayısal sınır nereye kaydı? Aynı sekiz durak, beş mimari; kırmızı çizgi ADC'nin yeri", "s-baslik")]
     for j, d in enumerate(duraklar):
@@ -891,7 +919,8 @@ def g_7b():
     yy = 60 + 5 * (rh + 14)
     out.append(ok(x0 + 5 * cw + 10, yy, x0 + 2 * cw + 10, yy, "gurultu"))
     out.append(metin(x0 + 3.5 * cw, yy + 16, "sınır sola kaydıkça: analog blok azalır, ADC hızı ve FPGA yükü artar, esneklik ve tekrarlanabilirlik artar", "s-kucuk s-kirmizi", "middle"))
-    out.append(metin(20, H - 8, "Altın: analog durak. Mavi: sayısal durak. Her sağa-sol adım, bir analog tasarım problemini (filtre, mixer, dedektör) bir DSP problemine çevirir — bu kılavuzun Kısım III–VIII'i o problemlerdir.", "s-kucuk"))
+    out.append(metin(20, H - 22, "Altın: analog durak. Mavi: sayısal durak. Her sağa-sol adım, bir analog tasarım problemini (filtre, mixer, dedektör)", "s-kucuk"))
+    out.append(metin(20, H - 8, "bir DSP problemine çevirir — bu kılavuzun Kısım III–VIII'i o problemlerdir.", "s-kucuk"))
     yaz("g-7b", "analog-sayisal-sinir", W, H, "Analog–sayısal sınırın kayması: sekiz durak (anten, LNA/RF, mixer+IF, kanal seçimi, zarf, eşik, ölçüm, PDW) beş mimari için altın (analog) veya mavi (sayısal) kutularla; kırmızı çizgi ADC'nin yeri — CVR ve süperhette zarftan sonra, sayısal IF'te IF'te, direct RF ve sayısal kanallaştırılmışta LNA'dan hemen sonra.", out)
 
 

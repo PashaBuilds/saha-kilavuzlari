@@ -28,6 +28,16 @@ WK.kaydet("w15", function (w) {
     return out;
   }
 
+  // Yerel yardımcı: tek tonlu spektrumdan en yüksek yan lob — tepeden sağa ilk dipten sonraki en büyük değer
+  // (DSP.pencereMetrik flat-top gibi negatif katsayılı pencerelerde ana lob içindeki dalgayı yan lob sayabiliyor).
+  function yanLobOlc(sp, pk) {
+    var k = pk;
+    while (k + 1 < sp.length && sp[k + 1] <= sp[k]) k++;      // ana lobun yamacından ilk dibe in
+    var mx = -300;
+    for (var j = k + 1; j < sp.length; j++) if (sp[j] > mx) mx = sp[j];
+    return mx - sp[pk];
+  }
+
   function ciz() {
     var p = w.param;
     var beta = p.tip === "kaiser" ? p.beta : (p.tip === "chebyshev" ? p.cheb : undefined);
@@ -48,10 +58,13 @@ WK.kaydet("w15", function (w) {
     var sizinti = -300, okunan = -300;
     for (kk = k2 - 1; kk <= k2 + 1; kk++) { if (spTek[kk] > sizinti) sizinti = spTek[kk]; if (spCift[kk] > okunan) okunan = spCift[kk]; }
     var gorunur = okunan - sizinti > 3 && p.dbin > m.anaLob3dbBin;
+    var pk1 = 0; for (kk = 1; kk < N; kk++) if (spTek[kk] > spTek[pk1]) pk1 = kk;
+    // flat-top dışında çekirdek metriği (DTFT'den, bin ızgarasından bağımsız); flat-top'ta spektrumdan ölçülen değer
+    var yanLob = p.tip === "flat-top" ? yanLobOlc(spTek, pk1) : m.yanLobDb;
     // --- zaman şekli
     WK.temizle(zaman);
     var gz = WK.grafik(zaman, { W: 640, H: 170, xmin: 0, xmax: N - 1, ymin: -0.05, ymax: 1.1, kenar: { sol: 50, sag: 14, ust: 22, alt: 30 } });
-    gz.eksenler({ xAdet: 8, yAdet: 3, xAd: "örnek n", yAd: "w[n]", baslik: "Pencere — zaman şekli (katsayı ROM'u: simetrik, yarısı saklanır)", yFmt: function (v) { return v.toFixed(1); } });
+    gz.eksenler({ xAdet: 8, yAdet: 3, xAd: "örnek n", yAd: "w[n]", baslik: "Pencere — zaman şekli (katsayı ROM'u: simetrik, yarısı saklanır)", xFmt: function (v) { return v.toFixed(0); }, yFmt: function (v) { return v.toFixed(1); } });
     var xs = [], ys = [];
     for (k = 0; k < N; k += 2) { xs.push(k); ys.push(win[k]); }
     gz.alan(xs, ys, 0, "w-dolgu-altin"); gz.cizgi(xs, ys, "w-cizgi-altin");
@@ -66,7 +79,7 @@ WK.kaydet("w15", function (w) {
     gs.cizgi(fx, fy1, "w-cizgi-gri");
     gs.alan(fx, fy, -140, "w-dolgu-sinyal"); gs.cizgi(fx, fy, "w-cizgi-sinyal");
     gs.dikey(f2 / bin, gorunur ? "w-cizgi-yesil" : "w-cizgi-kirmizi", "ton 2 gerçek: " + p.a2 + " dBc");
-    gs.yatay(m.yanLobDb, "w-cizgi-kirmizi", "en yüksek yan lob " + m.yanLobDb.toFixed(1) + " dB");
+    gs.yatay(yanLob, "w-cizgi-kirmizi", "en yüksek yan lob " + yanLob.toFixed(1) + " dB");
     gs.nokta(f2 / bin, Math.max(-140, okunan), 4, "w-nokta");
     // --- sonuçlar
     var cgDb = DSP.db20(m.cg);
@@ -75,7 +88,7 @@ WK.kaydet("w15", function (w) {
       "ENBW": m.enbw.toFixed(3) + " bin (taban +" + DSP.db10(m.enbw).toFixed(2) + " dB)",
       "coherent gain": m.cg.toFixed(3) + " (" + cgDb.toFixed(2) + " dB — ölçekte telafi edilir)",
       "−3 dB ana lob": m.anaLob3dbBin.toFixed(2) + " bin",
-      "en yüksek yan lob": m.yanLobDb.toFixed(1) + " dB",
+      "en yüksek yan lob": yanLob.toFixed(1) + " dB" + (p.tip === "flat-top" ? " (spektrumdan, ilk dipten sonra; Ek D: −93*)" : ""),
       "scalloping (en kötü)": m.scallop.toFixed(2) + " dB",
       "ton 1 kaybı (bu kesir)": (-DSP.maks(spTek)).toFixed(2) + " dB",
       "ton 2 bin'inde okunan": okunan.toFixed(1) + " dBc",

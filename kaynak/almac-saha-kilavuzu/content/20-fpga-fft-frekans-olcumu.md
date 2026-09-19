@@ -157,7 +157,7 @@ Pratik çözümler: (1) **darbe FSM'i tetikli çerçeve seçimi** — zaman kolu
 darbeyi tam kapsayan en kısa 2^k çerçeve seçilir; (2) **iki paralel N** —
 kısa çerçeve (tespit/kaba frekans) ve uzun çerçeve (sürekli emiter, ince
 frekans) aynı anda; (3) **çerçeve içinde sıfırlama** — darbe dışındaki
-örnekleri sıfırla (zaman kapısı), gürültü yalnızca darbe süresinden gelsin;
+örnekleri sıfırla (zaman kapısı, time gating), gürültü yalnızca darbe süresinden gelsin;
 N uzun kalır (ince bin), kayıp yok, ama darbe sınırlarını bilmek gerekir.
 Referans tasarım (1) + (3)'ü birleştirir: FSM'in verdiği sınırlar hem kapı
 hem çerçeve seçimidir.
@@ -172,7 +172,7 @@ hem çerçeve seçimidir.
 
 ## Kavram: tepe bulma, eşikleme ve eşzamanlı sinyaller
 
-Spektrumdan PDW'ye giden yolun ilk adımı **tepe bulma**dır: her çerçevede
+Spektrumdan PDW'ye giden yolun ilk adımı **tepe bulma**dır (peak search): her çerçevede
 en büyük bin ve komşuları (interpolasyon için ±1) alınır. Tek tepe yetmez;
 aynı çerçevede birden çok emiter olabilir, bu yüzden pratikte "yerel
 maksimum + eşik üstü" bin'ler listelenir: bir bin, iki komşusundan büyükse
@@ -216,7 +216,7 @@ o: Hann, N = {{s:fft.n}}, ton bin 34.25'te (10.033 MHz): P = (−9.9, −0.4, �
 o: Jacobsen dikdörtgen: δ = 0.250 (tam). Kılavuzun periyodik Hann tanımıyla aynı ifade δ/2 verir; 2 ile çarpılır.
 :::
 
-**2. Anlık frekans (faz farkı).** Kompleks örneklerde ardışık iki örneğin
+**2. Anlık frekans (instantaneous frequency; faz farkı).** Kompleks örneklerde ardışık iki örneğin
 faz farkı frekansı verir: $f = Δφ · f_s / 2π$ ({{bolum:2}}). Darbe boyunca bu
 değerlerin ortalaması (kenarlar hariç) tek bir frekans kestirimidir; FFT
 gerekmez, zaman kolunda darbe FSM'i açıkken hesaplanır. Avantajı çözünürlük
@@ -225,7 +225,7 @@ SNR'da atan2 gürültüsünün hızla büyümesi (faz gürültüsü SNR ile öl�
 bin'ler gibi "toplamaz") ve aynı anda iki sinyal varsa anlamsız bir karışım
 vermesi. Kılavuz çekirdeğinde `DSP.anlikFrekans`.
 
-**3. Sıfır geçişi.** Reel IF sinyalinde sıfır geçişleri sayılır: T sürede M
+**3. Sıfır geçişi (zero crossing).** Reel IF sinyalinde sıfır geçişleri sayılır: T sürede M
 geçiş → f ≈ M/(2T). Anlık frekansın reel, kaba hâli; IFM (instantaneous
 frequency measurement) almaçlarının ({{bolum:7}}) sayısal karşılığıdır.
 Sayısal almaçta I/Q varsa faz farkı her zaman daha iyidir; sıfır geçişi,

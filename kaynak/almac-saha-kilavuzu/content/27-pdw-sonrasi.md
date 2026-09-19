@@ -72,7 +72,7 @@ belli süre darbe gelmezse (anten taraması bittiğinde, ya da emiter sustuğund
 periyodik inip çıkması emiterin **anten tarama periyodunu** verir — PDW'nin
 0.25 dB'lik PA adımı bunun için yeter, ama kalibrasyon kayması bunu bozmaz
 (göreli ölçüm). AOA'nın zamanla değişimi platform hareketiyle birleşince
-emiterin **konumunu** verir (yön kesiştirme); bu noktada PDW'nin TOA'sı
+emiterin **konumunu** verir (yön kesiştirme — triangulation); bu noktada PDW'nin TOA'sı
 mutlak zamana bağlı olmalıdır ({{bolum:25}}, PPS).
 
 **Tanımlama**, kaydı bir **kütüphaneyle** eşlemektir: bilinen emiter
@@ -89,7 +89,7 @@ dışındadır ve açık literatürde de yalnızca ilke düzeyinde bulunur.
 ## Yazılım PDW'yi nasıl tüketir
 
 PS tarafında tipik bir yapı üç katmandır. **Alma katmanı** ({{bolum:26}}'daki
-döngü): DMA halkasından blok kopya, SEQ/DROP kontrolü, parse; PDW'ler zaman
+döngü): DMA ring buffer'ından blok kopya, SEQ/DROP kontrolü, parse; PDW'ler zaman
 sıralı bir kuyruğa girer. **Ayrıştırma katmanı**: kısa bir pencere (onlarca
 ms) üzerinde kümeleme ve PRI analizi; mevcut kayıtlara eşleşen PDW'ler
 doğrudan kayda eklenir (öngörü: bir sonraki darbe TOA + PRI'de beklenir — bu,
@@ -112,7 +112,7 @@ Interception and Analysis of Radar Signals*** — PRI türleri, deinterleaving,
 tarama analizi ve parametre ölçümünün ELINT gözüyle bütünü; **Tsui, *Digital
 Techniques for Wideband Receivers*** — bu kılavuzun almaç tarafını çok daha
 derin ve matematiksel anlatır (özellikle anlık frekans ölçümü ve çok sinyalli
-ortam). Radar tarafının kendi işlemesi (eşleşik filtre, Doppler) için
+ortam). Radar tarafının kendi işlemesi (eşlenik filtre — matched filter, Doppler) için
 **Richards**; LPI radarlar ve onları yakalamanın zorluğu için **Pace**.
 Sonraki iki bölüm bu kılavuzun içinde kalır: {{bolum:28}} bütün zinciri tek
 tabloda toplar, {{bolum:29}} bozulduğunda nereden bakılacağını gösterir.

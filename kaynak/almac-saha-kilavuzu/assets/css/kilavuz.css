@@ -440,16 +440,19 @@ figure.zincir figcaption { font-size: 12px; color: var(--ink-3); margin-top: 4px
 .formul-karti .fk-ornek p { margin: 0 0 .4em; }
 .formul-karti .fk-ornek code, .formul-karti .fk-ornek .f-inline { font-family: "Cambria Math", Cambria, serif; font-size: 15.5px; background: none; border: none; padding: 0; }
 /* formül mini-dili */
-.f .kesir { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .2em; }
-.f .kesir > span:first-child { border-bottom: 1px solid currentColor; padding: 0 .3em; }
-.f .kesir > span:last-child { padding: 0 .3em; }
-.f .kok { display: inline-block; border-top: 1px solid currentColor; padding: 0 .2em; margin-left: .05em; }
+.f .kesir, .f-inline .kesir { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .2em; }
+.f .kesir > span:first-child, .f-inline .kesir > span:first-child { border-bottom: 1px solid currentColor; padding: 0 .3em; }
+.f .kesir > span:last-child, .f-inline .kesir > span:last-child { padding: 0 .3em; }
+.f .kok, .f-inline .kok { display: inline-block; border-top: 1px solid currentColor; padding: 0 .2em; margin-left: .05em; }
 .f .kok::before { content: ""; }
-.f .kok-isaret { font-size: 1.15em; vertical-align: -.05em; }
+.f .kok-isaret, .f-inline .kok-isaret { font-size: 1.15em; vertical-align: -.05em; }
 .f sup, .f sub { font-size: .7em; }
 .f .op { padding: 0 .25em; }
 .f-inline { font-family: "Cambria Math", Cambria, "Times New Roman", Georgia, serif; font-size: 1.05em; }
 .f-inline sup, .f-inline sub { font-size: .72em; }
+
+table.formul-dizini .f-inline { font-size: 15px; white-space: nowrap; }
+table.formul-dizini .f-inline .kesir { font-size: .9em; }
 
 /* ============================================================ MATLAB ↔ FPGA */
 .matlab-fpga { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 1.6em 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: 14.5px; }

@@ -97,6 +97,9 @@ def seyrelt(xs, ys, x0, x1, xmin, xmax):
 
 
 def path_from(xs, ys, x0, x1, y0, y1, xmin, xmax, ymin, ymax):
+    # x aralığı dışındaki noktalar atılır (panel dışına taşma olmasın)
+    cift = [(x, y) for x, y in zip(xs, ys) if xmin <= x <= xmax]
+    xs, ys = [c[0] for c in cift], [c[1] for c in cift]
     xs, ys = seyrelt(xs, ys, x0, x1, xmin, xmax)
     d = []
     for k, (x, y) in enumerate(zip(xs, ys)):
@@ -155,8 +158,16 @@ def g_142():
         sx = px0 + (xs[spur[1]] - xmin) / (xmax - xmin) * (px1 - px0)
         sy = y0 - (spur[0] - ymin) / (ymax - ymin) * (y0 - y1)
         sag = sx > (px0 + px1) / 2
+        # etiket: spur kestirim çizgisine yakınsa altına, değilse (gürültü tabanı üstünde) üstüne; arka plan kutusuyla
+        ust = (spur[0] - kest) < -6
+        ty = (sy - 9) if ust else (sy + 14)
+        met = f"en büyük spur {spur[0]:.0f} dBc"
+        tw = len(met) * 5.8 + 6
+        tx = (sx - 8) if sag else (sx + 8)
+        rx = (tx - tw + 2) if sag else (tx - 3)
+        out.append(f'<rect x="{rx:.1f}" y="{ty - 11:.1f}" width="{tw:.0f}" height="14" rx="2" fill="var(--dia-panel)" opacity=".9"/>')
         out.append(f'<circle cx="{sx:.1f}" cy="{sy:.1f}" r="4" fill="var(--gold)"/>'
-                   f'<text x="{(sx - 8) if sag else (sx + 8):.1f}" y="{sy + 14:.1f}" text-anchor="{"end" if sag else "start"}" class="s-kucuk s-altin">en büyük spur {spur[0]:.0f} dBc</text>')
+                   f'<text x="{tx:.1f}" y="{ty:.1f}" text-anchor="{"end" if sag else "start"}" class="s-kucuk s-altin">{met}</text>')
         out.append(f'<text x="{px1}" y="{y0 + 28}" text-anchor="end" class="s-kucuk">frekans (MHz) · dBFS</text>')
     out.append("</svg>")
     (SVG / "g-142-faz-kirpma-spektrum.svg").write_text("\n".join(out), encoding="utf-8")

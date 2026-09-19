@@ -10,7 +10,8 @@
 <path d="M240.0 100.0 L258.0 100.0" class="yol-analog" marker-end="url(#ok-analog)"/>
 <use href="#sym-bpf" x="260" y="80" width="60" height="40"/><text x="290.0" y="133" text-anchor="middle" class="s-kucuk">preselector</text>
 <path d="M320.0 100.0 L338.0 100.0" class="yol-analog" marker-end="url(#ok-analog)"/>
-<use href="#sym-mixer" x="340" y="80" width="60" height="40"/><text x="370.0" y="133" text-anchor="middle" class="s-kucuk">mixer</text>
+<use href="#sym-mixer" x="340" y="80" width="60" height="40"/>
+<text x="370" y="74" text-anchor="middle" class="s-kucuk">mixer</text>
 <path d="M400.0 100.0 L418.0 100.0" class="yol-analog" marker-end="url(#ok-analog)"/>
 <use href="#sym-bpf" x="420" y="80" width="60" height="40"/><text x="450.0" y="133" text-anchor="middle" class="s-kucuk">IF filtre</text>
 <path d="M480.0 100.0 L498.0 100.0" class="yol-analog" marker-end="url(#ok-analog)"/>
@@ -18,7 +19,8 @@
 <path d="M560.0 100.0 L578.0 100.0" class="yol-analog" marker-end="url(#ok-analog)"/>
 <use href="#sym-bpf" x="580" y="80" width="60" height="40"/><text x="610.0" y="133" text-anchor="middle" class="s-kucuk">AAF</text>
 <path d="M640.0 100.0 L658.0 100.0" class="yol-analog" marker-end="url(#ok-analog)"/>
-<use href="#sym-adc" x="660" y="80" width="60" height="40"/><text x="690.0" y="133" text-anchor="middle" class="s-kucuk">ADC 2.4 GSPS</text>
+<use href="#sym-adc" x="660" y="80" width="60" height="40"/>
+<text x="690" y="74" text-anchor="middle" class="s-kucuk">ADC 2.4 GSPS</text>
 <path d="M720.0 100.0 L738.0 100.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <use href="#sym-fft" x="740" y="80" width="60" height="40"/><text x="770.0" y="133" text-anchor="middle" class="s-kucuk">FPGA / DDC</text>
 <use href="#sym-lo" x="340" y="140" width="60" height="30"/>
@@ -49,7 +51,8 @@
 <path d="M560.0 250.0 L578.0 250.0" class="yol-analog" marker-end="url(#ok-analog)"/>
 <use href="#sym-bpf" x="580" y="230" width="60" height="40"/><text x="610.0" y="283" text-anchor="middle" class="s-kucuk">AAF</text>
 <path d="M640.0 250.0 L658.0 250.0" class="yol-analog" marker-end="url(#ok-analog)"/>
-<use href="#sym-adc" x="660" y="230" width="60" height="40"/><text x="690.0" y="283" text-anchor="middle" class="s-kucuk">RF ADC ≈5 GSPS</text>
+<use href="#sym-adc" x="660" y="230" width="60" height="40"/>
+<text x="690" y="224" text-anchor="middle" class="s-kucuk">RF ADC ≈5 GSPS</text>
 <path d="M720.0 250.0 L738.0 250.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <use href="#sym-fft" x="740" y="230" width="60" height="40"/><text x="770.0" y="283" text-anchor="middle" class="s-kucuk">çip içi DDC</text>
 <use href="#sym-saat" x="660" y="290" width="60" height="30"/>

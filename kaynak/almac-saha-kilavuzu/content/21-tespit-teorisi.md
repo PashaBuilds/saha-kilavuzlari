@@ -73,7 +73,7 @@ kuyruğun ne kadar hızlı söndüğü — Pfa'yı belirler. O şekli bilmemiz g
 {{bolum:15}} ve {{bolum:16}}'da DDC'nin bu gürültüyü kompleks I/Q'ya taşıdığını
 görmüştük. Sonuç: I ve Q'nun her biri sıfır ortalamalı, aynı **σ** standart
 sapmalı, birbirinden bağımsız Gauss gürültüsüdür. Tespit için I ile Q'ya ayrı
-ayrı bakılmaz; **zarf** $r = sqrt{I^2 + Q^2}$ ya da **güç** $r^2 = I^2 + Q^2$
+ayrı bakılmaz; **zarf** (envelope) $r = sqrt{I^2 + Q^2}$ ya da **güç** $r^2 = I^2 + Q^2$
 kullanılır ({{bolum:22}} nedenini anlatır). İki bağımsız Gauss'un karekök-kareler
 toplamı **Rayleigh** dağılımıdır; karesi (güç) **üstel** (exponential)
 dağılımdır. Üstel dağılımın güzelliği, kuyruk olasılığının tek satırlık kapalı
@@ -114,7 +114,7 @@ Eşiği kaydırdıkça Pfa ile Pd birlikte değişir. Bu çifti bir grafiğe koy
 Characteristic — almaç çalışma karakteristiği). Eğri üzerindeki her nokta
 farklı bir eşiktir; eğrinin kendisi SNR'a bağlıdır.
 
-{{svg:g-211-roc-ailesi.svg|ROC eğri ailesi: tek darbe, bilinmeyen fazlı sinyal (Swerling 0), zarf dedektörü. Her eğri bir SNR; eğri üzerinde ilerlemek eşiği değiştirmektir. Altın nokta referans senaryo: Pfa = 10⁻⁶, SNR = 13.2 dB → Pd = 0.90; aynı Pfa'da 11.2 dB yalnızca Pd = 0.50 verir. Köşegen Pd = Pfa, "yazı-tura" çizgisidir.}}
+{{svg:g-211-roc-ailesi.svg|ROC eğri ailesi: tek darbe, bilinmeyen fazlı sinyal (Swerling 0), square-law / zarf dedektörü. Her eğri bir SNR; eğri üzerinde ilerlemek eşiği değiştirmektir. Altın nokta referans senaryo: Pfa = 10⁻⁶, SNR = 13.2 dB → Pd = 0.90; aynı Pfa'da 11.2 dB yalnızca Pd = 0.50 verir. Köşegen Pd = Pfa, "yazı-tura" çizgisidir.}}
 
 ROC'un öğrettiği disiplin **Neyman-Pearson** ölçütüdür: *önce* kabul
 edilebilir Pfa'yı seç, *sonra* o Pfa'yı veren eşiği hesapla, Pd ne çıkarsa
@@ -187,8 +187,8 @@ kararı 10⁵ kat daha sık alır. Aynı "kabul edilebilir yanlış alarm/s" iç
 almacının Pfa'sı beş mertebe daha küçük olmak zorundadır — ya da kararı
 seyreltmelisin. Seyreltmenin yolları sonraki bölümlerde geliyor: video
 filtre ile L örneği tek karara indirmek ({{bolum:22}}), minimum darbe genişliği
-ve histerezis ile tek örneklik aşımları reddetmek ({{bolum:23}}), M-of-N
-doğrulama. Her biri f_karar'ı düşürür ve aynı Pfa'da FAR'ı azaltır; hepsinin
+ve histerezis (hysteresis — açma/kapama çift eşiği) ile tek örneklik aşımları
+reddetmek ({{bolum:23}}), M-of-N doğrulama. Her biri f_karar'ı düşürür ve aynı Pfa'da FAR'ı azaltır; hepsinin
 bedeli zaman çözünürlüğü ya da kısa darbelere körlüktür.
 
 Bir de "bağımsız" sözcüğüne dikkat: DDC filtresi ({{bolum:16}}) çıkışta
@@ -247,7 +247,7 @@ Register haritası kurgusal ve öğreticidir; birimlere bak, adreslere değil.
 #include <stdint.h>
 #include <math.h>
 
-/* Kare-yasa (güç) dedektörü için eşik. Pfa → eşik / ortalama gürültü gücü
+/* Square-law (güç) dedektörü için eşik. Pfa → eşik / ortalama gürültü gücü
  * oranı: -ln(Pfa). p_ort_lsb2: gürültü gücü kestirimi (I²+Q² ortalaması), LSB². */
 static uint32_t esik_lsb2(double pfa, double p_ort_lsb2)
 {

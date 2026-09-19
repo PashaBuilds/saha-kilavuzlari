@@ -174,7 +174,7 @@ bandı sor: hangi bant genişliğinde?
 
 DFT'nin referansları çerçevede *tam sayıda* periyot tamamlar. Girişteki ton
 da tam sayıda periyot tamamlıyorsa (frekansı Δf'nin tam katıysa) tek bir
-bin'e tam oturur ve diğer bin'ler sıfır okur: **koherent örnekleme**. Ama
+bin'e tam oturur ve diğer bin'ler sıfır okur: **koherent örnekleme** (coherent sampling). Ama
 gerçek sinyaller bin ızgarasını bilmez. 10.000 MHz'lik bir ton 1024'lük
 çerçevede 34.13 periyot tamamlar; DFT bu çerçeveyi periyodik varsaydığı için
 çerçevenin sonu ile başı arasında bir **sıçrama** görür ve sıçrama geniş bant
@@ -203,7 +203,7 @@ o: 10.000 MHz ton, bin 34.13 → δ = 0.13 → L = 0.24 dB. En kötü durum δ =
 
 ## Kavram: zero-padding ve ortalama — ne verir, ne vermez
 
-**Sıfır doldurma** (zero-padding): N örneğin sonuna N örnek daha sıfır ekleyip
+**Zero-padding** (sıfır doldurma): N örneğin sonuna N örnek daha sıfır ekleyip
 2N'lik FFT alırsan bin sayısı ikiye katlanır ve bin aralığı yarıya iner. Bu,
 çözünürlük artışı *değildir*: gözlem süresi hâlâ T'dir, ana lob hâlâ 2/T
 genişliğindedir, birbirine 1/T'den yakın iki ton hâlâ ayrılmaz. Kazandığın
@@ -228,7 +228,7 @@ kullanılır, tespit için değil.
 - **Referans senaryo** preset'inde bin genişliğinin 293 kHz, gözlem süresinin 3.41 µs ve teorik tabanın −120.4 dBFS olduğunu doğrula. "Gerçek SNR" 92 dB iken "tepe − taban" ≈ 120 dB okunur: fark 30.1 − 1.76 = 28.3 dB'lik işlem kazancıdır, SNR değil.
 - **N'i 4 katla** preset'ine geç (N = 4096): taban 6 dB inip −126.4 dBFS'e gitsin, tepe 0 dBFS'te dursun, "gerçek SNR" satırı değişmesin. Sonra N = 256 yap: taban 6 dB yükselsin.
 - **Sızıntı (dikdörtgen)** preset'inde 10 MHz tonun bin 34.13'e düştüğünü, yakınlaştırma panelinde komşu bin'lerin −13, −18, −21 dB'lerde dolduğunu ve tepenin 0.24 dB düştüğünü gör. "Bin merkezine oturt" kutusunu işaretle: komşular −150 dB'ye çöksün (koherent). Pencereyi Hann yap: sızıntı 3 bin'e sıkışsın, taban 1.76 dB yükselsin.
-- **Yakın iki ton** preset'inde 0.5 MHz (1.7 bin) uzaklıktaki −6 dBFS ton ana lobun içinde erisin; sıfır doldurmayı 8× yapsan da ayrılmasın (çözünürlük gözlem süresidir). N = 4096 yap: bin 73 kHz, iki ton ayrılsın.
+- **Yakın iki ton** preset'inde 0.5 MHz (1.7 bin) uzaklıktaki −6 dBFS ton ana lobun içinde erisin; zero-padding'i 8× yapsan da ayrılmasın (çözünürlük gözlem süresidir). N = 4096 yap: bin 73 kHz, iki ton ayrılsın.
 - **64 ortalama** preset'inde "taban saçılımı σ" 5.6 dB'den 0.7 dB'ye insin ama "FFT tabanı ölçülen" −120 dBFS'te kalsın: ortalama seviyeyi değil varyansı düşürür.
 :::
 
@@ -249,7 +249,7 @@ kompleks çarpma (3–4 DSP slice) ve iki kompleks toplamadır. N = 1024 için 1
 kademe; pipelined mimaride her kademe kendi kelebeği ve gecikme belleğiyle
 sürekli akış işler, örnek başına bir saat. Her kademede genlik en fazla 2
 katına (1 bit) çıkabildiği için 16 bitlik giriş 26 bite büyür; ölçekleme
-takvimi ya da blok kayan nokta bunu yönetir. Twiddle katsayıları ($e^{−j2πk/N}$)
+takvimi (scaling schedule) ya da blok kayan nokta (block floating point) bunu yönetir. Twiddle katsayıları ($e^{−j2πk/N}$)
 ROM'da durur; çeyrek dalga simetrisiyle N/4 giriş yeter ({{bolum:14}}'teki
 LUT hilesinin aynısı). Mimari seçenekleri, gecikme ve bit takvimi
 {{bolum:20}}'de.
@@ -322,10 +322,10 @@ değişmemiştir.
 :::tuzak Zero-padding ile "çözünürlük artırdım"
 MATLAB'da `fft(x, 8*N)` yazan biri iki yakın tonun "ayrıldığını" sanır çünkü
 tepe artık daha yuvarlak görünür. Ayrılmamıştır: ana lob genişliği hâlâ
-1/T'dir, iki ton hâlâ tek tümsektir; sıfır doldurma o tümseği daha çok
-noktadan çizmiştir. Test: tonları 0.7 bin ayır ve 64× sıfır doldur — tek tepe.
-Çözünürlük istiyorsan T'yi uzat (N'i artır, sıfır değil örnek ekle). Sıfır
-doldurmanın meşru işi tepe konumunu ve genliğini daha iyi okumaktır.
+1/T'dir, iki ton hâlâ tek tümsektir; zero-padding o tümseği daha çok
+noktadan çizmiştir. Test: tonları 0.7 bin ayır ve 64× zero-padding uygula — tek tepe.
+Çözünürlük istiyorsan T'yi uzat (N'i artır, sıfır değil örnek ekle).
+Zero-padding'in meşru işi tepe konumunu ve genliğini daha iyi okumaktır.
 :::
 
 :::tuzak Ortalama alınca zayıf darbe çıkar sanmak
@@ -344,7 +344,7 @@ tespit kararı tek çerçeveden verilir.
 - dBFS: |X| / ∑w (kompleks) ya da 2|X| / ∑w (reel). Çekirdeğin ölçekleme kaydırmasını geri almayı unutma.
 - FFT tabanı = −SNR − 10·log10(N/2) [reel] ya da −SNR − 10·log10(N) [kompleks], + 10·log10(ENBW). N'i 4 katla → taban 6 dB iner, SNR değişmez. NSD üçünü bağlayan değişmezdir.
 - Bin merkezine oturmayan ton sızar (dikdörtgen: −13 dB yan lob) ve scalloping kaybeder (en kötü 3.92 dB); FFT sürekli spektruma yalnızca bin merkezlerinden bakar.
-- Sıfır doldurma örnekleme sıklığı verir, çözünürlük vermez. Ortalama varyansı düşürür, seviyeyi değil; darbe için ortalama alınmaz.
+- Zero-padding örnekleme sıklığı verir, çözünürlük vermez. Ortalama varyansı düşürür, seviyeyi değil; darbe için ortalama alınmaz.
 :::
 
 :::kendini-sina
@@ -357,7 +357,7 @@ C: 990 ≥ 512 olduğundan negatif frekans: ks = 990 − 1024 = −34 → f = �
 S: Aynı sinyal, aynı N; bir mühendis 16 çerçeve Welch ortalaması alıyor, diğeri tek çerçeve. Gürültü tabanının seviyesi ve saçılımı nasıl değişir? Tek bir 1 µs darbe hangi ekranda daha iyi görünür?
 C: Seviye ikisinde aynı (−SNR − G + ENBW); saçılım 16 ortalamada √16 = 4 kat (≈ 6 dB) azalır. Tek darbe ortalamada 16 çerçevenin birinde olduğundan 10·log10(16) = 12 dB bastırılır; tek çerçeve ekranında daha iyi görünür.
 S: Bir ton iki bin'in tam ortasına düşüyor. Dikdörtgen pencerede okunan tepe kaç dB düşük çıkar ve bu PA ölçümü için ne demektir?
-C: 3.92 dB (scalloping). PA'yı FFT tepe değerinden okuyan bir sistem ±4 dB belirsizlik taşır; çözüm pencere (Hann 1.42 dB, flat-top 0.01 dB), sıfır doldurma ya da komşu bin'lerle interpolasyon (Bölüm 20).
+C: 3.92 dB (scalloping). PA'yı FFT tepe değerinden okuyan bir sistem ±4 dB belirsizlik taşır; çözüm pencere (Hann 1.42 dB, flat-top 0.01 dB), zero-padding ya da komşu bin'lerle interpolasyon (Bölüm 20).
 :::
 
 :::kopru

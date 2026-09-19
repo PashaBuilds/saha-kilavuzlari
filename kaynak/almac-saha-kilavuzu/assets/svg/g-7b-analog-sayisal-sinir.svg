@@ -1,4 +1,4 @@
-<svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g7b">
+<svg viewBox="0 0 900 414" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g7b">
 <title id="t-g7b">Analog–sayısal sınırın kayması: sekiz durak (anten, LNA/RF, mixer+IF, kanal seçimi, zarf, eşik, ölçüm, PDW) beş mimari için altın (analog) veya mavi (sayısal) kutularla; kırmızı çizgi ADC'nin yeri — CVR ve süperhette zarftan sonra, sayısal IF'te IF'te, direct RF ve sayısal kanallaştırılmışta LNA'dan hemen sonra.</title>
 <text x="20.0" y="22.0" text-anchor="start" class="s-baslik">Analog–sayısal sınır nereye kaydı? Aynı sekiz durak, beş mimari; kırmızı çizgi ADC'nin yeri</text>
 <text x="271.0" y="46.0" text-anchor="middle" class="s-kucuk">anten</text>
@@ -76,5 +76,6 @@
 <text x="233.0" y="345.0" text-anchor="start" class="s-kucuk">aynı sınır, ama N kanal paralel</text>
 <path d="M650.0 360.0 L404.0 360.0" class="yol-gurultu" fill="none" marker-end="url(#ok-gurultu)"/>
 <text x="517.0" y="376.0" text-anchor="middle" class="s-kucuk s-kirmizi">sınır sola kaydıkça: analog blok azalır, ADC hızı ve FPGA yükü artar, esneklik ve tekrarlanabilirlik artar</text>
-<text x="20.0" y="372.0" text-anchor="start" class="s-kucuk">Altın: analog durak. Mavi: sayısal durak. Her sağa-sol adım, bir analog tasarım problemini (filtre, mixer, dedektör) bir DSP problemine çevirir — bu kılavuzun Kısım III–VIII'i o problemlerdir.</text>
+<text x="20.0" y="392.0" text-anchor="start" class="s-kucuk">Altın: analog durak. Mavi: sayısal durak. Her sağa-sol adım, bir analog tasarım problemini (filtre, mixer, dedektör)</text>
+<text x="20.0" y="406.0" text-anchor="start" class="s-kucuk">bir DSP problemine çevirir — bu kılavuzun Kısım III–VIII'i o problemlerdir.</text>
 </svg>

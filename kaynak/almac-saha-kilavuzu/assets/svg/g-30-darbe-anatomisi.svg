@@ -32,7 +32,10 @@
 <rect x="727.3" y="322.2" width="3" height="74.1" fill="var(--gold)"/>
 <line x1="111.2" y1="311.1" x2="317.1" y2="311.1" stroke="var(--ink-2)" stroke-width="1"/><line x1="111.2" y1="307.1" x2="111.2" y2="315.1" stroke="var(--ink-2)" stroke-width="1"/><line x1="317.1" y1="307.1" x2="317.1" y2="315.1" stroke="var(--ink-2)" stroke-width="1"/><text x="214.1" y="307.1" text-anchor="middle" class="s-kucuk">PRI = 1 ms (PRF = 1/PRI = 1 kHz)</text>
 <line x1="70" y1="396.2" x2="770" y2="396.2" stroke="var(--red)" stroke-width="1.2" stroke-dasharray="4 3"/>
-<text x="347.9" y="359.3" class="s-kucuk">1 µs darbe bu ölçekte bir çizgi kalınlığında; PRI/PW = 1000</text>
-<text x="347.9" y="375.3" class="s-kucuk s-kirmizi">ortalama güç = tepe × duty → −30 dB (kırmızı çizgi, ölçek dışı küçük)</text>
+<text x="341.8" y="331.1" class="s-kucuk">1 µs darbe bu ölçekte</text>
+<text x="341.8" y="344.1" class="s-kucuk">bir çizgi kalınlığında;</text>
+<text x="341.8" y="357.1" class="s-kucuk">PRI/PW = 1000</text>
+<text x="341.8" y="370.1" class="s-kucuk s-kirmizi">ortalama güç = tepe × duty</text>
+<text x="341.8" y="383.1" class="s-kucuk s-kirmizi">→ −30 dB (kırmızı kesikli çizgi)</text>
 <text x="420" y="426" text-anchor="middle" class="s-kucuk">zaman (ms)</text>
 </svg>

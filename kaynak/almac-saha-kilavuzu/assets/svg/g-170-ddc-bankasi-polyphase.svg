@@ -1,8 +1,9 @@
-<svg viewBox="0 0 1120 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g170">
+<svg viewBox="0 0 1150 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g170">
 <title id="t-g170">DDC bankasından polyphase kanallaştırıcıya: solda K paralel DDC (her biri NCO, kompleks mixer, alçak geçiren filtre, decimator); sağda komütatör ile K yola dağıtım, her yolda prototip filtrenin bir polyphase alt-filtresi, K noktalı FFT (Bölüm 18'de açılan kara kutu) ve K kanal çıkışı; aşırı örneklemede komütatör K/2 adımla döner ve FFT girişinde dairesel kaydırma yapılır</title>
 <!-- ================= SOL: DDC bankası ================= -->
 <text x="20" y="26" class="s-baslik">DDC bankası — K kat kaynak</text>
 <text x="20" y="42" class="s-kucuk">K = 16: 16 NCO, 32 mixer, 32 filtre, 32 decimator (SSR-8'de ≈ 1280 DSP)</text>
+<g transform="translate(0,24)">
 <!-- giriş -->
 <text x="14" y="146" class="s-mono">x[n]</text>
 <text x="14" y="160" class="s-kucuk">2400 MSPS</text>
@@ -15,9 +16,8 @@
 <!-- satır 0 -->
 <g>
   <use href="#sym-mixer-d" x="120" y="60" width="60" height="40"/>
-  <use href="#sym-nco" x="120" y="14" width="60" height="40"/>
-  <path d="M150 54 V60" class="yol-sayisal"/>
-  <text x="184" y="30" class="s-kucuk">f₀ = 0</text>
+  <path d="M150 60 V48" class="yol-sayisal"/>
+  <text x="150" y="44" text-anchor="middle" class="s-kucuk">NCO f₀ = 0</text>
   <path d="M180 80 H206" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
   <use href="#sym-fir" x="210" y="60" width="60" height="40"/>
   <path d="M270 80 H296" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
@@ -28,7 +28,6 @@
 <!-- satır 1 -->
 <g>
   <use href="#sym-mixer-d" x="120" y="130" width="60" height="40"/>
-  <use href="#sym-nco" x="120" y="96" width="60" height="40" opacity=".0"/>
   <path d="M150 130 V118" class="yol-sayisal"/>
   <text x="150" y="114" text-anchor="middle" class="s-kucuk">NCO f₁ = Δf</text>
   <path d="M180 150 H206" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
@@ -64,6 +63,7 @@
   <text x="400" y="334" class="s-mono2">kanal K−1</text>
 </g>
 <text x="240" y="376" text-anchor="middle" class="s-kucuk">aynı LPF, aynı ↓M — yalnızca NCO farklı</text>
+</g>
 <!-- eşittir -->
 <text x="500" y="200" text-anchor="middle" class="s-metin" style="font-size:22px;font-weight:700">≡</text>
 <text x="500" y="222" text-anchor="middle" class="s-kucuk">matematiksel</text>
@@ -116,8 +116,8 @@
 <text x="1030" y="336" class="s-kucuk">her biri 300 MSPS</text>
 <text x="1030" y="350" class="s-kucuk">kompleks, ±150 MHz</text>
 <!-- aşırı örnekleme notu -->
-<path d="M650 226 V300 H700" fill="none" stroke="var(--gold)" stroke-dasharray="4 4"/>
+<path d="M630 216 L572 250 V300 H700" fill="none" stroke="var(--gold)" stroke-dasharray="4 4"/>
 <text x="560" y="392" class="s-kucuk s-altin">İki kat aşırı örnekleme (M = K/2): komütatör K/2 adımla döner, FFT girişi her blokta K/2 dairesel kaydırılır (kesikli);</text>
 <text x="560" y="408" class="s-kucuk s-altin">çıkış hızı 2·fs/K, komşu kanallar −3 dB'de kesişir, geçiş bandı katlanmaz.</text>
-<text x="20" y="408" class="s-kucuk">Kritik örnekleme (M = K): komütatör tam tur, kaydırma yok; geçiş bandı kanala katlanır (Şekil: kanal yanıtları).</text>
+<text x="20" y="428" class="s-kucuk">Kritik örnekleme (M = K): komütatör tam tur, kaydırma yok; geçiş bandı kanala katlanır (Şekil: kanal yanıtları).</text>
 </svg>

@@ -24,13 +24,13 @@
 <!-- enjeksiyon noktaları (üstte altın) -->
 <g>
   <path d="M70 128 V96" class="yol-analog" marker-end="url(#ok-analog)" transform="rotate(180 70 112)"/>
-  <rect x="20" y="70" width="100" height="26" rx="5" class="blok-analog"/><text class="enj" x="70" y="87" text-anchor="middle">RF üreteci · CW / darbe</text>
+  <rect x="8" y="70" width="128" height="26" rx="5" class="blok-analog"/><text class="enj" x="72" y="87" text-anchor="middle">RF üreteci · CW / darbe</text>
   <path d="M340 128 V96" class="yol-analog" transform="rotate(180 340 112)" marker-end="url(#ok-analog)"/>
-  <rect x="280" y="70" width="120" height="26" rx="5" class="blok-analog"/><text class="enj" x="340" y="87" text-anchor="middle">IF üreteci (mixer atlanır)</text>
+  <rect x="266" y="70" width="142" height="26" rx="5" class="blok-analog"/><text class="enj" x="337" y="87" text-anchor="middle">IF üreteci (mixer atlanır)</text>
   <path d="M500 128 V96" class="yol-sayisal" transform="rotate(180 500 112)" marker-end="url(#ok-sayisal)"/>
-  <rect x="430" y="70" width="140" height="26" rx="5" class="blok"/><text class="enj" x="500" y="87" text-anchor="middle">dahili test üreteci (loopback)</text>
+  <rect x="416" y="70" width="158" height="26" rx="5" class="blok"/><text class="enj" x="495" y="87" text-anchor="middle">dahili test üreteci (loopback)</text>
   <path d="M610 128 V96" class="yol-sayisal" transform="rotate(180 610 112)" marker-end="url(#ok-sayisal)"/>
-  <rect x="580" y="70" width="80" height="26" rx="5" class="blok"/><text class="enj" x="620" y="87" text-anchor="middle">bilinen I/Q</text>
+  <rect x="582" y="70" width="78" height="26" rx="5" class="blok"/><text class="enj" x="621" y="87" text-anchor="middle">bilinen I/Q</text>
   <text class="enj" x="20" y="30" style="font-weight:700">ENJEKSİYON — bilinen sinyal buradan girer</text>
   <text class="t2" x="20" y="46">soldan sağa: analog sorunları dışlayarak ilerle</text>
 </g>

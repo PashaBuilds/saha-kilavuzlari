@@ -30,7 +30,7 @@ gecikmeyle** gelmeli.
 
 Ayrıntı için kardeş kılavuz; burada almacın ihtiyaç duyduğu kadar.
 
-- **Lane ve link.** Bir *lane* tek bir diferansiyel seri çift (GT alıcı);
+- **Lane ve link.** Bir *lane* tek bir diferansiyel seri çift (FPGA'da bir GT — gigabit transceiver — alıcısı);
   bir *link*, aynı parametre setiyle çalışan L lane'in birlikte taşıdığı
   örnek akışıdır. Lane hızı 6–32 Gbps mertebesindedir.
 - **Parametreler.** L (lane), M (converter — I ve Q ayrı sayılır), F
@@ -42,12 +42,12 @@ Ayrıntı için kardeş kılavuz; burada almacın ihtiyaç duyduğu kadar.
   ileri hata düzeltme seçeneği; 204C aynı veri için daha az lane ya da daha
   düşük lane hızı demektir.
 - **Subclass 1 ve SYSREF.** Deterministik gecikme için her iki cihazın
-  multiframe sayaçları (LMFC/LEMC) ortak bir işaretle hizalanır; o işaret
+  multiframe sayaçları (LMFC/LEMC — local multiframe clock / local extended multiblock clock) ortak bir işaretle hizalanır; o işaret
   **SYSREF**'tir — bir saat değil, örnekleme saatiyle kaynak-senkron bir
   *hizalama emri* ({{rf:subclass-lar-determinizmin-uc-seviyesi|RF Örnekleme: subclass'lar}},
   {{rf:tanim-clock-degil-hizalama-emri|SYSREF tanımı}}).
-- **Deterministik gecikme.** RX tarafındaki elastik tampon veriyi LMFC
-  sınırı + RBD anında bırakır; böylece ADC girişinden FPGA'daki ilk
+- **Deterministik gecikme** (deterministic latency). RX tarafındaki elastik
+  tampon (elastic buffer) veriyi LMFC sınırı + RBD (release buffer delay) anında bırakır; böylece ADC girişinden FPGA'daki ilk
   register'a gecikme her açılışta ve her çipte aynı olur
   ({{rf:buffer-release-adim-adim|RF Örnekleme: buffer release}}). TOA
   ölçümünün ({{bolum:24}}) mutlak doğruluğu buna bağlıdır.
@@ -91,7 +91,7 @@ SYSREF tabanlı çok tile senkron ({{bolum:10}}).
    ikinin tümleyenine geçmek için MSB'yi ters çevirirsin. Çoğu JESD204 ADC
    ikinin tümleyenini varsayılan yapar; register'da seçilebilir.
 2. **Hizalama.** 14 bitlik örnek 16 bitlik sözcüğün neresinde? **LSB
-   hizalı + işaret uzatma** (`s s d13 … d0`) ya da **MSB hizalı**
+   hizalı + işaret uzatma** (sign extension; `s s d13 … d0`) ya da **MSB hizalı**
    (`d13 … d0 0 0`). İkincisinde sayı 4 kat büyük görünür; dBFS hesabı
    ({{bolum:9}}) 12 dB kayar. Alt iki bit bazen kontrol bitidir (overrange,
    SYSREF yakalandı) — o zaman ne sıfır ne işaret.
@@ -112,7 +112,7 @@ FFT'de tek bir temiz çizgi ve doğru genlik gör ({{bolum:29}}).
 
 Almaç kartında dört saat vardır ve yalnızca ikisi birbirine akrabadır.
 
-- **Örnekleme saati** ({{s:adc.fs_msps}} MHz): ADC'nin örnekle-tut devresine
+- **Örnekleme saati** ({{s:adc.fs_msps}} MHz): ADC'nin T/H (track-and-hold) devresine
   gider. Jitter'ı SNR'ı belirler ({{bolum:9}}); fs'in doğruluğu (ppm) NCO'nun
   ve her frekans ölçümünün doğruluğudur ({{bolum:14}}).
 - **SYSREF**: örnekleme saatiyle aynı bölücü zincirinden, ADC'ye ve FPGA'ya
@@ -142,7 +142,7 @@ NCO sekiz faz üretir ({{bolum:14}}), FIR sekiz çıkış hesaplar
 ({{bolum:16}}), darbe FSM'i sekiz örneklik bir pencerede kenar arar
 ({{bolum:24}}). Kaynak sekiz kat artar, gecikme fabric saati cinsinden
 sayılır ama örnek cinsinden aynı kalır. Verinin gelişinde iki kural: (1)
-sözcük içindeki sıra sözleşmesi (yukarıda), (2) **saat geçişi (CDC)**: JESD
+sözcük içindeki sıra sözleşmesi (yukarıda), (2) **saat alanı geçişi** (clock domain crossing, CDC): JESD
 IP'sinin link saati ile senin DSP saatin aynı değilse arada asenkron FIFO
 gerekir; aynı frekansta ama farklı fazda iseler bile. CDC'yi "aynı hızda,
 sorun olmaz" diye atlayan tasarımlar sıcaklıkla bir örnek kaçırır ve bunu
@@ -169,7 +169,7 @@ SNR: ≈ 23 dB (300 MHz bantta), ADC çıkışıyla aynı
 ::rf::
 RF/donanım tasarımcısı için arayüz üç kabloyla özetlenir: örnekleme saati
 (en temiz hat, en kısa yol, ADC'ye), SYSREF (aynı çipten, saatle uzunluk
-eşlemeli, setup/hold penceresi doğrulanmış) ve GT lane'leri (empedans
+eşlemeli — length-matched —, setup/hold penceresi doğrulanmış) ve GT lane'leri (empedans
 kontrollü, uzunluk eşlemeli, 204C'de 10 Gbps üstü için kart malzemesi
 seçilmiş). Saat çipinin çıkış çiftleri (DCLK/SYSREF) tasarımın en değerli
 pinleridir; SYSREF'i başka bir kaynaktan "yavaş sinyal nasılsa" diye
@@ -188,8 +188,8 @@ gecikmenin aynı kaldığını (determinizm) gör ({{bolum:13}}, {{bolum:29}}).
 Referans gerçekleme: 128 bit AXI-Stream, 300 MHz, 8 × 16 bit işaret uzatılmış;
 DSP zinciri bu formatı "sözleşme" olarak alır.
 ::yazilim::
-Yazılımcının arayüzle üç teması: (1) **link durumu**: SYNC~ / CGS / ILAS /
-data durum bitleri, hata sayaçları (8b/10b disparity, not-in-table, 204C
+Yazılımcının arayüzle üç teması: (1) **link durumu**: SYNC~ / CGS / ILAS (code group sync / initial
+lane alignment sequence) / data durum bitleri, hata sayaçları (8b/10b disparity, not-in-table, 204C
 CRC/FEC), SYSREF yakalama sayacı — bunlar sağlık göstergesidir ve
 {{bolum:30}}'daki durum register'larına girer; (2) **başlatma sırası**:
 saat kilidi → ADC kalibrasyon → SYSREF ver → link kur → gecikme doğrula →

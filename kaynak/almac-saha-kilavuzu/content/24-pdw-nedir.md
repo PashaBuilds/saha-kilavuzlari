@@ -32,7 +32,7 @@ bir satır tutar: çağrı kodu, geliş saati, pist, tip. Ekrandaki milyonlarca
 piksel yerine dakikada birkaç satır. PDW de öyledir: darbenin 300 örneğini
 değil, o 300 örnekten **çıkarılan** beş-altı sayıyı saklar. Satırın sütunları
 sabittir; yeni bir uçak tipi gelince defterin formatı değişmez. Bu sabitlik
-sonraki yazılımın (deinterleaving, tanımlama — {{bolum:27}}) işini kurar:
+sonraki yazılımın (deinterleaving — karışık darbe akışını emiterlere ayırma —, tanımlama; {{bolum:27}}) işini kurar:
 yazılım örnek değil, satır tüketir.
 :::
 
@@ -105,8 +105,8 @@ ya da kanal uyumsuzluğu). Bayrağı olmayan bir PDW formatı, hatalı ölçüm�
 Her alanın genişliği bir sorunun cevabıdır: *en küçük anlamlı adım nedir* ve
 *en büyük değer nedir?* Bu ikisinin oranının log2'si bit sayısını verir. Adımı
 gereğinden ince seçmek bit israfıdır — ölçüm zaten o kadar hassas değildir
-({{bolum:25}}'te SNR–hata ilişkisi); aralığı gereğinden dar seçmek doyma ve
-sarma hatası demektir.
+({{bolum:25}}'te SNR–hata ilişkisi); aralığı gereğinden dar seçmek doyma (saturation) ve
+sarma (wrap-around) hatası demektir.
 
 :::formul id=alan-bit baslik="Alan genişliği seçimi"
 f: b = ⌈ log_2 ( frac{aralık}{çözünürlük} ) ⌉
@@ -167,7 +167,7 @@ derinliğinden ve DDR bant genişliğinden ödenir.**
 C'de ilk refleks bit alanlı bir `struct` yazmaktır. Yapma: bit alanlarının
 sırası, hizalaması ve sözcük sınırı davranışı derleyiciye bağlıdır; aynı kod
 başka bir araç zinciriyle sessizce farklı parse eder. Taşınabilir yol dört
-`uint32_t` ve kaydır-maskele yardımcılarıdır:
+`uint32_t` ve kaydır-maskele (shift-and-mask) yardımcılarıdır:
 
 ```c
 #include <stdint.h>

@@ -16,8 +16,8 @@
 <text x="78.0" y="122.3" text-anchor="start" class="s-kucuk">zayıf darbe (−20 dB)</text>
 <line x1="70" y1="156.4" x2="420" y2="156.4" class="spk-filtre"/>
 <text x="416.0" y="152.4" text-anchor="end" class="s-kucuk s-altin">eşik −28 dB</text>
-<path d="M92.4 185.5 H146.1" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
-<text x="192.1" y="189.5" text-anchor="start" class="s-mono2 s-kirmizi">Δ = 15.3 ns (time walk)</text>
+<path d="M92.4 174.5 H146.1" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+<text x="154.1" y="178.5" text-anchor="start" class="s-mono2 s-kirmizi">Δ = 15.3 ns (time walk)</text>
 <line x1="500.0" y1="40" x2="500.0" y2="200" class="izgara"/><text x="500.0" y="214" text-anchor="middle" class="s-mono2">-40</text><line x1="582.5" y1="40" x2="582.5" y2="200" class="izgara"/><text x="582.5" y="214" text-anchor="middle" class="s-mono2">-30</text><line x1="665.0" y1="40" x2="665.0" y2="200" class="izgara"/><text x="665.0" y="214" text-anchor="middle" class="s-mono2">-20</text><line x1="747.5" y1="40" x2="747.5" y2="200" class="izgara"/><text x="747.5" y="214" text-anchor="middle" class="s-mono2">-10</text><line x1="830.0" y1="40" x2="830.0" y2="200" class="izgara"/><text x="830.0" y="214" text-anchor="middle" class="s-mono2">0</text><line x1="500" y1="200.0" x2="830" y2="200.0" class="izgara"/><text x="494" y="204.0" text-anchor="end" class="s-mono2">0</text><line x1="500" y1="146.7" x2="830" y2="146.7" class="izgara"/><text x="494" y="150.7" text-anchor="end" class="s-mono2">10</text><line x1="500" y1="93.3" x2="830" y2="93.3" class="izgara"/><text x="494" y="97.3" text-anchor="end" class="s-mono2">20</text><line x1="500" y1="40.0" x2="830" y2="40.0" class="izgara"/><text x="494" y="44.0" text-anchor="end" class="s-mono2">30</text><rect x="500" y="40" width="330" height="160" class="eksen"/>
 <text x="665.0" y="230.0" text-anchor="middle" class="s-kucuk">eşik / tepe (dB)</text>
 <text x="460.0" y="120.0" text-anchor="middle" class="s-kucuk" transform="rotate(-90 460 120.0)">TOA gecikmesi (ns)</text>
@@ -25,11 +25,11 @@
 <circle cx="599.0" cy="165.9" r="4" fill="var(--gold)"/>
 <text x="592.0" y="158.9" text-anchor="end" class="s-kucuk s-altin">−28 dB → 6.4 ns</text>
 <circle cx="764.0" cy="84.1" r="4" fill="var(--gold)"/>
-<text x="757.0" y="96.1" text-anchor="end" class="s-kucuk s-altin">−8 dB → 21.7 ns</text>
+<text x="757.0" y="77.1" text-anchor="end" class="s-kucuk s-altin">−8 dB → 21.7 ns</text>
 <circle cx="780.5" cy="66.5" r="4" fill="var(--gold)"/>
 <text x="773.5" y="59.5" text-anchor="end" class="s-kucuk s-altin">−6 dB (%50) → 25 ns</text>
 <line x1="500" y1="182.2" x2="830" y2="182.2" class="yol-saat"/>
-<text x="504.0" y="178.2" text-anchor="start" class="s-kucuk">1 örnek = 3.33 ns</text>
+<text x="826.0" y="178.2" text-anchor="end" class="s-kucuk">1 örnek = 3.33 ns</text>
 <text x="504.0" y="124.0" text-anchor="start" class="s-mono2">t_x = t_r/π · acos(1 − 2a)</text>
 <text x="504.0" y="137.0" text-anchor="start" class="s-kucuk">a = genlik oranı, t_r = 50 ns</text>
 <text x="70.0" y="250.0" text-anchor="start" class="s-metin2">Referans senaryo: eşik −68 dBm sabit. −60 dBm'lik darbe eşiği tepesinin −8 dB'sinde keser (21.7 ns),</text>

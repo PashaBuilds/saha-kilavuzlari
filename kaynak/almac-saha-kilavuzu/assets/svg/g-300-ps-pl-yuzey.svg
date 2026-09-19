@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g300">
+<svg viewBox="0 0 1040 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g300">
 <title id="t-g300">PS–PL kontrol ve veri yüzeyi: PS'te uygulama, yapılandırma nesnesi, birim kütüphanesi, kalibrasyon tabloları ve register erişim katmanı; AXI-Lite ile PL'deki blokların register'larına, AXI-Stream ve DMA ile PDW ve snapshot akışına bağlanır; IRQ hattı FIFO ve hata olaylarını PS'e taşır</title>
 <style>
   .y .kat { fill: var(--dia-blok); stroke: var(--line-2); stroke-width: 1.1; }
@@ -6,7 +6,7 @@
   .y .pl { fill: var(--accent-soft); stroke: var(--accent); }
   .y .t { font-family: var(--sans); font-size: 12px; fill: var(--ink); }
   .y .t2 { font-family: var(--sans); font-size: 10.5px; fill: var(--ink-2); }
-  .y .m { font-family: var(--mono); font-size: 10px; fill: var(--ink-2); }
+  .y .m { font-family: var(--mono); font-size: 9.5px; fill: var(--ink-2); }
   .y .bas { font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
 </style>
 <g class="y">
@@ -31,9 +31,10 @@
 <text class="t" x="179" y="266" text-anchor="middle">Register erişimi</text>
 <text class="m" x="179" y="282" text-anchor="middle">reg_read32 / reg_write32 / reg_clear_w1c</text>
 <rect class="kat ps" x="30" y="306" width="298" height="44" rx="6"/>
-<text class="t" x="179" y="324" text-anchor="middle">DMA sürücüsü + halka tampon</text>
+<text class="t" x="179" y="324" text-anchor="middle">DMA sürücüsü + ring buffer</text>
 <text class="t2" x="179" y="340" text-anchor="middle">PDW paketleri · snapshot dosyaları · kesme işleyici</text>
-<text class="t2" x="30" y="380">bare-metal / RTOS bağımsız; birim kütüphanesi PC'de test edilir</text>
+<text class="t2" x="30" y="376">bare-metal / RTOS bağımsız;</text>
+<text class="t2" x="30" y="390">birim kütüphanesi PC'de test edilir</text>
 <!-- köprüler -->
 <rect class="kat" x="380" y="230" width="200" height="40" rx="6"/>
 <text class="t" x="480" y="248" text-anchor="middle">AXI-Lite</text>
@@ -45,29 +46,32 @@
 <text class="t2" x="480" y="338" text-anchor="middle">PDW 128-bit · snapshot I/Q</text>
 <path d="M620 326 H580" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <path d="M380 326 H328" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<rect class="kat" x="380" y="362" width="200" height="30" rx="6"/>
-<text class="t" x="480" y="381" text-anchor="middle">IRQ: FIFO yarım · taşma · overrange · link · snapshot</text>
-<path d="M620 377 H580" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
-<path d="M380 377 H328" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+<rect class="kat" x="372" y="356" width="216" height="48" rx="6"/>
+<text class="t" x="480" y="371" text-anchor="middle">IRQ hattı</text>
+<text class="t2" x="480" y="385" text-anchor="middle">FIFO yarım · taşma · overrange</text>
+<text class="t2" x="480" y="398" text-anchor="middle">link · snapshot hazır</text>
+<path d="M620 380 H588" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+<path d="M372 380 H328" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
 <!-- PL bandı -->
-<rect x="620" y="14" width="366" height="392" rx="10" fill="none" stroke="var(--accent)" stroke-dasharray="6 5"/>
+<rect x="620" y="14" width="406" height="392" rx="10" fill="none" stroke="var(--accent)" stroke-dasharray="6 5"/>
 <text class="bas" x="632" y="34" fill="var(--accent)">PL · FPGA</text>
 <g>
-  <rect class="kat pl" x="636" y="50" width="160" height="36" rx="5"/><text class="t" x="716" y="66" text-anchor="middle">Saat / ADC / JESD</text><text class="m" x="716" y="80" text-anchor="middle">CLK_STATUS · ADC_OVR_CNT</text>
-  <rect class="kat pl" x="812" y="50" width="160" height="36" rx="5"/><text class="t" x="892" y="66" text-anchor="middle">NCO</text><text class="m" x="892" y="80" text-anchor="middle">FTW · POW · CTRL</text>
-  <rect class="kat pl" x="636" y="98" width="160" height="36" rx="5"/><text class="t" x="716" y="114" text-anchor="middle">Filtre / decimation</text><text class="m" x="716" y="128" text-anchor="middle">DDC_MODE · FIR_COEF_* · COMMIT</text>
-  <rect class="kat pl" x="812" y="98" width="160" height="36" rx="5"/><text class="t" x="892" y="114" text-anchor="middle">FFT</text><text class="m" x="892" y="128" text-anchor="middle">FFT_CTRL · FFT_SCALE</text>
-  <rect class="kat pl" x="636" y="146" width="160" height="36" rx="5"/><text class="t" x="716" y="162" text-anchor="middle">Tespit / CFAR</text><text class="m" x="716" y="176" text-anchor="middle">THR · CFAR_CTRL · ALPHA · HYST</text>
-  <rect class="kat pl" x="812" y="146" width="160" height="36" rx="5"/><text class="t" x="892" y="162" text-anchor="middle">Darbe FSM / ölçüm</text><text class="m" x="892" y="176" text-anchor="middle">MIN_PW · MAX_PW · NOISE_EST</text>
-  <rect class="kat pl" x="636" y="194" width="160" height="36" rx="5"/><text class="t" x="716" y="210" text-anchor="middle">PDW FIFO</text><text class="m" x="716" y="224" text-anchor="middle">LEVEL · DROP_CNT · COUNT</text>
-  <rect class="kat pl" x="812" y="194" width="160" height="36" rx="5"/><text class="t" x="892" y="210" text-anchor="middle">Snapshot</text><text class="m" x="892" y="224" text-anchor="middle">SNAP_CTRL · LEN · PRETRIG</text>
-  <rect class="kat pl" x="636" y="242" width="160" height="36" rx="5"/><text class="t" x="716" y="258" text-anchor="middle">Kalibrasyon register'ları</text><text class="m" x="716" y="272" text-anchor="middle">CAL_GAIN_DB · CAL_FREQ_PPM</text>
-  <rect class="kat pl" x="812" y="242" width="160" height="36" rx="5"/><text class="t" x="892" y="258" text-anchor="middle">Test üreteci</text><text class="m" x="892" y="272" text-anchor="middle">TEST_GEN_CTRL · FTW</text>
+  <rect class="kat pl" x="636" y="50" width="180" height="36" rx="5"/><text class="t" x="726" y="66" text-anchor="middle">Saat / ADC / JESD</text><text class="m" x="726" y="80" text-anchor="middle">CLK_STATUS · ADC_OVR_CNT</text>
+  <rect class="kat pl" x="832" y="50" width="180" height="36" rx="5"/><text class="t" x="922" y="66" text-anchor="middle">NCO</text><text class="m" x="922" y="80" text-anchor="middle">FTW · POW · CTRL</text>
+  <rect class="kat pl" x="636" y="98" width="180" height="36" rx="5"/><text class="t" x="726" y="114" text-anchor="middle">Filtre / decimation</text><text class="m" x="726" y="128" text-anchor="middle">DDC_MODE · FIR_COEF_* · COMMIT</text>
+  <rect class="kat pl" x="832" y="98" width="180" height="36" rx="5"/><text class="t" x="922" y="114" text-anchor="middle">FFT</text><text class="m" x="922" y="128" text-anchor="middle">FFT_CTRL · FFT_SCALE</text>
+  <rect class="kat pl" x="636" y="146" width="180" height="36" rx="5"/><text class="t" x="726" y="162" text-anchor="middle">Tespit / CFAR</text><text class="m" x="726" y="176" text-anchor="middle">THR · CFAR_CTRL · ALPHA · HYST</text>
+  <rect class="kat pl" x="832" y="146" width="180" height="36" rx="5"/><text class="t" x="922" y="162" text-anchor="middle">Darbe FSM / ölçüm</text><text class="m" x="922" y="176" text-anchor="middle">MIN_PW · MAX_PW · NOISE_EST</text>
+  <rect class="kat pl" x="636" y="194" width="180" height="36" rx="5"/><text class="t" x="726" y="210" text-anchor="middle">PDW FIFO</text><text class="m" x="726" y="224" text-anchor="middle">LEVEL · DROP_CNT · COUNT</text>
+  <rect class="kat pl" x="832" y="194" width="180" height="36" rx="5"/><text class="t" x="922" y="210" text-anchor="middle">Snapshot</text><text class="m" x="922" y="224" text-anchor="middle">SNAP_CTRL · LEN · PRETRIG</text>
+  <rect class="kat pl" x="636" y="242" width="180" height="36" rx="5"/><text class="t" x="726" y="258" text-anchor="middle">Kalibrasyon register'ları</text><text class="m" x="726" y="272" text-anchor="middle">CAL_GAIN_DB · CAL_FREQ_PPM</text>
+  <rect class="kat pl" x="832" y="242" width="180" height="36" rx="5"/><text class="t" x="922" y="258" text-anchor="middle">Test üreteci</text><text class="m" x="922" y="272" text-anchor="middle">TEST_GEN_CTRL · FTW</text>
 </g>
-<rect class="kat" x="636" y="296" width="336" height="30" rx="5"/>
-<text class="t" x="804" y="315" text-anchor="middle">AXI-Lite slave · çift tamponlu kritik parametreler · W1C yapışkan bitler</text>
-<rect class="kat" x="636" y="336" width="336" height="30" rx="5"/>
-<text class="t" x="804" y="355" text-anchor="middle">AXI-Stream master: PDW paketleyici + snapshot BRAM</text>
-<text class="t2" x="636" y="392">her blok: register + durum sayacı; sayaçlar doyar, taşmaz</text>
+<rect class="kat" x="636" y="296" width="376" height="42" rx="5"/>
+<text class="t" x="824" y="312" text-anchor="middle">AXI-Lite slave</text>
+<text class="t2" x="824" y="328" text-anchor="middle">double-buffered kritik parametreler · W1C sticky bitler</text>
+<rect class="kat" x="636" y="346" width="376" height="30" rx="5"/>
+<text class="t" x="824" y="365" text-anchor="middle">AXI-Stream master: PDW paketleyici + snapshot BRAM</text>
+<text class="t2" x="636" y="394">her blok: register + durum sayacı; sayaçlar doyar, taşmaz</text>
 </g>
 </svg>

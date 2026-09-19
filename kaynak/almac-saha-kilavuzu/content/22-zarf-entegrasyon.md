@@ -20,7 +20,7 @@ izdüşüm, Q düşey izdüşüm. Darbenin taşıyıcısı NCO'nun frekansından
 farklıysa ok her örnekte biraz döner; I ve Q tek tek sinüs gibi salınır ve
 "darbe" I'ya ya da Q'ya bakarak görünmez bile. Ama okun **uzunluğu** dönüşten
 etkilenmez: darbe boyunca sabittir, darbe yokken gürültünün küçük rastgele
-uzunluğuna düşer. Zarf çıkarımı, oku unutup uzunluğunu almaktır. Tespit ve
+uzunluğuna düşer. Zarf (envelope) çıkarımı, oku unutup uzunluğunu almaktır. Tespit ve
 PA ölçümü uzunluğa bakar; frekans ve faz ölçümü ({{bolum:25}}) okun *yönüne*
 bakar — ikisi aynı I/Q'dan beslenir, biri diğerini bozmaz.
 
@@ -36,10 +36,11 @@ ama hareket eden şeyi (darbenin kenarını) bulanıklaştırır.
 ## Kavram: genlik, güç, log — üç zarf, tek bilgi
 
 Kompleks örneğin büyüklüğünü üç eşdeğer ölçekte yazabilirsin ve her biri
-zincirde başka bir yerde işine yarar:
+zincirde başka bir yerde işine yarar. İlkine, güce, literatür **square-law**
+(kare yasa) dedektörü der — doğrudan $I^2+Q^2$; bundan sonra bu adla anacağız:
 
 :::formul id=zarf-uc-olcek baslik="Zarfın üç ölçeği"
-f: P = I^2 + Q^2        (güç, kare-yasa)
+f: P = I^2 + Q^2        (güç, square-law)
 f: r = sqrt{I^2 + Q^2} = sqrt{P}        (genlik / doğrusal zarf)
 f: L = 10 · log_{10} P = 20 · log_{10} r        (log-zarf, dB)
 s: I, Q | DDC çıkışı örnek çifti | LSB (16 bit işaretli)
@@ -67,7 +68,7 @@ domaininde aynı şey bir çarpmadır (α × kestirim, {{bolum:23}}). İkincisi,
 dinamik aralığı sıkıştırır: 20 bitlik güç 60 dB'lik aralığı 2^20 seviyeyle
 temsil ederken, 0.25 dB adımlı 10 bit aynı aralığı 256 seviyeyle temsil eder
 ve PDW'ye doğrudan yazılır. FPGA'da log, karekökten daha ucuzdur: baştaki
-birlerin sayısını bulan bir öncelik kodlayıcı (tam sayı kısmı, 3 dB adımlı)
+birlerin sayısını bulan bir öncelik kodlayıcı (priority encoder; tam sayı kısmı, 3 dB adımlı)
 artı mantis için küçük bir LUT ya da doğrusal enterpolasyon (kesir kısmı);
 0.1 dB doğruluk 8–9 bitlik bir tabloyla gelir. Bedeli: log domaininde
 *ortalama almak* tehlikelidir — aşağıdaki tuzağa bak.
@@ -113,7 +114,7 @@ standart sapması ortalamasına eşittir (bu yüzden log-zarf o kadar
 fırsatıdır ({{bolum:21}}: 300 MSPS'te 300/s). Klasik çare **video filtre**:
 zarfı L örneklik bir **kayan ortalama** (moving average) ile yumuşatmak.
 Analog almaçta bu, diyot dedektörünün ardındaki RC alçak geçirendir; sayısal
-almaçta L uzunluğunda bir kutu filtre.
+almaçta L uzunluğunda bir kutu (boxcar) filtre.
 
 :::formul id=video-filtre baslik="Kayan ortalama: varyans, kenar, gecikme"
 f: y[n] = frac{1}{L} · ∑_{k=0}^{L−1} x[n−k]
@@ -191,7 +192,7 @@ Gecikme: zarf 2–3 saat + video filtre (L−1)/2 = 1.5 örnek
 
 :::uc-goz
 ::rf::
-Analog almaçta zarf dedektörü bir diyot ve RC'dir: diyot kare-yasa
+Analog almaçta zarf dedektörü bir diyot ve RC'dir: diyot square-law
 bölgesinde çalışırsa çıkış güçle orantılıdır (aynı $I^2+Q^2$), RC video
 filtredir ve "video bant genişliği" darbenin en kısa yükseliş süresini
 belirler. Sayısal zincir bu iki bloğu aynen kopyalar; fark, video filtrenin
@@ -206,7 +207,7 @@ zarf alınıyorsa hassasiyet bu taban tarafından belirlenir.
 Güç: iki 16×16 çarpma (DSP slice, ya da tek slice'ta ardışık iki çarpım) ve
 bir toplama; 300 MSPS'te fabric saati yetiyorsa örnek başına bir saat, aksi
 halde SSR ({{bolum:12}}). Çıkış 31 bit; bit 29…10 alınır (10 bit sağa
-kaydırma, yuvarlamalı; bit 30 set ise doyur). Kayan ortalama, bölme olmadan **kayan toplam** olarak
+kaydırma, yuvarlamalı; bit 30 set ise doyur). Kayan ortalama, bölme olmadan **kayan toplam** (running sum) olarak
 yazılır: toplam += yeni − (L örnek önceki); L ikinin kuvvetiyse ortalama bir
 kaydırmadır, değilse kimse bölmez — eşik L ile çarpılır. Gecikme hattı L
 derinliğinde bir SRL; toplam 20 + log2(L) bit. Log-zarf: 20 bitlik güçte
@@ -234,7 +235,7 @@ Model tarafında zarf ve video filtre iki satırdır; eşik çarpanı L'ye göre
 gama dağılımından gelir:
 
 ```matlab
-P   = abs(iq).^2;                       % güç, kare-yasa
+P   = abs(iq).^2;                       % güç, square-law
 L   = 4;
 Pv  = filter(ones(1,L)/L, 1, P);        % kayan ortalama (video filtre)
 % Pfa = 1e-6 için eşik / ortalama gürültü gücü (gama kuyruğu, 2L s.d.)

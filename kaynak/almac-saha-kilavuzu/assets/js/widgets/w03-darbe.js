@@ -37,7 +37,8 @@ WK.kaydet("w03", function (w) {
     WK.temizle(tek);
     var t0 = kesitZaman * 0.1;
     var gt = WK.grafik(tek, { W: 640, H: 200, xmin: -0.2 * pw * 1e6, xmax: 1.2 * pw * 1e6, ymin: -1.3, ymax: 1.3, kenar: { sol: 44, sag: 14, ust: 22, alt: 30 } });
-    gt.eksenler({ xAdet: 7, yAdet: 4, xAd: "zaman (µs)", yAd: "genlik", baslik: "Tek darbe — zarf (altın), gerçek kısım temsilî taşıyıcı ile (mavi)", yFmt: function (v) { return v.toFixed(1); } });
+    gt.eksenler({ xAdet: 7, yAdet: 4, xAd: "zaman (µs)", yAd: "genlik", baslik: "Tek darbe — zarf (altın), gerçek kısım temsilî taşıyıcı ile (mavi)", yFmt: function (v) { return v.toFixed(1); },
+                  xFmt: function (v) { return String(+v.toFixed(2)); } });   // µs ekseninde SI öneki ("200m") olmasın
     var xs = [], zarf = [], reel = [], nn = 700, fGor = 6 / pw;
     for (k = 0; k < nn; k++) {
       var t = -0.2 * pw + 1.4 * pw * k / (nn - 1);
@@ -53,7 +54,7 @@ WK.kaydet("w03", function (w) {
     // --- katar
     WK.temizle(katar);
     var gk = WK.grafik(katar, { W: 640, H: 130, xmin: -0.15 * pri * 1e6, xmax: 3.15 * pri * 1e6, ymin: 0, ymax: 1.2, kenar: { sol: 44, sag: 14, ust: 22, alt: 30 } });
-    gk.eksenler({ xAdet: 6, yAdet: 2, xAd: "zaman (µs)", baslik: "Darbe katarı — PRI = " + WK.fmtS(pri) + ", PRF = " + WK.fmtHz(prf) + ", duty = %" + (duty * 100).toFixed(duty < 0.01 ? 2 : 1), yFmt: function (v) { return v.toFixed(1); } });
+    gk.eksenler({ xAdet: 6, yAdet: 2, xAd: "zaman (µs)", xFmt: function (v) { return Math.abs(v) >= 1000 ? String(+(v / 1000).toFixed(2)) + " ms" : String(+v.toFixed(1)); }, baslik: "Darbe katarı — PRI = " + WK.fmtS(pri) + ", PRF = " + WK.fmtHz(prf) + ", duty = %" + (duty * 100).toFixed(duty < 0.01 ? 2 : 1), yFmt: function (v) { return v.toFixed(1); } });
     for (k = 0; k < 4; k++) {
       var xa = gk.px(k * pri * 1e6), xb = gk.px((k * pri + pw) * 1e6);
       gk.ekle("rect", { x: xa, y: gk.py(1), width: Math.max(2, xb - xa), height: gk.py(0) - gk.py(1), "class": "w-dolgu-altin" });

@@ -25,7 +25,7 @@
   <rect x="810" y="30" width="42" height="34" rx="3" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="831" y="51" text-anchor="middle" class="s-mono2">2⁻¹⁵</text>
 </g>
 <text x="201" y="24" text-anchor="middle" class="s-kucuk s-kirmizi">bit 15 · işaret</text>
-<text x="831" y="24" text-anchor="middle" class="s-kucuk s-vurgu">bit 0 · LSB</text>
+<text x="846" y="24" text-anchor="end" class="s-kucuk s-vurgu">bit 0 · LSB</text>
 <!-- ikili nokta -->
 <circle cx="222" cy="72" r="3" fill="var(--gold)"/>
 <text x="222" y="86" text-anchor="middle" class="s-kucuk s-altin">ikili nokta</text>
@@ -33,7 +33,7 @@
 
 <!-- Satır 2: Q4.12 -->
 <text x="16" y="130" class="s-baslik">Q4.12</text>
-<text x="16" y="146" class="s-kucuk">aynı 16 bit · aralık −8 … +7.9998</text>
+<text x="16" y="146" class="s-kucuk">aynı 16 bit · aralık −8 … +8</text>
 <text x="16" y="160" class="s-kucuk">LSB = 2⁻¹² ≈ 2.44·10⁻⁴</text>
 <g>
   <rect x="180" y="120" width="42" height="34" rx="3" fill="var(--red-soft)" stroke="var(--red)"/><text x="201" y="141" text-anchor="middle" class="s-mono">−8</text>
@@ -70,7 +70,7 @@
   <text x="810" y="235" text-anchor="middle" class="s-mono2">0 0</text>
 </g>
 <!-- sağa hizalı -->
-<text x="180" y="270" class="s-kucuk s-altin">sağa hizalı: üst 2 bit işaret genişletme (headroom 12 dB); ADC tam ölçek = −12 dBFS</text>
+<text x="180" y="270" class="s-kucuk s-altin">sağa hizalı: üst 2 bit işaret uzatma (headroom 12 dB); ADC tam ölçek = −12 dBFS</text>
 <g>
   <rect x="180" y="276" width="84" height="26" rx="3" fill="var(--gold-soft)" stroke="var(--gold)"/>
   <text x="222" y="293" text-anchor="middle" class="s-mono2">S S</text>

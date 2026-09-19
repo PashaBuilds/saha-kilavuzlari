@@ -63,7 +63,8 @@ $t_x(a)$ tablodan okunur ve TOA'dan çıkarılır; kenar şekli darbeye göre
 değiştiğinden kusursuz değildir ama kaymanın büyük kısmını alır.
 **Donanımda**: FSM, eşik geçişinden sonra tepe değeri belli olunca %50
 noktasını geriye dönük arar (birkaç örnek geriye bakan küçük bir tampon) ve
-iki komşu örnek arasında doğrusal aradeğerlemeyle **kesirli TOA** üretir;
+iki komşu örnek arasında doğrusal aradeğerlemeyle (interpolation) **kesirli TOA**
+(fractional TOA) üretir;
 bu, PDW'nin TOA alanına 2–3 kesir biti eklemeyi haklı çıkarır. Referans
 tasarımda ilk yol seçilmiştir: TOA eşik geçişidir, düzeltme yazılımdadır ve
 PDW belgesi bunu yazar.
@@ -94,7 +95,7 @@ uzunluğundan kısa darbeleri ölçmeye çalışma, tespit de edemezsin.
 ## PA: tepe mi, ortalama mı; log ölçek ve kalibrasyon
 
 Tepe güç FSM'de bir karşılaştırıcı ve register'la bedavaya gelir ama gürültüye
-karşı **yukarı yanlıdır**: 300 örneğin en büyüğü, gürültünün en şanslı anını
+karşı **yukarı yanlıdır** (biased): 300 örneğin en büyüğü, gürültünün en şanslı anını
 seçer. 15 dB SNR'da tepe, ortalamanın 1–2 dB üstünde çıkar. **Kenarlar hariç
 ortalama** (darbenin ilk ve son %10'u atılır, kalan güç toplanıp örnek
 sayısına bölünür) yansızdır ve varyansı $1/√N$ ile küçülür; bedeli bir
@@ -153,7 +154,7 @@ s: f_{NCO} | NCO frekansı, FTW'den ({{bolum:14}}) | Hz
 s: f_s | ADC örnekleme hızı ({{bolum:8}}) | Hz
 s: f_{LO} | yerel osilatör ({{bolum:6}}) | Hz
 o: f_bb = 0 → f_alias = {{s:ddc.nco_mhz}} MHz → f_IF = {{s:adc.fs_msps}} − 600 = 1800 MHz → f_RF = {{s:on_uc.lo_ghz}} GHz + 1.8 GHz = **{{s:sinyal.rf_ghz}} GHz** ✓
-o: f_bb = **+5 MHz** ölçüldü → f_alias = 605 MHz → f_IF = 1795 MHz → f_RF = **9.395 GHz**. Evrik bölge işareti çevirir: baseband'de yukarı görünen, RF'te aşağıdadır. Evrikliği unutan 9.405 GHz yazar — 10 MHz hata.
+o: f_bb = **+5 MHz** ölçüldü → f_alias = 605 MHz → f_IF = 1795 MHz → f_RF = **9.395 GHz**. Evrik bölge (spectral inversion) işareti çevirir: baseband'de yukarı görünen, RF'te aşağıdadır. Evrikliği unutan 9.405 GHz yazar — 10 MHz hata.
 o: PDW'ye: 9 395 000 000 / 10 000 = 939 500 → RF alanı = 0xE55EC.
 :::
 
@@ -178,7 +179,7 @@ sivri uçlar üretir. Sivri uçların sayısı ve aralığı kodu ele verir; FSM
 düzeyinde "pencere içinde eşikten büyük k adet sıçrama" sayacı MOP tipini 2
 bite indirger ({{bolum:24}}'teki `MOP` alanı).
 
-{{svg:g-252-anlik-frekans-profili.svg|Darbe içi anlık frekans profili — üç MOP imzası (hesaplanmış, SNR 25 dB). Üstte sabit taşıyıcılı ve LFM darbenin I(t)'si; LFM'de salınım kenarlara doğru sıklaşır. Altta anlık frekans: sabit taşıyıcı 5 MHz'de düz, LFM 0'dan 10 MHz'e doğrusal rampa (eğim 10 MHz/µs), 13-bit Barker kod geçişlerinde sivri uçlar. Ölçüm penceresi ortalaması üçünde de ≈ 5 MHz — ortalama tek başına MOP'u göstermez, profil gösterir.}}
+{{svg:g-252-anlik-frekans-profili.svg|Darbe içi anlık frekans profili — üç MOP imzası (hesaplanmış, SNR 25 dB). Üstte sabit taşıyıcılı ve LFM darbenin I(t)'si; LFM'de salınım kenarlara doğru sıklaşır. Altta anlık frekans (okunurluk için 5 örneklik kayan ortalamayla çizilmiş): sabit taşıyıcı 5 MHz'de düz, LFM 0'dan 10 MHz'e doğrusal rampa (eğim 10 MHz/µs), 13-bit Barker kod geçişlerinde sivri uçlar. Ölçüm penceresi ortalaması üçünde de ≈ 5 MHz — ortalama tek başına MOP'u göstermez, profil gösterir.}}
 
 Dikkat: LFM darbenin **ortalama** frekansı da 5 MHz'dir. PDW'de yalnız
 ortalamayı taşırsan LFM ile sabit taşıyıcıyı ayırt edemezsin; bu yüzden MOP
@@ -193,7 +194,7 @@ farkı, anten desenlerinin kesişim bölgesinde yönle yaklaşık doğrusaldır;
 ucuzdur, kabadır (derece mertebesi) ve iki kanalın **kalibre** PA'sını ister.
 **Faz interferometresi**: aralığı $d$ olan iki anten arasındaki faz farkı
 $Δφ = 2π d sinθ / λ$'dır; {{s:sinyal.rf_ghz}} GHz'de λ ≈ 3.19 cm, $d = λ/2$
-için $Δφ = π sinθ$. Faz hatası 5° rms ise yön hatası borda ≈ 1.6°; daha uzun
+için $Δφ = π sinθ$. Faz hatası 5° rms ise yön hatası bordada (broadside) ≈ 1.6°; daha uzun
 taban daha hassas ama belirsiz (birden çok θ aynı fazı verir), bu yüzden
 birden çok taban birlikte kullanılır. İki kanalın NCO'larının **aynı fazdan
 başlaması** ({{bolum:14}}'teki senkron reset) burada şarttır. **TDOA**: iki
@@ -259,7 +260,7 @@ PW'yi hata sanır. RF ekibinin katkısı kalibrasyon tablolarıdır: genlik
 tablolar olmadan yalnızca *göreli* doğrudur.
 ::fpga::
 Ölçüm çekirdeği FSM'in yanında bir avuç register'dır: TOA latch (48 bit),
-örnek sayacı (PW), tepe tutucu (karşılaştırıcı + register), güç toplayıcı
+örnek sayacı (PW), tepe tutucu (peak hold: karşılaştırıcı + register), güç toplayıcı
 (kenar dışlama için başlangıç/bitiş örneklerini atan iki sayaçla; bölme
 yerine örnek sayısı 2'nin kuvvetine yuvarlanıp kaydırma), faz farkı
 biriktirici (CORDIC `atan2` ya da küçük LUT ile $arg(x[n]·x^*[n−1])$, 16 bit

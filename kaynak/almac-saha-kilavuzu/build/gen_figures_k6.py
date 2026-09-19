@@ -139,12 +139,20 @@ def px_of(v, vmin, vmax, p0, p1):
     return p0 + (v - vmin) / (vmax - vmin) * (p1 - p0)
 
 
+def kutu_metin(o, x, y, metin, cls="s-kucuk", anchor="start", px=5.6):
+    """Çizgi/eğri üstüne binen etiketler için arka plan dikdörtgenli metin (genişlik kestirimi karakter başına px)."""
+    w = len(metin) * px
+    x0 = x - (w if anchor == "end" else w / 2 if anchor == "middle" else 0)
+    o.append(f'<rect x="{x0 - 3:.1f}" y="{y - 10:.1f}" width="{w + 6:.1f}" height="13" rx="2" fill="var(--dia-panel)" opacity=".85"/>')
+    o.append(f'<text x="{x:.1f}" y="{y:.1f}" text-anchor="{anchor}" class="{cls}">{metin}</text>')
+
+
 # =================================================================== g-180
 def g_180():
     """DFT = N referans sinüsle korelasyon. N = 32, x = cos(2π·5n/32) + 0.5·cos(2π·11n/32)."""
     N = 32
     x = [math.cos(TAU * 5 * n / N) + 0.5 * math.cos(TAU * 11 * n / N) for n in range(N)]
-    W, H = 860, 470
+    W, H = 860, 500
     o = svg_bas("g180", W, H, "DFT'nin korelasyon yorumu: 32 örneklik giriş dizisi (üstte solda), üç referans kosinüsle (k = 3, 5, 11) nokta nokta çarpılıp toplanır; k = 3'te çarpımlar birbirini götürür ve toplam 0 olur, k = 5'te tüm çarpımlar pozitif kalır ve toplam 16 (N/2) çıkar, k = 11'de toplam 8; sağda 0…16 arası tüm bin'ler için |X[k]| çubukları — yalnızca 5 ve 11'de çubuk var.")
     # --- sol: giriş
     x0, x1, y0, y1 = 40, 330, 120, 30
@@ -180,7 +188,8 @@ def g_180():
         renk = "s-vurgu" if abs(top) > 1 else "s-kirmizi"
         o.append(f'<text x="{x1 + 10}" y="{ymid - 4:.1f}" class="s-metin {renk}">∑ = {top:+.1f}</text>')
         o.append(f'<text x="{x1 + 10}" y="{ymid + 12:.1f}" class="s-kucuk">{"pozitif ve negatif çarpımlar birbirini götürür" if abs(top) < 1 else ("tüm çarpımlar aynı işaretli: hizalı" if k == 5 else "yarı genlik → yarı toplam")}</text>')
-    o.append(f'<text x="{x0}" y="{H - 12}" class="s-kucuk">Gri kesikli: referans cos(2πkn/N). Çubuk: x[n]·ref[n] (mavi +, kırmızı −). Gerçek DFT aynı işlemi sin ile de yapar (kompleks referans); |X[k]| ikisinin karesel toplamıdır.</text>')
+    o.append(f'<text x="{x0}" y="{H - 28}" class="s-kucuk">Gri kesikli: referans cos(2πkn/N). Çubuk: x[n]·ref[n] (mavi +, kırmızı −).</text>')
+    o.append(f'<text x="{x0}" y="{H - 12}" class="s-kucuk">Gerçek DFT aynı işlemi sin ile de yapar (kompleks referans); |X[k]| ikisinin karesel toplamıdır.</text>')
     # --- sağ: |X[k]| çubukları
     bx0, bx1, by0, by1 = 600, 830, 300, 60
     o.append(f'<text x="{bx0}" y="{by1 - 30}" class="s-baslik">|X[k]| — 17 bin (reel giriş, 0…N/2)</text>')
@@ -210,7 +219,7 @@ def g_181():
     T = N / fs
     f_koh = 34 * BIN                 # 9.9609375 MHz
     f_sz = 10.0e6                    # 34.13 bin
-    W, H = 860, 560
+    W, H = 860, 580
     o = svg_bas("g181", W, H, "Bin ızgarası ve spektral sızıntı. Üst sıra: 1024 örneklik çerçevenin sonu ile periyodik kopyasının başı — 34 tam periyotluk 9.961 MHz ton kesintisiz devam eder, 34.13 periyotluk 10.000 MHz tonda çerçeve sınırında sıçrama oluşur. Alt sıra: aynı iki tonun bin 24–44 arasındaki spektrumu; sürekli DTFT gri çizgi, bin örnekleri nokta. Koherent tonda tek bin 0 dBFS, diğerleri sıfır; 10 MHz tonda enerji komşu bin'lere sızar (−13 dB yan lob, ~−40 dB uzak bin'ler) ve tepe ≈ 0.3 dB düşer (scalloping).")
     # --- üst: zaman panelleri
     for i, (f, ad, koh) in enumerate([(f_koh, "34.00 periyot → koherent (9.961 MHz)", True), (f_sz, "34.13 periyot → sızıntı (10.000 MHz)", False)]):
@@ -239,7 +248,7 @@ def g_181():
         if not koh:
             jy = px_of(math.cos(TAU * f * (T - 1e-12)), -1.3, 1.3, y0, y1)
             o.append(f'<circle cx="{px_T:.1f}" cy="{jy:.1f}" r="5" fill="none" stroke="var(--red)" stroke-width="1.6"/>')
-            o.append(f'<text x="{px_T + 8:.1f}" y="{jy - 8:.1f}" class="s-kucuk s-kirmizi">sıçrama → geniş bant enerji</text>')
+            kutu_metin(o, px_T + 12, jy + 28, "sıçrama → geniş bant enerji", "s-kucuk s-kirmizi")
         o.append(f'<text x="{x1}" y="{y0 + 28}" text-anchor="end" class="s-kucuk">zaman · fs = 300 MSPS</text>')
     # --- alt: spektrum panelleri
     for i, (f, ad, koh) in enumerate([(f_koh, "koherent: tek bin", True), (f_sz, "sızıntı: bin\'lere yayılma + scalloping", False)]):
@@ -270,15 +279,17 @@ def g_181():
             o.append(f'<line x1="{px:.1f}" y1="{y0}" x2="{px:.1f}" y2="{py:.1f}" stroke="var(--accent)" stroke-width="1.2" opacity=".6"/>')
             o.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="3.2" fill="{"var(--accent)" if v > -30 else "var(--red)"}"/>')
         o.append(f'<text x="{x1}" y="{y0 + 28}" text-anchor="end" class="s-kucuk">bin no · 1 bin = 293 kHz · dBFS</text>')
+        # açıklamalar panelin alt-sol boşluğunda (üstte ana lob var)
         if koh:
-            o.append(f'<text x="{x0 + 8}" y="{y1 + 18}" class="s-kucuk">DTFT\'nin sıfırları tam bin merkezlerine düşer:</text>')
-            o.append(f'<text x="{x0 + 8}" y="{y1 + 32}" class="s-kucuk">diğer bin\'ler sıfır okur (picket fence — çitin arasından bakış).</text>')
+            kutu_metin(o, x0 + 8, y0 - 30, "DTFT'nin sıfırları tam bin merkezlerine düşer:")
+            kutu_metin(o, x0 + 8, y0 - 16, "diğer bin'ler sıfır okur (picket fence — çitin arasından bakış).")
         else:
             tepe = max(sp)
-            o.append(f'<text x="{x0 + 8}" y="{y1 + 18}" class="s-kucuk s-kirmizi">tepe {tepe:.2f} dBFS (scalloping, 0.13 bin kayma)</text>')
-            o.append(f'<text x="{x0 + 8}" y="{y1 + 32}" class="s-kucuk">yan lob zarfı ≈ 1/(π·δ): 10 bin ötede ≈ −30 dB</text>')
-    o.append(f'<text x="50" y="{H - 40}" class="s-metin2">Sızıntı, sinyalin değil gözlemin özelliğidir: DFT çerçevenin periyodik tekrarını analiz eder; çerçeve sınırındaki sıçrama, dikdörtgen pencerenin sinc yan loblarıdır.</text>')
-    o.append(f'<text x="50" y="{H - 22}" class="s-metin2">Çare iki türlü: bin merkezine oturt (koherent örnekleme — sahada nadiren mümkün) ya da çerçeve kenarlarını yumuşat (pencere — Bölüm 19).</text>')
+            kutu_metin(o, x0 + 8, y0 - 30, f"tepe {tepe:.2f} dBFS (scalloping, 0.13 bin kayma)", "s-kucuk s-kirmizi")
+            kutu_metin(o, x0 + 8, y0 - 16, "yan lob zarfı ≈ 1/(π·δ): 10 bin ötede ≈ −30 dB")
+    o.append(f'<text x="50" y="{H - 52}" class="s-metin2">Sızıntı (leakage), sinyalin değil gözlemin özelliğidir: DFT çerçevenin periyodik tekrarını analiz eder;</text>')
+    o.append(f'<text x="50" y="{H - 34}" class="s-metin2">çerçeve sınırındaki sıçrama, dikdörtgen pencerenin sinc yan loblarıdır. Çare iki türlü: bin merkezine oturt</text>')
+    o.append(f'<text x="50" y="{H - 16}" class="s-metin2">(koherent örnekleme — sahada nadiren mümkün) ya da çerçeve kenarlarını yumuşat (pencere — Bölüm 19).</text>')
     yaz("g-181-bin-izgarasi-sizinti.svg", o)
 
 
@@ -321,7 +332,7 @@ def g_182():
     for v, lab, kls in [(taban, f"FFT tabanı N = 1024: −{snr:.0f} − 10·log10(512) = {taban:.1f} dBFS/bin", "s-kirmizi"), (taban4k, f"N = 4096 olsaydı: {taban4k:.1f} dBFS/bin (4× N → −6 dB)", "s-mor")]:
         py = px_of(v, ymin, ymax, y0, y1)
         o.append(f'<line x1="{x0}" y1="{py:.1f}" x2="{x1}" y2="{py:.1f}" class="{"yol-gurultu" if kls == "s-kirmizi" else "yol-saat"}"/>')
-        o.append(f'<text x="{x1 - 6}" y="{(py - 5) if kls == "s-kirmizi" else (py + 13):.1f}" text-anchor="end" class="s-kucuk {kls}">{lab}</text>')
+        kutu_metin(o, x1 - 6, (py - 6) if kls == "s-kirmizi" else (py + 14), lab, f"s-kucuk {kls}", "end")
     # SNR ok/braket
     pxt = px_of(f / 1e6, xmin, xmax, x0, x1)
     o.append(f'<path d="M{pxt + 40:.1f} {px_of(0, ymin, ymax, y0, y1):.1f} V{px_of(taban, ymin, ymax, y0, y1) - 4:.1f}" stroke="var(--ink-2)" stroke-width="1.2" marker-end="url(#ok-ince)" marker-start="url(#ok-ince)"/>')
@@ -332,23 +343,24 @@ def g_182():
     o.append(f'<text x="{x1}" y="{y0 + 28}" text-anchor="end" class="s-kucuk">frekans (MHz) · dBFS · bin = {binw / 1e6:.2f} MHz</text>')
     # --- ilişki şeması
     by = 380
-    kutu = [(70, "SNR (datasheet)", f"{snr:.1f} dB", "referans bant: fs/2 = 1200 MHz", "ton gücü / tüm bant gürültü gücü", "blok-analog"),
+    kutu = [(60, "SNR (datasheet)", f"{snr:.1f} dB", "referans bant: fs/2 = 1200 MHz", "ton gücü / tüm bant gürültü gücü", "blok-analog"),
             (350, "NSD", f"{nsd:.1f} dBFS/Hz", "referans bant: 1 Hz", "bant ve N'den bağımsız — değişmez", "blok-aktif"),
-            (630, "FFT tabanı", f"{taban:.1f} dBFS/bin", f"referans bant: bin = {binw / 1e6:.2f} MHz (N = 1024)", "N ile değişir: 4·N → −6 dB", "blok")]
+            (640, "FFT tabanı", f"{taban:.1f} dBFS/bin", f"referans bant: bin = {binw / 1e6:.2f} MHz", "N = 1024; 4·N → −6 dB", "blok")]
+    KW = 190
     for (bx, ad, deg, bant, not_, kls) in kutu:
-        o.append(f'<rect x="{bx}" y="{by}" width="200" height="96" rx="8" class="{kls}"/>')
-        o.append(f'<text x="{bx + 100}" y="{by + 22}" text-anchor="middle" class="s-baslik">{ad}</text>')
-        o.append(f'<text x="{bx + 100}" y="{by + 46}" text-anchor="middle" class="s-mono" style="font-size:15px">{deg}</text>')
-        o.append(f'<text x="{bx + 100}" y="{by + 66}" text-anchor="middle" class="s-kucuk">{bant}</text>')
-        o.append(f'<text x="{bx + 100}" y="{by + 84}" text-anchor="middle" class="s-kucuk">{not_}</text>')
-    # oklar ve dönüşümler
-    o.append(f'<path d="M270 {by + 48} H346" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
-    o.append(f'<text x="308" y="{by + 40}" text-anchor="middle" class="s-mono2">−10·log10(fs/2)</text>')
-    o.append(f'<text x="308" y="{by + 66}" text-anchor="middle" class="s-kucuk">−{10 * math.log10(fs / 2):.1f} dB</text>')
-    o.append(f'<path d="M550 {by + 48} H626" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
-    o.append(f'<text x="588" y="{by + 40}" text-anchor="middle" class="s-mono2">+10·log10(bin·ENBW)</text>')
+        o.append(f'<rect x="{bx}" y="{by}" width="{KW}" height="96" rx="8" class="{kls}"/>')
+        o.append(f'<text x="{bx + KW / 2:.0f}" y="{by + 22}" text-anchor="middle" class="s-baslik">{ad}</text>')
+        o.append(f'<text x="{bx + KW / 2:.0f}" y="{by + 46}" text-anchor="middle" class="s-mono" style="font-size:15px">{deg}</text>')
+        o.append(f'<text x="{bx + KW / 2:.0f}" y="{by + 66}" text-anchor="middle" class="s-kucuk">{bant}</text>')
+        o.append(f'<text x="{bx + KW / 2:.0f}" y="{by + 84}" text-anchor="middle" class="s-kucuk">{not_}</text>')
+    # oklar ve dönüşümler: formül okun üstünde (kutu şeridinin dışında), dB değeri okun altında
+    o.append(f'<path d="M250 {by + 48} H346" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
+    o.append(f'<text x="298" y="{by - 8}" text-anchor="middle" class="s-mono2">−10·log10(fs/2)</text>')
+    o.append(f'<text x="298" y="{by + 66}" text-anchor="middle" class="s-kucuk">−{10 * math.log10(fs / 2):.1f} dB</text>')
+    o.append(f'<path d="M540 {by + 48} H636" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
+    o.append(f'<text x="588" y="{by - 8}" text-anchor="middle" class="s-mono2">+10·log10(bin·ENBW)</text>')
     o.append(f'<text x="588" y="{by + 66}" text-anchor="middle" class="s-kucuk">+{10 * math.log10(binw):.1f} dB (dikd.)</text>')
-    o.append(f'<path d="M170 {by + 96} V{by + 130} H730 V{by + 100}" class="yol-kontrol" fill="none" marker-end="url(#ok-kontrol)"/>')
+    o.append(f'<path d="M155 {by + 96} V{by + 130} H735 V{by + 100}" class="yol-kontrol" fill="none" marker-end="url(#ok-kontrol)"/>')
     o.append(f'<text x="450" y="{by + 146}" text-anchor="middle" class="s-mono2 s-yesil">kestirme: FFT tabanı = −SNR − 10·log10(N/2) = −{snr:.1f} − {10 * math.log10(N / 2):.1f} = {taban:.1f} dBFS</text>')
     o.append(f'<text x="70" y="{by + 178}" class="s-metin2">Üç sayı aynı gürültüyü üç farklı bantta ölçer. Datasheet SNR\'ı ile FFT tabanı arasındaki {10 * math.log10(N / 2):.0f} dB "kayıp" değil, bin\'in bandın 1/512\'si olmasıdır.</text>')
     o.append(f'<text x="70" y="{by + 198}" class="s-metin2">Kompleks I/Q girişte (DDC çıkışı) gürültü N bin\'e yayılır: işlem kazancı 10·log10(N) = {10 * math.log10(N):.1f} dB; NSD yolu her iki durumda aynı sonucu verir.</text>')
@@ -361,7 +373,7 @@ def g_190():
     """Pencere galerisi: 6 pencerenin zaman şekli ve DTFT'si (N = 64, 64× oversample), Ek D sayıları etikette."""
     tipler = ["rect", "hann", "hamming", "blackman-harris", "kaiser", "flat-top"]
     N = 64
-    W, H = 900, 600
+    W, H = 900, 616
     o = svg_bas("g190", W, H, "Altı pencere fonksiyonunun zaman şekli (üst küçük panel) ve frekans yanıtı (alt panel, dB, ±12 bin): dikdörtgen en dar ana lob ama −13 dB yan lob; Hann −31.5 dB yan lob ve 18 dB/oktav düşüş; Hamming ilk yan lobu −42.7 dB'ye bastırır ama uzak yan loblar yavaş düşer; Blackman-Harris 4 terim −92 dB yan lob, 2 bin ana lob; Kaiser β=8 ayarlanabilir orta yol; flat-top 3.75 bin genişliğinde düz tepe, 0.01 dB scalloping. Her panelde Ek D'den en yüksek yan lob, ENBW ve scalloping kaybı yazılıdır.")
     for i, tip in enumerate(tipler):
         col, row = i % 3, i // 3
@@ -377,7 +389,7 @@ def g_190():
         ys = [max(-0.05, v) for v in w]
         o.append(f'<path d="{path_from(xs, ys, tx0, tx1, ty0, ty1, 0, N - 1, -0.1, 1.1)}L{tx1} {ty0}L{tx0} {ty0}Z" fill="var(--gold-soft)"/>')
         o.append(f'<path d="{path_from(xs, ys, tx0, tx1, ty0, ty1, 0, N - 1, -0.1, 1.1)}" stroke="var(--gold)" fill="none" stroke-width="1.6"/>')
-        o.append(f'<text x="{tx1 - 4}" y="{ty0 - 4}" text-anchor="end" class="s-kucuk">w[n], N örnek</text>')
+        o.append(f'<text x="{tx1}" y="{cy}" text-anchor="end" class="s-kucuk">w[n], N örnek</text>')
         # frekans yanıtı
         fx0, fx1, fy0, fy1 = cx + 30, cx + 240, cy + 235, cy + 100
         o.append(f'<text x="{cx}" y="{cy + 76}" class="s-kucuk">yan lob {yl} · ENBW {enbw} bin</text>')
@@ -389,7 +401,7 @@ def g_190():
         o.append(f'<path d="{d}L{fx1} {fy0}L{fx0} {fy0}Z" class="spk-sinyal" opacity=".14"/>')
         o.append(f'<path d="{d}" stroke="var(--accent)" fill="none" stroke-width="1.3"/>')
         o.append(f'<text x="{fx1}" y="{fy0 + 26}" text-anchor="end" class="s-kucuk">bin · dB</text>')
-    o.append(f'<text x="50" y="{H - 12}" class="s-kucuk">Hesap: N = 64, 64× sıfır doldurmalı DTFT, tepe 0 dB. Sayılar Ek D (N = 1024) ile aynıdır; eksen bin cinsinden olduğundan şekil N\'den bağımsızdır. * ilk dipten sonra.</text>')
+    o.append(f'<text x="50" y="{H - 12}" class="s-kucuk">Hesap: N = 64, 64× zero-padding ile DTFT, tepe 0 dB. Sayılar Ek D (N = 1024) ile aynıdır; eksen bin cinsinden olduğundan şekil N\'den bağımsızdır. * ilk dipten sonra.</text>')
     yaz("g-190-pencere-galerisi.svg", o)
 
 
@@ -444,7 +456,7 @@ def g_200():
     """Streaming FFT veri akışı — blok şema (semboller + etiketler)."""
     W, H = 1160, 430
     o = svg_bas("g200", W, H, "FPGA'da streaming FFT veri akışı: DDC çıkışı 300 MSPS 16+16 bit I/Q → overlap tamponu (ping-pong BRAM, her 512 örnekte yeni 1024'lük çerçeve) → pencere çarpımı (Hann katsayı ROM'u, 512 giriş simetrik, tek DSP) → pipelined FFT çekirdeği (N = 1024, radix-2², ölçekleme takvimi register'dan, blok kayan nokta seçeneği) → bin ters çevirme (bit-reversed → doğal sıra) ve fftshift → |X|² = I² + Q² (36 bit → 20 bit dB/log2 LUT) → tepe bul / eşik → FIFO → PS. Kontrol register'ları yeşil: WIN_SEL, FFT_SCALE_SCH, FFT_NFFT, FFT_THR. Zamanlama: çerçeve süresi 3.41 µs, adım 1.71 µs, çekirdek gecikmesi ≈ N + pipeline saat.")
-    y = 120
+    y = 140
     bloklar = [
         (20, "DDC çıkışı", "I/Q 16+16 bit", "300 MSPS", "blok-aktif", None),
         (150, "overlap tamponu", "ping-pong BRAM", "2 × 1024 × 32 bit", "blok", None),
@@ -462,8 +474,8 @@ def g_200():
         else:
             o.append(f'<rect x="{bx}" y="{y}" width="120" height="70" rx="7" class="{kls}"/>')
             o.append(f'<text x="{bx + 60}" y="{y + 40}" text-anchor="middle" class="s-metin">{ad}</text>')
-        o.append(f'<text x="{bx + 60}" y="{y + 92}" text-anchor="middle" class="s-mono2">{a1}</text>')
-        o.append(f'<text x="{bx + 60}" y="{y + 107}" text-anchor="middle" class="s-kucuk">{a2}</text>')
+        o.append(f'<text x="{bx + 60}" y="{y - 30}" text-anchor="middle" class="s-mono2">{a1}</text>')
+        o.append(f'<text x="{bx + 60}" y="{y - 16}" text-anchor="middle" class="s-kucuk">{a2}</text>')
         if i < len(bloklar) - 1:
             nx = bloklar[i + 1][0]
             o.append(f'<path d="M{bx + 120} {y + 35} H{nx - 2}" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
@@ -474,14 +486,15 @@ def g_200():
         nx = bloklar[i + 1][0]
         o.append(f'<text x="{(bx + nx) / 2:.0f}" y="{y + 28}" text-anchor="middle" class="s-kucuk s-vurgu">{et}</text>')
     # register'lar — tek sıra, açıklama kutunun altında
-    ry = 250
-    regs = [(290, "WIN_SEL", "0 dikd. · 1 Hann · 2 BH · 3 Kaiser", 360), (450, "FFT_SCALE_SCH", "kademe çifti başına 2 bit: 0x2AA", 510),
-            (620, "FFT_LOG2N", "log2 N = 10", 510), (860, "FFT_THR", "eşik, dB (Q8.4)", 940)]
-    for (rx, ad, acik, hx) in regs:
+    ry = 262
+    # (ad, açıklama, ok x, ok ucu y): sembol bloklarında ok ucu blok adının (y+68) altında kalır
+    regs = [(250, "WIN_SEL", "0 dikd. · 1 Hann · 2 BH · 3 Kaiser", 390, y + 84), (450, "FFT_SCALE_SCH", "kademe çifti başına 2 bit: 0x2AA", 520, y + 84),
+            (650, "FFT_LOG2N", "log2 N = 10", 660, y + 74), (860, "FFT_THR", "eşik, dB (Q8.4)", 940, y + 84)]
+    for (rx, ad, acik, hx, hy) in regs:
         o.append(f'<rect x="{rx}" y="{ry}" width="150" height="26" rx="4" class="blok-kontrol"/>')
         o.append(f'<text x="{rx + 75}" y="{ry + 17}" text-anchor="middle" class="s-mono">{ad}</text>')
         o.append(f'<text x="{rx + 75}" y="{ry + 42}" text-anchor="middle" class="s-kucuk s-yesil">{acik}</text>')
-        o.append(f'<path d="M{hx} {ry} V{y + 72}" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>')
+        o.append(f'<path d="M{hx} {ry} V{hy}" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>')
     o.append(f'<text x="20" y="{ry + 17}" class="s-kucuk">PS (AXI-Lite) register\'ları →</text>')
     # zamanlama şeridi
     ty = 350
@@ -505,7 +518,7 @@ def g_201():
     f0 = 32 * BIN                 # 9.375 MHz: hem N = 1024 (bin 32) hem N = 256 (bin 8) için bin merkezi
     g = prng(5)
     sigma = math.sqrt(10 ** (-snr_s / 10))
-    W, H = 900, 560
+    W, H = 900, 580
     o = svg_bas("g201", W, H, "Darbe ile FFT çerçevesinin hizalanması. Sol sütun zaman çizelgeleri: (a) N = 1024 çerçeve (3.41 µs) 1 µs darbeyi içine alır ama doluluk yalnızca %29'dur, gürültü tüm çerçeveden toplanır → 5.3 dB SNR kaybı; (b) overlap'siz ardışık çerçevelerde darbe sınıra denk gelirse ikiye bölünür, %50 overlap'li ara çerçeve darbeyi bütün yakalar; (c) N = 256 çerçeve (0.85 µs) darbenin içinde kalır, SNR kaybı yok ama bin 1.17 MHz. Sağ sütun: aynı gürültülü darbenin hesaplanmış spektrumları — N = 1024'te tepe−taban 29 dB, N = 256'da 34 dB; bin genişliği 4 kat kabalaşır.")
     # --- zaman çizelgeleri
     tx0, tx1 = 50, 440
@@ -517,9 +530,12 @@ def g_201():
         o.append(f'<path d="M{tpx(0)} {yb} H{tpx(darbe_bas):.1f} V{yb - 26} H{tpx(darbe_bas + PW):.1f} V{yb} H{tpx(tmax)}" class="yol-analog" stroke="var(--accent)" stroke-width="2"/>')
         o.append(f'<rect x="{tpx(darbe_bas):.1f}" y="{yb - 26}" width="{tpx(darbe_bas + PW) - tpx(darbe_bas):.1f}" height="26" fill="var(--accent-soft)"/>')
     def cerceve(t0, T, yb, kls="var(--gold)", etiket=None, alpha=.35):
-        o.append(f'<rect x="{tpx(t0):.1f}" y="{yb}" width="{tpx(t0 + T) - tpx(t0):.1f}" height="16" fill="{kls}" opacity="{alpha}" stroke="{kls}" stroke-width="1"/>')
+        ta, tb = max(t0, tmin), min(t0 + T, tmax)          # zaman eksenine kırp (sağ sütuna taşmasın)
+        if tb <= ta:
+            return
+        o.append(f'<rect x="{tpx(ta):.1f}" y="{yb}" width="{tpx(tb) - tpx(ta):.1f}" height="16" fill="{kls}" opacity="{alpha}" stroke="{kls}" stroke-width="1"/>')
         if etiket:
-            o.append(f'<text x="{(tpx(t0) + tpx(t0 + T)) / 2:.1f}" y="{yb + 12}" text-anchor="middle" class="s-kucuk">{etiket}</text>')
+            o.append(f'<text x="{(tpx(ta) + tpx(tb)) / 2:.1f}" y="{yb + 12}" text-anchor="middle" class="s-kucuk">{etiket}</text>')
     T1024, T256 = 1024 / fs, 256 / fs
     # (a)
     ya = 70
@@ -533,16 +549,18 @@ def g_201():
     darbe(yb)
     for k in range(3):
         cerceve(k * T1024 - 1.6e-6, T1024, yb + 6, etiket=f"çerçeve {k}" if k else None, alpha=.25)
-    cerceve(T1024 / 2 - 1.6e-6 + T1024, T1024, yb + 26, kls="var(--green)", etiket="%50 overlap çerçevesi: darbe bütün", alpha=.3)
-    o.append(f'<text x="{tx0}" y="{yb + 60}" class="s-kucuk">overlap\'siz: 0.4 + 0.6 µs\'lik iki parça, iki çerçevede iki zayıf tepe (−8 ve −4.4 dB). %50 overlap: en kötü durumda bile bir çerçeve darbenin ≥ %75\'ini içerir.</text>')
+    cerceve(-1.6e-6 + T1024 / 2, T1024, yb + 26, kls="var(--green)", etiket="%50 overlap çerçevesi: darbe bütün", alpha=.3)
+    o.append(f'<text x="{tx0}" y="{yb + 60}" class="s-kucuk">overlap\'siz: 0.4 + 0.6 µs\'lik iki parça, iki çerçevede iki zayıf tepe (−8 ve −4.4 dB).</text>')
+    o.append(f'<text x="{tx0}" y="{yb + 74}" class="s-kucuk">%50 overlap: en kötü durumda bile bir çerçeve darbenin ≥ %75\'ini içerir.</text>')
     # (c)
     yc = 340
     o.append(f'<text x="{tx0}" y="{yc - 30}" class="s-baslik">(c) N = 256 — çerçeve darbenin içinde</text>')
     darbe(yc)
     for k in range(3):
         cerceve(darbe_bas - 0.15e-6 + k * T256 / 2, T256, yc + 6 + (k % 2) * 18, etiket="0.85 µs" if k == 1 else None, alpha=.3)
-    o.append(f'<text x="{tx0}" y="{yc + 60}" class="s-kucuk">tam doluluk → SNR kaybı yok; ama bin = 300/256 = 1.17 MHz (4× kaba). Zaman–frekans takası: kısa darbe için ideal N ≈ darbe örnek sayısı (300).</text>')
-    o.append(eksen(tx0, tx1, 414, 410, [0, 1e-6, 2e-6, 3e-6, 4e-6], [], tmin, tmax, 0, 1, lambda v: f"{v * 1e6:.0f} µs"))
+    o.append(f'<text x="{tx0}" y="{yc + 60}" class="s-kucuk">tam doluluk → SNR kaybı yok; ama bin = 300/256 = 1.17 MHz (4× kaba).</text>')
+    o.append(f'<text x="{tx0}" y="{yc + 74}" class="s-kucuk">Zaman–frekans takası: kısa darbe için ideal N ≈ darbe örnek sayısı (300).</text>')
+    o.append(eksen(tx0, tx1, 432, 428, [0, 1e-6, 2e-6, 3e-6, 4e-6], [], tmin, tmax, 0, 1, lambda v: f"{v * 1e6:.0f} µs"))
     # --- spektrumlar (sağ)
     OFS = 600                         # tampon t = −2 µs'den başlar (çerçeve darbeden önce başlayabilsin)
     x_full = []
@@ -578,11 +596,14 @@ def g_201():
         o.append(f'<text x="{x1 - 4}" y="{py_t - 4:.1f}" text-anchor="end" class="s-kucuk s-kirmizi">taban ort. {taban:.1f} dB</text>')
         o.append(f'<text x="{x0 + 6}" y="{y1 + 14}" class="s-kucuk">tepe {tepe:.1f} dB · Δ {tepe - taban:.1f} dB (teori {snr_s + 10 * math.log10(min(L, N) ** 2 / N):.1f}) · bin {binw / 1e6:.2f} MHz</text>')
         o.append(f'<text x="{x1}" y="{y0 + 26}" text-anchor="end" class="s-kucuk">frekans (MHz) · dB (tam ölçek CW = 0)</text>')
-    o.append(f'<text x="520" y="430" class="s-metin2">Örnek başına SNR 10 dB, aynı gürültü gerçekleşmesi.</text>')
-    o.append(f'<text x="520" y="448" class="s-metin2">tepe − taban = SNR_örnek + 10·log10(L²/N), L = çerçevedeki darbe örneği.</text>')
-    o.append(f'<text x="520" y="466" class="s-metin2">N = L (300) en iyi: 10 + 24.8 = 34.8 dB. N = 1024: 29.4 dB (−5.3). N = 64: 28.1 dB.</text>')
-    o.append(f'<text x="50" y="{H - 60}" class="s-metin2">Kural: çerçeve darbeden uzunsa fazla kısım yalnızca gürültü ekler (kayıp 10·log10(N/L)); kısaysa çözünürlük ve frekans doğruluğu düşer.</text>')
-    o.append(f'<text x="50" y="{H - 40}" class="s-metin2">Bilinmeyen PW için pratik: %50 overlap + darbe FSM\'inin (Bölüm 26) verdiği başlangıç/bitiş ile sonradan çerçeve seçimi ya da iki paralel N.</text>')
+    for i, t in enumerate(["Örnek başına SNR 10 dB, aynı gürültü gerçekleşmesi.",
+                           "tepe − taban = SNR_örnek + 10·log10(L²/N),",
+                           "L = çerçevedeki darbe örneği.",
+                           "N = L (300) en iyi: 10 + 24.8 = 34.8 dB.",
+                           "N = 1024: 29.4 dB (−5.3). N = 64: 28.1 dB."]):
+        o.append(f'<text x="520" y="{424 + i * 16}" class="s-kucuk">{t}</text>')
+    o.append(f'<text x="50" y="{H - 52}" class="s-metin2">Kural: çerçeve darbeden uzunsa fazla kısım yalnızca gürültü ekler (kayıp 10·log10(N/L)); kısaysa çözünürlük ve frekans doğruluğu düşer.</text>')
+    o.append(f'<text x="50" y="{H - 32}" class="s-metin2">Bilinmeyen PW için pratik: %50 overlap + darbe FSM\'inin (Bölüm 26) verdiği başlangıç/bitiş ile sonradan çerçeve seçimi ya da iki paralel N.</text>')
     yaz("g-201-darbe-pencere-hizalama.svg", o)
 
 
@@ -600,7 +621,7 @@ def g_202():
     fmin, fmax = -30e6, 30e6
     w = pencere("hann", N)
     s1 = sum(w)
-    W, H = 900, 470
+    W, H = 900, 488
     o = svg_bas("g202", W, H, "Referans darbenin (solda, 1 µs CW, +10 MHz) ve LFM varyantının (sağda, 10 MHz süpürme) hesaplanmış spektrogramı: STFT N = 128 (bin 2.34 MHz, çerçeve 0.43 µs), adım 32 örnek (%75 overlap), Hann. Üstte darbe zarfı zaman ekseninde. CW darbe yatay bir çizgi olarak görünür (Hann ana lobu ≈ 2 bin genişliğinde); LFM darbe 10 MHz/µs eğimli çapraz bir çizgi çizer: 5 MHz'den 15 MHz'e. Darbe kenarlarında çerçevenin yalnızca bir kısmı dolu olduğu için çizgi soluklaşır ve genişler; koyuluk dB seviyesini gösterir (−50…0 dB).")
     hucre = 0
     for i, (mop, ad) in enumerate([("yok", "Referans darbe: 1 µs CW, +10 MHz"), ("lfm", "Varyant B: 1 µs LFM, 10 MHz süpürme")]):
@@ -658,8 +679,9 @@ def g_202():
             o.append(f'<text x="{px0 + 8}" y="{sy1 + 16}" class="s-kucuk s-vurgu">eğim = 10 MHz / 1 µs — anlık frekans zamanla artar</text>')
         else:
             o.append(f'<text x="{px0 + 8}" y="{sy1 + 16}" class="s-kucuk s-vurgu">yatay çizgi: frekans sabit, genişlik ≈ Hann ana lobu (2 bin)</text>')
-    o.append(f'<text x="60" y="{H - 30}" class="s-metin2">Koyuluk: −50 dB (saydam) … 0 dB (tam mavi), tam ölçek CW\'ye göre. Kenarlarda soluklaşma: çerçeve darbeyi kısmen içeriyor (g-201). Gürültü −25 dB/örnek.</text>')
-    o.append(f'<text x="60" y="{H - 12}" class="s-kucuk">Aynı darbeye N = 1024 ile bakılsaydı tek sütun olurdu: zaman bilgisi kaybolur, frekans 293 kHz\'e incelir; N = 32 ile bin 9.4 MHz olur, LFM eğimi seçilemez.</text>')
+    o.append(f'<text x="60" y="{H - 46}" class="s-metin2">Koyuluk: −50 dB (saydam) … 0 dB (tam mavi), tam ölçek CW\'ye göre. Kenarlarda soluklaşma: çerçeve darbeyi kısmen içeriyor (g-201).</text>')
+    o.append(f'<text x="60" y="{H - 28}" class="s-kucuk">Gürültü −25 dB/örnek. Aynı darbeye N = 1024 ile bakılsaydı tek sütun olurdu: zaman bilgisi kaybolur, frekans 293 kHz\'e incelir;</text>')
+    o.append(f'<text x="60" y="{H - 12}" class="s-kucuk">N = 32 ile bin 9.4 MHz olur, LFM eğimi seçilemez.</text>')
     yaz("g-202-spektrogram.svg", o)
     print(f"    (g-202 hücre sayısı: {hucre})")
 
@@ -713,7 +735,7 @@ def g_192():
     ys = [toplam[t] for t in xs]
     o.append(f'<path d="{path_from(xs, ys, x0, x1, y0, y1, tmin, tmax, -0.05, 1.25)}" stroke="var(--accent)" fill="none" stroke-width="2.2"/>')
     o.append(f'<text x="{x0 + 8}" y="{y1 + 16}" class="s-kucuk s-vurgu">toplam = 1 (w[n] + w[n + N/2] = 1)</text>')
-    o.append(f'<text x="{x0 + 8}" y="{y0 - 8}" class="s-kucuk">gri kesikli: overlap\'siz — sınırda ağırlık 0</text>')
+    o.append(f'<text x="{x0}" y="{y0 + 44}" class="s-kucuk">gri kesikli: overlap\'siz diziliş — çerçeve sınırında ağırlık 0</text>')
     o.append(f'<text x="{x1}" y="{y0 + 28}" text-anchor="end" class="s-kucuk">örnek (N = 1024, adım 512 = 1.71 µs)</text>')
     o.append(f'<text x="{x0}" y="{y0 + 60}" class="s-metin2">Blackman-Harris gibi dar pencereler için eşdeğer düzlük %75 overlap ister (adım N/4).</text>')
     o.append(f'<text x="{x0}" y="{y0 + 80}" class="s-metin2">Bedel: çerçeve hızı ve FFT iş yükü 2× (%50) ya da 4× (%75).</text>')

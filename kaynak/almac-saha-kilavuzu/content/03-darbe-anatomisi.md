@@ -107,8 +107,9 @@ genişliği arasında da bir kural vardır: bir alçak geçiren sistemin
 B_IF genişliğinde bir bant geçiren filtre için zarfın bandı B_IF/2
 olduğundan **t_r ≈ 0.7/B_IF**. Filtre 2 MHz ise kenar en iyi ihtimalle
 350 ns olur — emiterin 50 ns'lik kenarı almaçta görünmez; almaç kendi
-kenarını dayatır. Tersten: 50 ns'lik kenarı korumak 14 MHz'lik IF bandı ister. TOA doğruluğunun neden filtre bant genişliğine
-bağlı olduğu ({{bolum:25}}) burada saklıdır.
+kenarını dayatır. Tersten: 50 ns'lik kenarı korumak 14 MHz'lik IF bandı
+ister. TOA doğruluğunun neden filtre bant genişliğine bağlı olduğu
+({{bolum:25}}) burada saklıdır.
 
 ## Kavram: darbe içi modülasyon (MOP)
 
@@ -148,7 +149,7 @@ o: B = {{s:sinyal.varyant_b.chirp_bw_mhz}} MHz, PW = {{s:sinyal.pw_us}} µs → 
 ## Kavram: PRI türleri (tanım düzeyi)
 
 Darbeden darbeye PRI'nin nasıl değiştiği emiterin kimliğidir ve PDW
-akışını yorumlayan yazılımın ({{bolum:30}}) işidir; burada yalnızca adları:
+akışını yorumlayan yazılımın ({{bolum:27}}) işidir; burada yalnızca adları:
 
 | PRI türü | Davranış | Almaca etkisi |
 |---|---|---|
@@ -252,9 +253,9 @@ değil tanımı düzeltmek.
 Filtreyi 2 MHz'ten 500 kHz'e indirmek gürültü tabanını 6 dB düşürür; ama
 1 µs darbenin ana lobunun büyük kısmı artık filtrenin dışındadır: tepe
 seviyesi birkaç dB düşer, kenar ≈ 0.7/500 kHz = 1.4 µs'ye — darbenin
-kendisinden uzun bir süreye — yayılır, darbe üçgene döner. Net SNR kazancı sıfıra yakındır, PW ve TOA ölçümü ise
-belirgin bozulur. Darbeli sinyal için "en iyi" bant genişliği 1/PW
-civarındadır (eşlenik bant); daha dar değil. LFM'de sınır B'dir: 10 MHz'lik
+kendisinden uzun bir süreye — yayılır, darbe üçgene döner. Net SNR kazancı
+sıfıra yakındır, PW ve TOA ölçümü ise belirgin bozulur. Darbeli sinyal için "en iyi" bant genişliği 1/PW
+civarındadır (darbeye uyarlanmış **matched bant**); daha dar değil. LFM'de sınır B'dir: 10 MHz'lik
 chirp'i 2 MHz'lik filtreden geçirmek darbeyi parçalara böler ve
 frekans ölçümünü anlamsızlaştırır.
 :::

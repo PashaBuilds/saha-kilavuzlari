@@ -14,121 +14,121 @@
 
 <!-- Anten -->
 <symbol id="sym-anten" viewBox="0 0 60 40">
-  <path d="M30 38 V14 M30 14 L12 2 M30 14 L48 2 M18 6 L42 6" class="yol-analog" stroke-linecap="round"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M30 38 V14 M30 14 L12 2 M30 14 L48 2 M18 6 L42 6" stroke-linecap="round"/>
 </symbol>
 
 <!-- Yükselteç (LNA / IF amp): üçgen -->
 <symbol id="sym-amp" viewBox="0 0 60 40">
-  <path d="M0 20 H14 M46 20 H60" class="yol-analog"/>
-  <path d="M14 4 L46 20 L14 36 Z" class="blok-analog"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M0 20 H14 M46 20 H60"/>
+  <path fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4" d="M14 4 L46 20 L14 36 Z"/>
 </symbol>
 
 <!-- Mixer: daire içinde çarpı -->
 <symbol id="sym-mixer" viewBox="0 0 60 40">
-  <path d="M0 20 H16 M44 20 H60" class="yol-analog"/>
-  <circle cx="30" cy="20" r="14" class="blok-analog"/>
-  <path d="M21 11 L39 29 M39 11 L21 29" class="yol-analog" stroke-width="1.6"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M0 20 H16 M44 20 H60"/>
+  <circle fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4" cx="30" cy="20" r="14"/>
+  <path stroke="var(--gold)" stroke-width="1.6" fill="none" d="M21 11 L39 29 M39 11 L21 29"/>
 </symbol>
 
 <!-- Sayısal mixer (kompleks çarpım) -->
 <symbol id="sym-mixer-d" viewBox="0 0 60 40">
-  <path d="M0 20 H16 M44 20 H60" class="yol-sayisal"/>
-  <circle cx="30" cy="20" r="14" class="blok"/>
-  <path d="M21 11 L39 29 M39 11 L21 29" class="yol-sayisal" stroke-width="1.6"/>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 20 H16 M44 20 H60"/>
+  <circle fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" cx="30" cy="20" r="14"/>
+  <path stroke="var(--accent)" stroke-width="1.6" fill="none" d="M21 11 L39 29 M39 11 L21 29"/>
 </symbol>
 
 <!-- Bant geçiren filtre -->
 <symbol id="sym-bpf" viewBox="0 0 60 40">
-  <path d="M0 20 H10 M50 20 H60" class="yol-analog"/>
-  <rect x="10" y="4" width="40" height="32" rx="4" class="blok-analog"/>
-  <path d="M16 15 Q30 15 30 8 Q30 15 44 15" class="yol-analog" stroke-width="1.4" fill="none"/>
-  <path d="M16 22 H44 M16 28 H44" class="yol-analog" stroke-width="1.4"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M0 20 H10 M50 20 H60"/>
+  <rect fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4" x="10" y="4" width="40" height="32" rx="4"/>
+  <path stroke="var(--gold)" stroke-width="1.4" fill="none" d="M16 15 Q30 15 30 8 Q30 15 44 15"/>
+  <path stroke="var(--gold)" stroke-width="1.4" fill="none" d="M16 22 H44 M16 28 H44"/>
   <path d="M18 20 L20 24 M40 20 L42 24" stroke="var(--red)" stroke-width="1.4"/>
 </symbol>
 
 <!-- Alçak geçiren filtre -->
 <symbol id="sym-lpf" viewBox="0 0 60 40">
-  <path d="M0 20 H10 M50 20 H60" class="yol-analog"/>
-  <rect x="10" y="4" width="40" height="32" rx="4" class="blok-analog"/>
-  <path d="M16 12 H30 Q38 12 44 22" class="yol-analog" stroke-width="1.4" fill="none"/>
-  <path d="M16 22 H44 M16 28 H44" class="yol-analog" stroke-width="1.4"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M0 20 H10 M50 20 H60"/>
+  <rect fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4" x="10" y="4" width="40" height="32" rx="4"/>
+  <path stroke="var(--gold)" stroke-width="1.4" fill="none" d="M16 12 H30 Q38 12 44 22"/>
+  <path stroke="var(--gold)" stroke-width="1.4" fill="none" d="M16 22 H44 M16 28 H44"/>
 </symbol>
 
 <!-- Sayısal FIR filtre -->
 <symbol id="sym-fir" viewBox="0 0 60 40">
-  <path d="M0 20 H10 M50 20 H60" class="yol-sayisal"/>
-  <rect x="10" y="4" width="40" height="32" rx="4" class="blok"/>
-  <path d="M15 28 L15 14 L27 14 L27 28 M27 14 Q33 14 36 28 M36 28 L45 28" class="yol-sayisal" stroke-width="1.4" fill="none"/>
-  <text x="30" y="35" text-anchor="middle" class="s-kucuk" style="font-size:7px">FIR</text>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 20 H10 M50 20 H60"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="10" y="4" width="40" height="32" rx="4"/>
+  <path stroke="var(--accent)" stroke-width="1.4" fill="none" d="M15 28 L15 14 L27 14 L27 28 M27 14 Q33 14 36 28 M36 28 L45 28"/>
+  <text font-family="var(--sans)" font-size="7px" fill="var(--ink-3)" x="30" y="35" text-anchor="middle">FIR</text>
 </symbol>
 
 <!-- Decimator ↓M -->
 <symbol id="sym-dec" viewBox="0 0 60 40">
-  <path d="M0 20 H12 M48 20 H60" class="yol-sayisal"/>
-  <rect x="12" y="6" width="36" height="28" rx="4" class="blok"/>
-  <text x="30" y="25" text-anchor="middle" class="s-metin" style="font-size:13px;font-weight:700">↓M</text>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 20 H12 M48 20 H60"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="12" y="6" width="36" height="28" rx="4"/>
+  <text font-family="var(--sans)" font-size="13px" fill="var(--ink)" font-weight="700" x="30" y="25" text-anchor="middle">↓M</text>
 </symbol>
 
 <!-- LO / osilatör: daire içinde sinüs -->
 <symbol id="sym-lo" viewBox="0 0 60 40">
-  <circle cx="30" cy="20" r="14" class="blok-analog"/>
-  <path d="M20 20 Q25 10 30 20 T40 20" class="yol-analog" stroke-width="1.6" fill="none"/>
-  <path d="M30 34 V40" class="yol-saat"/>
+  <circle fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4" cx="30" cy="20" r="14"/>
+  <path stroke="var(--gold)" stroke-width="1.6" fill="none" d="M20 20 Q25 10 30 20 T40 20"/>
+  <path stroke="var(--ink-3)" stroke-width="1.2" fill="none" stroke-dasharray="5 4" d="M30 34 V40"/>
 </symbol>
 
 <!-- NCO: kutu içinde sinüs + "NCO" -->
 <symbol id="sym-nco" viewBox="0 0 60 40">
-  <rect x="8" y="4" width="44" height="32" rx="4" class="blok"/>
-  <path d="M15 16 Q20 8 25 16 T35 16 T45 16" class="yol-sayisal" stroke-width="1.4" fill="none"/>
-  <text x="30" y="31" text-anchor="middle" class="s-kucuk" style="font-size:8px;font-weight:700">NCO</text>
-  <path d="M30 36 V40" class="yol-sayisal"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="8" y="4" width="44" height="32" rx="4"/>
+  <path stroke="var(--accent)" stroke-width="1.4" fill="none" d="M15 16 Q20 8 25 16 T35 16 T45 16"/>
+  <text font-family="var(--sans)" font-size="8px" fill="var(--ink-3)" font-weight="700" x="30" y="31" text-anchor="middle">NCO</text>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M30 36 V40"/>
 </symbol>
 
 <!-- Zayıflatıcı -->
 <symbol id="sym-att" viewBox="0 0 60 40">
-  <path d="M0 20 H12 M48 20 H60" class="yol-analog"/>
-  <rect x="12" y="8" width="36" height="24" rx="4" class="blok-analog"/>
-  <path d="M18 26 L42 14 M40 12 L44 16 M44 12 L40 16" class="yol-analog" stroke-width="1.4"/>
-  <text x="30" y="31" text-anchor="middle" class="s-kucuk" style="font-size:7px">dB</text>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M0 20 H12 M48 20 H60"/>
+  <rect fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4" x="12" y="8" width="36" height="24" rx="4"/>
+  <path stroke="var(--gold)" stroke-width="1.4" fill="none" d="M18 26 L42 14 M40 12 L44 16 M44 12 L40 16"/>
+  <text font-family="var(--sans)" font-size="7px" fill="var(--ink-3)" x="30" y="31" text-anchor="middle">dB</text>
 </symbol>
 
 <!-- Limiter -->
 <symbol id="sym-limiter" viewBox="0 0 60 40">
-  <path d="M0 20 H12 M48 20 H60" class="yol-analog"/>
-  <rect x="12" y="6" width="36" height="28" rx="4" class="blok-analog"/>
-  <path d="M17 26 L24 26 L36 14 L43 14" class="yol-analog" stroke-width="1.4" fill="none"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M0 20 H12 M48 20 H60"/>
+  <rect fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4" x="12" y="6" width="36" height="28" rx="4"/>
+  <path stroke="var(--gold)" stroke-width="1.4" fill="none" d="M17 26 L24 26 L36 14 L43 14"/>
   <path d="M17 14 H43 M17 26 H43" stroke="var(--red)" stroke-width="1" stroke-dasharray="2 2"/>
 </symbol>
 
 <!-- ADC: yarım sinüs → 1010 -->
 <symbol id="sym-adc" viewBox="0 0 60 40">
-  <path d="M0 20 H8" class="yol-analog"/>
-  <path d="M52 20 H60" class="yol-sayisal"/>
-  <path d="M8 4 H40 L52 20 L40 36 H8 Z" class="blok"/>
-  <path d="M13 22 Q17 12 21 22 T29 22" class="yol-analog" stroke-width="1.4" fill="none"/>
-  <text x="38" y="24" text-anchor="middle" class="s-mono" style="font-size:8px">01</text>
-  <path d="M30 40 V33" class="yol-saat"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M0 20 H8"/>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M52 20 H60"/>
+  <path fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" d="M8 4 H40 L52 20 L40 36 H8 Z"/>
+  <path stroke="var(--gold)" stroke-width="1.4" fill="none" d="M13 22 Q17 12 21 22 T29 22"/>
+  <text font-family="var(--mono)" font-size="8px" fill="var(--ink)" x="38" y="24" text-anchor="middle">01</text>
+  <path stroke="var(--ink-3)" stroke-width="1.2" fill="none" stroke-dasharray="5 4" d="M30 40 V33"/>
 </symbol>
 
 <!-- FFT -->
 <symbol id="sym-fft" viewBox="0 0 60 40">
-  <path d="M0 20 H10 M50 20 H60" class="yol-sayisal"/>
-  <rect x="10" y="4" width="40" height="32" rx="4" class="blok"/>
-  <path d="M16 30 V16 M22 30 V24 M28 30 V10 M34 30 V20 M40 30 V26 M46 30 V22" class="yol-sayisal" stroke-width="2.2"/>
-  <text x="30" y="35" text-anchor="middle" class="s-kucuk" style="font-size:7px">FFT</text>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 20 H10 M50 20 H60"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="10" y="4" width="40" height="32" rx="4"/>
+  <path stroke="var(--accent)" stroke-width="2.2" fill="none" d="M16 30 V16 M22 30 V24 M28 30 V10 M34 30 V20 M40 30 V26 M46 30 V22"/>
+  <text font-family="var(--sans)" font-size="7px" fill="var(--ink-3)" x="30" y="35" text-anchor="middle">FFT</text>
 </symbol>
 
 <!-- Karşılaştırıcı / eşik -->
 <symbol id="sym-cmp" viewBox="0 0 60 40">
-  <path d="M0 14 H14 M0 26 H14 M46 20 H60" class="yol-sayisal"/>
-  <path d="M14 4 L46 20 L14 36 Z" class="blok"/>
-  <text x="24" y="24" text-anchor="middle" class="s-metin" style="font-size:12px;font-weight:700">&gt;</text>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 14 H14 M0 26 H14 M46 20 H60"/>
+  <path fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" d="M14 4 L46 20 L14 36 Z"/>
+  <text font-family="var(--sans)" font-size="12px" fill="var(--ink)" font-weight="700" x="24" y="24" text-anchor="middle">&gt;</text>
 </symbol>
 
 <!-- FIFO -->
 <symbol id="sym-fifo" viewBox="0 0 60 40">
-  <path d="M0 20 H8 M52 20 H60" class="yol-sayisal"/>
-  <rect x="8" y="8" width="44" height="24" rx="3" class="blok"/>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 20 H8 M52 20 H60"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="8" y="8" width="44" height="24" rx="3"/>
   <path d="M17 8 V32 M26 8 V32 M35 8 V32 M44 8 V32" stroke="var(--line-2)" stroke-width="1"/>
   <rect x="9" y="9" width="7" height="22" fill="var(--accent)" opacity=".5"/>
   <rect x="18" y="9" width="7" height="22" fill="var(--accent)" opacity=".5"/>
@@ -136,60 +136,60 @@
 
 <!-- Register bloğu (PS kontrol) -->
 <symbol id="sym-reg" viewBox="0 0 60 40">
-  <rect x="6" y="6" width="48" height="28" rx="3" class="blok-kontrol"/>
-  <path d="M12 14 H48 M12 20 H48 M12 26 H40" class="yol-kontrol"/>
-  <text x="30" y="38" text-anchor="middle" class="s-kucuk" style="font-size:6.5px">REG</text>
+  <rect fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.2" x="6" y="6" width="48" height="28" rx="3"/>
+  <path stroke="var(--green)" stroke-width="1.2" fill="none" d="M12 14 H48 M12 20 H48 M12 26 H40"/>
+  <text font-family="var(--sans)" font-size="6.5px" fill="var(--ink-3)" x="30" y="38" text-anchor="middle">REG</text>
 </symbol>
 
 <!-- DMA -->
 <symbol id="sym-dma" viewBox="0 0 60 40">
-  <path d="M0 20 H10 M50 20 H60" class="yol-sayisal"/>
-  <rect x="10" y="6" width="40" height="28" rx="4" class="blok"/>
-  <text x="30" y="24" text-anchor="middle" class="s-metin" style="font-size:10px;font-weight:700">DMA</text>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 20 H10 M50 20 H60"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="10" y="6" width="40" height="28" rx="4"/>
+  <text font-family="var(--sans)" font-size="10px" fill="var(--ink)" font-weight="700" x="30" y="24" text-anchor="middle">DMA</text>
 </symbol>
 
 <!-- CPU / PS -->
 <symbol id="sym-cpu" viewBox="0 0 60 40">
-  <rect x="12" y="6" width="36" height="28" rx="4" class="blok-kontrol"/>
+  <rect fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.2" x="12" y="6" width="36" height="28" rx="4"/>
   <rect x="20" y="13" width="20" height="14" rx="2" fill="none" stroke="var(--green)" stroke-width="1.2"/>
-  <path d="M16 10 V6 M24 10 V6 M32 10 V6 M40 10 V6 M16 34 V30 M24 34 V30 M32 34 V30 M40 34 V30" class="yol-kontrol"/>
+  <path stroke="var(--green)" stroke-width="1.2" fill="none" d="M16 10 V6 M24 10 V6 M32 10 V6 M40 10 V6 M16 34 V30 M24 34 V30 M32 34 V30 M40 34 V30"/>
 </symbol>
 
 <!-- Zarf / güç dedektörü -->
 <symbol id="sym-zarf" viewBox="0 0 60 40">
-  <path d="M0 20 H10 M50 20 H60" class="yol-sayisal"/>
-  <rect x="10" y="4" width="40" height="32" rx="4" class="blok"/>
-  <text x="30" y="25" text-anchor="middle" class="s-metin" style="font-size:9px;font-weight:700">I²+Q²</text>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 20 H10 M50 20 H60"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="10" y="4" width="40" height="32" rx="4"/>
+  <text font-family="var(--sans)" font-size="9px" fill="var(--ink)" font-weight="700" x="30" y="25" text-anchor="middle">I²+Q²</text>
 </symbol>
 
 <!-- Genel blok (etiketi çağıran yazar) -->
 <symbol id="sym-blok" viewBox="0 0 60 40">
-  <rect x="4" y="4" width="52" height="32" rx="5" class="blok"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="4" y="4" width="52" height="32" rx="5"/>
 </symbol>
 
 <!-- Toplayıcı -->
 <symbol id="sym-topla" viewBox="0 0 60 40">
-  <circle cx="30" cy="20" r="12" class="blok"/>
-  <path d="M24 20 H36 M30 14 V26" class="yol-sayisal" stroke-width="1.6"/>
+  <circle fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" cx="30" cy="20" r="12"/>
+  <path stroke="var(--accent)" stroke-width="1.6" fill="none" d="M24 20 H36 M30 14 V26"/>
 </symbol>
 
 <!-- Gecikme z^-1 -->
 <symbol id="sym-gecikme" viewBox="0 0 60 40">
-  <path d="M0 20 H14 M46 20 H60" class="yol-sayisal"/>
-  <rect x="14" y="8" width="32" height="24" rx="3" class="blok"/>
-  <text x="30" y="25" text-anchor="middle" class="s-mono" style="font-size:10px">z⁻¹</text>
+  <path stroke="var(--accent)" stroke-width="1.8" fill="none" d="M0 20 H14 M46 20 H60"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="14" y="8" width="32" height="24" rx="3"/>
+  <text font-family="var(--mono)" font-size="10px" fill="var(--ink)" x="30" y="25" text-anchor="middle">z⁻¹</text>
 </symbol>
 
 <!-- Saat kaynağı -->
 <symbol id="sym-saat" viewBox="0 0 60 40">
-  <rect x="12" y="8" width="36" height="24" rx="4" class="blok"/>
-  <path d="M17 26 H22 V14 H28 V26 H34 V14 H40 V26 H44" class="yol-saat" stroke-dasharray="none" stroke="var(--ink-2)"/>
+  <rect fill="var(--dia-blok)" stroke="var(--line-2)" stroke-width="1.2" x="12" y="8" width="36" height="24" rx="4"/>
+  <path stroke="var(--ink-2)" stroke-width="1.2" fill="none" stroke-dasharray="none" d="M17 26 H22 V14 H28 V26 H34 V14 H40 V26 H44"/>
 </symbol>
 
 <!-- Diyot (kristal video) -->
 <symbol id="sym-diyot" viewBox="0 0 60 40">
-  <path d="M0 20 H20 M40 20 H60" class="yol-analog"/>
-  <path d="M20 10 L40 20 L20 30 Z" class="blok-analog"/>
-  <path d="M40 10 V30" class="yol-analog"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M0 20 H20 M40 20 H60"/>
+  <path fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4" d="M20 10 L40 20 L20 30 Z"/>
+  <path stroke="var(--gold)" stroke-width="2.4" fill="none" d="M40 10 V30"/>
 </symbol>
 </svg>

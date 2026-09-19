@@ -1,4 +1,4 @@
-<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g61">
+<svg viewBox="0 0 900 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g61">
 <title id="t-g61">Image problemi: (1) low-side LO 7.6 GHz ile RF 9.4 GHz ve image 5.8 GHz LO'nun iki yanında eşit uzaklıkta, preselector bandı 8–11 GHz altın kesikli; (2) IF ekseninde ikisi de 1.8 GHz'e düşer; (3) high-side LO 11.2 GHz ile image 13.0 GHz'e taşınır ve IF spektrumu evrilir — asimetrik rampa şekli ters döner.</title>
 <text x="60.0" y="30.0" text-anchor="start" class="s-baslik">① Low-side LO (referans): image, LO'nun öbür yanında, IF kadar uzakta — preselector onu bastırmalı</text>
 <line x1="60.0" y1="40" x2="60.0" y2="150" class="izgara"/><text x="60.0" y="164.0" text-anchor="middle" class="s-mono2">0</text>
@@ -23,7 +23,7 @@
 <path d="M399.7 138 H505.1" class="yol-saat" marker-end="url(#ok-saat)" marker-start="url(#ok-saat)"/>
 <text x="452.4" y="134.0" text-anchor="middle" class="s-mono2">IF = 1.8 GHz</text>
 <text x="880.0" y="178.0" text-anchor="end" class="s-kucuk">RF ekseni (GHz)</text>
-<text x="60.0" y="210.0" text-anchor="start" class="s-baslik">② IF ekseninde ikisi de 1.8 GHz'e düşer — mixer'dan sonra ayırt edilemezler; image düz kalır, sinyal düz kalır (low-side: evrilme yok)</text>
+<text x="60.0" y="210.0" text-anchor="start" class="s-baslik">② IF ekseninde ikisi de 1.8 GHz'e düşer — mixer'dan sonra ayırt edilemezler (low-side: ikisi de düz, evrilme yok)</text>
 <line x1="60.0" y1="220" x2="60.0" y2="320" class="izgara"/><text x="60.0" y="334.0" text-anchor="middle" class="s-mono2">0</text>
 <line x1="265.0" y1="220" x2="265.0" y2="320" class="izgara"/><text x="265.0" y="334.0" text-anchor="middle" class="s-mono2">1</text>
 <line x1="470.0" y1="220" x2="470.0" y2="320" class="izgara"/><text x="470.0" y="334.0" text-anchor="middle" class="s-mono2">2</text>
@@ -60,6 +60,7 @@
 <line x1="880.0" y1="530" x2="880.0" y2="600" class="izgara"/><text x="880.0" y="614.0" text-anchor="middle" class="s-mono2">4</text>
 <rect x="60" y="530" width="820" height="70" class="eksen"/>
 <path d="M393.1 544.0 L464.9 600 H393.1 Z" class="spk-sinyal" opacity=".85"/>
-<text x="489.0" y="550.0" text-anchor="start" class="s-kucuk s-vurgu">LO − RF = 1.8: rampa ters → spektrum evrik; LFM'in yönü, I/Q işareti tersine döner (INV biti)</text>
+<text x="489.0" y="550.0" text-anchor="start" class="s-kucuk s-vurgu">LO − RF = 1.8: rampa ters → spektrum evrik;</text>
+<text x="489.0" y="566.0" text-anchor="start" class="s-kucuk s-vurgu">LFM'in yönü ve I/Q işareti tersine döner (INV biti ile düzeltilir)</text>
 <text x="880.0" y="628.0" text-anchor="end" class="s-kucuk">IF ekseni (GHz)</text>
 </svg>

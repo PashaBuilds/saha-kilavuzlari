@@ -1,40 +1,43 @@
 <svg viewBox="0 0 940 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g260">
 <title id="t-g260">Darbe durum makinesi diyagramı: IDLE, RISING, IN_PULSE, FALLING, EMIT durumları; eşik geçişleri ve doğrulama sayaçlarıyla ileri geçişler; gürültü sivrisi ve kenar çentiği için geri dönüş yolları; MAX_PW zaman aşımında SEG bayraklı parça PDW yayımı; EMIT'ten IDLE'a PDW FIFO yazımı</title>
 <text x="30.0" y="24.0" text-anchor="start" class="s-baslik">Darbe durum makinesi (FSM) — her saatte bir güç örneği p[n], eşik T_on, T_off = T_on − histerezis</text>
-<rect x="38" y="174" width="104" height="52" rx="26" class="blok"/>
+<rect x="42" y="174" width="96" height="52" rx="26" class="blok"/>
 <text x="90.0" y="205.0" text-anchor="middle" class="s-mono">IDLE</text>
-<rect x="228" y="174" width="104" height="52" rx="26" class="blok"/>
+<rect x="232" y="174" width="96" height="52" rx="26" class="blok"/>
 <text x="280.0" y="205.0" text-anchor="middle" class="s-mono">RISING</text>
-<rect x="418" y="174" width="104" height="52" rx="26" class="blok-aktif"/>
+<rect x="422" y="174" width="96" height="52" rx="26" class="blok-aktif"/>
 <text x="470.0" y="205.0" text-anchor="middle" class="s-mono">IN_PULSE</text>
-<rect x="608" y="174" width="104" height="52" rx="26" class="blok"/>
+<rect x="612" y="174" width="96" height="52" rx="26" class="blok"/>
 <text x="660.0" y="205.0" text-anchor="middle" class="s-mono">FALLING</text>
-<rect x="798" y="174" width="104" height="52" rx="26" class="blok-kontrol"/>
+<rect x="802" y="174" width="96" height="52" rx="26" class="blok-kontrol"/>
 <text x="850.0" y="205.0" text-anchor="middle" class="s-mono">EMIT</text>
-<path d="M142 200 L226 200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M138 200 L230 200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <text x="184.0" y="190.0" text-anchor="middle" class="s-mono2">p &gt; T_on</text>
 <text x="184.0" y="226.0" text-anchor="middle" class="s-kucuk s-yesil">TOA ← sayaç</text>
-<path d="M332 200 L416 200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<text x="374.0" y="190.0" text-anchor="middle" class="s-mono2">k_r örnek üstte</text>
+<path d="M328 200 L420 200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="374.0" y="190.0" text-anchor="middle" class="s-mono2" style="font-size:10px">k_r örnek üstte</text>
 <text x="374.0" y="226.0" text-anchor="middle" class="s-kucuk s-yesil">tepe/faz biriktir</text>
-<path d="M522 200 L606 200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M518 200 L610 200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <text x="564.0" y="190.0" text-anchor="middle" class="s-mono2">p &lt; T_off</text>
 <text x="564.0" y="226.0" text-anchor="middle" class="s-kucuk s-yesil">bitiş adayı ← sayaç</text>
-<path d="M712 200 L796 200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<text x="754.0" y="190.0" text-anchor="middle" class="s-mono2">k_f örnek altta</text>
+<path d="M708 200 L800 200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="754.0" y="190.0" text-anchor="middle" class="s-mono2" style="font-size:10px">k_f örnek altta</text>
 <text x="754.0" y="226.0" text-anchor="middle" class="s-kucuk s-yesil">PW = bitiş − TOA</text>
 <path d="M850 226 V300 H90 V232" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
 <text x="470.0" y="292.0" text-anchor="middle" class="s-kucuk s-yesil">PDW'yi paketle → FIFO'ya yaz (1 saat); SEQ++; PW &lt; min PW ise at (çentik)</text>
 <path d="M450 174 C430 120, 510 120, 490 174" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <text x="470.0" y="122.0" text-anchor="middle" class="s-kucuk">p ≥ T_off: tepe = max, PA toplamı, Δfaz toplamı, örnek sayacı++</text>
 <path d="M262 174 C230 130, 150 130, 120 174" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
-<text x="190.0" y="150.0" text-anchor="middle" class="s-kucuk s-kirmizi">p &lt; T_off (k_r dolmadan): gürültü sivrisi → at</text>
+<text x="190.0" y="136.0" text-anchor="middle" class="s-kucuk s-kirmizi">p &lt; T_off (k_r dolmadan): gürültü sivrisi → at</text>
 <path d="M640 174 C610 130, 530 130, 500 174" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
-<text x="568.0" y="150.0" text-anchor="middle" class="s-kucuk s-kirmizi">p &gt; T_on (k_f dolmadan): kenar çentiği → darbe sürüyor</text>
+<text x="520.0" y="136.0" text-anchor="start" class="s-kucuk s-kirmizi">p &gt; T_on (k_f dolmadan): kenar çentiği → darbe sürüyor</text>
 <path d="M470 174 V70 H850 V174" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
-<text x="660.0" y="62.0" text-anchor="middle" class="s-kucuk s-yesil">örnek sayacı ≥ MAX_PW: zaman aşımı → SEG bayraklı parça PDW yay, IN_PULSE'ta kal (CW / uzun darbe)</text>
-<path d="M870 174 V90 H500 V172" class="yol-kontrol" stroke-dasharray="4 3" marker-end="url(#ok-kontrol)"/>
-<text x="30.0" y="336.0" text-anchor="start" class="s-kucuk">Register'lar: T_on (sabit eşik ya da CFAR eşiği) · DET_HYST (T_off) · DET_MIN_PW (çentik reddi) · DET_MAX_PW (zaman aşımı) · k_r / k_f (kenar doğrulama, 1–4 örnek)</text>
-<text x="30.0" y="352.0" text-anchor="start" class="s-kucuk">Pulse-on-pulse: IN_PULSE içinde tepe ≥ 6 dB sıçrarsa ya da anlık frekans pencere ortalamasından koparsa POP bayrağı kalkar; ayrıştırma yazılımda.</text>
-<text x="30.0" y="368.0" text-anchor="start" class="s-kucuk">Öğretici şema; gerçek tasarımlarda durum sayısı ve koşullar farklı olabilir. Yeşil: PDW'ye yazılan büyüklükler, kırmızı: reddedilen yollar.</text>
+<text x="660.0" y="50.0" text-anchor="middle" class="s-kucuk s-yesil">örnek sayacı ≥ MAX_PW: zaman aşımı → SEG bayraklı parça (segment) PDW yay,</text>
+<text x="660.0" y="63.0" text-anchor="middle" class="s-kucuk s-yesil">IN_PULSE'ta kal (CW / uzun darbe)</text>
+<path d="M870 226 V262 H440 V230" class="yol-kontrol" stroke-dasharray="4 3" marker-end="url(#ok-kontrol)"/>
+<text x="655.0" y="258.0" text-anchor="middle" class="s-kucuk s-yesil">SEG sonrası IN_PULSE'ta kal</text>
+<text x="30.0" y="334.0" text-anchor="start" class="s-kucuk">Register'lar: T_on (sabit eşik ya da CFAR eşiği) · DET_HYST (T_off) · DET_MIN_PW (çentik reddi) · DET_MAX_PW (zaman aşımı)</text>
+<text x="30.0" y="348.0" text-anchor="start" class="s-kucuk">k_r / k_f (kenar doğrulama, 1–4 örnek). Pulse-on-pulse: IN_PULSE içinde tepe ≥ 6 dB sıçrarsa ya da anlık frekans pencere ortalamasından koparsa</text>
+<text x="30.0" y="362.0" text-anchor="start" class="s-kucuk">POP bayrağı kalkar; ayrıştırma yazılımda. Öğretici şema; gerçek tasarımlarda durum sayısı ve koşullar farklı olabilir.</text>
+<text x="30.0" y="376.0" text-anchor="start" class="s-kucuk">Yeşil: PDW'ye yazılan büyüklükler, kırmızı: reddedilen yollar.</text>
 </svg>

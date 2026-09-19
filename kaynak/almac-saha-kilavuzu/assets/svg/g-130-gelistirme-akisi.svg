@@ -43,7 +43,7 @@
   <rect x="990" y="110" width="120" height="70" rx="8" class="blok-aktif"/>
   <text x="1050" y="138" text-anchor="middle" class="s-metin" style="font-weight:700">7 · Donanım</text>
   <text x="1050" y="156" text-anchor="middle" class="s-kucuk">ILA / snapshot / DMA</text>
-  <text x="1050" y="170" text-anchor="middle" class="s-kucuk">aynı golden ile karşılaştır</text>
+  <text x="1050" y="170" text-anchor="middle" class="s-kucuk">golden ile karşılaştır</text>
 </g>
 <!-- kapı etiketleri -->
 <text x="85" y="100" text-anchor="middle" class="s-kucuk">kapı: sistem ölçütü</text>

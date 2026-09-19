@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1000 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g160">
+<svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g160">
 <title id="t-g160">FIR yapısı, tapped delay line: giriş örnekleri z^-1 gecikme elemanlarından geçer, her düğüm (tap) bir katsayı h_k ile çarpılır, toplayıcı ağacında toplanır; simetrik katsayılarda tap çiftleri çarpımdan önce toplanır; altta dürtü yanıtı katsayıların kendisi, grup gecikmesi (N−1)/2; katsayı RAM'i PS'ten yazılabilir</title>
 <!-- giriş -->
 <text x="20" y="64" class="s-mono">x[n]</text>
@@ -23,7 +23,8 @@
 <use href="#sym-gecikme" x="680" y="40" width="60" height="40"/>
 <circle cx="760" cy="60" r="3" fill="var(--accent)"/>
 <path d="M740 60 H760" class="yol-sayisal"/>
-<text x="150" y="32" text-anchor="middle" class="s-kucuk">gecikme hattı: N − 1 register (SSR'da BRAM)</text>
+<text x="540" y="108" text-anchor="middle" class="s-kucuk">gecikme hattı:</text>
+<text x="540" y="122" text-anchor="middle" class="s-kucuk">N − 1 register (SSR: BRAM)</text>
 <!-- tap etiketleri -->
 <text x="100" y="98" text-anchor="middle" class="s-mono2">x[n]</text>
 <text x="200" y="98" text-anchor="middle" class="s-mono2">x[n−1]</text>

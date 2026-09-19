@@ -1,4 +1,4 @@
-<svg viewBox="0 0 860 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g50">
+<svg viewBox="0 0 860 488" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g50">
 <title id="t-g50">RF zincirinin yapıtaşları: on blok için sembol, tek satır işlev ve kilit parametreler — anten, limiter, LNA, preselector, zayıflatıcı/AGC/STC, mixer, LO/PLL, IF filtre ve yükselteç, anti-alias filtre, balun/ADC sürücü. Altta zincirdeki sıra.</title>
 <rect x="8.0" y="12.0" width="164.0" height="200.0" rx="8" class="blok" opacity=".9"/>
 <use href="#sym-anten" x="60.0" y="26.0" width="60" height="40"/>

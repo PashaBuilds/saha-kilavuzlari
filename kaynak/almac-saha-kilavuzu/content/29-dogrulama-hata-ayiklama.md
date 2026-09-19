@@ -34,13 +34,13 @@ sinyalinin hangi hatayı görünür kıldığını bilmektir.
 | Sinyal | Kaynak | Neyi görünür kılar |
 |---|---|---|
 | **CW ton** (tek frekans, bilinen seviye) | RF üreteci antene ya da IF girişine; dahili NCO üreteci DDC'ye | Frekans zinciri (LO, NCO, bölge evrikliği, bin→Hz), kazanç/kalibrasyon (dBm↔dBFS), spur ailesi (harmonik, interleaving, NCO) |
-| **Çift ton** (f₁, f₂ yakın, eşit seviye) | RF üreteci + birleştirici | Doğrusallık: IMD3 çizgileri 2f₁−f₂, 2f₂−f₁ ({{bolum:5}}); ADC ve sürücü doyumu; FFT'de iki tonu ayırma (pencere) |
+| **Çift ton** (f₁, f₂ yakın, eşit seviye) | RF üreteci + birleştirici (combiner) | Doğrusallık: IMD3 çizgileri 2f₁−f₂, 2f₂−f₁ ({{bolum:5}}); ADC ve sürücü doyumu; FFT'de iki tonu ayırma (pencere) |
 | **Darbe katarı** (PW, PRI, seviye bilinen) | Darbe modülatörlü üreteç; dahili üreteç | Tespit ve ölçüm zinciri: TOA/PW/PA doğruluğu, histerezis, min PW, FIFO hızı, latency hizalaması ({{bolum:25}}, {{bolum:26}}) |
-| **Gürültü** (yalnızca sonlandırıcı, 50 Ω) | Anten girişi sonlandırılır | Gürültü tabanı ve NF doğrulaması ({{bolum:4}}), Pfa ölçümü (sayaç/saniye), CFAR α doğrulaması ({{bolum:23}}) |
+| **Gürültü** (girişte yalnızca 50 Ω sonlandırıcı — terminator) | Anten girişine 50 Ω yük takılır | Gürültü tabanı ve NF doğrulaması ({{bolum:4}}), Pfa ölçümü (sayaç/saniye), CFAR α doğrulaması ({{bolum:23}}) |
 | **Sayısal loopback** | Test üreteci → DDC girişi, ADC devre dışı | Analog/saat sorunlarını dışlar; DDC–FFT–CFAR–PDW zincirini bit-true doğrular |
 | **Bilinen I/Q dizisi** | MATLAB'dan üretilip snapshot tamponu üzerinden geri enjekte | Bit-true karşılaştırma: FPGA çıkışı = golden referans ({{bolum:13}}) |
 
-Sıra önemlidir: önce **gürültü** (sonlandırıcı ile) — tabanı doğrula; sonra
+Sıra önemlidir: önce **gürültü** (50 Ω yük ile) — tabanı doğrula; sonra
 **CW** — frekans ve seviye zincirini doğrula; sonra **darbe** — tespit ve
 ölçümü doğrula; en son **çift ton** ve gerçek anten. Tabanı doğrulamadan
 CW'ye geçersen "sinyal geliyor, çalışıyor" yanılgısına düşersin: sinyal 40 dB
@@ -101,7 +101,7 @@ dışlayan** tek bir işlem var. Nedeni tahmin etme; kontrolü yap.
 |---|---|---|
 | Spektrum aynalı: ton beklenen frekansın simetriğinde | Evrik Nyquist bölgesi düzeltilmemiş; I/Q yer değişmiş; NCO işareti ters | CW tonu +5 MHz kaydır: ölçülen ters yöne giderse evriklik. `NCO_CTRL` inversion bitini çevir ({{bolum:8}}, {{bolum:14}}) |
 | DC'de (0 Hz) çivi | ADC ofseti; LO sızıntısı (zero-IF'te); NCO tam fs/4'te ADC ofsetini DC'ye taşımaz ama f_NCO = 0 taşır | Anteni sonlandır: çivi kalıyorsa sayısal/ADC ofseti; DDC öncesi ortalama çıkarma bloğunu aç ({{bolum:9}}) |
-| fs/2 − f_in ve fs/4 ± f_in'de spur | Time-interleaving offset/gain/timing hatası; ADC kalibrasyonu çalışmamış | f_in'i kaydır: spur ters yöne kayıyorsa interleaving; ADC'nin ön plan kalibrasyonunu yeniden tetikle ({{bolum:9}}) |
+| fs/2 − f_in ve fs/4 ± f_in'de spur | Time-interleaving offset/gain/timing hatası; ADC kalibrasyonu çalışmamış | f_in'i kaydır: spur ters yöne kayıyorsa interleaving; ADC'nin ön plan (foreground) kalibrasyonunu yeniden tetikle ({{bolum:9}}) |
 | f_in'in katlarında (katlanmış) çiviler | Harmonik bozulma: ADC sürücü/LNA doyumu, clipping | Giriş seviyesini 6 dB düşür: harmonik 12 dB (HD2) / 18 dB (HD3) düşerse doğrusallık; `ADC_OVR_CNT`'ye bak ({{bolum:5}}, {{bolum:8}}) |
 | Periyodik, düzenli aralıklı küçük çiviler; FTW değişince yer değiştiriyor | NCO faz kırpma spur'ları; dither kapalı | FTW'yi 1 LSB değiştir: çiviler kayıyorsa NCO; dither aç, P'yi artır ({{bolum:14}}) |
 | Gürültü tabanı beklenenden 3–10 dB yüksek | Saat jitter'ı (f_in yüksekken); kazanç planı yanlış (ADC tabanı termal tabanı örtüyor); yanlış pencere/ENBW telafisi | Giriş frekansını düşür: taban düşüyorsa jitter. Anteni sonlandırıp tabanı hesapla ({{bolum:4}}, {{bolum:9}}, {{bolum:19}}) |
@@ -145,7 +145,7 @@ bellidir:
 - **Yuvarlama farkı.** Model `round`, RTL `floor` yapıyorsa ±1 LSB farklar
   birikir. Çözüm: modeli RTL'in yuvarlama moduna **birebir** uydur
   ({{bolum:12}}); "yaklaşık eşit" kabul etme, fark sıfır olmalı.
-- **Gürültü.** Dither ve gürültü üreteçleri tohumluysa model ile FPGA aynı
+- **Gürültü.** Dither ve gürültü üreteçleri tohumluysa (seeded) model ile FPGA aynı
   diziyi üretebilir; değilse bu blokları test modunda kapat.
 
 :::matlab-fpga

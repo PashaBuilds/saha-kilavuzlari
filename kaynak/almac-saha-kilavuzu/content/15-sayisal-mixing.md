@@ -4,7 +4,7 @@
 :::neden-onemli
 Sahadan soru: "Üreteçten IF'in 5 MHz üstünde ton veriyorum, DDC çıkışında
 −5 MHz'de görüyorum; ADC mi bozuk?" Hayır: sinyal ikinci Nyquist bölgesinden
-katlanırken evrilmişti ({{bolum:8}}) ve NCO'nun dönüş yönü bunu düzeltecek
+katlanırken evrilmişti (spectral inversion, {{bolum:8}}) ve NCO'nun dönüş yönü bunu düzeltecek
 biçimde seçilmemişti. Sayısal mixing, ADC'den gelen reel örnek dizisini bir
 kompleks üstelle çarparak spektrumu kaydırma işlemidir; analog mixer'ın
 ({{bolum:6}}) sayısal ikizi, ama iki farkla: kusursuz quadrature (I ve Q tam
@@ -44,13 +44,13 @@ ADC çıkışı reel bir dizidir: $x[n]$, {{s:adc.bit}} bit, fs =
 {{s:adc.fs_msps}} MSPS. NCO ({{bolum:14}}) iki dizi üretir: $cos(ω_0n)$ ve
 $sin(ω_0n)$. Çarpım iki reel çarpımdır:
 
-:::formul id=mix baslik="Kompleks aşağı çevirim"
+:::formul id=mix baslik="Kompleks aşağı çevirim (complex down-conversion)"
 f: y[n] = x[n] · e^{−jω_0n} = x[n]·cos(ω_0n) − j · x[n]·sin(ω_0n)      I[n] = x[n]·cos(ω_0n),  Q[n] = −x[n]·sin(ω_0n)
 f: x[n] = cos(ω_1n)  →  y[n] = ½e^{j(ω_1−ω_0)n} + ½e^{−j(ω_1+ω_0)n}
 s: x[n] | ADC çıkışı (reel) | LSB
 s: ω_0 = 2π f_{NCO}/f_s | NCO açısal frekansı | rad/örnek
 s: ω_1 | giriş tonunun (katlanmış) frekansı | rad/örnek
-s: I, Q | eş fazlı ve dik bileşen (kompleks çıkışın gerçek ve sanal kısmı) | LSB
+s: I, Q | eş fazlı (in-phase) ve dik (quadrature) bileşen — kompleks çıkışın gerçek ve sanal kısmı | LSB
 o: f_1 = {{s:adc.alias_mhz}} MHz (IF {{s:on_uc.if_ghz}} GHz'in 2. bölgeden katlanmış hali), f_NCO = {{s:ddc.nco_mhz}} MHz → fark bileşeni **0 MHz**, toplam bileşeni −1200 MHz (= fs/2, tam bant kenarında).
 o: IF'in 5 MHz üstündeki bir ton katlanınca 595 MHz'e gelir (evrik); e^{−jω_0n} ile çarpınca **−5 MHz**'e iner. Evrikliği düzeltmek için NCO e^{+jω_0n} döndürülür: −595 MHz'deki kopya +5 MHz'e gelir, +595'teki kopya +1195 MHz'e gider ve filtrelenir.
 :::
@@ -61,12 +61,12 @@ kompleks gösterimin doğal sonucudur, kayıp değildir: iki fazörün gücü te
 kompleks fazörde toplanır. Filtre toplam bileşenini attıktan sonra elinde
 kalan tek fazör, reel tonun **tüm bilgisini** taşır.
 
-{{svg:g-150-ddc-dort-kare.svg|DDC'nin dört karelik spektrum hikâyesi (referans senaryo, hesaplanmış). (1) ADC çıkışı: reel, fs = 2400 MSPS; 1.8 GHz IF'teki darbeli sinyal 2. Nyquist bölgesinden 600 MHz'e evrik katlanmış, ±600 MHz'de simetrik iki kopya, gri gürültü tabanı tüm bantta. (2) NCO = −600 MHz ile çarpım sonrası: istenen kopya 0 Hz'de (mavi), "toplam frekans" kopyası −1200 MHz'de bant kenarında (kırmızı); gürültü tabanı yerinde. (3) ±150 MHz alçak geçiren filtre sonrası (altın kesikli yanıt): image ve bant dışı gürültü atıldı, sinyal 0 Hz çevresinde, gürültü gücü 8 kat azaldı. (4) 8'e decimation sonrası: fs = 300 MSPS, eksen ±150 MHz — spektrum aynı, yalnızca "boş" kısım atıldı; 300 MHz'lik kompleks bant 300 MSPS ile tam temsil edilir.|kaydir}}
+{{svg:g-150-ddc-dort-kare.svg|DDC'nin dört karelik spektrum hikâyesi (referans senaryo, hesaplanmış). (1) ADC çıkışı: reel, fs = 2400 MSPS; 1.8 GHz IF'teki darbeli sinyal 2. Nyquist bölgesinden 600 MHz'e evrik katlanmış, ±600 MHz'de simetrik iki kopya, gri gürültü tabanı tüm bantta. (2) NCO = −600 MHz ile çarpım sonrası: istenen kopya 0 Hz'de (mavi), "toplam frekans" kopyası −1200 MHz'de bant kenarında (kırmızı); gürültü tabanı yerinde. (3) ±150 MHz alçak geçiren filtre sonrası (altın kesikli yanıt): image ve bant dışı gürültü atıldı, sinyal 0 Hz çevresinde, gürültü gücü ≈ 10 dB azaldı (bant 8 kat daraldı; kuram 9 dB). (4) 8'e decimation sonrası: fs = 300 MSPS, eksen ±150 MHz — spektrum aynı, yalnızca "boş" kısım atıldı; 300 MHz'lik kompleks bant 300 MSPS ile tam temsil edilir.|kaydir}}
 
 Dört karede iki şeye dikkat et. Gürültü tabanı ilk iki karede **aynı yerde**
 kalır: mixing gürültüyü de kaydırır ama gücünü değiştirmez. Üçüncü karede
 filtre bant dışı gürültüyü atınca toplam gürültü gücü fs/2 : BW oranında
-düşer — bu, decimation'ın "işlem kazancı"dır ve Bölüm 16'da sayıya
+düşer — bu, decimation'ın "işlem kazancı"dır (processing gain) ve Bölüm 16'da sayıya
 dökülür ({{s:turetilmis_beklenen.islem_kazanci_1200_300_db}} dB). Dördüncü
 karede eksen daralır ama spektrumun **şekli değişmez**: decimation bilgi
 atmaz, yalnızca artık gerekmeyen örnekleri atar. Bu ancak filtre önce
@@ -187,7 +187,7 @@ reel çarpım → **16 DSP slice**, 14 × 16 bit, her biri tek slice. Çarpım 3
 yuvarlayarak 16 bite (round-half-up, DSP'nin kendi yuvarlama girişi ile
 bedava). Doyurma gerekmez: |x| < 1 ve |NCO| ≤ 1 − LSB olduğundan çarpım tam
 ölçeği aşamaz — tek doyurmasız kesme noktası budur. fs/4 yolu: 0 DSP,
-yalnızca işaret çevirme (bir toplayıcıdan ucuz) ve çoklayıcı. Latency: NCO 5
+yalnızca işaret çevirme (bir toplayıcıdan ucuz) ve çoklayıcı (multiplexer). Latency: NCO 5
 saat + çarpım 3 saat + yuvarlama 1 = 9 saat. Çıkış AXI-Stream: tdata 8 × 32 =
 256 bit @ 300 MHz.
 ::yazilim::

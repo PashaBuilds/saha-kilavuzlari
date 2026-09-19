@@ -1,4 +1,4 @@
-<svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g152">
+<svg viewBox="0 0 900 416" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g152">
 <title id="t-g152">fs/4 hilesi (hesaplanmış): ADC örnekleri x[n], cos dizisi 1,0,−1,0 ve −sin dizisi 0,−1,0,1; çarpım yalnızca işaret çevirme ve sıfırlamadır; I çıkışı çift indisli, Q çıkışı tek indisli örneklerden oluşur; NCO tam fs/4'te olduğundan çarpıcı gerekmez.</title>
 <text x="70" y="22" class="s-baslik">x[n] — ADC çıkışı (660 MHz ton, 2400 MSPS)</text>
 <line x1="70" y1="60.0" x2="870" y2="60.0" class="eksen"/>
@@ -229,11 +229,11 @@
 <line x1="853.3" y1="336.0" x2="853.3" y2="357.4" stroke="var(--purple)" stroke-width="2"/>
 <circle cx="853.3" cy="357.4" r="3" fill="var(--purple)"/>
 <text x="64" y="340.0" text-anchor="end" class="s-kucuk">0</text>
-<text x="86.7" y="392" text-anchor="middle" class="s-mono2">n = 0</text>
-<text x="220.0" y="392" text-anchor="middle" class="s-mono2">n = 4</text>
-<text x="353.3" y="392" text-anchor="middle" class="s-mono2">n = 8</text>
-<text x="486.7" y="392" text-anchor="middle" class="s-mono2">n = 12</text>
-<text x="620.0" y="392" text-anchor="middle" class="s-mono2">n = 16</text>
-<text x="753.3" y="392" text-anchor="middle" class="s-mono2">n = 20</text>
-<text x="870" y="392" text-anchor="end" class="s-kucuk">DSP slice: 0 · yalnızca işaret çevirme + çoklayıcı · sonra LPF ve ↓M</text>
+<text x="86.7" y="390" text-anchor="middle" class="s-mono2">n = 0</text>
+<text x="220.0" y="390" text-anchor="middle" class="s-mono2">n = 4</text>
+<text x="353.3" y="390" text-anchor="middle" class="s-mono2">n = 8</text>
+<text x="486.7" y="390" text-anchor="middle" class="s-mono2">n = 12</text>
+<text x="620.0" y="390" text-anchor="middle" class="s-mono2">n = 16</text>
+<text x="753.3" y="390" text-anchor="middle" class="s-mono2">n = 20</text>
+<text x="870" y="408" text-anchor="end" class="s-kucuk">DSP slice: 0 · yalnızca işaret çevirme + çoklayıcı · sonra LPF ve ↓M</text>
 </svg>

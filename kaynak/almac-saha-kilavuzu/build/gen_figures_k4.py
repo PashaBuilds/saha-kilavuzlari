@@ -227,6 +227,14 @@ def py_of(v, y0, y1, ymin, ymax):
     return y0 - (max(ymin, min(ymax, v)) - ymin) / (ymax - ymin) * (y0 - y1)
 
 
+def kutu_metin(out, x, y, metin, cls="s-kucuk", anchor="start", px=5.6):
+    """Çizgi/eğri üstüne binen etiketler için arka plan dikdörtgenli metin (genişlik kestirimi karakter başına px)."""
+    w = len(metin) * px
+    x0 = x - (w if anchor == "end" else w / 2 if anchor == "middle" else 0)
+    out.append(f'<rect x="{x0 - 3:.1f}" y="{y - 10:.1f}" width="{w + 6:.1f}" height="13" rx="2" fill="var(--dia-panel)" opacity=".85"/>')
+    out.append(f'<text x="{x:.1f}" y="{y:.1f}" text-anchor="{anchor}" class="{cls}">{metin}</text>')
+
+
 def yaz(path, out, ad):
     (SVG / path).write_text("\n".join(out) + "\n</svg>", encoding="utf-8")
     print(f"  ✓ {path}  {ad}")
@@ -293,6 +301,7 @@ def g_122():
     esik = -70
     py = py_of(esik, y0, y1, ymin, ymax)
     out.append(f'<line x1="{x0}" y1="{py:.1f}" x2="{x1}" y2="{py:.1f}" stroke="var(--ink-2)" stroke-dasharray="5 4"/>')
+    out.append(f'<rect x="{x1 - 150}" y="{py - 15:.1f}" width="146" height="14" rx="2" fill="var(--dia-panel)" opacity=".9"/>')
     out.append(f'<text x="{x1 - 4}" y="{py - 4:.1f}" text-anchor="end" class="s-kucuk">tespit eşiği (örnek) {esik} dBFS</text>')
     out.append(f'<text x="{x0 + 6}" y="{y1 + 14}" class="s-kucuk s-altin">saturation: tek harmonikler, en büyük {ms[1]:.0f} dBFS</text>')
     out.append(f'<text x="{x0 + 6}" y="{y1 + 28}" class="s-kucuk s-kirmizi">wrap: geniş bant, taban ≈ {mw[2]:.0f} dBFS</text>')
@@ -352,11 +361,16 @@ def g_150():
                 out.append(f'<text x="{px + 8:.1f}" y="{y1 + 16}" class="s-kucuk s-vurgu">istenen (fark frekansı)</text>')
             if i == 2:
                 # filtre yanıtı altın kesikli
-                fl = [(k - 400) * fs_ / 800 for k in range(801)]
+                # stopband dalgalanması çizimde gürültüyle karışmasın: ince ızgarada hesapla, 5 MHz'lik dilimlerde tepe tut (zarf)
+                fl = [(k - 2400) * fs_ / 4800 for k in range(4801)]
                 hr = fir_yanit_db(h, [abs(v) for v in fl], fs_)
-                d_ = path_from([v / 1e6 for v in fl], hr, x0, x1, y0, y1, xmin, xmax, ymin_, ymax_)
+                fz, hz = [], []
+                for k in range(0, 4800, 50):
+                    fz.append(sum(fl[k:k + 50]) / 50 / 1e6)
+                    hz.append(max(hr[k:k + 50]))
+                d_ = path_from(fz, hz, x0, x1, y0, y1, xmin, xmax, ymin_, ymax_)
                 out.append(f'<path d="{d_}" class="spk-filtre"/>')
-                out.append(f'<text x="{px_of(300, x0, x1, xmin, xmax):.1f}" y="{y1 + 16}" class="s-kucuk s-altin">filtre yanıtı ±150 MHz</text>')
+                out.append(f'<text x="{px_of(300, x0, x1, xmin, xmax):.1f}" y="{y1 + 16}" class="s-kucuk s-altin">filtre yanıtı ±150 MHz (stopband zarfı)</text>')
             if i == 0:
                 px = px_of(600, x0, x1, xmin, xmax)
                 out.append(f'<text x="{px + 8:.1f}" y="{y1 + 16}" class="s-kucuk s-vurgu">+600 MHz</text>')
@@ -438,8 +452,8 @@ def g_162():
     out.append(f'<text x="{px_of(450, x0, x1, xmin, xmax) + 6:.1f}" y="{py_of(v450, y0, y1, ymin, ymax) - 8:.1f}" class="s-kucuk s-altin">450 MHz: {v450:.0f} dB (en zayıf alias bastırma)</text>')
     out.append(f'<text x="{px_of(600, x0, x1, xmin, xmax):.1f}" y="{y1 + 14}" text-anchor="middle" class="s-kucuk s-kirmizi">alias bandı 450–750</text>')
     out.append(f'<text x="{px_of(1125, x0, x1, xmin, xmax):.1f}" y="{y1 + 14}" text-anchor="middle" class="s-kucuk s-kirmizi">1050–1200</text>')
-    out.append(f'<text x="{px_of(75, x0, x1, xmin, xmax):.1f}" y="{y1 + 14}" text-anchor="middle" class="s-kucuk s-vurgu">geçirme ±150</text>')
-    out.append(f'<text x="{px_of(600, x0, x1, xmin, xmax):.1f}" y="{y0 - 6}" text-anchor="middle" class="s-kucuk">sıfır: 600 MHz (= fs_out)</text>')
+    out.append(f'<text x="{x0 + 4}" y="{y1 + 14}" class="s-kucuk s-vurgu">geçirme ±150</text>')
+    out.append(f'<text x="{px_of(612, x0, x1, xmin, xmax):.1f}" y="{y0 - 6}" class="s-kucuk">sıfır: 600 MHz (= fs_out)</text>')
     out.append(f'<text x="{(x0 + x1) / 2}" y="{y0 + 30}" text-anchor="middle" class="s-kucuk">frekans (MHz) · dB</text>')
     # sağ panel: 0..150 MHz
     x0, x1 = 600, 880
@@ -488,23 +502,26 @@ def g_163():
     out = svg_bas("g163", W, H, "Referans senaryonun çok kademeli decimation zinciri (hesaplanmış): mixer çıkışı 2400 MSPS → CIC R=4,N=4 → 600 MSPS → 31 tap kompanzasyon FIR → "
                   "23 tap halfband ↓2 → 300 MSPS; alt panellerde her kademe çıkışının spektrumu ve gürültü gücü.")
     # blok şeridi
-    bx = [40, 200, 380, 560, 740]
-    by = 30
-    out.append(f'<text x="{bx[0]}" y="{by - 10}" class="s-kucuk">mixer çıkışı</text>')
+    bx = [20, 150, 360, 570, 765]           # giriş metni, 3 blok (160 px), çıkış metni
+    BW_ = 160
+    by = 34
+    out.append(f'<text x="{bx[0]}" y="{by - 12}" class="s-kucuk">mixer çıkışı</text>')
     out.append(f'<text x="{bx[0]}" y="{by + 26}" class="s-mono2">2400 MSPS</text><text x="{bx[0]}" y="{by + 40}" class="s-mono2">kompleks 16+16</text>')
     def blok(x, ad, alt, cls="blok"):
-        out.append(f'<rect x="{x}" y="{by}" width="130" height="50" rx="6" class="{cls}"/>')
-        out.append(f'<text x="{x + 65}" y="{by + 21}" text-anchor="middle" class="s-metin" style="font-weight:700">{ad}</text>')
-        out.append(f'<text x="{x + 65}" y="{by + 38}" text-anchor="middle" class="s-kucuk">{alt}</text>')
+        out.append(f'<rect x="{x}" y="{by}" width="{BW_}" height="50" rx="6" class="{cls}"/>')
+        out.append(f'<text x="{x + BW_ / 2:.0f}" y="{by + 21}" text-anchor="middle" class="s-metin" style="font-weight:700">{ad}</text>')
+        out.append(f'<text x="{x + BW_ / 2:.0f}" y="{by + 38}" text-anchor="middle" class="s-kucuk">{alt}</text>')
     blok(bx[1], "CIC ↓4", "R = 4, N = 4 · çarpıcısız · +8 bit")
     blok(bx[2], "komp. FIR", "31 tap · 600 MSPS · droop düzeltme")
     blok(bx[3], "halfband ↓2", "23 tap · 7 çarpıcı · fc = 150 MHz")
     for i in range(4):
-        xa = bx[i] + (130 if i else 110)
+        xa = bx[i] + (BW_ if i else 108)
         out.append(f'<path d="M{xa} {by + 25} H{bx[i + 1] - 4}" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
-    for i, t in ((1, "2400 → 600 MSPS"), (2, "600 MSPS"), (3, "600 → 300 MSPS")):
-        out.append(f'<text x="{(bx[i] + 130 + bx[i + 1]) / 2:.0f}" y="{by + 18}" text-anchor="middle" class="s-kucuk">{t}</text>')
-    out.append(f'<text x="{bx[4]}" y="{by + 12}" class="s-kucuk">DDC çıkışı</text><text x="{bx[4]}" y="{by + 28}" class="s-mono2">300 MSPS</text><text x="{bx[4]}" y="{by + 42}" class="s-mono2">16+16 bit, ±150 MHz</text>')
+    # hız etiketleri okların üstünde, blok şeridinin dışında (bloklarla çakışmasın)
+    for i, t in ((0, "2400 MSPS"), (1, "2400 → 600 MSPS"), (2, "600 MSPS"), (3, "600 → 300 MSPS")):
+        xa = bx[i] + (BW_ if i else 108)
+        out.append(f'<text x="{(xa + bx[i + 1]) / 2:.0f}" y="{by - 8}" text-anchor="middle" class="s-kucuk">{t}</text>')
+    out.append(f'<text x="{bx[4]}" y="{by + 12}" class="s-kucuk">DDC çıkışı</text><text x="{bx[4]}" y="{by + 28}" class="s-mono2">300 MSPS</text><text x="{bx[4]}" y="{by + 42}" class="s-mono2">16+16 bit · ±150 MHz</text>')
     out.append(f'<text x="{bx[1]}" y="{by + 72}" class="s-kucuk">akümülatör 24 bit (wrap) → 16 bit</text>')
     out.append(f'<text x="{bx[3]}" y="{by + 72}" class="s-kucuk">polyphase: iki yol, biri yalnız gecikme</text>')
     # paneller
@@ -515,7 +532,7 @@ def g_163():
                  "(c) kompanzasyon FIR çıkışı — 600 MSPS, ±300 MHz", "(d) halfband ↓2 çıkışı — 300 MSPS, ±150 MHz"]
     xts = [[-1200, -800, -400, 0, 400, 800, 1200], [-300, -200, -100, 0, 100, 200, 300], [-300, -200, -100, 0, 100, 200, 300], [-150, -100, -50, 0, 50, 100, 150]]
     notlar = [f"gürültü gücü {g[0]:.0f} dBFS · image −1200 MHz", f"gürültü {g[1]:.0f} dBFS · kenarlarda droop, ±150 dışı alias kalıntısı < −40 dB",
-              f"gürültü {g[2]:.0f} dBFS · geçirme bandı düz", f"gürültü {g[3]:.0f} dBFS · toplam düşüş {g[0] - g[3]:.0f} dB · işlem kazancı 6 dB"]
+              f"gürültü {g[2]:.0f} dBFS · geçirme bandı düz", f"gürültü {g[3]:.0f} dBFS · toplam düşüş {g[0] - g[3]:.0f} dB (kuram 10·log10(8) = 9) · işlem kazancı 6 dB"]
     for i in range(4):
         y1 = top + i * (ph + gap)
         y0 = y1 + ph
@@ -525,13 +542,15 @@ def g_163():
                 cr = [cic_yanit_db(4, 4, abs(f) * 1e6, FS) for f in fl]
                 d_ = path_from(fl, cr, x0, x1, y0, y1, xmin, xmax, ymin_, ymax_)
                 out.append(f'<path d="{d_}" class="spk-filtre"/>')
-                out.append(f'<text x="{px_of(160, x0, x1, xmin, xmax):.1f}" y="{y1 + 16}" class="s-kucuk s-altin">CIC yanıtı (katlanmış)</text>')
+                out.append(f'<text x="{x0 + 8}" y="{y1 + 40}" class="s-kucuk s-altin">altın kesikli: CIC yanıtı</text>')
+                out.append(f'<text x="{x0 + 8}" y="{y1 + 54}" class="s-kucuk s-altin">(600 MSPS\'e katlanmış)</text>')
             if i == 2:
                 fl = [(kk - 400) * 600 / 800 for kk in range(801)]
                 hr = fir_yanit_db(hb, [abs(f) * 1e6 for f in fl], FS / 4)
                 d_ = path_from(fl, hr, x0, x1, y0, y1, xmin, xmax, ymin_, ymax_)
                 out.append(f'<path d="{d_}" class="spk-filtre"/>')
-                out.append(f'<text x="{px_of(160, x0, x1, xmin, xmax):.1f}" y="{y1 + 16}" class="s-kucuk s-altin">halfband yanıtı (−6 dB @150)</text>')
+                out.append(f'<text x="{x0 + 8}" y="{y1 + 40}" class="s-kucuk s-altin">altın kesikli: halfband yanıtı</text>')
+                out.append(f'<text x="{x0 + 8}" y="{y1 + 54}" class="s-kucuk s-altin">(−6 dB @150 MHz)</text>')
         spektrum_paneli(out, sp[i], fss[i], x0, x1, y0, y1, ymin, ymax, xts[i], yt, basliklar[i], "", ek)
         out.append(f'<text x="{x1}" y="{y0 + 28}" text-anchor="end" class="s-kucuk">{notlar[i]}</text>')
         out.append(f'<text x="{x0}" y="{y0 + 28}" class="s-kucuk">MHz · dBFS</text>')
@@ -570,7 +589,7 @@ def g_171():
             # geçiş bandı: |f-600| 60..100 MHz → 75 dışında kalan 75..100 katlanır
             for a, b in ((600 - 100, 600 - 75), (600 + 75, 600 + 100)):
                 out.append(f'<rect x="{px_of(a, x0, x1, xmin, xmax):.1f}" y="{y1}" width="{px_of(b, x0, x1, xmin, xmax) - px_of(a, x0, x1, xmin, xmax):.1f}" height="{y0 - y1}" fill="var(--red)" opacity=".18"/>')
-            out.append(f'<text x="{px_of(690, x0, x1, xmin, xmax):.1f}" y="{y0 - 12}" class="s-kucuk s-kirmizi">geçiş bandı kanala katlanır</text>')
+            kutu_metin(out, px_of(702, x0, x1, xmin, xmax), y0 - 12, "geçiş bandı (75–100 MHz) kanalın içine katlanır", "s-kucuk s-kirmizi")
         for m in merkezler:
             ys = [fir_yanit_db(hp, [abs(f - m) * 1e6], FS)[0] for f in fl]
             d = path_from(fl, ys, x0, x1, y0, y1, xmin, xmax, ymin, ymax)
@@ -587,7 +606,8 @@ def g_171():
         # kesişim noktası
         kes = fir_yanit_db(hp, [75e6], FS)[0]
         out.append(f'<circle cx="{px_of(675, x0, x1, xmin, xmax):.1f}" cy="{py_of(kes, y0, y1, ymin, ymax):.1f}" r="4" fill="var(--gold)"/>')
-        out.append(f'<text x="{px_of(675, x0, x1, xmin, xmax) + 6:.1f}" y="{py_of(kes, y0, y1, ymin, ymax) - 6:.1f}" class="s-kucuk s-altin">kesişim {kes:.1f} dB @675 (kenar sinyali iki kanalda eşit)</text>')
+        out.append(f'<line x1="{px_of(675, x0, x1, xmin, xmax):.1f}" y1="{py_of(kes, y0, y1, ymin, ymax):.1f}" x2="{px_of(675, x0, x1, xmin, xmax):.1f}" y2="{y1 - 4}" stroke="var(--gold)" stroke-width="1"/>')
+        out.append(f'<text x="{x1}" y="{y1 - 10}" text-anchor="end" class="s-kucuk s-altin">● kesişim {kes:.1f} dB @675 (kenar sinyali iki kanalda eşit)</text>')
         if p == 1:
             # güçlü emiter 600 → komşu sızıntısı
             px = px_of(600, x0, x1, xmin, xmax)
@@ -637,14 +657,14 @@ def g_172():
     for kk in (3, 5, 2):
         ici, tepe, sure = kulak(kk)
         print(f"    g-172: kanal {kk}: darbe içi {ici:.0f} dBc, kulak tepesi {tepe:.0f} dBc, süre(−10 dB) ≈ {sure:.0f} ns")
-    W, H = 900, 440
+    W, H = 900, 516
     out = svg_bas("g172", W, H, "Rabbit ear etkisi (hesaplanmış): 16 kanallı kanallaştırıcıda 1 µs, 10 ns kenarlı, 620 MHz'lik darbe. Kanal 4 temiz zarf; komşu kanallar 3 ve 5 darbe süresince "
                   "yalnızca stopband sızıntısı görür ama darbenin başında ve sonunda filtre geçici rejimi kadar süren, tespit eşiğini aşabilen iki çıkıntı üretir. Sağda kanal–zaman ısı haritası.")
     x0, x1 = 60, 600
     xmin, xmax, ymin, ymax = 0, 2.5, -100, 5
     esik = -62
     for i, kk in enumerate((4, 3, 5)):
-        y1 = 36 + i * 130
+        y1 = 36 + i * 152
         y0 = y1 + 100
         out.append(f'<text x="{x0}" y="{y1 - 8}" class="s-baslik">kanal {kk} — {kk * 150} MHz {"(darbenin kanalı)" if kk == 4 else "(komşu)"}</text>')
         out.append(eksen(x0, x1, y0, y1, [0, 0.5, 1, 1.5, 2, 2.5], [0, -40, -80], xmin, xmax, ymin, ymax, lambda v: f"{v:g}", lambda v: f"{v:d}"))
@@ -660,13 +680,13 @@ def g_172():
                 px = px_of(tt * 1e6, x0, x1, xmin, xmax)
                 out.append(f'<circle cx="{px:.1f}" cy="{py_of(tepe, y0, y1, ymin, ymax):.1f}" r="4" fill="none" stroke="var(--red)" stroke-width="1.5"/>')
             out.append(f'<text x="{px_of(t0 * 1e6, x0, x1, xmin, xmax) + 8:.1f}" y="{py_of(tepe, y0, y1, ymin, ymax) - 6:.1f}" class="s-kucuk s-kirmizi">kulak {tepe:.0f} dBc, ≈ {sure:.0f} ns</text>')
-            out.append(f'<text x="{px_of(1.25, x0, x1, xmin, xmax):.1f}" y="{py_of(ici, y0, y1, ymin, ymax) - 6:.1f}" text-anchor="middle" class="s-kucuk">darbe içi sızıntı {ici:.0f} dBc</text>')
+            kutu_metin(out, px_of(1.25, x0, x1, xmin, xmax), py_of(ici, y0, y1, ymin, ymax) - 5, f"darbe içi sızıntı {ici:.0f} dBc", "s-kucuk", "middle")
         else:
             out.append(f'<text x="{px_of(1.1, x0, x1, xmin, xmax):.1f}" y="{y1 + 14}" text-anchor="middle" class="s-kucuk s-vurgu">1 µs darbe, 0 dBc</text>')
         out.append(f'<text x="{x1 - 4}" y="{py - 4:.1f}" text-anchor="end" class="s-kucuk s-kirmizi">CFAR eşiği (örnek) {esik} dBc</text>')
     out.append(f'<text x="{(x0 + x1) / 2}" y="{H - 8}" text-anchor="middle" class="s-kucuk">zaman (µs) · dBc (kanal 4 tepesine göre)</text>')
     # ısı haritası
-    hx0, hx1, hy0, hy1 = 660, 880, 366, 36
+    hx0, hx1, hy0, hy1 = 660, 880, 440, 36
     out.append(f'<text x="{hx0}" y="{hy1 - 8}" class="s-baslik">kanal–zaman</text>')
     out.append(f'<rect x="{hx0}" y="{hy1}" width="{hx1 - hx0}" height="{hy0 - hy1}" class="eksen"/>')
     nb = 64
@@ -709,15 +729,15 @@ def g_132():
     paneller = [
         ("(a) ±1 LSB, seyrek, yalnızca negatif değerlerde → yuvarlama kuralı (half-up / away-from-zero) uyuşmazlığı", hw_yuvarlama(), 4),
         ("(b) büyük, sinyal biçimli fark → hizalama (L) hatası: 3 örnek kaydır, sıfırlanır", hw_hizalama(), 1200),
-        ("(c) belirli bir örnekten sonra, yalnızca tepelerde → taşma / doyurma farkı (model doyuruyor, RTL doyurmuyor ya da tersi)", hw_tasma(), 1200),
+        ("(c) belirli bir örnekten sonra, yalnızca tepelerde → taşma / saturation farkı (biri doyuruyor, öteki değil)", hw_tasma(), 1200),
         ("(d) yalnızca ilk N örnek → başlangıç durumu (gecikme hatları, reset); ısınmayı atla", hw_baslangic(), 4000),
     ]
-    W, H = 900, 4 * 118 + 30
+    W, H = 900, 4 * 136 + 20
     out = svg_bas("g132", W, H, "Bit-exact karşılaştırmada dört tipik fark deseni (öğretici, sentetik veri): (a) seyrek ±1 LSB fark yuvarlama kuralı uyuşmazlığı; "
                   "(b) sinyal biçimli büyük fark hizalama hatası; (c) belirli bir örnekten sonra tepelerde başlayan fark taşma/doyurma; (d) yalnızca ilk örneklerde fark başlangıç durumu.")
     x0, x1 = 60, W - 20
     for i, (bas, hw, lim) in enumerate(paneller):
-        y1 = 26 + i * 118
+        y1 = 26 + i * 136
         y0 = y1 + 80
         e = [hw[k] - ref[k] for k in range(n)]
         out.append(f'<text x="{x0}" y="{y1 - 8}" class="s-baslik">{bas}</text>')
@@ -731,7 +751,7 @@ def g_132():
             out.append(f'<line x1="{px:.1f}" y1="{py0:.1f}" x2="{px:.1f}" y2="{py1:.1f}" stroke="var(--red)" stroke-width="1.2"/>')
         maxe = max(abs(v) for v in e)
         ilk = next((k for k in range(n) if e[k] != 0), None)
-        out.append(f'<text x="{x1}" y="{y0 + 26}" text-anchor="end" class="s-kucuk">e[n] = hw − ref (LSB) · max |e| = {maxe} · ilk fark örneği: {ilk} · fark sayısı: {sum(1 for v in e if v)}/{n}</text>')
+        out.append(f'<text x="{x1}" y="{y0 + 30}" text-anchor="end" class="s-kucuk">e[n] = hw − ref (LSB) · max |e| = {maxe} · ilk fark örneği: {ilk} · fark sayısı: {sum(1 for v in e if v)}/{n}</text>')
     yaz("g-132-fark-desenleri.svg", out, "fark desenleri")
 
 
@@ -745,7 +765,7 @@ def g_152():
     s = [0, -1, 0, 1]
     I = [x[k] * c[k % 4] for k in range(n)]
     Q = [x[k] * s[k % 4] for k in range(n)]
-    W, H = 900, 400
+    W, H = 900, 416
     out = svg_bas("g152", W, H, "fs/4 hilesi (hesaplanmış): ADC örnekleri x[n], cos dizisi 1,0,−1,0 ve −sin dizisi 0,−1,0,1; çarpım yalnızca işaret çevirme ve sıfırlamadır; "
                   "I çıkışı çift indisli, Q çıkışı tek indisli örneklerden oluşur; NCO tam fs/4'te olduğundan çarpıcı gerekmez.")
     x0, x1 = 70, W - 30
@@ -786,7 +806,7 @@ def g_152():
             out.append(f'<polyline points="{" ".join(pts)}" fill="none" stroke="var(--accent)" stroke-width="1" opacity=".35"/>')
         out.append(f'<text x="{x0 - 6}" y="{pym + 4}" text-anchor="end" class="s-kucuk">0</text>')
     for k in range(0, n, 4):
-        out.append(f'<text x="{px_of(k, x0, x1, -0.5, n - 0.5):.1f}" y="{H - 8}" text-anchor="middle" class="s-mono2">n = {k}</text>')
+        out.append(f'<text x="{px_of(k, x0, x1, -0.5, n - 0.5):.1f}" y="{H - 26}" text-anchor="middle" class="s-mono2">n = {k}</text>')
     out.append(f'<text x="{x1}" y="{H - 8}" text-anchor="end" class="s-kucuk">DSP slice: 0 · yalnızca işaret çevirme + çoklayıcı · sonra LPF ve ↓M</text>')
     yaz("g-152-fs4-hilesi.svg", out, "fs/4 hilesi")
 

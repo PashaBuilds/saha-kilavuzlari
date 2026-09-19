@@ -22,9 +22,10 @@
   <path d="M116 210 L120 140 L124 210Z" class="spk-sinyal"/><text class="t" x="120" y="134" text-anchor="middle">f_in + Δf</text>
   <path d="M198 210 L200 180 L202 210Z" class="spk-image"/><text class="son" x="200" y="226" text-anchor="middle" fill="var(--red)">2Δf → HD2</text>
   <path d="M208 210 L210 185 L212 210Z" class="spk-image" opacity=".5"/><text class="son" x="230" y="240" text-anchor="middle" fill="var(--red)">−Δf → katlanmış</text>
-  <path d="M48 210 L50 188 L52 210Z" class="spk-image"/><text class="son" x="50" y="226" text-anchor="middle" fill="var(--red)">sabit → saat/NCO/DC</text>
+  <path d="M48 210 L50 188 L52 210Z" class="spk-image"/><text class="son" x="22" y="226" text-anchor="start" fill="var(--red)">sabit → saat/NCO/DC</text>
   <text class="t" x="20" y="262">spur'un kaymasını sinyalin kaymasıyla oranla:</text>
-  <text class="t" x="20" y="278">0 → sinyalden bağımsız · +k → HDk · − → katlanmış/interleaving</text>
+  <text class="t" x="20" y="277">0 → sinyalden bağımsız · +k → HDk</text>
+  <text class="t" x="20" y="292">− (ters yön) → katlanmış / interleaving</text>
 </g>
 <!-- Panel 2: seviye düşür -->
 <g transform="translate(307,10)">
@@ -39,8 +40,9 @@
   <path d="M158 210 L160 198 L162 210Z" class="spk-image"/><text class="son" x="160" y="226" text-anchor="middle" fill="var(--red)">−12 dB → HD2</text>
   <path d="M218 210 L220 204 L222 210Z" class="spk-image"/><text class="son" x="232" y="240" text-anchor="middle" fill="var(--red)">−18 dB → HD3</text>
   <path d="M48 210 L50 182 L52 210Z" class="spk-image"/><text class="son" x="50" y="226" text-anchor="middle" fill="var(--red)">0 dB → bağımsız</text>
-  <text class="t" x="20" y="262">−6 dB düşerse doğrusal kaçak (LO/saat sızıntısı, crosstalk)</text>
-  <text class="t" x="20" y="278">k·6 dB düşerse k'ıncı derece bozulma</text>
+  <text class="t" x="20" y="262">−6 dB düşerse doğrusal kaçak</text>
+  <text class="t" x="20" y="277">(LO / saat sızıntısı, crosstalk)</text>
+  <text class="t" x="20" y="292">k·6 dB düşerse k'ıncı derece bozulma</text>
 </g>
 <!-- Panel 3: FTW -->
 <g transform="translate(604,10)">
@@ -54,9 +56,10 @@
   <path d="M96 210 L100 140 L104 210Z" class="spk-sinyal"/>
   <g class="spk-image"><path d="M138 210 L140 186 L142 210Z"/><path d="M181 210 L183 186 L185 210Z"/><path d="M224 210 L226 186 L228 210Z"/></g>
   <text class="son" x="180" y="226" text-anchor="middle" fill="var(--red)">aralık değişti → NCO faz kırpma</text>
-  <text class="t" x="20" y="262">NCO spur konumları FTW'nin alt bitlerine bağlıdır;</text>
-  <text class="t" x="20" y="278">ADC/analog kaynaklı spur FTW'den etkilenmez.</text>
-  <text class="t" x="20" y="296">Çözüm: dither aç, P'yi artır (B14).</text>
+  <text class="t" x="20" y="262">NCO spur konumları FTW'nin alt bitlerine</text>
+  <text class="t" x="20" y="277">bağlıdır; ADC/analog kaynaklı spur</text>
+  <text class="t" x="20" y="292">FTW'den etkilenmez.</text>
+  <text class="t" x="20" y="306">Çözüm: dither aç, P'yi artır (B14).</text>
 </g>
 </g>
 </svg>

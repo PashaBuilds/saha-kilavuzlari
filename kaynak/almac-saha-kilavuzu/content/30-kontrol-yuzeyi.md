@@ -47,9 +47,9 @@ sayaçlar. Adres ofsetleri 32-bit, tüm register'lar geri okunabilir
 | 0x020 | `DDC_MODE` | 3:0 | R/W | decimation seçimi: 0=↓4, 1=↓8, 2=↓16 (kademe etkin bitleri) | 16 |
 | 0x024 | `FIR_COEF_ADDR` | 7:0 | R/W | katsayı RAM adresi | 16 |
 | 0x028 | `FIR_COEF_DATA` | 17:0 | R/W | katsayı, Q1.17 işaretli | 12, 16 |
-| 0x02C | `FIR_COEF_COMMIT` | 0 | W1P | çift tamponlu katsayıları etkinleştir | 16 |
+| 0x02C | `FIR_COEF_COMMIT` | 0 | W1P | çift tamponlu (double-buffered) katsayıları etkinleştir | 16 |
 | 0x030 | `FFT_CTRL` | 7:0 | R/W | bit1:0 pencere (0 rect, 1 Hann, 2 BH, 3 Kaiser), bit3:2 log2(N)−8, bit4 overlap %50 | 18, 19 |
-| 0x034 | `FFT_SCALE` | 15:0 | R/W | kademe başına kaydırma takvimi (2 bit × 8 kademe) | 20 |
+| 0x034 | `FFT_SCALE` | 15:0 | R/W | kademe başına kaydırma takvimi — scaling schedule (2 bit × 8 kademe) | 20 |
 | 0x040 | `DET_THR_FIXED` | 19:0 | R/W | sabit eşik, güç birimi (I²+Q²), Q4.16 tam ölçek = 1.0 | 21, 23 |
 | 0x044 | `CFAR_CTRL` | 15:0 | R/W | bit1:0 tip (0 CA, 1 GO, 2 SO, 3 OS), bit7:2 N/2 (taraf başına), bit11:8 guard, bit12 etkin | 23 |
 | 0x048 | `CFAR_ALPHA` | 15:0 | R/W | α, Q6.10 (21.94 → 0x57C2) | 23 |
@@ -61,7 +61,7 @@ sayaçlar. Adres ofsetleri 32-bit, tüm register'lar geri okunabilir
 | 0x064 | `PDW_FIFO_CTRL` | 3:0 | R/W | bit0 etkin, bit1 taşmada en eskisini at, bit2 sıfırla (W1P) | 26 |
 | 0x068 | `PDW_DROP_CNT` | 31:0 | R/W1C | taşma nedeniyle atılan PDW sayısı | 26 |
 | 0x06C | `PDW_COUNT` | 31:0 | R | üretilen toplam PDW (sıra numarası kaynağı) | 26 |
-| 0x070 | `SNAP_CTRL` | 7:0 | R/W | bit0 tetik kaynağı (0 yazılım, 1 ilk tespit), bit1 kol (W1P), bit2 hazır (R) | 26, 29 |
+| 0x070 | `SNAP_CTRL` | 7:0 | R/W | bit0 tetik kaynağı (0 yazılım, 1 ilk tespit), bit1 kur (arm, W1P), bit2 hazır (R) | 26, 29 |
 | 0x074 | `SNAP_LEN` | 15:0 | R/W | yakalama uzunluğu, örnek | 29 |
 | 0x078 | `SNAP_PRETRIG` | 15:0 | R/W | tetik öncesi örnek | 29 |
 | 0x080 | `IRQ_STATUS` | 7:0 | R/W1C | bit0 FIFO yarım, bit1 FIFO taşma, bit2 ADC overrange, bit3 JESD link düştü, bit4 snapshot hazır | 26 |
@@ -170,7 +170,7 @@ Register'lardaki sayılar fiziksel birimlere üç tabloyla bağlanır; üçü de
 
 - **Genlik tablosu** (dBFS → dBm): ön uç kazancı frekansa ve sıcaklığa
   bağlıdır. Tablo, birkaç frekans noktasında ve birkaç sıcaklıkta ölçülen
-  ofsetleri tutar; yazılım aradeğerleme yapıp `CAL_GAIN_DB`'yi günceller.
+  ofsetleri tutar; yazılım aradeğerleme (interpolasyon) yapıp `CAL_GAIN_DB`'yi günceller.
   Sıcaklık okumasız kalibrasyon tipik olarak birkaç dB kayar ({{bolum:25}}).
 - **Frekans düzeltmesi** (ppm): referans osilatörün sapması PDW'deki RF ve TOA
   ölçümünü birlikte kaydırır. Disiplinli sistemlerde harici referans (10 MHz,
@@ -190,11 +190,11 @@ PDW ile birlikte kaydetmesidir; düzeltme sonradan da yapılabilir, kayıp veri
 geri gelmez.
 ::fpga::
 PL tarafı için kontrol yüzeyi bir AXI-Lite slave ve bir avuç register
-dosyasıdır. İyi pratik: kritik parametreler (katsayılar, α, eşik) **çift
-tamponlu**dur — PS yeni değerleri yazar, `COMMIT` ile hepsi aynı saat
+dosyasıdır. İyi pratik: kritik parametreler (katsayılar, α, eşik)
+**double-buffered**'dır — PS yeni değerleri yazar, `COMMIT` ile hepsi aynı saat
 vuruşunda etkinleşir; yoksa zincir yarı eski yarı yeni ayarlarla birkaç
 mikrosaniye çalışır ve bir avuç sahte PDW üretir. Sayaçlar taşmaz, doyar;
-durum bitleri "yapışkan"dır (sticky) ve W1C ile temizlenir.
+durum bitleri **sticky**'dir (yapışkan) ve W1C ile temizlenir.
 ::yazilim::
 Sürücü üç katmandır: (1) register erişimi (`reg_read32/write32`, adres +
 maske), (2) birim kütüphanesi (yukarıdaki), (3) yapılandırma nesnesi
@@ -226,10 +226,10 @@ veri gelmeden "CFAR çalışmıyor" denir).
 6. **Tespit.** Önce sabit eşik yüksekte, CFAR kapalı; `NOISE_EST`'i oku ve
    beklenen gürültü tabanıyla ({{s:turetilmis_beklenen.gurultu_tabani_dbm}} dBm ≙ dBFS karşılığı) karşılaştır;
    makulse `CFAR_ALPHA`, `CFAR_CTRL`, `DET_HYST`, `DET_MIN_PW` yaz ve CFAR'ı aç ({{bolum:23}}).
-7. **PDW akışı.** DMA halka tamponunu kur, `IRQ_MASK` ile FIFO yarım ve taşma
+7. **PDW akışı.** DMA ring buffer'ını kur, `IRQ_MASK` ile FIFO yarım ve taşma
    kesmelerini aç, `PDW_FIFO_CTRL` etkinleştir. İlk 100 PDW'yi günlüğe yaz:
    sıra numaraları ardışık mı, `PDW_DROP_CNT` sıfır mı ({{bolum:26}}).
-8. **Kendi kendini test.** Dahili test üretecini bir CW ton ile aç, PDW'de
+8. **Self-test (kendi kendini test).** Dahili test üretecini bir CW ton ile aç, PDW'de
    beklenen RF ve PA'yı gör; kapat. Bu adım {{bolum:29}}'daki teşhisin ilk
    dalıdır ve açılışta yapılırsa sahada saatler kazandırır.
 
@@ -258,7 +258,7 @@ register. Kütüphanedeki `dbfs_to_dbm` ve tersi bunun için var; eşiği hep
 birimde bas.
 :::
 
-:::tuzak Çift tampon yokken katsayı yüklemek
+:::tuzak Double buffer yokken katsayı yüklemek
 Filtre katsayılarını çalışan zincire tek tek yazarsan her yazma anında
 filtre yarı eski yarı yeni bir dürtü yanıtına sahip olur; çıkışta birkaç
 mikrosaniyelik geçici bozulma, tespitte bir avuç sahte PDW üretir. Haritada
@@ -280,8 +280,8 @@ sütununu koda yorum olarak taşı.
 - Kurgusal harita kategorileri: saat/ADC durumu, DDC (FTW, POW, CTRL, mod, katsayı), FFT (pencere, N, ölçek), tespit (sabit eşik, CFAR tipi/N/guard/α, histerezis, min/max PW), PDW FIFO (seviye, taşma, sayaç), snapshot, kesme, kalibrasyon, test üreteci.
 - Birim kütüphanesi: Hz↔FTW (fs = ADC saati), bin↔Hz (fs = DDC saati), baseband→RF (NCO ekle, bölgeyi aç, LO ekle), dBFS↔güç register (Q4.16), dBFS↔dBm (kalibrasyon ofseti), Pfa→α (Q6.10), örnek↔ns.
 - Kalibrasyon üç tablodur: genlik (frekans × sıcaklık), frekans (ppm), kanal eşleme (kazanç/faz).
-- Açılış sırası: saat → ADC/JESD → kalibrasyon → DDC → FFT → tespit (önce gürültü tabanını doğrula) → PDW akışı → kendi kendini test.
-- Kritik parametreler çift tamponlu ve `COMMIT` ile atomik; sayaçlar doyar, durum bitleri yapışkandır (W1C).
+- Açılış sırası: saat → ADC/JESD → kalibrasyon → DDC → FFT → tespit (önce gürültü tabanını doğrula) → PDW akışı → self-test.
+- Kritik parametreler double-buffered ve `COMMIT` ile atomik; sayaçlar doyar, durum bitleri sticky'dir (W1C).
 - Her `apply` sonrası geri oku ve iki birimde günlüğe yaz.
 :::
 
@@ -293,7 +293,7 @@ C: f_bb = (532 − 512) · 300 MHz / 1024 = +5.86 MHz. f_alias = 605.86 MHz; evr
 S: Açılışta CFAR'ı açmadan önce neden `NOISE_EST` okunur?
 C: Gürültü tahmini beklenen tabandan (yaklaşık −83 dBm'in dBFS karşılığı) çok farklıysa zincirin üstünde bir sorun vardır: saat kilitsiz, JESD link yanlış, kazanç ayarı hatalı ya da ADC doyumda. CFAR bu durumda "çalışır" ama anlamsız PDW üretir; hata teşhisi katmanlar aşağıda yapılmalıdır.
 S: Katsayı yükleme sırasında neden `COMMIT` register'ı gerekir?
-C: Çalışan filtre katsayılarını tek tek değiştirmek, dürtü yanıtını geçici olarak bozar ve birkaç mikrosaniye boyunca sahte tespit üretir. Çift tampon + COMMIT tüm katsayıları aynı saat vuruşunda değiştirir.
+C: Çalışan filtre katsayılarını tek tek değiştirmek, dürtü yanıtını geçici olarak bozar ve birkaç mikrosaniye boyunca sahte tespit üretir. Double buffer + COMMIT tüm katsayıları aynı saat vuruşunda değiştirir.
 :::
 
 :::kopru

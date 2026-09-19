@@ -7,7 +7,7 @@ FFT'de 57 dB görüyoruz?" Bu sorunun cevabı tek bir sayı değil, dört ayrı
 mekanizmadır: kuantizasyon gürültüsü gerçekten 86 dB'dir ama termal gürültü,
 saat titremesi (jitter) ve doğrusalsızlık onun çok üstüne çıkar; üstelik
 FFT'nin gösterdiği "taban" SNR'ın kendisi bile değildir. Tespit eşiğini
-({{bolum:21}}) gürültü tabanına göre kuran, kazancı ADC doymasın diye ayarlayan
+({{bolum:21}}) gürültü tabanına göre kuran, kazancı ADC doymasın (saturation) diye ayarlayan
 ve datasheet'ten "bu ADC bize yeter mi" diyecek olan sensin. Bu bölüm o
 datasheet'in ilk sayfasını, satır satır, referans senaryonun sayılarıyla
 okur.
@@ -21,7 +21,7 @@ Bir masanın boyunu milimetre bölmeli cetvelle ölçüyorsun. Gerçek boy
 rastgele dağılır: bazen +0.4, bazen −0.2. Çok masa ölçersen hatalar
 "gürültü" gibi davranır; ortalaması sıfır, yayılımı bölme aralığına bağlı.
 ADC de budur: giriş gerilimini $2^N$ eşit basamağa bölen bir cetvel. Basamak
-**LSB**'dir (least significant bit — en anlamsız bit), yarım basamaklık
+**LSB**'dir (least significant bit — en düşük anlamlı bit), yarım basamaklık
 hata **kuantizasyon gürültüsüdür** ve bit sayısını artırmak cetvele daha
 ince bölme çizmektir.
 
@@ -248,8 +248,9 @@ yenileyen senin sürücündür ({{rf:interleaved-adc-hiz-hilesi-ve-bedeli|RF Ör
 
 {{svg:g-93-interleaving-spur.svg|Time-interleaving spur mekanizması. Solda zaman: dört çekirdek (A, B, C, D) sırayla örnekler; B'nin ofseti ve kazancı farklı, D'nin örnekleme anı kaymış — hata dizisi fs/4 periyotlu. Sağda hesaplanmış spektrum (fs = 2400 MSPS, f_in = 450 MHz): ofset spur'ları 600 ve 1200 MHz'de sinyalden bağımsız; kazanç/zamanlama image'ları fs/4 ± f_in ve fs/2 − f_in konumlarında (150, 750, 1050 MHz). Referans senaryoda f_in = fs/4 olduğu için bu ailenin iki üyesi sinyalin tam üstüne düşer.}}
 
-**Clipping ve overrange.** Tam ölçeği aşan giriş, kodun tavanına yapışır;
-sinüsün tepesi kesilir ve spektrum harmoniklerle dolar — 3 dB aşımda SFDR
+**Clipping ve overrange.** Tam ölçeği aşan giriş kodun tavanına yapışır — ADC
+**doymuştur** (saturation); tepesi kesilen dalga şekline **clipping** denir
+— ve spektrum harmoniklerle dolar — 3 dB aşımda SFDR
 20 dBc'ye çöker (widget'ta gör). Bu bir "biraz daha gürültü" durumu değil,
 **ölçümün geçersiz olduğu** durumdur: PA yanlış (doyma seviyesinde takılı),
 frekans ölçümü harmoniklerle kirlenmiş, yanındaki zayıf darbe intermod

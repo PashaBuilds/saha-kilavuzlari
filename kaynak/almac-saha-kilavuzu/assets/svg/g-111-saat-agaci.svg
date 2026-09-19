@@ -5,27 +5,27 @@
 <text x="20" y="166" class="s-kucuk">10 / 100 MHz OCXO</text>
 <text x="20" y="180" class="s-kucuk">ya da şasi referansı</text>
 <path d="M80 120 H118" class="yol-saat" marker-end="url(#ok-saat)"/>
-<rect x="120" y="50" width="330" height="200" rx="8" class="blok" opacity=".5"/>
+<rect x="120" y="50" width="345" height="200" rx="8" class="blok" opacity=".5"/>
 <text x="130" y="68" class="s-metin2">jitter temizleyici / saat üreteci (çift döngü)</text>
 <rect x="140" y="98" width="90" height="44" rx="4" class="blok-aktif"/><text x="185.0" y="117.0" text-anchor="middle" class="s-metin2">PLL1</text><text x="185.0" y="131.0" text-anchor="middle" class="s-kucuk">dar bant, temizler</text>
 <path d="M230 120 H258" class="yol-saat" marker-end="url(#ok-saat)"/>
 <rect x="260" y="98" width="70" height="44" rx="4" class="blok"/><text x="295.0" y="117.0" text-anchor="middle" class="s-metin2">VCXO</text><text x="295.0" y="131.0" text-anchor="middle" class="s-kucuk">ör. 100 MHz</text>
 <path d="M330 120 H358" class="yol-saat" marker-end="url(#ok-saat)"/>
-<rect x="358" y="98" width="88" height="44" rx="4" class="blok-aktif"/><text x="402.0" y="117.0" text-anchor="middle" class="s-metin2">PLL2 + VCO</text><text x="402.0" y="131.0" text-anchor="middle" class="s-kucuk">geniş bant, çarpar</text>
-<path d="M402 142 V180" class="yol-saat" marker-end="url(#ok-saat)"/>
+<rect x="358" y="98" width="100" height="44" rx="4" class="blok-aktif"/><text x="408.0" y="117.0" text-anchor="middle" class="s-metin2">PLL2 + VCO</text><text x="408.0" y="131.0" text-anchor="middle" class="s-kucuk">geniş bant, çarpar</text>
+<path d="M408 142 V180" class="yol-saat" marker-end="url(#ok-saat)"/>
 <rect x="310" y="182" width="140" height="40" rx="4" class="blok"/><text x="380.0" y="199.0" text-anchor="middle" class="s-metin2">bölücüler / dağıtım</text><text x="380.0" y="213.0" text-anchor="middle" class="s-kucuk">DCLK + SYSREF çiftleri</text>
 <text x="140" y="184" class="s-kucuk">PLL1: referans doğruluğu</text>
 <text x="140" y="198" class="s-kucuk">+ VCXO temizliği</text>
 <text x="140" y="212" class="s-kucuk">PLL2: GHz, σ ≈ on–yüz fs</text>
-<path d="M440 202 H470 V70 H560" class="yol-saat" marker-end="url(#ok-saat)"/>
+<path d="M450 202 H480 V70 H560" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
 <text x="566" y="74" class="s-kucuk">ADC saati 2400 MHz</text>
-<path d="M440 202 H470 V110 H560" class="yol-saat" marker-end="url(#ok-saat)"/>
+<path d="M450 202 H480 V110 H560" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
 <text x="566" y="114" class="s-kucuk">ADC SYSREF</text>
-<path d="M440 202 H470 V160 H560" class="yol-saat" marker-end="url(#ok-saat)"/>
+<path d="M450 202 H480 V160 H560" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
 <text x="566" y="164" class="s-kucuk">FPGA GT refclk (ör. 300 MHz)</text>
-<path d="M440 202 H470 V200 H560" class="yol-saat" marker-end="url(#ok-saat)"/>
+<path d="M450 202 H480 V200 H560" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
 <text x="566" y="204" class="s-kucuk">FPGA SYSREF</text>
-<path d="M440 202 H470 V240 H560" class="yol-saat" marker-end="url(#ok-saat)"/>
+<path d="M450 202 H480 V240 H560" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
 <text x="566" y="244" class="s-kucuk">fabric saati (ör. 300 MHz, ops.)</text>
 <rect x="760" y="50" width="220" height="80" rx="8" class="blok-analog"/>
 <text x="870" y="74" text-anchor="middle" class="s-metin2 s-altin">ADC</text>

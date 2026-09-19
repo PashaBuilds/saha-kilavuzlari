@@ -169,7 +169,7 @@ window.KILAVUZLAR = [
     bolumSayi: 37,
     sema: 104,
     kelime: 109551,
-    boyut: "3,7 MB",
+    boyut: "3,6 MB",
     guncelleme: "2026-09-19",
     yol: "kilavuzlar/almac/index.html",
     renk: 340,

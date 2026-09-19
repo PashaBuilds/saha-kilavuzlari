@@ -14,7 +14,7 @@
 <path d="M280.0 80.0 L320.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
 <use href="#sym-diyot" x="320.0" y="60.0" width="60" height="40"/>
 <text x="350.0" y="113.0" text-anchor="middle" class="s-kucuk">kristal dedektör</text>
-<text x="350.0" y="125.0" text-anchor="middle" class="s-mono2">kare-yasa</text>
+<text x="350.0" y="125.0" text-anchor="middle" class="s-mono2">square-law</text>
 <path d="M380.0 80.0 L420.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
 <use href="#sym-lpf" x="420.0" y="60.0" width="60" height="40"/>
 <text x="450.0" y="113.0" text-anchor="middle" class="s-kucuk">video filtre</text>

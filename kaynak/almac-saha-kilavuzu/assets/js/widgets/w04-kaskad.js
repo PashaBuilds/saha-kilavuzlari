@@ -117,7 +117,7 @@ WK.kaydet("w04", function (w) {
     gs.yatay(fsDbm, "w-cizgi-altin", "ADC tam ölçek " + fsDbm + " dBm");
     var snrIn = sev[0].sinyal - sev[0].gurultu, snrOut = cikis.sinyal - cikis.gurultu;
     gs.metin(gs.px(0) - 4, gs.y1 + 14, "SNR giriş " + snrIn.toFixed(1) + " dB", "w-not");
-    gs.metin(gs.x1 - 4, gs.y1 + 28, "SNR çıkış " + snrOut.toFixed(1) + " dB → kayıp = NF = " + (snrIn - snrOut).toFixed(2) + " dB", "w-not", "end");
+    gs.metin(gs.x1 - 4, gs.y0 - 8, "SNR çıkış " + snrOut.toFixed(1) + " dB → kayıp = NF = " + (snrIn - snrOut).toFixed(2) + " dB", "w-not", "end");   // sağ alt: ADC tam ölçek etiketiyle çakışmasın
     // --- katkı çubukları
     WK.temizle(katki);
     var gk = WK.grafik(katki, { W: 640, H: 150, xmin: -0.5, xmax: Math.max(1, zincir.length) - 0.5, ymin: 0, ymax: 1, kenar: { sol: 52, sag: 14, ust: 22, alt: 30 } });

@@ -86,7 +86,7 @@ WK.kaydet("w16", function (w) {
     // --- zaman paneli (SVG): zarf + çerçeve ızgarası
     WK.temizle(zaman);
     var g = WK.grafik(zaman, { W: 640, H: 130, xmin: 0, xmax: SURE * 1e6, ymin: -0.1, ymax: 1.3, kenar: { sol: 50, sag: 14, ust: 22, alt: 30 } });
-    g.eksenler({ xAdet: 8, yAdet: 2, xAd: "zaman (µs)", yAd: "zarf", baslik: "Darbe zarfı ve FFT çerçeveleri (her " + hop + ". örnekte yeni çerçeve, çerçeve = " + WK.fmtS(Tcer) + ")", yFmt: function (v) { return v.toFixed(0); } });
+    g.eksenler({ xAdet: 8, yAdet: 2, xAd: "zaman (µs)", yAd: "zarf", baslik: "Darbe zarfı ve FFT çerçeveleri (her " + hop + ". örnekte yeni çerçeve, çerçeve = " + WK.fmtS(Tcer) + ")", xFmt: function (v) { return v.toFixed(1); }, yFmt: function (v) { return v.toFixed(0); } });
     var xs = [], ys = [];
     for (k = 0; k < M; k += 2) { xs.push(k / fs * 1e6); ys.push(sig.zarf[k]); }
     g.alan(xs, ys, 0, "w-dolgu-sinyal"); g.cizgi(xs, ys, "w-cizgi-sinyal");

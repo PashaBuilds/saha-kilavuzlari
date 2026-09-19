@@ -106,7 +106,7 @@ WK.kaydet("w19", function (w) {
     gz.cizgi(xs, ys, "w-cizgi-sinyal");
     var esikDb = DSP.db10(esik);
     gz.yatay(esikDb, "w-cizgi-altin", "T_on = gürültü + " + f3(p.esik) + " dB");
-    if (p.hyst > 0) gz.yatay(esikDb - p.hyst, "w-cizgi-kirmizi", "T_off (−" + f3(p.hyst) + " dB)");
+    if (p.hyst > 0) { gz.yatay(esikDb - p.hyst, "w-cizgi-kirmizi", ""); gz.metin(gz.x1 - 3, gz.py(esikDb - p.hyst) + 12, "T_off (−" + f3(p.hyst) + " dB)", "w-not", "end"); }   // çizginin altında: T_on etiketiyle çakışmasın
     pdwler.forEach(function (d) { gz.bant(d.bas / fs * 1e6, d.son / fs * 1e6, d.sahte ? "w-dolgu-kirmizi" : "w-dolgu-yesil"); });
     atilan.forEach(function (d) { gz.bant(d.bas / fs * 1e6, (d.son + 1) / fs * 1e6, "w-dolgu-kirmizi"); });
     gercek.forEach(function (g) { gz.dikey(g.toa * 1e6, "w-cizgi-gri", ""); });
@@ -131,6 +131,7 @@ WK.kaydet("w19", function (w) {
     thead.appendChild(tr); tbl.appendChild(thead);
     var tb = WK.el("tbody");
     var eToa = [], ePw = [], eF = [], ePa = [], sahteSay = 0, parcaSay = 0, kacan = 0;
+    var TABLO_MAX = 24;                                   // parçalanma preset'inde onlarca satır: tablo kısaltılır, sayaçlar tam kalır
     pdwler.forEach(function (d, i) {
       var r = WK.el("tr");
       r.appendChild(td(String(i + 1)));
@@ -151,8 +152,9 @@ WK.kaydet("w19", function (w) {
       r.appendChild(td(d.mop + (d.mop === "LFM" ? " " + f3(d.egim / 1e12, 1) + " MHz/µs" : "")));
       r.appendChild(td(d.bayrak.join(" ") || "—", (d.sahte || d.parca) ? "uyar" : ""));
       if (d.sahte) sahteSay++; if (d.parca) parcaSay++;
-      tb.appendChild(r);
+      if (i < TABLO_MAX) tb.appendChild(r);
     });
+    if (pdwler.length > TABLO_MAX) { var rk = WK.el("tr"); rk.appendChild(WK.el("td", { text: "… + " + (pdwler.length - TABLO_MAX) + " satır daha (sayaçlar tümünü kapsar)", colspan: "11", "class": "uyar" })); tb.appendChild(rk); }
     tbl.appendChild(tb);
     tabloKap.appendChild(tbl);
     // kaçan darbeler

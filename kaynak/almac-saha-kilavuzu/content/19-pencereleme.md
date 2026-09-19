@@ -20,7 +20,7 @@ aldığını, ne verdiğini sayılarla kurar.
 sayar. Çerçevenin sonundaki örnekle başındaki örnek birbirini tutmuyorsa
 tekrarın her ekleminde bir sıçrama vardır; sıçrama, kapının çarpılmasıdır —
 kısa ve geniş bantlı bir ses. Spektrumda bu ses, sinc yan lobları olarak
-görünür. Pencere, kapıyı çarpmadan kapatmaktır: çerçevenin başını ve sonunu
+görünür. Pencere (window), kapıyı çarpmadan kapatmaktır: çerçevenin başını ve sonunu
 yumuşakça sıfıra indiren bir eğriyle örnekleri çarparsın; eklemde artık
 sıçrama yoktur, çünkü iki taraf da sıfırdır.
 
@@ -103,7 +103,7 @@ s: CG | coherent gain: tepe genliğinin dikdörtgene göre oranı | —
 s: W(f) | pencerenin frekans yanıtı (DTFT) | —
 s: L_{sc} | yarım bin kaymış tonun en kötü kaybı | dB
 o: Hann: CG = 0.500 (−6.02 dB, ∑w ile telafi edilir), L_sc = **1.42 dB**; dikdörtgen 3.92 dB; flat-top 0.01 dB.
-o: PA ölçümü ±0.5 dB isteniyorsa ({{bolum:25}}) Hann tek başına yetmez: flat-top, sıfır doldurma ya da tepe interpolasyonu ({{bolum:20}}) gerekir.
+o: PA ölçümü ±0.5 dB isteniyorsa ({{bolum:25}}) Hann tek başına yetmez: flat-top, zero-padding ya da tepe interpolasyonu ({{bolum:20}}) gerekir.
 :::
 
 ## Kavram: yan lobun zayıf sinyali maskelemesi

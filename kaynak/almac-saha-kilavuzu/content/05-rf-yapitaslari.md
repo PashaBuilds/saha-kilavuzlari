@@ -85,22 +85,23 @@ istediği diferansiyel biçime çevirir ve seviyeyi tam ölçeğe göre ayarlar;
 kendi doğrusallığı tüm zincirin doğrusallığını sınırlayabilir çünkü sinyal
 burada en büyük hâlindedir.
 
-## Kavram: sıkışma — P1dB
+## Kavram: compression (sıkışma) — P1dB
 
 Her yükselteç küçük sinyalde doğrusaldır: girişi 1 dB artırırsan çıkış 1 dB
 artar. Giriş büyüdükçe bir yerde çıkış artık aynı oranda artamaz; besleme
-gerilimi, transistörün akımı bir yerde biter. Çıkışın ideal doğrudan **1 dB**
-geri kaldığı nokta **P1dB** (1 dB compression point — 1 dB sıkışma noktası)
-olarak tanımlanır. Çıkışa göre (OP1dB) ya da girişe göre (IP1dB) verilir; ikisi
+gerilimi, transistörün akımı bir yerde biter. Bu davranışa **compression**
+(sıkışma) denir. Çıkışın ideal doğrudan **1 dB** geri kaldığı nokta **P1dB**
+(1 dB compression point) olarak tanımlanır; bundan sonra kısaca compression
+noktası ya da P1dB diyeceğiz. Çıkışa göre (OP1dB) ya da girişe göre (IP1dB) verilir; ikisi
 arasındaki fark kazançtır (küçük sinyal kazancı eksi 1 dB). Datasheet hangisini
 veriyor, her zaman bak: LNA'lar genellikle çıkış, mixer'lar genellikle giriş
 P1dB'si yazar.
 
-:::formul id=p1db baslik="1 dB sıkışma noktası"
+:::formul id=p1db baslik="1 dB compression noktası (P1dB)"
 f: P_{out}(P1dB) = IP1dB + G − 1  dB
 f: OP1dB = IP1dB + G − 1
-s: IP1dB | girişe göre 1 dB sıkışma noktası | dBm
-s: OP1dB | çıkışa göre 1 dB sıkışma noktası | dBm
+s: IP1dB | girişe göre 1 dB compression noktası | dBm
+s: OP1dB | çıkışa göre 1 dB compression noktası | dBm
 s: G | küçük sinyal kazancı | dB
 o: Kurgusal LNA: G = {{s:on_uc.kaskad.1.kazanc_db}} dB, OP1dB = +15 dBm → IP1dB = −4 dBm (yaklaşık −5 dBm denir; 1 dB fark çoğu bütçede ihmal edilir). Referans darbe −60 dBm ile LNA girişine gelir: 55 dB pay var.
 o: Zincirin sonunda pay erir: toplam kazanç {{s:on_uc.kazanc_toplam_db}} dB ile −20 dBm'lik güçlü bir emiter ADC girişinde +20 dBm olur; ADC tam ölçeği {{s:adc.tam_olcek_dbm}} dBm. Zayıflatıcı olmadan bu sinyal ADC'yi 16 dB aşar.
@@ -125,20 +126,21 @@ konumlarındadır: tonlar birbirine ne kadar yakınsa ürünler de tonlara o kad
 yakındır, **hiçbir filtre onları ayıramaz**. İki emiter 10 MHz arayla
 gelirse, hayalet darbeler 10 MHz ötede, tam senin bandının içindedir.
 
-{{svg:g-51-cift-ton-imd3.svg|Çift ton testi (hesaplanmış, kurgusal yükselteç). Üstte geniş bakış: iki ton 1.8 GHz civarında, harmonikleri 3.6 ve 5.4 GHz'te — filtreyle atılabilir uzaklıkta. Ortada yakınlaştırma: IMD3 ürünleri 2f₁−f₂ ve 2f₂−f₁ tonların 10 MHz yanında, gürültü tabanının 40 dB üstünde. Altta kesişim grafiği: temel bileşen eğim 1, IMD3 eğim 3; kesikli uzantıları IP3'te kesişir, gerçek eğriler ondan çok önce sıkışır. Sağda çift ton SFDR tanımı.}}
+{{svg:g-51-cift-ton-imd3.svg|Çift ton testi (hesaplanmış, kurgusal yükselteç). Üstte geniş bakış: iki ton 1.8 GHz civarında, harmonikleri 3.6 ve 5.4 GHz'te — filtreyle atılabilir uzaklıkta. Ortada yakınlaştırma: IMD3 ürünleri 2f₁−f₂ ve 2f₂−f₁ tonların 10 MHz yanında, −80 dBm'de (−70 dBc) — bu seviyede henüz gri gürültü tabanının altında; tonlar 10 dB büyüse ürünler 30 dB büyür ve tabanı aşar. Altta intercept grafiği: temel bileşen eğim 1, IMD3 eğim 3; kesikli uzantıları IP3'te kesişir, gerçek eğriler ondan çok önce sıkışır. Sağda çift ton SFDR tanımı.}}
 
 Üçüncü derece ürünün gücü giriş gücünün küpüyle büyür: girişi 1 dB artırırsan
 IMD3 3 dB artar. Log eksende temel bileşen eğim 1, IMD3 eğim 3'lük iki doğru
 olur; doğruları uzatırsan bir noktada kesişirler. O hayalî noktaya **IP3**
-(third-order intercept point — üçüncü derece kesişim noktası) denir; girişe
-göre IIP3, çıkışa göre OIP3. Gerçek bir yükselteç IP3'e asla ulaşmaz (ondan
+(third-order intercept point — üçüncü derece kesişim noktası; bundan sonra
+kısaca intercept noktası) denir; girişe göre IIP3, çıkışa göre OIP3. Gerçek
+bir yükselteç IP3'e asla ulaşmaz (ondan
 çok önce sıkışır), ama IP3 tek bir sayıyla her seviyedeki IMD3'ü verir:
 
 :::formul id=imd3 baslik="IMD3 ürünü ve IP3"
 f: P_{IMD3} = 3 · P_{out} − 2 · OIP3
 f: IMD3_{dBc} = 2 · (P_{out} − OIP3)
 s: P_{out} | ton başına çıkış gücü (iki ton eşit) | dBm
-s: OIP3 | çıkışa göre üçüncü derece kesişim noktası | dBm
+s: OIP3 | çıkışa göre üçüncü derece intercept noktası | dBm
 s: P_{IMD3} | her bir IMD3 ürününün gücü | dBm
 s: IMD3_{dBc} | IMD3'ün tona göre seviyesi | dBc
 o: Kurgusal LNA (OIP3 = +25 dBm), tonlar −10 dBm çıkış → P_IMD3 = −30 − 50 = **−80 dBm**, yani **−70 dBc**. Tonları 10 dB artır (0 dBm): IMD3 = −50 dBm, **−50 dBc** — ton 10 dB, ürün 30 dB büyüdü.
@@ -169,8 +171,8 @@ o: Bu sayı sana şunu söyler: girişte −30 dBm'lik iki emiter aynı anda gel
 
 {{svg:g-52-seviye-plani.svg|Seviye planı (hesaplanmış, referans senaryo kaskadı). Mavi: −60 dBm'lik referans darbe blok blok ilerler, ADC girişinde −20 dBm. Gri: gürültü tabanı (kTB + kümülatif NF + kümülatif kazanç, B = 300 MHz); LNA'dan sonra sinyalle arası sabitlenir, SNR ≈ 26 dB. Altın: −20 dBm'lik güçlü emiter — hiçbir blok sıkışmadan ADC tam ölçeğini 16 dB aşar. Kırmızı: blokların çıkış P1dB'leri (kurgusal) ve ADC tam ölçeği. Her blok altında kazanç, NF ve kümülatif değerler.}}
 
-Seviye planı, tüm bu sayıların tek resmidir ve her almaç tasarımının ilk
-belgesidir. Okuması: gürültü çizgisi LNA'dan sonra sinyale paralel gider
+Seviye planı (level plan), tüm bu sayıların tek resmidir ve her almaç
+tasarımının ilk belgesidir. Okuması: gürültü çizgisi LNA'dan sonra sinyale paralel gider
 (Friis'in görsel hali: ondan sonra gelenler oranı değiştiremez); sinyal
 çizgisi kırmızı P1dB çizgilerine yaklaştıkça IMD3 büyür; ve ADC tam ölçeği
 çoğu tasarımda bloklardan **önce** dolar. Referans zincirde güçlü emiter için
@@ -216,25 +218,26 @@ o: IIP3 ≈ −6.6 dBm, gürültü tabanı {{s:turetilmis_beklenen.gurultu_taban
 o: ADC'nin kendi SFDR'ı (tek ton, dBc/dBFS) başka bir tanımdır ({{bolum:9}}); ikisini karşılaştırmadan önce hangisinin ne olduğunu netleştir.
 :::
 
-## Kavram: LO faz gürültüsü ve karşılıklı karışma
+## Kavram: LO faz gürültüsü ve reciprocal mixing
 
 LO ideal bir çizgi değildir; frekansı çevresinde bir "etek" taşır: **faz
 gürültüsü**, taşıyıcıdan Δf uzaklıkta 1 Hz'lik banttaki güç olarak
 dBc/Hz ile verilir (örneğin 10 kHz'te −100, 1 MHz'te −130 dBc/Hz; sayılar
 sınıfa göre çok değişir). Mixer her giriş sinyalini LO'nun bu eteğiyle
 çarpar; sonuç, her sinyalin IF'te aynı eteği taşımasıdır. Zayıf sinyalde
-etek gürültü tabanının altında kalır, görünmez. Güçlü bir sinyalde (bloker)
-ise etek tabanın üstüne çıkar ve yanındaki zayıf sinyalin üstünü örter: buna
-**karşılıklı karışma** (reciprocal mixing) denir. Bloker senin bandında bile
-değildir; LO'nun eteği onu senin bandına "sürükler".
+etek gürültü tabanının altında kalır, görünmez. Güçlü bir sinyalde (**blocker**
+— bandının yakınındaki güçlü, istenmeyen sinyal) ise etek tabanın üstüne çıkar
+ve yanındaki zayıf sinyalin üstünü örter: buna **reciprocal mixing**
+(karşılıklı karışma) denir. Blocker senin bandında bile değildir; LO'nun eteği
+onu senin bandına "sürükler".
 
-:::formul id=reciprocal-mixing baslik="Karşılıklı karışma gürültüsü (tanım düzeyi)"
+:::formul id=reciprocal-mixing baslik="Reciprocal mixing gürültüsü (tanım düzeyi)"
 f: P_n = P_{bl} + L(Δf) + 10 · log_{10}(B)
-s: P_{bl} | bloker gücü (mixer girişinde) | dBm
-s: L(Δf) | LO faz gürültüsü, blokerden Δf uzaklıkta | dBc/Hz
+s: P_{bl} | blocker gücü (mixer girişinde) | dBm
+s: L(Δf) | LO faz gürültüsü, blocker'dan Δf uzaklıkta | dBc/Hz
 s: B | bakılan bant (çözünürlük hücresi) | Hz
-s: P_n | blokerin sürüklediği gürültü gücü | dBm
-o: Bloker −20 dBm, Δf = 1 MHz'te L = −110 dBc/Hz, B = 1 MHz → P_n = −20 − 110 + 60 = **−70 dBm**. Aynı 1 MHz hücrede termal taban −174 + 60 + 6 = −108 dBm: bloker, 1 MHz ötesindeki tabanı **38 dB** yükseltir. LNA'nın NF'i burada hiçbir şey yapamaz.
+s: P_n | blocker'ın sürüklediği gürültü gücü | dBm
+o: Blocker −20 dBm, Δf = 1 MHz'te L = −110 dBc/Hz, B = 1 MHz → P_n = −20 − 110 + 60 = **−70 dBm**. Aynı 1 MHz hücrede termal taban −174 + 60 + 6 = −108 dBm: blocker, 1 MHz ötesindeki tabanı **38 dB** yükseltir. LNA'nın NF'i burada hiçbir şey yapamaz.
 :::
 
 Sayısal almaçta bu mekanizmanın ikizi ADC saatinin jitter'ıdır ({{bolum:9}}):
@@ -399,7 +402,7 @@ CW ton ver, sonra darbeli ver; PA aynı çıkmıyorsa AGC darbeyi yiyor.
 - IMD3 ürünleri ($2f_1 − f_2$, $2f_2 − f_1$) tonların yanına düşer, filtreyle atılamaz; gücü giriş gücünün küpüyle büyür (eğim 3). IP3 tek sayıyla her seviyedeki IMD3'ü verir; IIP3 ≈ IP1dB + 10 dB.
 - Kaskad IIP3'ü sondaki bloklar belirler (önlerindeki kazanç kadar geri çekilirler); referansta ≈ −6.6 dBm (kurgusal bütçe).
 - Anlık dinamik aralık (aynı anda, ≈ 47 dB) ile toplam dinamik aralık (zayıflatıcıyla, ≈ 77 dB) farklı şeylerdir; çift ton SFDR = ⅔·(IIP3 − MDS) ≈ 51 dB.
-- LO faz gürültüsü, güçlü bir blokerin eteğini zayıf sinyalin üstüne serer (reciprocal mixing); sayısal almaçta ikizi saat jitter'ıdır.
+- LO faz gürültüsü, güçlü bir blocker'ın eteğini zayıf sinyalin üstüne serer (reciprocal mixing); sayısal almaçta ikizi saat jitter'ıdır.
 - Yazılım için: zayıflatıcı kodu ↔ dB dönüşümü, giriş seviyesi = dBFS + FS − kazanç + zayıflatma, P1dB alarmı, 10 dB kuralı ile hayalet darbe testi; AGC darbeden yavaş olmalı.
 :::
 
@@ -410,8 +413,8 @@ S: Zincirin kaskad IIP3'ünü hangi bloklar belirler ve neden LNA'nın IIP3'ü (
 C: Sondaki bloklar, çünkü her bloğun IIP3'ü önündeki kazanç kadar girişe geri çekilir: IF yükseltecin +6 dBm'lik IIP3'ü 7.5 dB kazanç arkasında −1.5, sürücünün +35.5 dBm'i 39.5 dB arkasında −4.0 dBm olur. Doğrusal toplamda en küçük IIP3 (en büyük 1/IIP3) baskındır.
 S: Zayıflatıcıyı 20 dB'ye aldın. Anlık dinamik aralık ve MDS'ye ne olur? Toplam dinamik aralığa?
 C: Anlık dinamik aralık değişmez (≈ 47 dB), yalnızca pencere 20 dB yukarı kayar: MDS −68'den −48 dBm'e kötüleşir, tavan −36'dan −16 dBm'e çıkar. Toplam dinamik aralık zayıflatıcının tüm aralığıyla tanımlıdır, bu adımla değişmez; ama o anda −48 dBm altındaki emiterleri kaçırırsın.
-S: Bir bloker −20 dBm ile geliyor, LO faz gürültüsü 1 MHz'te −110 dBc/Hz. 1 MHz'lik çözünürlük hücresinde blokerin 1 MHz ötesine serdiği gürültü kaç dBm'dir ve bu, LNA'nın NF'ini 1 dB iyileştirmekle düzelir mi?
-C: −20 − 110 + 60 = −70 dBm; termal taban aynı hücrede −108 dBm, yani 38 dB üstünde. LNA NF'i bunu etkilemez; çare daha temiz LO (ya da bloker'ı preselector'da bastırmak).
+S: Bir blocker −20 dBm ile geliyor, LO faz gürültüsü 1 MHz'te −110 dBc/Hz. 1 MHz'lik çözünürlük hücresinde blocker'ın 1 MHz ötesine serdiği gürültü kaç dBm'dir ve bu, LNA'nın NF'ini 1 dB iyileştirmekle düzelir mi?
+C: −20 − 110 + 60 = −70 dBm; termal taban aynı hücrede −108 dBm, yani 38 dB üstünde. LNA NF'i bunu etkilemez; çare daha temiz LO (ya da blocker'ı preselector'da bastırmak).
 :::
 
 :::kopru

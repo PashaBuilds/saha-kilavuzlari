@@ -26,12 +26,19 @@ WK.kaydet("w12", function (w) {
   function spekCiz(svg, sp, fsHz, baslik, ek) {
     WK.temizle(svg);
     var g = WK.grafik(svg, { W: 640, H: 170, xmin: -fsHz / 2e6, xmax: fsHz / 2e6, ymin: -140, ymax: 5, kenar: { sol: 48, sag: 14, ust: 22, alt: 30 } });
-    g.eksenler({ xAdet: 6, yAdet: 4, xAd: "frekans (MHz)", yAd: "dBFS", baslik: baslik });
+    g.eksenler({ xAdet: 6, yAdet: 4, xAd: "frekans (MHz)", yAd: "dBFS", baslik: baslik, xFmt: function (v) { return v.toFixed(0); } });
     var n = sp.length, fx = [], fy = [];
     for (var k = 0; k < n; k++) { fx.push((k - n / 2) * fsHz / n / 1e6); fy.push(sp[k]); }
     g.alan(fx, fy, -140, "w-dolgu-gurultu"); g.cizgi(fx, fy, "w-cizgi-sinyal");
     if (ek) ek(g);
     return g;
+  }
+
+  // dikey çizgi + etiket; etiket panelin sağ yarısındaysa sola yazılır (kenardan taşmasın)
+  function dikeyEtiket(g, x, kls, etiket) {
+    g.dikey(x, kls);
+    var sag = x > (g.xmin + g.xmax) / 2;
+    g.metin(g.px(x) + (sag ? -3 : 3), g.y1 + 11, etiket, "w-not", sag ? "end" : "start");
   }
 
   function ciz() {
@@ -70,16 +77,20 @@ WK.kaydet("w12", function (w) {
       var fFark = isaret < 0 ? (p.fin - p.fnco) : (p.fnco - p.fin);
       var fTop = isaret < 0 ? -(p.fin + p.fnco) : (p.fin + p.fnco);
       fTop = ((fTop + fs / 2) % fs + fs) % fs - fs / 2;
-      g.dikey(fFark / 1e6, "w-cizgi-yesil", "fark " + (fFark / 1e6).toFixed(0)); g.dikey(fTop / 1e6, "w-cizgi-kirmizi", "toplam (image) " + (fTop / 1e6).toFixed(0));
+      dikeyEtiket(g, fFark / 1e6, "w-cizgi-yesil", "fark " + (fFark / 1e6).toFixed(0)); dikeyEtiket(g, fTop / 1e6, "w-cizgi-kirmizi", "toplam (image) " + (fTop / 1e6).toFixed(0));
       g.bant(-fsOut / 2e6, fsOut / 2e6, "w-dolgu-altin");
     });
     spekCiz(pan[2], sp3, fs, "(3) ±" + (p.bw / 1e6).toFixed(0) + " MHz filtre sonrası — " + TAP + " tap Kaiser", function (g) {
-      var hr = DSP.firYanit(dx.h, 400), hx = [], hy = [];
-      for (var i = 399; i >= 0; i--) { hx.push(-i * fs / 800 / 1e6); hy.push(hr[i]); }
-      for (i = 0; i < 400; i++) { hx.push(i * fs / 800 / 1e6); hy.push(hr[i]); }
+      // filtre yanıtı: stopband dalgalanması gürültüyle karışmasın diye zarf (24 MHz'lik dilimlerde tepe tut)
+      var hrF = DSP.firYanit(dx.h, 1600), BLK = 32, hz = [], hxz = [];
+      for (var i = 0; i < 1600; i += BLK) { var mx = -400; for (var j = i; j < i + BLK && j < 1600; j++) mx = Math.max(mx, hrF[j]); hz.push(mx); hxz.push((i + BLK / 2) * fs / 3200 / 1e6); }
+      var hx = [], hy = [];
+      for (i = hz.length - 1; i >= 0; i--) { hx.push(-hxz[i]); hy.push(hz[i]); }
+      for (i = 0; i < hz.length; i++) { hx.push(hxz[i]); hy.push(hz[i]); }
       g.cizgi(hx, hy, "w-cizgi-altin");
       g.bant(-fsOut / 2e6, fsOut / 2e6, "w-dolgu-altin");
       g.metin(g.px(fsOut / 2e6) + 4, g.y1 + 12, "yeni Nyquist ±" + (fsOut / 2e6).toFixed(0), "w-not");
+      g.metin(g.x1 - 4, g.y0 - 6, "altın: filtre yanıtı (stopband zarfı)", "w-not", "end");
     });
     spekCiz(pan[3], sp4, fsOut, "(4) ↓" + M + " sonrası — " + (fsOut / 1e6).toFixed(0) + " MSPS, ±" + (fsOut / 2e6).toFixed(0) + " MHz", function (g) {
       g.nokta(fOut / 1e6, sp4[pk], 4, "w-nokta"); g.metin(g.px(fOut / 1e6) + 6, g.py(sp4[pk]) - 6, "tepe " + (fOut / 1e6).toFixed(1) + " MHz", "w-not");

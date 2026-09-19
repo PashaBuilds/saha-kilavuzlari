@@ -316,7 +316,8 @@
       for (k = 0; k < N; k++) { rr += w[k] * Math.cos(wf * k); ii -= w[k] * Math.sin(wf * k); }
       var mag = DSP.db20(Math.sqrt(rr * rr + ii * ii) / s1);
       if (!b3 && mag < -3) b3 = 2 * m / L;
-      if (!buldukDip) { if (m > 0 && mag > onceki) { buldukDip = true; ilkDip = m; } }
+      // yan lob araması ana lobun −6 dB altına indikten sonra başlar (flat-top ana lob dalgası yan lob sayılmasın)
+      if (!buldukDip) { if (m > 0 && mag > onceki && onceki < -6) { buldukDip = true; ilkDip = m; } }
       if (buldukDip && mag > maks) maks = mag;
       onceki = mag;
       if (m > 12 * L && buldukDip) break;
@@ -622,6 +623,28 @@
   DSP.crlbFrekans = function (snrDb, N, fs) { var snr = DSP.lin10(snrDb); return Math.sqrt(12 / (TAU * TAU * snr * N * (N * N - 1))) * fs; };
   // TOA hatası (rms) ≈ t_rise / √(2·SNR)
   DSP.toaHatasi = function (riseS, snrDb) { return riseS / Math.sqrt(2 * DSP.lin10(snrDb)); };
+
+  /* ------------------------------------------------------- ek yardımcılar (QA turu) */
+  // I/Q kazanç (dB) ve faz (derece) dengesizliğinden image seviyesi (dBc): IRR = |1 − g·e^{jφ}|² / |1 + g·e^{jφ}|²
+  DSP.iqImageDbc = function (kazancDb, fazDeg) {
+    var g = DSP.lin20(kazancDb), f = fazDeg * PI / 180;
+    var pay = 1 + g * g - 2 * g * Math.cos(f), payda = 1 + g * g + 2 * g * Math.cos(f);
+    return DSP.db10(pay / payda);
+  };
+  // Bir [fa, fb] bandının 1. Nyquist bölgesine katlanmış [min, max] aralığı (bölge sınırı geçiyorsa 0..fs/2'ye genişler)
+  DSP.bantKatla = function (fa, fb, fs) {
+    var a = DSP.katla(fa, fs), b = DSP.katla(fb, fs);
+    if (a.bolge !== b.bolge) return { min: 0, max: fs / 2, bolunmus: true };
+    return { min: Math.min(a.alias, b.alias), max: Math.max(a.alias, b.alias), evrik: a.evrik, bolunmus: false };
+  };
+  // Jacobsen kesirli tepe kestirimi: üç kompleks bin (k−1, k, k+1) → δ ∈ (−0.5, 0.5)
+  DSP.jacobsen = function (rm, im_, r0, i0, rp, ip) {
+    var nr = rm - rp, ni = im_ - ip, dr = 2 * r0 - rm - rp, di = 2 * i0 - im_ - ip;
+    var d = dr * dr + di * di;
+    return d === 0 ? 0 : -(nr * dr + ni * di) / d;
+  };
+  // OS-CFAR: k'ıncı sıra istatistiğinin beklenen değeri (birim ortalama gürültüde) = Σ_{i<k} 1/(N−i)
+  DSP.osOrtalamaKat = function (N, k) { var s = 0; for (var i = 0; i < k; i++) s += 1 / (N - i); return s; };
 
   /* ---------------------------------------------------------------- yardımcılar */
   DSP.linspace = function (a, b, n) { var o = new Float64Array(n); for (var k = 0; k < n; k++) o[k] = a + (b - a) * k / (n - 1); return o; };

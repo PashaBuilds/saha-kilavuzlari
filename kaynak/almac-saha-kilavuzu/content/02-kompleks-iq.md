@@ -79,10 +79,10 @@ I/Q örneği elimizdeyken fazörün üç özelliği doğrudan hesaplanır:
 f: |x| = sqrt{I^2 + Q^2}      φ = atan2(Q, I)      f_{anlık} = frac{1}{2π} · frac{dφ}{dt} ≈ frac{Δφ}{2π} · f_s
 s: |x| | anlık genlik (zarf) | lineer, tam ölçek = 1
 s: φ | anlık faz, atan2 dört bölgeyi ayırt eder (−π … +π) | rad
-s: Δφ | ardışık iki örnek arasındaki faz farkı (sarma düzeltilmiş) | rad
+s: Δφ | ardışık iki örnek arasındaki faz farkı (±180° wrap'i — sarması — düzeltilmiş) | rad
 s: f_s | örnekleme hızı (kompleks) | Hz
 o: Referans darbe {{s:sinyal.pw_us}} µs = {{s:ddc.darbe_ornek_sayisi}} örnek boyunca |x| sabittir (zarf, {{bolum:22}}); faz her örnekte Δφ kadar ilerler. Δφ = 24° → f = 24/360 · 300 MHz = **20 MHz**.
-o: Δφ = 180° sınırdır: fs/2 = ±{{s:ddc.cikis_bant_mhz}} MHz. Daha hızlı dönen fazörün yönü ayırt edilemez; Δφ sarar (aliasing'in kompleks hali, {{bolum:8}}).
+o: Δφ = 180° sınırdır: fs/2 = ±{{s:ddc.cikis_bant_mhz}} MHz. Daha hızlı dönen fazörün yönü ayırt edilemez; Δφ wrap eder, yani ±180°'de sarar (aliasing'in kompleks hali, {{bolum:8}}).
 :::
 
 Bu üç formül, kılavuzun ikinci yarısının iskeletidir: zarf ($I²+Q²$)
@@ -138,7 +138,7 @@ o: g = 0.1 dB, φ_e = 1° → −39.6 dBc. Analog I/Q'da kalibrasyonsuz 25–35 
 Şeklin sağ paneli ikinci ve daha kaba hatayı gösterir: I ile Q **yer
 değiştirirse** fazör ters yönde döner ve *bütün spektrum aynalanır*; +5
 MHz'deki sinyal −5 MHz'de görünür. Matematiği tek satırdır: $Q + jI = j·(I − jQ) = j·x^*$ —
-eşlenik alma frekansın işaretini çevirir, $j$ çarpanı yalnızca 90° sabit faz
+kompleks eşlenik (conjugate) alma frekansın işaretini çevirir, $j$ çarpanı yalnızca 90° sabit faz
 ekler. Aynı etkiyi Q'nun işaretini değiştirmek de yapar. Sahada bu, NCO
 işaret bitinin ({{bolum:14}}) ya da veri yolunda I/Q sırasının yanlış
 olmasıdır; belirtisi "her şey doğru ama frekanslar eksi" hissidir.
@@ -176,7 +176,7 @@ birlikte büyür; birinin taşması diğerini de bozar ({{bolum:12}}).
 ::yazilim::
 Yazılımcı için I/Q bir bellek düzenidir: tipik olarak 32 bitlik sözcükte
 iki 16 bitlik işaretli tam sayı. Hangi yarının I olduğu, bayt sırası
-(little/big endian), işaretin ikinin tümleyeni olup olmadığı ve I/Q'nun
+(little/big endian), işaretin ikinin tümleyeni (two's complement) olup olmadığı ve I/Q'nun
 mu yoksa Q/I'nın mı geldiği register haritasında yazar; yazmıyorsa
 bilinen bir tonla test edilir. DMA tamponunu `int16_t` çiftleri olarak
 okuyup $I² + Q²$ ile zarf, `atan2f` ile faz hesaplamak PS tarafında
@@ -221,7 +221,7 @@ static float iq_anlik_frekans(iq16_t a /* x[n-1] */, iq16_t b /* x[n] */, float 
 İki incelik: `(int16_t)(sozcuk >> 16)` işaretli yorumu doğru yapar ama
 `(int16_t)sozcuk >> 16` yapmaz (önce işaretli genişler, sonra kayar).
 Anlık frekans için iki ayrı `atan2f` alıp çıkarmak yerine
-$x[n]·x^*[n−1]$ çarpımının açısını almak, ±180° sarma sorununu kendiliğinden
+$x[n]·x^*[n−1]$ çarpımının açısını almak, ±180° wrap (sarma) sorununu kendiliğinden
 çözer; FPGA'daki frekans ölçüm bloğu da aynısını yapar ({{bolum:25}}).
 
 :::tuzak "Q kanalını kapattım, test daha kolay olur"

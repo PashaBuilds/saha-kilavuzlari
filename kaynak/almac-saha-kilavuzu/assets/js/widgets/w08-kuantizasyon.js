@@ -69,8 +69,12 @@ WK.kaydet("w08", function (w) {
     gs.alan(fx, fy, -160, "w-dolgu-sinyal"); gs.cizgi(fx, fy, "w-cizgi-sinyal");
     // teorik gürültü tabanı (bin başına): −SNR_q − 10log(N/2) + ENBW(BH ≈ 2 bin → +3 dB)
     var tabanTeori = -DSP.snrKuantizasyon(N) - DSP.fftIslemKazanci(NFFT) + 3.0 + (p.dither ? 3.0 : 0);
-    gs.yatay(tabanTeori, "w-cizgi-altin", "teorik kuantizasyon tabanı (bin başına) " + tabanTeori.toFixed(0) + " dBFS");
-    if (m.spurBin >= 0) { gs.nokta(fx[m.spurBin], m.spurDbfs, 4, "w-nokta"); gs.metin(gs.px(fx[m.spurBin]) + 6, gs.py(m.spurDbfs) - 6, "en büyük spur " + m.spurDbfs.toFixed(1) + " dBFS", "w-not"); }
+    gs.yatay(tabanTeori, "w-cizgi-altin", "teorik kuantizasyon tabanı (bin başına) " + tabanTeori.toFixed(0) + " dBFS", "sol");
+    if (m.spurBin >= 0) {
+      var sx = gs.px(fx[m.spurBin]), sagda = sx > gs.x0 + 0.6 * (gs.x1 - gs.x0);   // sağ yarıda etiket sola (kırpılmasın)
+      gs.nokta(fx[m.spurBin], m.spurDbfs, 4, "w-nokta");
+      gs.etiket(sx + (sagda ? -6 : 6), gs.py(m.spurDbfs) - 8, "en büyük spur " + m.spurDbfs.toFixed(1) + " dBFS", sagda ? "end" : "start");
+    }
     // ---- sonuç
     var snrOlc = m.snr, sinad = m.sinad, enob = m.enob;
     var fark = snrOlc - teori;

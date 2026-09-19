@@ -52,7 +52,7 @@ yaygındır çünkü tam ölçek "1" olur ve **dBFS** (dB relative to full scale
 ölçeğe göre dB, {{bolum:1}}) doğrudan bu 1'e göre tanımlanır. İşaretli sayılar
 **ikinin tümleyeni** ile gösterilir: en üst bitin ağırlığı −$2^{m−1}$, gerisi
 pozitif. Bu gösterimin güzelliği, toplama ve çıkarmanın işaretsiz tam sayıyla
-aynı devrede yapılması ve taşmanın doğal olarak "sarma" (modulo $2^B$) olmasıdır
+aynı devrede yapılması ve taşmanın doğal olarak wrap-around (modulo $2^B$, "sarma") olmasıdır
 — {{bolum:14}}'te NCO akümülatörünün tam da bunu istediğini görmüştün.
 
 {{svg:g-120-q-format.svg|Q formatı bit haritası. Üstte 16 bitlik Q1.15 kelimesi: işaret biti ağırlığı −1, kesir bitleri 1/2, 1/4 … 1/32768; en küçük adım LSB = $2^{−15}$ ≈ 3.05·10⁻⁵, aralık −1 … +0.999 97. Ortada aynı 16 bitin Q4.12 yorumu: aralık −8 … +8, LSB 1/4096 — bitler aynı, yalnızca noktanın yeri farklı. Altta ADC'nin 14 bitlik Q1.13 kelimesi ve 16 bitlik yola nasıl yerleştiği: ya sola hizalı (üst bitler doludur, 2 bit ince kesir boş) ya da sağa hizalı (2 bit headroom). İki seçim de meşrudur; hangisinin kullanıldığı belgede yazmalıdır.}}
@@ -146,7 +146,7 @@ o: 16 bite truncation: ek olarak DC = −0.5 LSB = −1.5·10⁻⁵ → **−96.
 Üst tarafta sığmama olduğunda iki davranış vardır. **Wrap-around**: sayı modulo
 $2^B$ sarar; +0.999 97'ye bir LSB eklersen −1 olur. **Saturation**: sonuç en
 yakın uca yapıştırılır, +1 − LSB'de kalır. Wrap bedavadır (toplayıcının doğal
-davranışı), saturation bir karşılaştırıcı ve çoklayıcı ister. Ama davranış
+davranışı), saturation bir karşılaştırıcı (comparator) ve çoklayıcı (mux) ister. Ama davranış
 farkı dramatiktir: saturation sinyali kırpar ve harmonik üretir — kötü ama
 tanıdık ve sınırlı bir bozulma. Wrap ise dalga şeklinin tepesini **tam ölçek
 genlikli bir sıçramaya** çevirir; spektrumda geniş bantlı bir patlama olur,
@@ -157,7 +157,7 @@ tespit eşiği her yerde aşılır, ölçülen PW ve frekans anlamsızlaşır.
 Kural açık: **veri yolunda saturation, faz akümülatöründe wrap.** Faz için
 sarma çalışma ilkesidir ({{bolum:14}}); genlik için felakettir. Kazanç
 kontrolü, eşik toplama, CFAR ortalaması, FFT kelebeği — hepsi doyurmalı
-toplayıcı ister. FPGA araçlarında bu bir sentez özniteliği ya da IP seçeneğidir
+toplayıcı (saturating adder) ister. FPGA araçlarında bu bir sentez özniteliği ya da IP seçeneğidir
 ("saturate on overflow"); elle yazılan RTL'de ise unutulması en kolay iki
 satırdır. Bir de "**sticky overflow bayrağı**" ekle: doyurma gerçekleştiğinde
 set olan ve PS okuyana kadar kalan bir bit. Sahada "spektrum çöp oldu"nun ilk
@@ -194,7 +194,7 @@ kesme sonrası yeniden ölçek. Referans senaryo için kısaltılmış hali:
 | Halfband (23 tap) | 16 bit | ∑|h| ≈ 1.4 | 35 bit | 16 bit Q1.15, round, sat | çıkış: DDC pasaportu |
 
 Tablonun anlattığı: kademeler arası kazanç 1'e yakın tutulur, büyümeler
-kaydırma ile geri alınır ve her kesmede yuvarlama + doyurma seçilir. CIC'in
+kaydırma ile geri alınır ve her kesmede rounding + saturation seçilir. CIC'in
 kazancının tam ikinin kuvveti olması (R ve N'nin böyle seçilmesi) tesadüf
 değildir: bölme yerine kaydırma yeter.
 
@@ -282,7 +282,7 @@ gürültüsüdür. RF'te 1 dB compression noktası neyse, sayısalda tam ölçek
 ::fpga::
 Sayısal tasarımcı için üç somut karar: (1) her hattın Q formatı ve genişliği
 (16 bit veri, 18 bit katsayı, DSP48'in 27 × 18 sınırına göre); (2) her kesme
-noktasında yuvarlama + doyurma (RTL'de `$signed` aritmetik, `+ (1 << (k−1))`
+noktasında rounding + saturation (RTL'de `$signed` aritmetik, `+ (1 << (k−1))`
 ile yuvarlama, üst bitlerin XOR'u ile taşma tespiti); (3) SSR faktörü ve
 pipeline derinliği. Kaynak kestirimi: SSR-8, 63 tap simetrik FIR ≈ 256 DSP;
 CIC çarpıcısız (yalnızca toplayıcı, LUT/FF); NCO 1–8 BRAM. Timing kapanmıyorsa
@@ -291,8 +291,8 @@ CIC çarpıcısız (yalnızca toplayıcı, LUT/FF); NCO 1–8 BRAM. Timing kapan
 Yazılımcı sabit noktayı **register'larda** görür: eşik register'ı Q1.15 mi,
 Q8.8 mi; katsayı register'ı 18 bit Q2.16 mı; kazanç register'ı 4.12 mi?
 Belgede "16 bit" yazması yetmez; ikili noktanın yeri olmadan sayı anlamsızdır.
-Dönüşüm hep aynı kalıptır: `reg = round(deger * 2^n)`, doyurma ile. Geri
-okurken işaret genişletmeyi (`int16_t` cast) unutma. Taşma bayraklarını
+Dönüşüm hep aynı kalıptır: `reg = round(deger * 2^n)`, saturation ile. Geri
+okurken işaret uzatmayı (sign extension, `int16_t` cast) unutma. Taşma bayraklarını
 (`OVF` sticky bitleri) telemetriye al: spektrumun bozulduğu ilk anda kim
 taştı sorusunun cevabı oradadır.
 :::
@@ -318,10 +318,10 @@ static int32_t q_encode(double deger, int n, int bits, int *doydu)
     return (int32_t)r;
 }
 
-/* Register'dan okunan Qm.n kelimeyi geri çevir (işaret genişletme dahil). */
+/* Register'dan okunan Qm.n kelimeyi geri çevir (işaret uzatma dahil). */
 static double q_decode(uint32_t ham, int n, int bits)
 {
-    int32_t v = (int32_t)(ham << (32 - bits)) >> (32 - bits);  /* işaret genişlet */
+    int32_t v = (int32_t)(ham << (32 - bits)) >> (32 - bits);  /* işaret uzat (sign extension) */
     return (double)v * ldexp(1.0, -n);
 }
 
@@ -347,7 +347,7 @@ spektrum tüm bantta yükselir, CFAR yüzlerce yanlış alarm üretir ve zayıf
 sinyal zaten görünmez olur. Belirti: sorun yalnızca güçlü sinyal varken
 çıkar ve kazancı geri alınca kaybolur. Kontrol: overflow sticky bayrakları;
 yoksa snapshot alıp ({{bolum:13}}) tam ölçeğe yakın örneklerin işaret
-değiştirip değiştirmediğine bak. Çözüm: doyurma + headroom; kazanç
+değiştirip değiştirmediğine bak. Çözüm: saturation + headroom; kazanç
 gerçekten gerekiyorsa decimation sonrasında, bit kazandıktan sonra uygula.
 :::
 

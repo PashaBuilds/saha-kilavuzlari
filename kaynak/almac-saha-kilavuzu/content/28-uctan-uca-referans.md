@@ -92,7 +92,7 @@ o: Hassasiyet sınırı: SNR = 13.2 dB (Pd 0.9, Pfa 10⁻⁶) → P_giriş = **�
 | Halfband (↓2) | 18 | 15 tap simetrik | 36 + 4 | **16** | DDC çıkışı: I/Q 16+16 |
 | Güç I²+Q² | 16 × 16 × 2 | kare-topla | 33 | 20 (kayan nokta değil, kaydırmalı) | dB eşik için log-zarf 12 bit |
 | CFAR toplamı | 20 × 16 hücre | topla | 24 | 24 | bölmesiz karşılaştırma x·N > α·Σ |
-| FFT (1024, Hann) | 16+16 | 10 kademe, ölçek takvimi 1 bit/kademe (ilk 5) | 21 | 18 büyüklük | scaling: 2⁻⁵ |
+| FFT (1024, Hann) | 16+16 | 10 kademe, ölçek takvimi (scaling schedule) 1 bit/kademe (ilk 5) | 21 | 18 büyüklük | scaling: 2⁻⁵ |
 
 Bütçenin kritik noktası CIC çıkışıdır: 26 bitten 18'e inerken hangi 18'in
 alındığı, zayıf sinyalde gürültü tabanını, güçlü sinyalde doyumu belirler
@@ -100,7 +100,7 @@ alındığı, zayıf sinyalde gürültü tabanını, güçlü sinyalde doyumu be
 
 ### Latency bütçesi
 
-{{svg:g-282-latency-zaman-cizgisi.svg|Latency zaman çizgisi: darbe antene çarptıktan sonra her bloğun çıkış verdiği an. Zaman kolu darbe bitiminden ≈ 50 ns sonra hazırdır; frekans kolu FFT çerçevesini ≈ 4 µs'de tamamlar; PDW birleştirme iki kolu hizalamak için zaman kolunu bekletir. PS'in görmesi kesme politikasına bağlıdır.}}
+{{svg:g-282-latency-zaman-cizgisi.svg|Latency zaman çizgisi: darbe antene çarptıktan sonra her bloğun çıkış verdiği an. Zaman kolu darbe bitiminden ≈ 0.45 µs sonra (ADC + JESD ve DDC gecikmeleri dahil, t ≈ 1.45 µs) hazırdır; frekans kolu FFT çerçevesini ≈ 4 µs'de tamamlar; PDW birleştirme iki kolu hizalamak için zaman kolunu bekletir. PS'in görmesi kesme politikasına bağlıdır.}}
 
 | Blok | Gecikme (örnek @ kendi fs) | Süre |
 |---|---|---|
@@ -112,7 +112,7 @@ alındığı, zayıf sinyalde gürültü tabanını, güçlü sinyalde doyumu be
 | Darbe FSM + ölçüm (darbe bitince) | PW + 4 | 1.0 µs + 13 ns |
 | FFT 1024 streaming | 1024 + ≈ 40 | 3.5 µs |
 | **PDW birleştirme hizalama** | frekans kolu − zaman kolu ≈ 2.5 µs | zaman kolu 2.5 µs geciktirilir |
-| FIFO → DMA → PS kesme | tampon dolumu (yarım: 64 PDW) | 64 ms @ 1 kHz PRF, ya da zaman aşımı |
+| FIFO → DMA → PS kesme | tampon dolumu (yarım: {{s:pdw.fifo_yarim_esik}} PDW) | 512 ms @ 1 kHz PRF, ya da zaman aşımı |
 
 Toplam "darbe bitti → PDW yazıldı" gecikmesi ≈ 4 µs; PS'te görünmesi
 ise **kesme politikasına** bağlıdır (bkz. {{bolum:26}}): tek darbede kesme
@@ -129,11 +129,11 @@ istiyorsan FIFO eşiğini 1 yap ve kesme yükünü kabul et.
 | Zarf + video + CFAR | 8 | 2 | 5 | OS-CFAR sıralama ağı ek ~4 bin LUT |
 | FFT 1024 streaming | 24–48 | 12–20 | 8 | IP çekirdeği |
 | Darbe FSM + ölçüm + PDW paketleyici | 6 | 4 | 6 | anlık frekans için CORDIC |
-| FIFO + DMA + AXI | 0 | 8 | 4 | 4096 PDW derinlik |
+| FIFO + DMA + AXI | 0 | 4 | 4 | {{s:pdw.fifo_derinlik}} PDW derinlik (16 KB) |
 | Snapshot tamponları (4 × 8 k örnek) | 0 | 32 | 1 | teşhis için |
 | **Toplam** | **≈ 100** | **≈ 70** | **≈ 40 bin** | orta boy bir UltraScale+ parçasının küçük bir kesri |
 
-Bu sayılar kurgusal ve sipariş-büyüklüğü düzeyindedir; gerçek tasarımda
+Bu sayılar kurgusal ve mertebe (order-of-magnitude) düzeyindedir; gerçek tasarımda
 sentez raporu konuşur ({{bolum:13}}). Öğretici sonuç: **sayısal almacın
 darboğazı hesap gücü değil, veri taşıma ve saat alanı disiplinidir.**
 
@@ -177,10 +177,10 @@ Sorular sırasıyla; her cevap bir önceki cevaba yaslanır.
 :::widget id=w20 ad="Uçtan uca zincir oyun alanı"
 - **Referans senaryo**: pasaport tablosunda çıkış SNR'ının ≈ 23 dB, Pd'nin ≈ %100 ve PDW'deki geri hesaplanan RF'in 9.4 GHz olduğunu doğrula. Giriş seviyesini −70 dBm'e indir: çıkış SNR 13 dB'ye, Pd %90'a düşsün; −75'te Pd çöksün, PDW satırı çoğu zaman "tespit yok"a dönsün.
 - **Kısa darbe + uzun FFT** preset'i: darbe 0.2 µs, FFT 2048 → zaman kolunda darbe hâlâ tespit edilirken frekans kolunda "pencere kaybı −15 dB" belirsin. FFT N'i 256'ya indir: kayıp azalsın ama bin 1.2 MHz'e büyüsün.
-- **Kötü saat (800 fs)**: giriş güçlü (−40 dBm) olmasına rağmen jitter SNR'ı 47 dB'ye düşsün; ADC tabanı termal tabanın üstüne çıkıp çıkış SNR'ını sınırlasın. Jitter'ı 100 fs'e çekince farkı gör.
+- **Kötü saat (800 fs)**: giriş güçlü (−40 dBm) olmasına rağmen jitter SNR'ı ≈ 41 dB'ye düşsün; ADC tabanı termal tabanın üstüne çıkıp çıkış SNR'ını sınırlasın. Jitter'ı 100 fs'e çekince farkı gör.
 - **Doyum**: kazancı 58 dB yap → ADC girişi 0 dBFS'i aşsın, "KIRPMA" uyarısı çıksın; gerçek sistemde bu AGC/STC'nin devreye girdiği andır ({{bolum:5}}).
 - NF bütçesini 6'dan 12'ye çıkar: gürültü tabanı ve hassasiyet 6 dB kötüleşsin; sonra CFAR Pfa'sını 10⁻³'e çekerek Pd'yi geri kazanmaya çalış ve FA/s'nin 300'den 300 000'e fırladığını gör — hassasiyet Pfa ile satın alınamaz.
-- **İki emiter + LFM**: spektrumda ikinci darbenin tepesi +30 MHz'de −20 dB'de belirsin; zaman kolunda iki ayrı tespit bandı ve PDW sayısı 2 olsun. NCO ofsetini +5 MHz yap: her iki tepe 5 MHz kaysın — ve "RF geri hesap" satırı yine 9.4 GHz versin, çünkü ofset geri toplanır ({{bolum:25}}).
+- **İki emiter + LFM**: spektrumda ikinci darbenin tepesi +30 MHz'de −20 dB'de belirsin; zaman kolunda iki ayrı tespit bandı ve PDW sayısı 2 olsun. NCO ofsetini +5 MHz yap: her iki tepe 5 MHz kaysın — ve "RF geri hesap" satırı yine 9.405 GHz versin (giriş ofseti 5 MHz'di), çünkü NCO ofseti geri toplanır ({{bolum:25}}).
 :::
 
 :::tuzak Bütçeleri ayrı ayrı doğru, birlikte yanlış

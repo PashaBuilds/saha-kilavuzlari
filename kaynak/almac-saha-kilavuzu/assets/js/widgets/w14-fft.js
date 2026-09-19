@@ -22,7 +22,7 @@ WK.kaydet("w14", function (w) {
   kapat();
   kapat = WK.grup(w, "Gürültü ve işleme");
   WK.kaydirici(w, { ad: "gur", etiket: "bant içi gürültü (toplam)", min: -120, max: -20, adim: 1, deger: gurRef, birim: "dBFS" });
-  WK.secim(w, { ad: "zp", etiket: "sıfır doldurma", secenekler: [[1, "yok (1×)"], [2, "2×"], [4, "4×"], [8, "8×"]], deger: 1 });
+  WK.secim(w, { ad: "zp", etiket: "zero-padding (sıfır doldurma)", secenekler: [[1, "yok (1×)"], [2, "2×"], [4, "4×"], [8, "8×"]], deger: 1 });   // etiket: zero-padding
   WK.secim(w, { ad: "ort", etiket: "ortalama (Welch)", secenekler: [[1, "1 çerçeve"], [4, "4"], [16, "16"], [64, "64"]], deger: 1 });
   kapat();
 
@@ -69,14 +69,18 @@ WK.kaydet("w14", function (w) {
     var enbwDb = DSP.db10(pm.enbw);
     var tabanTeori = p.gur - DSP.db10(N) + enbwDb;        // kompleks giriş: gürültü N bin'e yayılır, ENBW kadar toplanır
     var pk = 0; for (k = 1; k < M; k++) if (db[k] > db[pk]) pk = k;
-    // ölçülen taban: tepe(ler)den uzak bin'lerin güç ortalaması
-    var pn = 0, say = 0, koruma = 8 * Z, k2 = p.ton2 ? Math.round((f2 / fs) * M) + M / 2 : -1e9;
-    for (k = 0; k < M; k++) { if (Math.abs(k - pk) <= koruma || Math.abs(k - k2) <= koruma) continue; pn += acc[k] / K; say++; }
-    var tabanOlc = DSP.db10(pn / Math.max(1, say));
-    // varyans (tek çekim vs ortalama) — dB cinsinden standart sapma
-    var s2 = 0, say2 = 0;
-    for (k = 0; k < M; k++) { if (Math.abs(k - pk) <= koruma || Math.abs(k - k2) <= koruma) continue; var d = db[k] - tabanOlc; s2 += d * d; say2++; }
-    var sapma = Math.sqrt(s2 / Math.max(1, say2));
+    // ölçülen taban: tepe(ler)den uzak bin'ler (±48 bin koruma; pencere yan lobları ortalamayı yukarı çekmesin),
+    // dB medyanı + 1.59 dB (üstel dağılımda ortalama güç / medyan farkı)
+    var koruma = 48 * Z, k2 = p.ton2 ? Math.round((f2 / fs) * M) + M / 2 : -1e9, uzak = [];
+    for (k = 0; k < M; k++) { if (Math.abs(k - pk) <= koruma || Math.abs(k - k2) <= koruma) continue; uzak.push(db[k]); }
+    if (uzak.length < 16) { uzak = []; for (k = 0; k < M; k++) if (Math.abs(k - pk) > 8 * Z) uzak.push(db[k]); }
+    uzak.sort(function (a, b) { return a - b; });
+    var tabanOlc = uzak[uzak.length >> 1] + 1.59;
+    // saçılım (tek çekim vs ortalama): aynı uzak bin'lerin dB standart sapması
+    var s2 = 0, ort2 = 0;
+    for (k = 0; k < uzak.length; k++) ort2 += uzak[k]; ort2 /= Math.max(1, uzak.length);
+    for (k = 0; k < uzak.length; k++) { var d = uzak[k] - ort2; s2 += d * d; }
+    var sapma = Math.sqrt(s2 / Math.max(1, uzak.length));
     var gercekSnr = -p.gur;                                 // 0 dBFS ton / bant içi gürültü
     var tepeTaban = db[pk] - tabanOlc;
     var kayma = f1 / bin - Math.round(f1 / bin);           // bin kesri

@@ -43,7 +43,12 @@ WK.kaydet("w11", function (w) {
     for (k = 0; k < NFFT; k++) { fx.push((k - NFFT / 2) * p.fs / NFFT / 1e6); fy.push(sp[k]); }
     gs.alan(fx, fy, -140, "w-dolgu-sinyal"); gs.cizgi(fx, fy, "w-cizgi-sinyal");
     gs.yatay(teoriSpur, "w-cizgi-kirmizi", "−6.02·P = " + teoriSpur.toFixed(0) + " dBc (faz kırpma kestirimi)");
-    if (m.spurBin >= 0) { gs.nokta(fx[m.spurBin], m.spurDbfs, 4, "w-nokta"); gs.metin(gs.px(fx[m.spurBin]) + 6, gs.py(m.spurDbfs) - 6, "en büyük spur " + m.spurDbfs.toFixed(1) + " dBc", "w-not"); }
+    if (m.spurBin >= 0) {
+      gs.nokta(fx[m.spurBin], m.spurDbfs, 4, "w-nokta");
+      // etiket: kestirim çizgisine yakınsa altına, değilse üstüne; sağ yarıda ise sola yazılır (çizgi etiketiyle çakışmasın)
+      var sagda = gs.px(fx[m.spurBin]) > (gs.x0 + gs.x1) / 2, yakin = Math.abs(m.spurDbfs - teoriSpur) < 8;
+      gs.metin(gs.px(fx[m.spurBin]) + (sagda ? -7 : 7), gs.py(m.spurDbfs) + (yakin ? 14 : -8), "en büyük spur " + m.spurDbfs.toFixed(1) + " dBc", "w-not", sagda ? "end" : "start");
+    }
     // sonuçlar
     var hata = fGercek - p.f;
     var altBitSifir = N > P && (ftw % Math.pow(2, N - P)) === 0;

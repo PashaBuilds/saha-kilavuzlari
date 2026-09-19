@@ -9,6 +9,7 @@
   <rect x="255" y="36" width="390" height="120" fill="var(--accent)" opacity=".08"/>
   <line x1="255" y1="36" x2="255" y2="156" stroke="var(--ink-2)" stroke-dasharray="5 4"/>
   <line x1="645" y1="36" x2="645" y2="156" stroke="var(--ink-2)" stroke-dasharray="5 4"/>
+  <rect x="338" y="40" width="224" height="13" rx="2" fill="var(--dia-panel)" opacity=".85"/>
   <text x="450" y="50" text-anchor="middle" class="s-kucuk">yeni Nyquist bandı ±150 MHz (300 MSPS)</text>
   <!-- gürültü tabanı -->
   <path d="M60 140 H840 V156 H60 Z" class="spk-gurultu" opacity=".5"/>
@@ -26,9 +27,10 @@
   <text x="60" y="170" class="s-mono2">−300</text><text x="255" y="170" text-anchor="middle" class="s-mono2">−150</text><text x="450" y="170" text-anchor="middle" class="s-mono2">0</text><text x="645" y="170" text-anchor="middle" class="s-mono2">+150</text><text x="840" y="170" text-anchor="end" class="s-mono2">+300 MHz</text>
   <!-- katlanma okları -->
   <path d="M671 84 C 600 20, 320 20, 281 96" fill="none" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
-  <text x="470" y="34" text-anchor="middle" class="s-kucuk s-kirmizi">170 − 300 = −130 MHz</text>
+  <rect x="311" y="78" width="118" height="13" rx="2" fill="var(--dia-panel)" opacity=".85"/>
+  <text x="425" y="88" text-anchor="end" class="s-kucuk s-kirmizi">170 − 300 = −130 MHz</text>
   <path d="M775 100 C 700 -10, 420 -10, 385 120" fill="none" stroke="var(--red)" stroke-width="1" stroke-dasharray="3 3" opacity=".8"/>
-  <text x="640" y="14" text-anchor="middle" class="s-kucuk s-kirmizi">250 − 300 = −50 MHz</text>
+  <text x="660" y="14" text-anchor="middle" class="s-kucuk s-kirmizi">250 − 300 = −50 MHz</text>
 </g>
 <!-- ===== Panel 2: filtre ===== -->
 <g>
@@ -45,10 +47,10 @@
   <text x="780" y="316" class="s-kucuk s-altin">−62 dB @210+</text>
   <!-- geçiş bandının simetrisi -->
   <rect x="606" y="216" width="78" height="120" fill="var(--red)" opacity=".14"/>
-  <text x="645" y="330" text-anchor="middle" class="s-kucuk s-kirmizi">geçiş bandı 120–180, 150 etrafında simetrik → kendi üstüne katlanır</text>
+  <text x="645" y="334" text-anchor="middle" class="s-kucuk s-kirmizi">geçiş bandı 120–180, 150 etrafında simetrik → kendi üstüne katlanır</text>
   <!-- ton ve gürültü filtre sonrası -->
   <line x1="671" y1="320" x2="671" y2="300" stroke="var(--red)" stroke-width="2.4" opacity=".8"/>
-  <text x="676" y="290" class="s-kucuk s-kirmizi">170: −15 dB</text>
+  <text x="666" y="296" text-anchor="end" class="s-kucuk s-kirmizi">170: −15 dB</text>
   <text x="60" y="350" class="s-mono2">−300</text><text x="450" y="350" text-anchor="middle" class="s-mono2">0</text><text x="840" y="350" text-anchor="end" class="s-mono2">+300 MHz</text>
 </g>
 <!-- ===== Panel 3: decimation sonrası (300 MSPS) ===== -->

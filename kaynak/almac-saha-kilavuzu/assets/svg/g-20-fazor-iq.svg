@@ -6,26 +6,26 @@
 <text x="278" y="166" class="s-metin">I (reel)</text>
 <text x="178" y="38" class="s-metin">Q (sanal)</text>
 <circle cx="270.0" cy="150.0" r="3.5" fill="var(--accent)" opacity="0.43"/>
-<text x="282.0" y="154.0" text-anchor="middle" class="s-mono2">0</text>
+<text x="284.0" y="154.0" text-anchor="middle" class="s-mono2">0</text>
 <circle cx="256.6" cy="100.0" r="3.5" fill="var(--accent)" opacity="0.51"/>
-<text x="267.0" y="98.0" text-anchor="middle" class="s-mono2">1</text>
+<text x="268.7" y="97.0" text-anchor="middle" class="s-mono2">1</text>
 <circle cx="220.0" cy="63.4" r="3.5" fill="var(--accent)" opacity="0.59"/>
-<text x="226.0" y="57.0" text-anchor="middle" class="s-mono2">2</text>
+<text x="227.0" y="55.3" text-anchor="middle" class="s-mono2">2</text>
 <circle cx="170.0" cy="50.0" r="3.5" fill="var(--accent)" opacity="0.68"/>
-<text x="170.0" y="42.0" text-anchor="middle" class="s-mono2">3</text>
+<text x="170.0" y="40.0" text-anchor="middle" class="s-mono2">3</text>
 <circle cx="120.0" cy="63.4" r="3.5" fill="var(--accent)" opacity="0.76"/>
-<text x="114.0" y="57.0" text-anchor="middle" class="s-mono2">4</text>
+<text x="113.0" y="55.3" text-anchor="middle" class="s-mono2">4</text>
 <circle cx="83.4" cy="100.0" r="3.5" fill="var(--accent)" opacity="0.84"/>
-<text x="73.0" y="98.0" text-anchor="middle" class="s-mono2">5</text>
+<text x="71.3" y="97.0" text-anchor="middle" class="s-mono2">5</text>
 <circle cx="70.0" cy="150.0" r="3.5" fill="var(--accent)" opacity="0.92"/>
-<text x="58.0" y="154.0" text-anchor="middle" class="s-mono2">6</text>
+<text x="56.0" y="147.0" text-anchor="middle" class="s-mono2">6</text>
 <circle cx="83.4" cy="200.0" r="3.5" fill="var(--accent)" opacity="1.00"/>
-<text x="73.0" y="210.0" text-anchor="middle" class="s-mono2">7</text>
+<text x="71.3" y="211.0" text-anchor="middle" class="s-mono2">7</text>
 <line x1="170" y1="150" x2="120.0" y2="63.4" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#ok-sayisal)"/>
 <line x1="120.0" y1="63.4" x2="120.0" y2="150" stroke="var(--green)" stroke-width="1.2" stroke-dasharray="3 3"/>
 <line x1="120.0" y1="63.4" x2="170" y2="63.4" stroke="var(--purple)" stroke-width="1.2" stroke-dasharray="3 3"/>
 <text x="116.0" y="164" text-anchor="end" class="s-kucuk s-yesil">I = cos θ</text>
-<text x="176" y="59.4" class="s-kucuk s-mor">Q = sin θ</text>
+<text x="163.0" y="57.4" text-anchor="middle" class="s-kucuk s-mor">Q = sin θ</text>
 <path d="M198 150 A28 28 0 0 0 156.0 125.8" fill="none" stroke="var(--gold)" stroke-width="1.6"/>
 <text x="200" y="128" class="s-kucuk s-altin">θ = 2πft + φ</text>
 <path d="M231.0 255.7 A122 122 0 0 0 284.6 191.7" fill="none" stroke="var(--gold)" stroke-width="2" marker-end="url(#ok-analog)"/>
@@ -71,5 +71,5 @@
 <line x1="700" y1="350" x2="720.6" y2="325.5" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 2"/>
 <line x1="700" y1="350" x2="720.6" y2="374.5" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 2"/>
 <text x="700" y="404" text-anchor="middle" class="s-mono2">2·cos θ — hep reel eksende</text>
-<text x="400" y="424" class="s-kucuk">Q bileşenleri birbirini götürür; reel sinyalin spektrumunda +f ve −f birlikte görünür.</text>
+<text x="400" y="424" class="s-kucuk">Q bileşenleri birbirini götürür; reel spektrumda +f ve −f birlikte görünür.</text>
 </svg>

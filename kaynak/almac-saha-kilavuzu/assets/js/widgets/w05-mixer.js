@@ -66,23 +66,24 @@ WK.kaydet("w05", function (w) {
     var g1 = WK.grafik(pRF, { W: 640, H: 230, xmin: 0, xmax: xmax, ymin: 0, ymax: 1.15, kenar: { sol: 40, sag: 14, ust: 22, alt: 34 } });
     g1.eksenler({ xAdet: 8, yAdet: 1, xAd: "RF ekseni (MHz)", baslik: "Girişler: RF, LO, image, preselector ve IF'e düşüren spur girişleri", yFmt: function () { return ""; } });
     g1.bant(preA / 1e6, preB / 1e6, "w-dolgu-altin");
-    g1.metin(g1.px(Math.max(preA, 0) / 1e6) + 4, g1.y1 + 12, "preselector", "w-not");
-    function bar(f, h, kls, et, dy) {
+    g1.metin(g1.px(Math.max(preA, 0) / 1e6) + 4, g1.y0 - 6, "preselector", "w-not");
+    // etiketler arka plan kutulu (g1.etiket); anchor "end" → çizginin soluna
+    function bar(f, h, kls, et, dy, anchor) {
       var x = g1.px(f / 1e6);
       g1.ekle("line", { x1: x, y1: g1.py(0), x2: x, y2: g1.py(h), "class": kls, "stroke-width": 3 });
-      if (et) g1.metin(x + 3, g1.py(h) - 3 + (dy || 0), et, "w-not");
+      if (et) g1.etiket(x + (anchor === "end" ? -3 : 3), g1.py(h) - 3 + (dy || 0), et, anchor || "start");
     }
-    // spur girişleri
+    // spur girişleri (bant içindekiler etiketli; etiketler dört kademede basamaklanır ki üst üste binmesin)
     var girisler = W05_ifeDusenGirisler(lo, ifHz, M);
-    var icerde = 0;
-    girisler.forEach(function (s) {
+    var icerde = 0, si = 0;
+    girisler.sort(function (a, b) { return a.f - b.f; }).forEach(function (s) {
       if (s.m === 1 && s.n === 1) return;
       if (s.f / 1e6 > xmax) return;
       var inPre = s.f >= preA && s.f <= preB;
       if (inPre) icerde++;
-      bar(s.f, inPre ? 0.55 : 0.3, "w-cizgi-kirmizi", (inPre ? s.m + "×" + s.n : ""), 0);
+      bar(s.f, inPre ? 0.55 : 0.3, "w-cizgi-kirmizi", (inPre ? s.m + "×" + s.n : ""), inPre ? -(si++ % 4) * 12 : 0);
     });
-    bar(lo, 1.0, "w-cizgi-gri", "LO " + WK.fmt(lo / 1e6, 0));
+    bar(lo, 1.0, "w-cizgi-gri", "LO " + WK.fmt(lo / 1e6, 0), 0, "end");
     bar(rf, 0.95, "w-cizgi-sinyal", "RF " + WK.fmt(rf / 1e6, 0));
     var imgIn = image >= preA && image <= preB;
     bar(image, 0.8, "w-cizgi-kirmizi", "image " + WK.fmt(image / 1e6, 0) + (imgIn ? " (bant içinde!)" : ""), 0);
@@ -94,7 +95,7 @@ WK.kaydet("w05", function (w) {
     g2.eksenler({ xAdet: 8, yAdet: 5, xAd: "mixer çıkışı (MHz)", yAd: "temsili dBc", baslik: "Mixer çıkışı: |m·RF ± n·LO| ürünleri ve IF filtresi bandı (seviyeler temsilî)" });
     var fa = (ifHz - p.ifbw / 2) / 1e6, fb = (ifHz + p.ifbw / 2) / 1e6;
     g2.bant(fa, fb, "w-dolgu-altin");
-    g2.metin(g2.px(Math.max(fa, 0)) + 4, g2.y1 + 12, "IF filtre", "w-not");
+    g2.metin(g2.px(Math.max(fa, 0)) + 4, g2.y0 - 6, "IF filtre", "w-not");
     var filtrede = [];
     urunler.forEach(function (u) {
       if (u.f / 1e6 > ifmax) return;
@@ -105,7 +106,7 @@ WK.kaydet("w05", function (w) {
       g2.ekle("line", { x1: x, y1: g2.py(-80), x2: x, y2: g2.py(Math.max(u.sev, -79)), "class": kls, "stroke-width": istenen ? 4 : 2 });
       if (istenen || inF || (u.m <= 1 && u.n <= 1)) {
         var et = istenen ? "IF " + WK.fmt(u.f / 1e6, 0) : (u.m + "×" + u.n + (u.tur === "toplam" ? "+" : ""));
-        g2.metin(x + 3, g2.py(Math.max(u.sev, -79)) - 3, et, "w-not");
+        g2.etiket(x + 3, g2.py(Math.max(u.sev, -79)) - 3, et, "start");
       }
     });
     // sonuçlar

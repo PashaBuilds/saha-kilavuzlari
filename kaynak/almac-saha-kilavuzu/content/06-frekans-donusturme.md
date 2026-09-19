@@ -78,8 +78,9 @@ LO'yu değiştirerek bandı tararken IF zincirinin hiçbir parçası değişmez.
 Fark ürünü $f_{RF} − f_{LO}$ ise, LO'nun **öbür yanındaki** bir sinyal de
 aynı farkı verir: $f_{LO} − f_{img} = f_{IF}$. Mixer bu iki girişi ayırt
 edemez; ikisi de 1.8 GHz'e düşer, üst üste biner. Bu ikinci frekansa
-**image** (görüntü/ayna) frekansı denir ve mixer'dan *önce* bastırılması
-gerekir; sonrasında iş işten geçmiştir.
+**image** frekansı (image frequency) denir — bu kılavuzda Türkçe karşılık
+aramadan "image" diyeceğiz — ve mixer'dan *önce* bastırılması gerekir;
+sonrasında iş işten geçmiştir.
 
 :::formul id=image baslik="Image frekansı"
 f: f_{img} = 2 · f_{LO} − f_{RF} = f_{RF} ∓ 2 · f_{IF}
@@ -145,7 +146,7 @@ olmaması ({{bolum:5}}) her iki girişin harmoniklerini de çarpar; çıkışta
 **tüm** $|m·f_{RF} ± n·f_{LO}|$ kombinasyonları vardır ($m, n = 0, 1, 2, …$).
 $m = n = 1$ istenen üründür; ötekiler **spur**'dur ve mertebe arttıkça
 zayıflar (tipik olarak her mertebe onlarca dB, mixer'ın "spur tablosu"
-datasheet'te verilir). $m = 0, n = 1$ **LO sızıntısıdır**: LO gücü (genellikle
+datasheet'te verilir). $m = 0, n = 1$ **LO sızıntısıdır** (LO leakage): LO gücü (genellikle
 +10 dBm ve üstü) izolasyon kadar zayıflayarak IF portuna ve — daha kötüsü —
 RF portuna, oradan antene sızar. $m = 1, n = 0$ RF sızıntısıdır.
 

@@ -56,7 +56,11 @@ WK.kaydet("w10", function (w) {
     gs.yatay(-70, "w-cizgi-kirmizi", "tespit eşiği (örnek) −70 dBFS");
     var nq = -(6.02 * B + 1.76) - 10 * Math.log10(N / 2 / 2);   // bin başına taban kestirimi (ENBW≈2 bin)
     gs.yatay(nq, "w-cizgi-gri", "kuram tabanı/bin " + nq.toFixed(0) + " dBFS");
-    if (m.spurBin > 0) { gs.nokta(fx[m.spurBin], m.spurDbfs, 4, "w-nokta"); gs.metin(gs.px(fx[m.spurBin]) + 6, gs.py(m.spurDbfs) - 6, "en büyük istenmeyen " + m.spurDbfs.toFixed(1) + " dBFS", "w-not"); }
+    if (m.spurBin > 0) {
+      gs.nokta(fx[m.spurBin], m.spurDbfs, 4, "w-nokta");
+      var sagda = gs.px(fx[m.spurBin]) > (gs.x0 + gs.x1) / 2;          // sağ yarıda ise etiketi sola yaz (eşik etiketiyle çakışmasın)
+      gs.metin(gs.px(fx[m.spurBin]) + (sagda ? -6 : 6), gs.py(m.spurDbfs) - 8, "en büyük istenmeyen " + m.spurDbfs.toFixed(1) + " dBFS", "w-not", sagda ? "end" : "start");
+    }
     // ---- sonuçlar
     var tasmaSay = y.tasma || 0;
     var snrMetin = (m.snr < teoriSnr - 6 ? "!" : "+") + m.snr.toFixed(1) + " dB";
@@ -76,7 +80,7 @@ WK.kaydet("w10", function (w) {
       { ad: "Referans senaryo", param: { seviye: -6, B: 16, mod: "round", tasma: "sat" } },
       { ad: "Truncation DC'si", param: { seviye: -6, B: 16, mod: "trunc", tasma: "sat" } },
       { ad: "8 bit", param: { seviye: -6, B: 8, mod: "round", tasma: "sat" } },
-      { ad: "Doyurma (+2 dBFS)", param: { seviye: 2, B: 16, mod: "round", tasma: "sat" } },
+      { ad: "Saturation (+2 dBFS)", param: { seviye: 2, B: 16, mod: "round", tasma: "sat" } },
       { ad: "Wrap felaketi", param: { seviye: 2, B: 16, mod: "round", tasma: "wrap" } }
     ]
   };

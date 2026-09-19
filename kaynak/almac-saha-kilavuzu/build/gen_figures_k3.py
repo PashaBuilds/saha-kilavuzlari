@@ -176,7 +176,7 @@ def g_81():
               "image AAF ile bastırılmazsa 1000 MHz")
     out.append(f'<text x="{x0}" y="22" class="s-baslik">Gerçek frekans (AAF girişi)</text>')
     for z in range(1, 6):
-        a, b = (z - 1) * 600, z * 600
+        a, b = (z - 1) * 1200, z * 1200          # fs/2 = 1200 MHz genişliğinde bölgeler
         kls = "blok-aktif" if z == 2 else "blok"
         out.append(f'<rect x="{px(a):.1f}" y="{yT - 70}" width="{px(b) - px(a):.1f}" height="70" class="{kls}" opacity=".55"/>')
         out.append(f'<text x="{(px(a) + px(b)) / 2:.1f}" y="{yT - 58}" text-anchor="middle" class="s-kucuk">{z}. bölge{" (evrik)" if z % 2 == 0 else ""}</text>')
@@ -191,22 +191,22 @@ def g_81():
     bant(1650, 1950, yT - 40, 40, "spk-sinyal", "IF bandı 1650–1950", "s-kucuk s-vurgu")
     bant(3300, 3900, yT - 26, 26, "spk-image", "HD2 3300–3900", "s-kucuk s-kirmizi")
     bant(4950, 5850, yT - 18, 18, "spk-image", "HD3 4950–5850", "s-kucuk s-kirmizi")
-    out.append(f'<path d="M{px(5800):.1f} {yT - 64} V{yT}" class="yol-gurultu"/><text x="{px(5800) + 4:.1f}" y="{yT - 56}" class="s-kucuk s-kirmizi">image 5800 (mixer)</text>')
+    out.append(f'<path d="M{px(5800):.1f} {yT - 68} V{yT}" class="yol-gurultu"/><text x="{px(5800) - 4:.1f}" y="{yT - 74}" text-anchor="end" class="s-kucuk s-kirmizi">image 5800 (mixer)</text>')
     # AAF eğrisi (öğretici: bant içinde 0, dışında 0.25 dB/MHz, 60 dB'de doyar)
     pts = []
     for k in range(401):
         f = k * 15.0
         att = 0 if 1650 <= f <= 1950 else min(60, 0.25 * (abs(f - 1800) - 150))
-        pts.append((px(f), yT - 66 + att))
+        pts.append((px(f), yT - 30 + att * 0.45))
     out.append(poly(pts, "spk-filtre"))
-    out.append(f'<text x="{px(2450):.1f}" y="{yT - 46}" class="s-kucuk s-altin">AAF (bant geçiren) yanıtı</text>')
+    out.append(f'<text x="{px(1500) - 8:.1f}" y="{yT - 12}" text-anchor="end" class="s-kucuk s-altin">AAF yanıtı (bant geçiren)</text>')
     yB = 330
     for f in (1800, 3600, 5400, 5800):
         _, al, _ = katla(f * 1e6, FS)
         kls, mk = ("yol-sayisal", "ok-sayisal") if f == 1800 else ("yol-gurultu", "ok-gurultu")
         out.append(f'<path d="M{px(f):.1f} {yT + 22} C {px(f):.1f} {yT + 120}, {px(al / 1e6):.1f} {yB - 140}, {px(al / 1e6):.1f} {yB - 72}" class="{kls}" marker-end="url(#{mk})"/>')
     pxb = lambda f: x0 + f / 1200 * (x1 - x0)
-    out.append(f'<text x="{x0}" y="{yB - 78}" class="s-baslik">ADC çıkışı — 1. bölgeye katlanmış (0–fs/2)</text>')
+    out.append(f'<text x="{x0}" y="{yB - 94}" class="s-baslik">ADC çıkışı — 1. bölgeye katlanmış (0–fs/2)</text>')
     out.append(f'<rect x="{x0}" y="{yB - 60}" width="{x1 - x0}" height="60" class="blok" opacity=".4"/>')
     out.append(f'<path d="M{x0} {yB} H{x1}" class="eksen"/>')
     for f in range(0, 1201, 150):
@@ -218,9 +218,10 @@ def g_81():
         out.append(f'<text x="{(pxb(a) + pxb(b)) / 2:.1f}" y="{y - 4}" text-anchor="middle" class="{kls2}">{etiket}</text>')
     bantb(150, 1050, yB - 14, 14, "spk-image", "", "s-kucuk s-kirmizi")
     out.append(f'<text x="{pxb(150):.1f}" y="{yB + 32}" class="s-kucuk s-kirmizi">HD3 → 150–1050: 3× genişler, sinyalin üstüne biner</text>')
-    bantb(900, 1200, yB - 30, 16, "spk-image", "HD2 → 900–1200", "s-kucuk s-kirmizi")
-    bantb(450, 750, yB - 58, 44, "spk-sinyal", "sinyal → 450–750, EVRİK (alt kenar 1950 → 450)", "s-kucuk s-vurgu")
-    out.append(f'<path d="M{pxb(1000):.1f} {yB - 60} V{yB}" class="yol-gurultu"/><text x="{pxb(1000) + 3:.1f}" y="{yB - 66}" class="s-kucuk s-kirmizi">image → 1000 (AAF ~−60 dB)</text>')
+    bantb(900, 1200, yB - 30, 16, "spk-image", "", "s-kucuk s-kirmizi")
+    out.append(f'<text x="{pxb(1000) + 6:.1f}" y="{yB - 34}" class="s-kucuk s-kirmizi">HD2 → 900–1200</text>')
+    bantb(450, 750, yB - 58, 44, "spk-sinyal", "sinyal → 450–750, EVRİK (1950 → 450)", "s-kucuk s-vurgu")
+    out.append(f'<path d="M{pxb(1000):.1f} {yB - 60} V{yB}" class="yol-gurultu"/><text x="{pxb(1000) - 4:.1f}" y="{yB - 66}" text-anchor="end" class="s-kucuk s-kirmizi">image → 1000 (AAF −60 dB)</text>')
     out.append(f'<text x="{pxb(600):.1f}" y="{yB + 50}" text-anchor="middle" class="s-metin2">fs/4 = 600 MHz: NCO buraya kurulur; HD3 ve 2-yollu interleaving image tam buraya katlanır</text>')
     out.append("</svg>")
     yaz("g-81-katlanma-haritasi.svg", out)
@@ -229,7 +230,7 @@ def g_81():
 # ------------------------------------------------------------------ g-82
 def g_82():
     """AAF bölge seçimi: bandı bölgenin ortasına koymak vs sınıra yaslamak (katlanan komşu gürültü)."""
-    W, H = 900, 430
+    W, H = 900, 446
     fs = FS / 1e6
     nyq = fs / 2
 
@@ -270,7 +271,6 @@ def g_82():
                     kir.append(f)
         if kir:
             out.append(f'<rect x="{px(min(kir)):.1f}" y="{py(40):.1f}" width="{max(3, px(max(kir)) - px(min(kir))):.1f}" height="{py(80) - py(40):.1f}" class="spk-image"/>')
-            out.append(f'<text x="{px(max(kir)) + 6:.1f}" y="{py(72):.1f}" class="s-kucuk s-kirmizi">3. bölge &lt; 40 dB bastırılmış</text>')
         out.append(f'<path d="M{x0} {yT} H{x1}" class="eksen"/>')
         for f in range(0, 3601, 600):
             out.append(f'<path d="M{px(f):.1f} {yT} v4" class="eksen"/><text x="{px(f):.1f}" y="{yT + 15}" text-anchor="middle" class="s-kucuk">{f}</text>')
@@ -296,7 +296,8 @@ def g_82():
         out.append(f'<path d="M{ox0} {yT} H{ox1}" class="eksen"/>')
         for f in (0, 300, 600, 900, 1200):
             out.append(f'<path d="M{pxb(f):.1f} {yT} v4" class="eksen"/><text x="{pxb(f):.1f}" y="{yT + 15}" text-anchor="middle" class="s-kucuk">{f}</text>')
-    out.append(f'<text x="60" y="{H - 8}" class="s-kucuk">Kural: geçirme bandını bölgenin ortasına koy; geçiş bandı bölge sınırını aşmasın. Sınıra yaslanan bant, komşu bölgenin gürültüsünü ve spur\'larını kendi üstüne katlar; sayısal filtre bunu geri alamaz.</text>')
+    out.append(f'<text x="60" y="{H - 24}" class="s-kucuk">Kural: geçirme bandını bölgenin ortasına koy; geçiş bandı bölge sınırını aşmasın (kırmızı: 3. bölgeden 40 dB\'den az bastırılarak katlanan gürültü).</text>')
+    out.append(f'<text x="60" y="{H - 8}" class="s-kucuk">Sınıra yaslanan bant, komşu bölgenin gürültüsünü ve spur\'larını kendi üstüne katlar; sayısal filtre bunu geri alamaz.</text>')
     out.append("</svg>")
     yaz("g-82-aaf-bolge-secimi.svg", out)
 
@@ -413,6 +414,13 @@ def g_91():
     G = dict(x0=62, x1=880, y0=330, y1=40)
     px = lambda fm: G["x0"] + fm / 1200 * (G["x1"] - G["x0"])
     py = lambda db: G["y0"] - (db + 130) / 140 * (G["y0"] - G["y1"])
+
+    def et_kutu(x, y, txt, kls, anchor="start"):
+        """Gürültü izinin üstünde okunabilsin diye arkası panel renkli etiket."""
+        w = len(txt) * 5.9 + 6
+        rx = x - 3 if anchor == "start" else (x - w + 3 if anchor == "end" else x - w / 2)
+        return (f'<rect x="{rx:.1f}" y="{y - 11:.1f}" width="{w:.1f}" height="14" rx="3" fill="var(--dia-panel)" opacity=".85"/>'
+                f'<text x="{x:.1f}" y="{y:.1f}" text-anchor="{anchor}" class="{kls}">{txt}</text>')
     out = bas("g91", W, H,
               f"Açıklamalı ADC FFT grafiği: {BIT} bit, fs = {int(fs / 1e6)} MSPS, N = {N} nokta, Blackman-Harris pencere; temel ton "
               f"{f1 / 1e6:.0f} MHz −1 dBFS, HD3 {katla(3 * f1, fs)[1] / 1e6:.0f} MHz en kötü spur, HD2 {katla(2 * f1, fs)[1] / 1e6:.0f} MHz, "
@@ -440,8 +448,14 @@ def g_91():
         v = max(seg)
         bb = b - 3 + seg.index(v)
         out.append(f'<path d="M{px(f[bb]):.1f} {py(-130):.1f} V{py(v):.1f}" style="stroke:var(--red);stroke-width:2"/>')
-        out.append(f'<text x="{px(f[bb]) + 5:.1f}" y="{py(v) - (20 if ad.startswith("HD3") else 6):.1f}" class="s-kucuk s-kirmizi">{ad} {v:.0f} dBFS</text>')
-    out.append(f'<text x="{px(1130):.1f}" y="{py(-84) - 8:.1f}" text-anchor="end" class="s-kucuk s-kirmizi">offset spur → fs/2</text>')
+        if ad.startswith("HD3"):
+            out.append(f'<text x="{px(f[bb]) + 5:.1f}" y="{py(v) - 20:.1f}" class="s-kucuk s-kirmizi">{ad} {v:.0f} dBFS</text>')
+        elif ad.startswith("IL"):
+            out.append(et_kutu(px(f[bb]) - 5, py(v) + 14, "IL image", "s-kucuk s-kirmizi", "end"))
+            out.append(et_kutu(px(f[bb]) - 5, py(v) + 27, f"fs/2 − f_in {v:.0f} dBFS", "s-kucuk s-kirmizi", "end"))
+        else:
+            out.append(et_kutu(px(f[bb]) - 5, py(v) + 34, f"{ad} {v:.0f} dBFS", "s-kucuk s-kirmizi", "end"))
+    out.append(et_kutu(px(1130), py(-84) - 8, "offset spur → fs/2", "s-kucuk s-kirmizi", "end"))
     xk = px(f[pk]) - 30
     out.append(f'<path d="M{xk:.1f} {py(sp[pk]):.1f} V{py(en_kotu):.1f}" class="yol-kontrol" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>')
     out.append(f'<text x="{xk - 6:.1f}" y="{(py(sp[pk]) + py(en_kotu)) / 2:.1f}" text-anchor="end" class="s-metin2 s-yesil">SFDR ≈ {sfdr:.0f} dBc</text>')
@@ -450,13 +464,13 @@ def g_91():
     out.append(f'<path d="M{G["x0"]} {py(snr_line):.1f} H{G["x1"]}" class="spk-filtre"/>')
     out.append(f'<text x="{G["x0"] + 8}" y="{py(snr_line) - 5:.1f}" class="s-kucuk s-altin">toplam gürültü gücü (tüm bant, tek sayı): {snr_line:.0f} dBFS → SNR = {snr:.0f} dB</text>')
     out.append(f'<path d="M{G["x0"]} {py(taban):.1f} H{G["x1"]}" class="spk-filtre"/>')
-    out.append(f'<text x="{G["x0"] + 8}" y="{py(taban) + 13:.1f}" class="s-kucuk s-altin">FFT gürültü tabanı (bin başına) ≈ {taban:.0f} dBFS · NSD ≈ {nsd:.0f} dBFS/Hz</text>')
-    xa = px(300)
+    out.append(et_kutu(G["x0"] + 8, py(taban) + 13, f"FFT gürültü tabanı (bin başına) ≈ {taban:.0f} dBFS · NSD ≈ {nsd:.0f} dBFS/Hz", "s-kucuk s-altin"))
+    xa = px(200)
     out.append(f'<path d="M{xa:.1f} {py(snr_line):.1f} V{py(taban):.1f}" class="yol-kontrol" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>')
     ym = (py(snr_line) + py(taban)) / 2
-    out.append(f'<text x="{xa - 6:.1f}" y="{ym - 6:.1f}" text-anchor="end" class="s-kucuk s-yesil">FFT işlem kazancı</text>')
-    out.append(f'<text x="{xa - 6:.1f}" y="{ym + 6:.1f}" text-anchor="end" class="s-kucuk s-yesil">10·log(N/2) = {pg:.1f} dB</text>')
-    out.append(f'<text x="{xa - 6:.1f}" y="{ym + 18:.1f}" text-anchor="end" class="s-kucuk s-yesil">(pencere ENBW ≈ −3 dB)</text>')
+    out.append(et_kutu(xa - 6, ym - 6, "FFT işlem kazancı", "s-kucuk s-yesil", "end"))
+    out.append(et_kutu(xa - 6, ym + 7, f"10·log(N/2) = {pg:.1f} dB", "s-kucuk s-yesil", "end"))
+    out.append(et_kutu(xa - 6, ym + 20, "(pencere ENBW ≈ −3 dB)", "s-kucuk s-yesil", "end"))
     out.append(f'<text x="{G["x0"]}" y="{H - 8}" class="s-kucuk">Değerler kurgusal bir cihazı temsil eder; kalıp gerçek datasheet grafikleriyle aynıdır. Gürültü gri dolgu, sinyal mavi, spur kırmızı, seviye çizgileri altın kesikli.</text>')
     out.append("</svg>")
     yaz("g-91-adc-fft-aciklamali.svg", out)
@@ -504,13 +518,14 @@ def g_92():
         out.append(poly(pts, "yol-sayisal", f'style="opacity:{op}"'))
         fl = 1.3e8
         out.append(f'<text x="{px(fl):.1f}" y="{py(snr_jitter(fl, sig * 1e-15)) - 6:.1f}" class="s-kucuk s-vurgu">σ = {sig} fs</text>')
-    for f, sig, lab, dy in ((IF, JIT, f"referans: IF {IF / 1e9:.1f} GHz, {JIT * 1e15:.0f} fs → {ref:.1f} dB", -14),
-                            (RF, JIT, f"direct RF: {RF / 1e9:.1f} GHz, {JIT * 1e15:.0f} fs → {drf:.1f} dB", 22),
-                            (IF, 5 * JIT, f"kötü saat: {5 * JIT * 1e15:.0f} fs → {kotu:.1f} dB", 22)):
+    for f, sig, lab, dx, dy in ((IF, JIT, f"referans: IF {IF / 1e9:.1f} GHz, {JIT * 1e15:.0f} fs → {ref:.1f} dB", 22, -40),
+                                (RF, JIT, f"direct RF: {RF / 1e9:.1f} GHz, {JIT * 1e15:.0f} fs → {drf:.1f} dB", -8, 22),
+                                (IF, 5 * JIT, f"kötü saat: {5 * JIT * 1e15:.0f} fs → {kotu:.1f} dB", -8, 22)):
         v = snr_jitter(f, sig)
         out.append(f'<circle cx="{px(f):.1f}" cy="{py(v):.1f}" r="5" style="fill:var(--gold);stroke:var(--bg);stroke-width:1.5"/>')
-        sag = f > 5e9 or sig > JIT
-        out.append(f'<text x="{px(f) + (-8 if sag else 8):.1f}" y="{py(v) + dy:.1f}" text-anchor="{"end" if sag else "start"}" class="s-kucuk s-altin">{lab}</text>')
+        if dy < 0:   # etiket doğruların üstündeki boş alanda; noktaya ince kılavuz çizgi
+            out.append(f'<path d="M{px(f) + 4:.1f} {py(v) - 4:.1f} L{px(f) + dx - 2:.1f} {py(v) + dy + 3:.1f}" stroke="var(--ink-3)" stroke-width="1" fill="none"/>')
+        out.append(f'<text x="{px(f) + dx:.1f}" y="{py(v) + dy:.1f}" text-anchor="{"end" if dx < 0 else "start"}" class="s-kucuk s-altin">{lab}</text>')
     sig86 = 10 ** (-(6.02 * BIT + 1.76) / 20) / (TAU * IF)
     out.append(f'<text x="{G["x0"]}" y="{H - 8}" class="s-kucuk">Okuma: f_in 2× → −6 dB; σ 2× → −6 dB. {BIT} bitin {6.02 * BIT + 1.76:.0f} dB\'sini {IF / 1e9:.1f} GHz\'te görmek için σ ≈ {sig86 * 1e15:.1f} fs gerekir — pratikte erişilmez; jitter GHz girişte baskın terimdir.</text>')
     out.append("</svg>")
@@ -520,7 +535,7 @@ def g_92():
 # ------------------------------------------------------------------ g-93
 def g_93():
     """Time-interleaving hata mekanizması: 4 çekirdek, offset/kazanç/zamanlama uyumsuzluğu → spektrum."""
-    W, H = 900, 420
+    W, H = 900, 436
     fs = FS
     M = 4
     N = 2048
@@ -556,11 +571,11 @@ def g_93():
     pts = [(pxT(k / 25), pyT(A * math.cos(TAU * f1 * (k / 25) / fs))) for k in range(25 * (nT - 1) + 1)]
     out.append(poly(pts, "yol-analog"))
     harf = "ABCD"
+    # çizim için abartılı uyumsuzluk (metinle uyumlu: B offset + kazanç, D örnekleme anı kayması); spektrum gerçek küçük değerlerle
+    kaz_c, ofs_c, tau_c = [1.0, 0.84, 1.0, 1.0], [0.0, 0.12, 0.0, 0.0], [0.0, 0.0, 0.0, 150e-12]
     for n in range(nT):
         k = n % M
-        vid = A * math.cos(TAU * f1 * n / fs)
-        v = kaz[k] * 6 * A * math.cos(TAU * f1 * (n / fs + tau[k] * 60)) + ofs[k] * 40  # hata görünür olsun diye abartılı
-        v = vid + (v - 6 * A * math.cos(TAU * f1 * n / fs)) / 6 * 6
+        v = kaz_c[k] * A * math.cos(TAU * f1 * (n / fs + tau_c[k])) + ofs_c[k]
         kls = "spk-sinyal" if k == 0 or k == 2 else "spk-image"
         out.append(f'<path d="M{pxT(n):.1f} {pyT(0):.1f} V{pyT(v):.1f}" class="yol-sayisal" style="stroke-width:1"/>')
         out.append(f'<circle cx="{pxT(n):.1f}" cy="{pyT(v):.1f}" r="4" class="{kls}"/>')
@@ -603,7 +618,8 @@ def g_93():
         dy = 24 if yon < 0 else 0
         out.append(f'<text x="{px(fr / 1e6) + (-4 if yon < 0 else 0):.1f}" y="{py(v) - 7 - dy:.1f}" text-anchor="{anchor}" class="s-kucuk {kls}">{ad}</text>')
         out.append(f'<text x="{px(fr / 1e6) + (-4 if yon < 0 else 0):.1f}" y="{py(v) - 18 - dy:.1f}" text-anchor="{anchor}" class="s-mono2">{v:.0f}</text>')
-    out.append(f'<text x="{G["x0"]}" y="{H - 8}" class="s-kucuk">Referans senaryoda f_in = 600 MHz = fs/4 olduğundan fs/4 offset spur\'u ve fs/2 − f_in image\'ı sinyalin tam üstüne düşer (Bölüm 8, tuzak).</text>')
+    out.append(f'<text x="{G["x0"]}" y="{H - 22}" class="s-kucuk">Referans senaryoda f_in = 600 MHz = fs/4 olduğundan fs/4 offset spur\'u ve</text>')
+    out.append(f'<text x="{G["x0"]}" y="{H - 8}" class="s-kucuk">fs/2 − f_in image\'ı sinyalin tam üstüne düşer (Bölüm 8, tuzak).</text>')
     out.append("</svg>")
     yaz("g-93-interleaving-spur.svg", out)
 
@@ -728,8 +744,8 @@ def g_101():
     out.append(blok(142, yc - 20, 110, 40, "PLL / bölücü", "blok", "çip içi (opsiyonel)"))
     out.append(f'<path d="M252 {yc} H700" class="yol-saat"/>')
     out.append(f'<path d="M254 {yc} V{y + 48}" class="yol-saat" marker-end="url(#ok-saat)"/>')
-    out.append(f'<text x="142" y="{yc + 36}" class="s-kucuk">örnekleme saati → T/H ve çekirdekler</text>')
-    out.append(f'<text x="142" y="{yc + 50}" class="s-kucuk">sayısal saat → DDC, JESD</text>')
+    out.append(f'<text x="164" y="{yc + 36}" class="s-kucuk">örnekleme saati → T/H ve çekirdekler</text>')
+    out.append(f'<text x="164" y="{yc + 50}" class="s-kucuk">sayısal saat → DDC, JESD</text>')
     out.append(f'<path d="M700 {yc} V{y + 92}" class="yol-saat" marker-end="url(#ok-saat)"/>')
     out.append(f'<path d="M860 {yc} V172" class="yol-saat" marker-end="url(#ok-saat)"/>')
     out.append(f'<path d="M700 {yc} H860" class="yol-saat"/>')
@@ -748,7 +764,7 @@ def g_101():
 # ------------------------------------------------------------------ g-102
 def g_102():
     """RFSoC RF-ADC tile yapısı (jenerik)."""
-    W, H = 1000, 400
+    W, H = 1000, 440
     out = bas("g102", W, H,
               "RFSoC RF-ADC tile yapısı, jenerik gösterim: bir tile içinde birden çok RF-ADC bloğu; her blokta ADC çekirdeği, "
               "eşik dedektörü, QMC/ofset düzeltme, NCO'lu kompleks mixer, decimation ve FIFO; çıkış PL'ye AXI-Stream ile sabit "
@@ -756,23 +772,27 @@ def g_102():
               "çok tile senkronizasyonu. PS, RF Data Converter sürücüsü ile AXI-Lite üzerinden yapılandırır. Blok sayısı ve adlar "
               "nesle göre değişir; bkz. PG269.")
     out.append('<text x="20" y="24" class="s-baslik">RFSoC RF-ADC tile — jenerik yapı (aynı silikonda: RF-ADC + PL + PS)</text>')
-    out.append('<rect x="20" y="40" width="700" height="290" rx="10" class="blok" opacity=".35"/>')
+    out.append('<rect x="20" y="40" width="700" height="332" rx="10" class="blok" opacity=".35"/>')
     out.append('<text x="30" y="58" class="s-metin2">ADC tile</text>')
     for i in range(2):
-        y0 = 70 + i * 120
-        out.append(f'<rect x="40" y="{y0}" width="660" height="100" rx="6" class="blok"/>')
+        y0 = 70 + i * 132
+        out.append(f'<rect x="40" y="{y0}" width="660" height="116" rx="6" class="blok"/>')
         out.append(f'<text x="48" y="{y0 + 14}" class="s-kucuk">RF-ADC blok {i}</text>')
-        yc = y0 + 55
-        out.append(f'<text x="14" y="{yc + 4}" class="s-kucuk s-altin">RF{i}</text>')
+        yc = y0 + 58
+        out.append(f'<text x="4" y="{yc + 4}" class="s-kucuk s-altin">RF{i}</text>')
         out.append(ok(40, yc, 58, yc))
-        out.append(sym("adc", 60, yc - 20, "ADC çekirdeği"))
+        out.append(sym("adc", 60, yc - 20))
+        out.append(f'<text x="90" y="{yc - 26}" text-anchor="middle" class="s-kucuk">ADC çekirdeği</text>')
+        # tile saatinden çekirdeğe (sol kenardan, blok içinden geçmeden)
+        out.append(f'<path d="M30 {yc + 30} H90 V{yc + 22}" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>')
         out.append(ok(120, yc, 138, yc, "yol-sayisal", "ok-sayisal"))
         out.append(blok(140, yc - 18, 66, 36, "eşik / QMC", "blok-aktif", "ofset-kazanç"))
         out.append(ok(206, yc, 224, yc, "yol-sayisal", "ok-sayisal"))
-        out.append(sym("mixer-d", 226, yc - 20, "mixer"))
-        out.append(f'<use href="#sym-nco" x="300" y="{yc + 22}" width="50" height="22"/>')
-        out.append(f'<path d="M300 {yc + 33} H262 V{yc + 20}" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
-        out.append(f'<text x="354" y="{yc + 38}" class="s-kucuk">NCO (48 bit FTW)</text>')
+        out.append(sym("mixer-d", 226, yc - 20))
+        out.append(f'<text x="256" y="{yc - 26}" text-anchor="middle" class="s-kucuk">mixer</text>')
+        out.append(f'<use href="#sym-nco" x="231" y="{yc + 36}" width="50" height="22"/>')
+        out.append(f'<path d="M256 {yc + 36} V{yc + 22}" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
+        out.append(f'<text x="287" y="{yc + 51}" class="s-kucuk">NCO (48 bit FTW)</text>')
         out.append(ok(286, yc, 304, yc, "yol-sayisal", "ok-sayisal"))
         out.append(sym("dec", 306, yc - 20, "decimation"))
         out.append(ok(366, yc, 384, yc, "yol-sayisal", "ok-sayisal"))
@@ -781,15 +801,14 @@ def g_102():
         out.append(blok(466, yc - 18, 110, 36, "AXI-Stream", "blok-aktif", "N örnek/saat, 16 bit"))
         out.append(f'<path d="M576 {yc} H760" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
         out.append(f'<text x="600" y="{yc - 6}" class="s-kucuk">tdata[16·N−1:0], tvalid</text>')
-        out.append(f'<text x="600" y="{yc + 14}" class="s-kucuk">reel ya da I/Q (mixer moduna göre)</text>')
+        out.append(f'<text x="600" y="{yc + 14}" class="s-kucuk">reel ya da I/Q (mixer modu)</text>')
     # tile ortak
-    out.append('<rect x="40" y="290" width="660" height="34" rx="6" class="blok"/>')
-    out.append('<text x="48" y="311" class="s-kucuk">tile ortak: </text>')
-    out.append(sym("saat", 110, 293, None, w=40, h=28))
-    out.append('<text x="156" y="311" class="s-kucuk">ADC_CLK girişi → PLL/bölücü → örnekleme saati</text>')
-    out.append('<text x="430" y="311" class="s-kucuk">SYSREF girişi · çok tile senkron (MTS)</text>')
-    out.append('<path d="M110 290 V270" class="yol-saat"/><path d="M110 270 H90 V110" class="yol-saat" marker-end="url(#ok-saat)"/>')
-    out.append('<path d="M90 230 H90" class="yol-saat"/><path d="M90 200 V230" class="yol-saat" marker-end="url(#ok-saat)"/>')
+    out.append('<rect x="40" y="330" width="660" height="34" rx="6" class="blok"/>')
+    out.append('<text x="48" y="351" class="s-kucuk">tile ortak: </text>')
+    out.append(sym("saat", 110, 333, None, w=40, h=28))
+    out.append('<text x="156" y="351" class="s-kucuk">ADC_CLK girişi → PLL/bölücü → örnekleme saati</text>')
+    out.append('<text x="430" y="351" class="s-kucuk">SYSREF girişi · çok tile senkron (MTS)</text>')
+    out.append(f'<path d="M110 330 V322 H30 V{70 + 58 + 30}" class="yol-saat" fill="none"/>')
     # PL / PS
     out.append('<rect x="770" y="40" width="210" height="130" rx="8" class="blok-aktif" opacity=".7"/>')
     out.append('<text x="875" y="66" text-anchor="middle" class="s-metin2 s-vurgu">PL (FPGA kumaşı)</text>')
@@ -797,15 +816,15 @@ def g_102():
     out.append('<text x="875" y="102" text-anchor="middle" class="s-kucuk">FFT · tespit · PDW (Kısım V–VIII)</text>')
     out.append('<text x="875" y="122" text-anchor="middle" class="s-kucuk">saat: AXI-Stream çıkış saati</text>')
     out.append('<text x="875" y="138" text-anchor="middle" class="s-kucuk">(fs / N, ör. 300 MHz için N = 8)</text>')
-    out.append('<rect x="770" y="220" width="210" height="110" rx="8" class="blok-kontrol"/>')
-    out.append('<text x="875" y="246" text-anchor="middle" class="s-metin2 s-yesil">PS (Arm çekirdekleri)</text>')
-    out.append('<text x="875" y="266" text-anchor="middle" class="s-kucuk">RF Data Converter sürücüsü</text>')
-    out.append('<text x="875" y="282" text-anchor="middle" class="s-kucuk">NCO frekansı · decimation · eşik</text>')
-    out.append('<text x="875" y="298" text-anchor="middle" class="s-kucuk">kalibrasyon · MTS · durum</text>')
-    out.append('<path d="M770 275 H720 V200 H700" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>')
-    out.append('<text x="726" y="250" class="s-kucuk s-yesil" transform="rotate(-90 726 250)">AXI-Lite</text>')
-    out.append('<path d="M875 170 V220" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>')
-    out.append('<text x="882" y="200" class="s-kucuk s-yesil">AXI / DMA</text>')
+    out.append('<rect x="770" y="240" width="210" height="110" rx="8" class="blok-kontrol"/>')
+    out.append('<text x="875" y="266" text-anchor="middle" class="s-metin2 s-yesil">PS (Arm çekirdekleri)</text>')
+    out.append('<text x="875" y="286" text-anchor="middle" class="s-kucuk">RF Data Converter sürücüsü</text>')
+    out.append('<text x="875" y="302" text-anchor="middle" class="s-kucuk">NCO frekansı · decimation · eşik</text>')
+    out.append('<text x="875" y="318" text-anchor="middle" class="s-kucuk">kalibrasyon · MTS · durum</text>')
+    out.append('<path d="M770 300 H720 V212 H700" class="yol-kontrol" fill="none" marker-end="url(#ok-kontrol)"/>')
+    out.append('<text x="740" y="292" class="s-kucuk s-yesil" transform="rotate(-90 740 292)">AXI-Lite</text>')
+    out.append('<path d="M875 170 V240" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>')
+    out.append('<text x="882" y="208" class="s-kucuk s-yesil">AXI / DMA</text>')
     out.append(f'<text x="20" y="{H - 24}" class="s-kucuk">Referans senaryo eşlemesi: RF{0} ← IF {int(IF / 1e6)} MHz, fs {int(FS / 1e6)} MSPS, mixer NCO {int(S["ddc"]["nco_hz"] / 1e6)} MHz, decimation ÷{S["ddc"]["decimation_toplam"]} → PL\'ye 300 MSPS I/Q.</text>')
     out.append(f'<text x="20" y="{H - 8}" class="s-kucuk">Jenerik şema; blok sayısı, bit genişliği ve özellikler nesle/ürüne göre değişir — güncel ürün kılavuzuna bakın (doğrulanmadı).</text>')
     out.append("</svg>")
@@ -834,6 +853,9 @@ def g_103():
                 out.append(f'<rect x="{x}" y="{y - 22}" width="60" height="44" rx="4" fill="none" stroke="var(--red)" stroke-dasharray="4 3"/>')
                 out.append(f'<text x="{x + 30}" y="{y - 2}" text-anchor="middle" class="s-kucuk s-kirmizi">{ad}</text>')
                 out.append(f'<text x="{x + 30}" y="{y + 12}" text-anchor="middle" class="s-kucuk s-kirmizi">silindi</text>')
+            elif ad in ("mixer", "adc"):
+                out.append(sym(ad, x, y - 20))
+                out.append(f'<text x="{x + 30}" y="{y - 26}" text-anchor="middle" class="s-kucuk">{et}</text>')
             else:
                 out.append(sym(ad, x, y - 20, et, tkls="s-kucuk"))
             if tip == "sayisal":
@@ -874,7 +896,7 @@ def g_103():
 # ------------------------------------------------------------------ g-110
 def g_110():
     """JESD204 katmanları + SYSREF / LMFC zamanlaması, kompakt."""
-    W, H = 960, 400
+    W, H = 1010, 400
     out = bas("g110", W, H,
               "JESD204 özet: solda ADC (TX) ve FPGA (RX) tarafında aynalı dört katman — transport, scrambler, data link, PHY — "
               "ve aralarındaki L lane; parametre seti (L, M, F, S, N, N′, K) iki uçta aynı olmalı. Sağda subclass 1 zamanlaması: "
@@ -901,7 +923,7 @@ def g_110():
     out.append('<text x="20" y="356" class="s-kucuk s-altin">Yazılımcı: SYNC~ / CGS / ILAS / veri durumları, hata sayaçları;</text>')
     out.append('<text x="20" y="370" class="s-kucuk s-altin">"link kalktı ama veri çöp" → parametre uyuşmazlığı</text>')
     # sağ: zamanlama
-    tx0, tx1 = 540, 940
+    tx0, tx1 = 590, 990
     out.append(f'<text x="{tx0}" y="52" class="s-metin2">Subclass 1 zamanlaması (şematik)</text>')
     satirlar = ["device clock", "SYSREF", "LMFC (TX)", "LMFC (RX)", "SYNC~", "lane verisi", "RX çıkışı"]
     for i, ad in enumerate(satirlar):
@@ -928,7 +950,7 @@ def g_110():
             d += f"H{xa} V{y + 4} H{xa + 6} V{y + 20}"
         d += f"H{tx1}"
         out.append(f'<path d="{d}" class="yol-kontrol"/>')
-        out.append(f'<text x="{tx0 + 100}" y="{y + 14}" class="s-kucuk s-yesil">K frame = 1 multiframe</text>')
+    out.append(f'<text x="{tx0 + 100}" y="191" class="s-kucuk s-yesil">K frame = 1 multiframe (LMFC periyodu)</text>')
     # SYNC~
     y = 230
     out.append(f'<path d="M{tx0} {y + 20} H{tx0 + 150} V{y + 4} H{tx1}" class="yol-kontrol"/>')
@@ -938,7 +960,7 @@ def g_110():
     out.append(f'<rect x="{tx0}" y="{y + 4}" width="240" height="16" class="blok"/><text x="{tx0 + 120}" y="{y + 16}" text-anchor="middle" class="s-kucuk">K28.5 (CGS)</text>')
     out.append(f'<rect x="{tx0 + 240}" y="{y + 4}" width="90" height="16" class="spk-filtre" style="fill:var(--gold-soft)"/><text x="{tx0 + 285}" y="{y + 16}" text-anchor="middle" class="s-kucuk">ILAS</text>')
     out.append(f'<rect x="{tx0 + 330}" y="{y + 4}" width="70" height="16" class="spk-sinyal"/><text x="{tx0 + 365}" y="{y + 16}" text-anchor="middle" class="s-kucuk">veri</text>')
-    out.append(f'<text x="{tx0 + 240}" y="{y + 32}" class="s-kucuk">TX: bir sonraki LMFC sınırında başlar</text>')
+    out.append(f'<text x="{tx1}" y="{y + 32}" text-anchor="end" class="s-kucuk">TX: bir sonraki LMFC sınırında başlar</text>')
     # RX çıkışı
     y = 306
     out.append(f'<rect x="{tx0 + 360}" y="{y + 4}" width="40" height="16" class="spk-sinyal"/>')
@@ -966,14 +988,14 @@ def g_111():
     out.append('<text x="20" y="{}" class="s-kucuk">ya da şasi referansı</text>'.format(y + 60))
     out.append(f'<path d="M80 {y} H118" class="yol-saat" marker-end="url(#ok-saat)"/>')
     # jitter cleaner kutusu
-    out.append('<rect x="120" y="50" width="330" height="200" rx="8" class="blok" opacity=".5"/>')
+    out.append('<rect x="120" y="50" width="345" height="200" rx="8" class="blok" opacity=".5"/>')
     out.append('<text x="130" y="68" class="s-metin2">jitter temizleyici / saat üreteci (çift döngü)</text>')
     out.append(blok(140, y - 22, 90, 44, "PLL1", "blok-aktif", "dar bant, temizler"))
     out.append(f'<path d="M230 {y} H258" class="yol-saat" marker-end="url(#ok-saat)"/>')
     out.append(blok(260, y - 22, 70, 44, "VCXO", "blok", "ör. 100 MHz"))
     out.append(f'<path d="M330 {y} H358" class="yol-saat" marker-end="url(#ok-saat)"/>')
-    out.append(blok(358, y - 22, 88, 44, "PLL2 + VCO", "blok-aktif", "geniş bant, çarpar"))
-    out.append(f'<path d="M402 {y + 22} V{y + 60}" class="yol-saat" marker-end="url(#ok-saat)"/>')
+    out.append(blok(358, y - 22, 100, 44, "PLL2 + VCO", "blok-aktif", "geniş bant, çarpar"))
+    out.append(f'<path d="M408 {y + 22} V{y + 60}" class="yol-saat" marker-end="url(#ok-saat)"/>')
     out.append(blok(310, y + 62, 140, 40, "bölücüler / dağıtım", "blok", "DCLK + SYSREF çiftleri"))
     out.append(f'<text x="140" y="{y + 64}" class="s-kucuk">PLL1: referans doğruluğu</text>')
     out.append(f'<text x="140" y="{y + 78}" class="s-kucuk">+ VCXO temizliği</text>')
@@ -983,7 +1005,7 @@ def g_111():
            ("FPGA GT refclk (ör. 300 MHz)", 160, "yol-saat"), ("FPGA SYSREF", 200, "yol-saat"),
            ("fabric saati (ör. 300 MHz, ops.)", 240, "yol-saat")]
     for ad, yy, kls in cik:
-        out.append(f'<path d="M440 {y + 82} H470 V{yy} H560" class="{kls}" marker-end="url(#ok-saat)"/>')
+        out.append(f'<path d="M450 {y + 82} H480 V{yy} H560" class="{kls}" fill="none" marker-end="url(#ok-saat)"/>')
         out.append(f'<text x="566" y="{yy + 4}" class="s-kucuk">{ad}</text>')
     # ADC ve FPGA kutuları
     out.append('<rect x="760" y="50" width="220" height="80" rx="8" class="blok-analog"/>')

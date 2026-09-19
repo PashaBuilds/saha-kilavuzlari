@@ -169,7 +169,9 @@
     "rf_bit": 20,
     "aoa_lsb_derece": 0.1,
     "aoa_bit": 12,
-    "indirgeme_orani": 75000
+    "indirgeme_orani": 75000,
+    "fifo_derinlik": 1024,
+    "fifo_yarim_esik": 512
   },
   "turetilmis_beklenen": {
     "ktb_dbm_hz": -174.0,

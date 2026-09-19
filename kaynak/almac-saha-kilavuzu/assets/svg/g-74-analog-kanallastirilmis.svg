@@ -1,6 +1,7 @@
-<svg viewBox="0 0 860 336" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g74">
+<svg viewBox="0 0 860 352" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g74">
 <title id="t-g74">M-5 analog kanallaştırılmış almaç blok şeması: anten → LNA → güç bölücü → N paralel kanal (BPF → dedektör → video yükselteç → eşik) → kodlayıcı/öncelik mantığı → kanal numarası. Not: eşzamanlı sinyal ve POI yüksek, hacim ve maliyet yüksek.</title>
 <text x="20.0" y="24.0" text-anchor="start" class="s-baslik">M-5 · Analog kanallaştırılmış almaç — filtre bankası: her kanal küçük bir CVR</text>
+<g transform="translate(0 16)">
 <use href="#sym-anten" x="20.0" y="100.0" width="60" height="40"/>
 <text x="50.0" y="153.0" text-anchor="middle" class="s-kucuk">anten</text>
 <path d="M80.0 120.0 L120.0 120.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
@@ -60,7 +61,8 @@
 <text x="760.0" y="148.0" text-anchor="middle" class="s-metin">öncelik mantığı</text>
 <text x="760.0" y="170.0" text-anchor="middle" class="s-mono2">kanal no → f</text>
 <path d="M820.0 145.0 L850.0 145.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
-<rect x="20.0" y="280.0" width="820.0" height="44.0" rx="6" class="blok" opacity=".8"/>
-<text x="30.0" y="298.0" text-anchor="start" class="s-kucuk">N kanal aynı anda dinler: eşzamanlı sinyal başarımı ve POI yüksek, hassasiyet kanal bandına göre (dar kanal → iyi). Bedel: N adet filtre + dedektör → hacim, güç, maliyet.</text>
-<text x="30.0" y="314.0" text-anchor="start" class="s-kucuk">Kanal kenarındaki sinyal iki kanalda birden görünür ('rabbit ears'); frekans doğruluğu kanal genişliğiyle sınırlı. Sayısal karşılığı M-9.</text>
+</g>
+<rect x="20.0" y="296.0" width="820.0" height="44.0" rx="6" class="blok" opacity=".8"/>
+<text x="30.0" y="314.0" text-anchor="start" class="s-kucuk">N kanal aynı anda dinler: eşzamanlı sinyal başarımı ve POI yüksek, hassasiyet kanal bandına göre (dar kanal → iyi). Bedel: N adet filtre + dedektör → hacim, güç, maliyet.</text>
+<text x="30.0" y="330.0" text-anchor="start" class="s-kucuk">Kanal kenarındaki sinyal iki kanalda birden görünür ('rabbit ears'); frekans doğruluğu kanal genişliğiyle sınırlı. Sayısal karşılığı M-9.</text>
 </svg>

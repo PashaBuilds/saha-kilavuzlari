@@ -159,7 +159,7 @@ def g_222():
     # gerçek TOA
     px = x0 + (bas - xmin) / (xmax - xmin) * (x1 - x0)
     out.append(f'<line x1="{px:.1f}" y1="{y1}" x2="{px:.1f}" y2="{y0}" class="yol-saat"/>'
-               f'<text x="{px + 4:.1f}" y="{y1 + 14}" class="s-kucuk">gerçek TOA</text>')
+               f'<text x="{px - 4:.1f}" y="{y1 + 14}" text-anchor="end" class="s-kucuk">gerçek TOA</text>')
     # eşik
     py = y0 - (esik - ymin) / (ymax - ymin) * (y0 - y1)
     out.append(f'<line x1="{x0}" y1="{py:.1f}" x2="{x1}" y2="{py:.1f}" class="spk-filtre"/>'
@@ -206,14 +206,14 @@ def g_232():
     basamak = 420
     gur = [1.0 if k < basamak else 10 ** 0.8 for k in range(n)]
     darbeler = [(150, 3, 20, 0), (159, 3, 20, 0), (300, 3, 20, 0), (600, 3, 20, 0)]
-    guc = kompleks_darbe_gucu(n, random.Random(232), gur, darbeler)
+    guc = kompleks_darbe_gucu(n, random.Random(13), gur, darbeler)   # tohum: SO basamağın hemen sağında yanlış alarm versin (232: hiç vermiyordu)
     alfa_ca = ca_cfar_alfa(N_REF, PFA)
     k_os = 12
     alfa_os = os_cfar_alfa(N_REF, k_os, PFA)
-    paneller = [("CA", "CA — ortalama: yakın çift birbirini maskeler", alfa_ca),
-                ("GO", "GO — büyük yarı: kenar temiz, maskeleme en kötü", alfa_ca),
-                ("SO", "SO — küçük yarı: çifti çözer, kenarda payı erir", alfa_ca),
-                ("OS", f"OS — {k_os}. sıra: ikisini de çözer", alfa_os)]
+    paneller = [("CA", "CA (cell-averaging): yakın çift birbirini maskeler", alfa_ca),
+                ("GO", "GO (greatest-of): kenar temiz, maskeleme en kötü", alfa_ca),
+                ("SO", "SO (smallest-of): çifti çözer, kenarda yanlış alarm", alfa_ca),
+                ("OS", f"OS (order-statistic, k = {k_os}): ikisini de çözer", alfa_os)]
     W, H = 860, 486
     out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g232">',
            '<title id="t-g232">CA, GO, SO ve OS-CFAR\'ın aynı sahnedeki davranışı: iki yakın 3 hücrelik darbe (6 hücre ara, 20 dB), '
@@ -270,13 +270,17 @@ def g_232():
         # gri gürültü dolgusunun üstünde okunsun diye arka plan
         out.append(f'<rect x="{x0 + 2}" y="{y0 - 17}" width="318" height="14" rx="2" fill="var(--dia-panel)" opacity=".9"/>')
         out.append(f'<text x="{x0 + 4}" y="{y0 - 6}" class="s-kucuk">α = {alfa:.1f} · tespit (çift-1 çift-2 yalnız basamak): {say_txt}</text>')
-        out.append(f'<text x="{x1 - 4}" y="{y1 + 14}" text-anchor="end" class="s-kucuk {"s-kirmizi" if ya else "s-yesil"}">yanlış alarm: {ya}</text>')
+        # 600. hücredeki darbenin eşik sivrisiyle çakışmasın: etiket 560. hücrenin soluna
+        out.append(f'<text x="{x0 + 560 / n * (x1 - x0):.1f}" y="{y1 + 14}" text-anchor="end" class="s-kucuk {"s-kirmizi" if ya else "s-yesil"}">yanlış alarm: {ya}</text>')
         if i == 0:
-            out.append(f'<text x="{x0 + 4}" y="{y1 + 14}" class="s-kucuk s-vurgu">↓ iki yakın darbe (6 hücre ara)</text>')
+            # iki kısa satır, 150. hücredeki sivrinin soluna (uzun tek satır sivriyi kesiyordu)
+            bx1 = x0 + 138 / n * (x1 - x0)
+            out.append(f'<text x="{bx1:.1f}" y="{y1 + 14}" text-anchor="end" class="s-kucuk s-vurgu">yakın çift →</text>')
+            out.append(f'<text x="{bx1:.1f}" y="{y1 + 27}" text-anchor="end" class="s-kucuk s-vurgu">(6 hücre ara)</text>')
             out.append(f'<rect x="{bx + 2:.1f}" y="{y0 - 33}" width="86" height="14" rx="2" fill="var(--dia-panel)" opacity=".9"/>')
             out.append(f'<text x="{bx + 4:.1f}" y="{y0 - 22}" class="s-kucuk s-kirmizi">+8 dB basamak</text>')
     ya_so = ozet["SO"][1]
-    so_txt = (f'SO basamağın hemen sağında "küçük yarı"yı seçer, eşik 8 dB düşük kalır ({ya_so} yanlış alarm);'
+    so_txt = (f'SO basamağın hemen sağında küçük yarıyı seçer, eşik 8 dB düşük kalır ({ya_so} yanlış alarm);'
               if ya_so else 'SO basamağın hemen sağında "küçük yarı"yı seçer, eşik 8 dB düşük kalır (bu gerçekleşmede alarm çıkmadı, pay 5 dB);')
     out.append(f'<text x="60" y="{H - 40}" class="s-metin2">Aynı sahne, aynı N = {N_REF}, G = {GUARD}, Pfa = 10⁻⁶. Mavi nokta = darbe hücresinde tespit, kırmızı = gürültü hücresinde yanlış alarm.</text>')
     out.append(f'<text x="60" y="{H - 24}" class="s-metin2">Yakın çift CA/GO\'da birbirini maskeler; {so_txt}</text>')

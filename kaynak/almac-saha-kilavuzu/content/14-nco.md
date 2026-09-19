@@ -37,8 +37,8 @@ Arabanın kilometre sayacı 999 999'a gelince 000 000'a döner; kimse buna
 öyle: 32 bitlik sayaç 4 294 967 295'ten sonra 0'a döner ve o an sinüs bir
 periyodu bitirmiştir. Sayaca her saniye ne kadar eklediğin (FTW) "hızın",
 sayacın kaç turda bir sıfırlandığı da "frekansın" olur. Taşma NCO'nun hatası
-değil, çalışma ilkesidir; **saturation (doyurma) değil wrap (sarma)
-istersin** — Bölüm 12'deki tek yerde.
+değil, çalışma ilkesidir; **saturation değil wrap
+istersin** — {{bolum:12}}'deki "veri yolunda saturation" kuralının tek istisnası.
 :::
 
 ## Kavram: FTW, frekans çözünürlüğü ve gerçek frekans
@@ -76,14 +76,14 @@ isteseydin FTW = round(0.250416̄ · $2^32$) = 1 075 531 093; gerçek frekans
 
 Akümülatörün N biti fazı temsil eder; ama N = 32 bitlik bir tablo 4 milyar
 girişli olurdu. Bu yüzden akümülatörün yalnızca **en anlamlı P biti** tabloya
-adres olur (P tipik 10–16); geri kalan $N − P$ bit **kırpılır**. Tablonun her
+adres olur (P tipik 10–16); geri kalan $N − P$ bit **kırpılır** (phase truncation — faz kırpma). Tablonun her
 girişi de sonlu, **A bitlik** bir genlik tutar (A tipik 14–18). İki kuantizasyon
 var demek ki: faz kuantizasyonu (P) ve genlik kuantizasyonu (A). İkisi de spur
 üretir; birazdan.
 
 {{svg:g-141-nco-blok.svg|NCO iç blok şeması. Faz akümülatörü (N bit) her saatte FTW ekler; en anlamlı P bit LUT adresi olur, kalan bitler kırpılır (faz kırpma). LUT çeyrek dalga simetrisiyle küçültülür: üst iki bit çeyreği seçer, kalan P−2 bit tabloyu adresler; sin ve cos aynı tablodan 90° kaydırmayla okunur. Çıkış A bit. Dither, kırpılan bitlere eklenen küçük rastgele sayıdır. PS tarafından yazılan register'lar yeşil.}}
 
-Tabloyu küçültmenin klasik yolu **çeyrek dalga simetrisidir**: sinüsün
+Tabloyu küçültmenin klasik yolu **çeyrek dalga simetrisidir** (quarter-wave symmetry): sinüsün
 yalnızca 0–90° arası saklanır; adresin en üst iki biti hangi çeyrekte
 olduğumuzu söyler, çeyreğe göre adres ters çevrilir ve işaret değiştirilir.
 Tablo dörtte bire iner. sin ve cos için ayrı tablo da gerekmez: cos(θ) =
@@ -139,7 +139,7 @@ tespit eşiğini periyodik bir çivinin aşması, tabanın 1 dB yükselmesinden
 ## Faz sürekliliği, ofset ve çok kanallı koherentlik
 
 FTW'yi değiştirdiğinde akümülatör sıfırlanmaz; yalnızca adım büyüklüğü
-değişir. Bu yüzden NCO **faz sürekli** frekans atlar: çıkışta sıçrama olmaz,
+değişir. Bu yüzden NCO **faz sürekli** (phase-continuous) frekans atlar: çıkışta sıçrama olmaz,
 spektrumda geçici bir sıçrama (splatter) oluşmaz. Bu, analog PLL'in saniyeler
 değil mikrosaniyeler bile süren kilitlenme süresine karşı NCO'nun en büyük
 avantajıdır; taramalı bir almaçta bir sonraki banda geçmek tek register

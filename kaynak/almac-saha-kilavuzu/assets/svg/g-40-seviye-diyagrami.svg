@@ -39,44 +39,44 @@
 <path d="M120.0 354.5L231.4 354.5L231.4 354.5L342.9 354.5L342.9 302.5L454.3 302.5L454.3 307.2L565.7 307.2L565.7 323.3L677.1 323.3L677.1 329.9L788.6 329.9L788.6 253.0L900.0 253.0L900.0 251.8" fill="none" stroke="var(--ink-2)" stroke-width="1.4"/>
 <path d="M120.0 285.5L231.4 285.5L231.4 286.6L342.9 286.6L342.9 239.4L454.3 239.4L454.3 244.1L565.7 244.1L565.7 260.6L677.1 260.6L677.1 267.7L788.6 267.7L788.6 192.1L900.0 192.1L900.0 190.9" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
 <circle cx="120.0" cy="285.5" r="4" fill="var(--accent)"/>
-<text x="120.0" y="276.5" text-anchor="middle" class="s-mono2 s-vurgu">-60.0</text>
-<text x="120.0" y="368.5" text-anchor="middle" class="s-mono2">-89.2</text>
+<text x="126.0" y="279.5" class="s-mono2 s-vurgu">-60.0</text>
+<text x="126.0" y="367.5" class="s-mono2">-89.2</text>
 <line x1="120.0" y1="120" x2="120.0" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
 <circle cx="231.4" cy="286.6" r="4" fill="var(--accent)"/>
-<text x="231.4" y="277.6" text-anchor="middle" class="s-mono2 s-vurgu">-60.5</text>
-<text x="231.4" y="368.5" text-anchor="middle" class="s-mono2">-89.2</text>
+<text x="237.4" y="280.6" class="s-mono2 s-vurgu">-60.5</text>
+<text x="237.4" y="367.5" class="s-mono2">-89.2</text>
 <line x1="231.4" y1="120" x2="231.4" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
 <circle cx="342.9" cy="239.4" r="4" fill="var(--accent)"/>
-<text x="342.9" y="230.4" text-anchor="middle" class="s-mono2 s-vurgu">-40.5</text>
-<text x="342.9" y="316.5" text-anchor="middle" class="s-mono2">-67.2</text>
+<text x="348.9" y="233.4" class="s-mono2 s-vurgu">-40.5</text>
+<text x="348.9" y="315.5" class="s-mono2">-67.2</text>
 <line x1="342.9" y1="120" x2="342.9" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
 <circle cx="454.3" cy="244.1" r="4" fill="var(--accent)"/>
-<text x="454.3" y="235.1" text-anchor="middle" class="s-mono2 s-vurgu">-42.5</text>
-<text x="454.3" y="321.2" text-anchor="middle" class="s-mono2">-69.2</text>
+<text x="460.3" y="238.1" class="s-mono2 s-vurgu">-42.5</text>
+<text x="460.3" y="320.2" class="s-mono2">-69.2</text>
 <line x1="454.3" y1="120" x2="454.3" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
 <circle cx="565.7" cy="260.6" r="4" fill="var(--accent)"/>
-<text x="565.7" y="251.6" text-anchor="middle" class="s-mono2 s-vurgu">-49.5</text>
-<text x="565.7" y="337.3" text-anchor="middle" class="s-mono2">-76.0</text>
+<text x="571.7" y="254.6" class="s-mono2 s-vurgu">-49.5</text>
+<text x="571.7" y="336.3" class="s-mono2">-76.0</text>
 <line x1="565.7" y1="120" x2="565.7" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
 <circle cx="677.1" cy="267.7" r="4" fill="var(--accent)"/>
-<text x="677.1" y="258.7" text-anchor="middle" class="s-mono2 s-vurgu">-52.5</text>
-<text x="677.1" y="343.9" text-anchor="middle" class="s-mono2">-78.8</text>
+<text x="683.1" y="261.7" class="s-mono2 s-vurgu">-52.5</text>
+<text x="683.1" y="342.9" class="s-mono2">-78.8</text>
 <line x1="677.1" y1="120" x2="677.1" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
 <circle cx="788.6" cy="192.1" r="4" fill="var(--accent)"/>
-<text x="788.6" y="183.1" text-anchor="middle" class="s-mono2 s-vurgu">-20.5</text>
-<text x="788.6" y="267.0" text-anchor="middle" class="s-mono2">-46.3</text>
+<text x="794.6" y="186.1" class="s-mono2 s-vurgu">-20.5</text>
+<text x="794.6" y="266.0" class="s-mono2">-46.3</text>
 <line x1="788.6" y1="120" x2="788.6" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
 <circle cx="900.0" cy="190.9" r="4" fill="var(--accent)"/>
-<text x="900.0" y="181.9" text-anchor="middle" class="s-mono2 s-vurgu">-20.0</text>
-<text x="900.0" y="265.8" text-anchor="middle" class="s-mono2">-45.8</text>
+<text x="906.0" y="184.9" class="s-mono2 s-vurgu">-20.0</text>
+<text x="906.0" y="264.8" class="s-mono2">-45.8</text>
 <line x1="900.0" y1="120" x2="900.0" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
 <line x1="80" y1="134.2" x2="940" y2="134.2" class="spk-filtre"/>
-<text x="936" y="129.2" text-anchor="end" class="s-kucuk s-altin">ADC tam ölçek +4 dBm → 24 dB tepe payı</text>
+<text x="936" y="129.2" text-anchor="end" class="s-kucuk s-altin">ADC tam ölçek +4 dBm → 24 dB headroom</text>
 <line x1="134.0" y1="285.5" x2="134.0" y2="354.5" stroke="var(--green)" stroke-width="1.4" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>
 <text x="140.0" y="324.0" class="s-kucuk s-yesil" text-anchor="start">SNR giriş 29.2 dB</text>
 <line x1="886.0" y1="190.9" x2="886.0" y2="251.8" stroke="var(--green)" stroke-width="1.4" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>
 <text x="880.0" y="225.3" class="s-kucuk s-yesil" text-anchor="end">SNR çıkış 25.8 dB</text>
-<text x="86" y="384.5" class="s-kucuk">kTB·B = -89.2 dBm (300 MHz, NF 0)</text>
+<text x="86" y="152.2" class="s-kucuk">mavi: sinyal · gri: gürültü — girişte kTB·B = -89.2 dBm (300 MHz, NF = 0)</text>
 <text x="20" y="402" class="s-kucuk">kümülatif NF</text>
 <text x="20" y="420" class="s-kucuk">kümülatif G</text>
 <text x="231.4" y="402" text-anchor="middle" class="s-mono s-kirmizi">0.50</text>

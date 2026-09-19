@@ -97,6 +97,14 @@ def olcu(x1, y1, x2, y2, metin, kls="s-kucuk", dx=0, dy=-4):
     return "".join(p)
 
 
+def kutu_metin(x, y, metin, kls="s-kucuk", anchor="start", fs=10.5, pad=2):
+    """Arka planı panel rengiyle kapatılmış etiket — çizgi/eğri üstüne düşmek zorunda kalan yazılar için."""
+    w = len(metin) * fs * 0.56 + 2 * pad
+    bx = x - pad if anchor == "start" else (x - w + pad if anchor == "end" else x - w / 2)
+    return (f'<rect x="{bx:.1f}" y="{y - fs + 1:.1f}" width="{w:.1f}" height="{fs + 3:.1f}" rx="2" fill="var(--dia-panel)" opacity=".85"/>'
+            f'<text x="{x:.1f}" y="{y:.1f}" text-anchor="{anchor}" class="{kls}">{metin}</text>')
+
+
 # ================================================================== g-10
 def g_10():
     """Aynı sinyalin zaman ve frekans görünümü: tek ton (A, T, φ işaretli) ve iki ton toplamı."""
@@ -106,26 +114,27 @@ def g_10():
     f1, A, fi = 1e6, 1.0, math.radians(60)
     x0, x1, y0, y1 = 60, 470, 190, 40
     tmin, tmax = 0, 2.5e-6
+    ya, yb = -1.7, 1.35   # eğri ±1; altta T ölçüsü için pay
     n = 500
     ts = [tmin + (tmax - tmin) * k / (n - 1) for k in range(n)]
     ref = [A * math.cos(TAU * f1 * t) for t in ts]
     sig = [A * math.cos(TAU * f1 * t + fi) for t in ts]
     out.append('<text x="60" y="26" class="s-baslik">Zaman domaini</text>')
-    out.append(eksen(x0, x1, y0, y1, [0, 0.5e-6, 1e-6, 1.5e-6, 2e-6, 2.5e-6], [-1, 0, 1], tmin, tmax, -1.3, 1.3,
+    out.append(eksen(x0, x1, y0, y1, [0, 0.5e-6, 1e-6, 1.5e-6, 2e-6, 2.5e-6], [-1, 0, 1], tmin, tmax, ya, yb,
                      lambda v: f"{v * 1e6:g}", lambda v: f"{v:g}"))
-    out.append(f'<path d="{cizgi_yolu(ts, ref, x0, x1, y0, y1, tmin, tmax, -1.3, 1.3, False)}" fill="none" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3"/>')
-    out.append(f'<path d="{cizgi_yolu(ts, sig, x0, x1, y0, y1, tmin, tmax, -1.3, 1.3, False)}" fill="none" stroke="var(--accent)" stroke-width="2"/>')
+    out.append(f'<path d="{cizgi_yolu(ts, ref, x0, x1, y0, y1, tmin, tmax, ya, yb, False)}" fill="none" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3"/>')
+    out.append(f'<path d="{cizgi_yolu(ts, sig, x0, x1, y0, y1, tmin, tmax, ya, yb, False)}" fill="none" stroke="var(--accent)" stroke-width="2"/>')
     px = lambda t: x0 + (t - tmin) / (tmax - tmin) * (x1 - x0)
-    py = lambda v: y0 - (v + 1.3) / 2.6 * (y0 - y1)
+    py = lambda v: y0 - (v - ya) / (yb - ya) * (y0 - y1)
     # genlik oku: tepe noktası t = -φ/(2πf) + T → t = 1 µs - 1/6 µs
     tp = 1e-6 - fi / (TAU * f1)
-    out.append(olcu(px(tp), py(0), px(tp), py(A), "A (genlik)", "s-kucuk s-vurgu", dx=2, dy=0))
+    out.append(olcu(px(tp), py(0), px(tp), py(A), "", "s-kucuk s-vurgu"))
+    out.append(kutu_metin(px(tp) + 7, py(A / 2) + 4, "A (genlik)", "s-kucuk s-vurgu"))
     # periyot
-    out.append(olcu(px(tp), py(-1.15), px(tp + 1 / f1), py(-1.15), "T = 1/f = 1 µs", "s-kucuk", dy=12))
+    out.append(olcu(px(tp), py(-1.25), px(tp + 1 / f1), py(-1.25), "T = 1/f = 1 µs", "s-kucuk", dy=12))
     # faz kayması: referans tepe t=1 µs, sinyal tepesi tp
     out.append(olcu(px(tp), py(1.18), px(1e-6), py(1.18), "φ", "s-kucuk s-altin", dy=-3))
-    out.append(f'<text x="{px(1.3e-6):.1f}" y="{py(-1.02):.1f}" class="s-kucuk">kesikli: referans cos (φ = 0)</text>')
-    out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 28}" text-anchor="middle" class="s-kucuk">zaman (µs)</text>')
+    out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 28}" text-anchor="middle" class="s-kucuk">zaman (µs) — kesikli: referans cos (φ = 0)</text>')
     out.append(f'<text x="{x0 - 46}" y="{(y0 + y1) / 2:.0f}" class="s-kucuk" transform="rotate(-90 {x0 - 46} {(y0 + y1) / 2:.0f})" text-anchor="middle">genlik (V)</text>')
     # --- üst sağ: tek çizgi
     fx0, fx1 = 560, 830
@@ -164,7 +173,7 @@ def g_10():
 def g_11():
     """dB merdiveni: −180 … +40 dBm; sol kolon güç/gerilim karşılıkları, sağ kolon senaryodan tipik seviyeler."""
     W, H = 860, 560
-    out = bas("g11", W, H, "dB merdiveni: −180 dBm'den +40 dBm'e düşey eksen. Solda her 10 dB'de mutlak güç (W) ve 50 Ω'daki rms gerilim; sağda kTB (−174 dBm/Hz), 2 MHz ve 300 MHz bantta gürültü tabanı, referans senaryonun MDS'i (−68.2 dBm), gelen darbe (−60 dBm), LNA çıkışı, ADC tam ölçeği (+4 dBm), 1 mW (0 dBm) ve 1 W (+30 dBm) işaretli. Sağ altta 3/6/10/20 dB ezber kartı.")
+    out = bas("g11", W, H, "dB merdiveni: −180 dBm'den +40 dBm'e düşey eksen. Solda her 20 dB'de mutlak güç (W) ve 50 Ω'daki rms gerilim; sağda kTB (−174 dBm/Hz), 2 MHz ve 300 MHz bantta gürültü tabanı, referans senaryonun MDS'i (−68.2 dBm), gelen darbe (−60 dBm), LNA çıkışı, ADC tam ölçeği (+4 dBm), 1 mW (0 dBm) ve 1 W (+30 dBm) işaretli. Sağ altta 3/6/10/20 dB ezber kartı.")
     x_eks = 330
     ymin, ymax = -180, 40
     y0, y1 = 520, 40
@@ -206,8 +215,8 @@ def g_11():
         (S["sinyal"]["seviye_dbm_giris"], "gelen darbe, anten girişi −60 dBm", "s-metin2 s-vurgu", ""),
         (round(taban + 15, 1), f"MDS = taban + 15 dB SNR = {taban + 15:.1f} dBm", "s-metin2 s-yesil", ""),
         (round(taban, 1), f"gürültü tabanı 300 MHz, NF 6 dB = {taban:.1f} dBm", "s-metin2 s-kirmizi", ""),
-        (round(KTB + db10(2e6), 1), f"kTB · 2 MHz = {KTB + db10(2e6):.0f} dBm (1 µs darbeye eşlenik bant)", "s-metin2", ""),
-        (-174, "kTB = −174 dBm/Hz (290 K, 1 Hz)", "s-metin2 s-kirmizi", ""),
+        (round(KTB + db10(2e6), 1), f"kTB · 2 MHz = {KTB + db10(2e6):.0f} dBm (1 µs darbenin ana lobu)", "s-metin2", ""),
+        (-174, "kTB = −174 dBm/Hz (290 K)", "s-metin2 s-kirmizi", ""),
     ]
     son_y = -1e9
     for v, metin, kls, _ in isaretler:
@@ -218,7 +227,7 @@ def g_11():
         out.append(f'<circle cx="{x_eks + 10}" cy="{yy:.1f}" r="3" fill="var(--ink-2)"/>')
         out.append(f'<text x="{x_eks + 46}" y="{ty + 4:.1f}" class="{kls}">{metin}</text>')
     # ezber kartı
-    kx, ky = 560, 380
+    kx, ky = 560, 400
     out.append(f'<rect x="{kx}" y="{ky}" width="280" height="150" rx="6" fill="var(--dia-panel)" stroke="var(--line-2)"/>')
     out.append(f'<text x="{kx + 12}" y="{ky + 20}" class="s-baslik">Ezber kartı</text>')
     satirlar = [("güç ×2", "+3 dB", "genlik ×2", "+6 dB"), ("güç ×4", "+6 dB", "genlik ×√2", "+3 dB"),
@@ -247,14 +256,14 @@ def g_20():
         th = k * adim
         px_, py_ = cx + R * math.cos(th), cy - R * math.sin(th)
         out.append(f'<circle cx="{px_:.1f}" cy="{py_:.1f}" r="3.5" fill="var(--accent)" opacity="{0.35 + 0.65 * (k + 1) / n_ornek:.2f}"/>')
-        out.append(f'<text x="{cx + (R + 12) * math.cos(th):.1f}" y="{cy - (R + 12) * math.sin(th) + 4:.1f}" text-anchor="middle" class="s-mono2">{k}</text>')
+        out.append(f'<text x="{cx + (R + 14) * math.cos(th):.1f}" y="{cy - (R + 14) * math.sin(th) + (4 if k != 6 else -3):.1f}" text-anchor="middle" class="s-mono2">{k}</text>')
     th = 4 * adim  # 120°
     vx, vy = cx + R * math.cos(th), cy - R * math.sin(th)
     out.append(f'<line x1="{cx}" y1="{cy}" x2="{vx:.1f}" y2="{vy:.1f}" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#ok-sayisal)"/>')
     out.append(f'<line x1="{vx:.1f}" y1="{vy:.1f}" x2="{vx:.1f}" y2="{cy}" stroke="var(--green)" stroke-width="1.2" stroke-dasharray="3 3"/>')
     out.append(f'<line x1="{vx:.1f}" y1="{vy:.1f}" x2="{cx}" y2="{vy:.1f}" stroke="var(--purple)" stroke-width="1.2" stroke-dasharray="3 3"/>')
     out.append(f'<text x="{vx - 4:.1f}" y="{cy + 14}" text-anchor="end" class="s-kucuk s-yesil">I = cos θ</text>')
-    out.append(f'<text x="{cx + 6}" y="{vy - 4:.1f}" class="s-kucuk s-mor">Q = sin θ</text>')
+    out.append(f'<text x="{(vx + cx) / 2 + 18:.1f}" y="{vy - 6:.1f}" text-anchor="middle" class="s-kucuk s-mor">Q = sin θ</text>')
     # açı yayı
     out.append(f'<path d="M{cx + 28} {cy} A28 28 0 0 0 {cx + 28 * math.cos(th):.1f} {cy - 28 * math.sin(th):.1f}" fill="none" stroke="var(--gold)" stroke-width="1.6"/>')
     out.append(f'<text x="{cx + 30}" y="{cy - 22}" class="s-kucuk s-altin">θ = 2πft + φ</text>')
@@ -301,7 +310,7 @@ def g_20():
     out.append(f'<line x1="{ccx}" y1="{ccy}" x2="{ccx + r * math.cos(math.radians(50)):.1f}" y2="{ccy - r * math.sin(math.radians(50)):.1f}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 2"/>')
     out.append(f'<line x1="{ccx}" y1="{ccy}" x2="{ccx + r * math.cos(math.radians(50)):.1f}" y2="{ccy + r * math.sin(math.radians(50)):.1f}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 2"/>')
     out.append(f'<text x="{ccx}" y="{ccy + r + 22}" text-anchor="middle" class="s-mono2">2·cos θ — hep reel eksende</text>')
-    out.append(f'<text x="{bx}" y="{by + 124}" class="s-kucuk">Q bileşenleri birbirini götürür; reel sinyalin spektrumunda +f ve −f birlikte görünür.</text>')
+    out.append(f'<text x="{bx}" y="{by + 124}" class="s-kucuk">Q bileşenleri birbirini götürür; reel spektrumda +f ve −f birlikte görünür.</text>')
     yaz("g-20-fazor-iq.svg", out)
 
 
@@ -488,8 +497,9 @@ def g_30():
         out.append(f'<rect x="{pxb(t) - 1.5:.1f}" y="{pyb(1):.1f}" width="3" height="{pyb(0) - pyb(1):.1f}" fill="var(--gold)"/>')
     out.append(olcu(pxb(0), pyb(1.15), pxb(1), pyb(1.15), "PRI = 1 ms (PRF = 1/PRI = 1 kHz)", "s-kucuk", dy=-4))
     out.append(f'<line x1="{x0}" y1="{pyb(0.001):.1f}" x2="{x1}" y2="{pyb(0.001):.1f}" stroke="var(--red)" stroke-width="1.2" stroke-dasharray="4 3"/>')
-    out.append(f'<text x="{pxb(1.15):.1f}" y="{pyb(0.5):.1f}" class="s-kucuk">1 µs darbe bu ölçekte bir çizgi kalınlığında; PRI/PW = 1000</text>')
-    out.append(f'<text x="{pxb(1.15):.1f}" y="{pyb(0.5) + 16:.1f}" class="s-kucuk s-kirmizi">ortalama güç = tepe × duty → −30 dB (kırmızı çizgi, ölçek dışı küçük)</text>')
+    for i, (satir, kls) in enumerate((("1 µs darbe bu ölçekte", "s-kucuk"), ("bir çizgi kalınlığında;", "s-kucuk"), ("PRI/PW = 1000", "s-kucuk"),
+                                      ("ortalama güç = tepe × duty", "s-kucuk s-kirmizi"), ("→ −30 dB (kırmızı kesikli çizgi)", "s-kucuk s-kirmizi"))):
+        out.append(f'<text x="{pxb(1.12):.1f}" y="{pyb(0.88) + 13 * i:.1f}" class="{kls}">{satir}</text>')
     out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0b + 26}" text-anchor="middle" class="s-kucuk">zaman (ms)</text>')
     yaz("g-30-darbe-anatomisi.svg", out)
 
@@ -532,23 +542,26 @@ def g_31():
         nul = 1 / pw
         out.append(olcu(fpx(-nul), fpy(-2), fpx(nul), fpy(-2), f"ana lob 2/PW = {2 * nul:g} MHz", "s-metin2", dy=-6))
         out.append(f'<line x1="{fpx(nul):.1f}" y1="{y1}" x2="{fpx(nul):.1f}" y2="{y0}" stroke="var(--ink-3)" stroke-width=".8" stroke-dasharray="3 3"/>')
-        out.append(f'<text x="{fpx(nul) + 4:.1f}" y="{y0 - 6}" class="s-kucuk">ilk sıfır 1/PW = {nul:g} MHz</text>')
         b3 = 0.886 / pw / 2
         out.append(f'<line x1="{fpx(-b3):.1f}" y1="{fpy(-3):.1f}" x2="{fpx(b3):.1f}" y2="{fpy(-3):.1f}" stroke="var(--green)" stroke-width="2"/>')
-        out.append(f'<text x="{fpx(b3) + 4:.1f}" y="{fpy(-3) + 14:.1f}" class="s-kucuk s-yesil">−3 dB: 0.886/PW = {0.886 / pw * 1000:.0f} kHz</text>')
-        if pw > 0.5:
-            out.append(f'<text x="{fpx(1.5):.1f}" y="{fpy(-13.3) - 6:.1f}" class="s-kucuk">yan lob −13.3 dB</text>')
+        if pw > 0.5:   # dar lob: yazılar ana lobun sağındaki boşluğa (yan lob tepeleri ≤ −13 dB)
+            out.append(f'<text x="{fpx(nul) + 6:.1f}" y="{fpy(-6) + 4:.1f}" class="s-kucuk">ilk sıfır 1/PW = {nul:g} MHz</text>')
+            out.append(f'<text x="{fpx(nul) + 6:.1f}" y="{fpy(-6) + 18:.1f}" class="s-kucuk s-yesil">−3 dB: 0.886/PW = {0.886 / pw * 1000:.0f} kHz</text>')
+            out.append(f'<text x="{fpx(2.6):.1f}" y="{fpy(-13.3) + 4:.1f}" class="s-kucuk">ilk yan lob −13.3 dB</text>')
+        else:          # geniş lob: yazılar lobun içine (dolgu açık)
+            out.append(f'<text x="{fpx(nul) - 6:.1f}" y="{fpy(-30):.1f}" text-anchor="end" class="s-kucuk">ilk sıfır 1/PW = {nul:g} MHz</text>')
+            out.append(f'<text x="{fpx(0):.1f}" y="{fpy(-3) + 20:.1f}" text-anchor="middle" class="s-kucuk s-yesil">−3 dB: 0.886/PW = {0.886 / pw * 1000:.0f} kHz</text>')
         out.append(f'<text x="{(fx0 + fx1) / 2:.0f}" y="{y0 + 28}" text-anchor="middle" class="s-kucuk">frekans − f₀ (MHz), dB (tepeye göre)</text>')
     # büyüteç: PRF çizgileri
-    bx0, bx1, by0, by1 = 700, 840, 190, 62
-    out.append(f'<rect x="{bx0 - 8}" y="{by1 - 22}" width="{bx1 - bx0 + 16}" height="{by0 - by1 + 50}" rx="5" fill="var(--dia-panel)" stroke="var(--line-2)"/>')
-    out.append(f'<text x="{bx0}" y="{by1 - 8}" class="s-kucuk">büyüteç: ±3.5 kHz, PRI = 1 ms</text>')
+    bx0, bx1, by0, by1 = 692, 842, 190, 62
+    out.append(f'<rect x="{bx0 - 12}" y="{by1 - 22}" width="{bx1 - bx0 + 24}" height="{by0 - by1 + 52}" rx="5" fill="var(--dia-panel)" stroke="var(--line-2)"/>')
+    out.append(f'<text x="{bx0 - 4}" y="{by1 - 8}" class="s-kucuk">büyüteç (kHz), PRI = 1 ms</text>')
     out.append(eksen(bx0, bx1, by0, by1, [-3, -2, -1, 0, 1, 2, 3], [0], -3.5, 3.5, -0.05, 1.2, lambda v: f"{v:d}", lambda v: ""))
     for k in range(-3, 4):
         lx = bx0 + (k + 3.5) / 7 * (bx1 - bx0)
         h = abs(sinc(k * 1e-3 * 1.0))
         out.append(f'<line x1="{lx:.1f}" y1="{by0}" x2="{lx:.1f}" y2="{by0 - h * (by0 - by1) * 0.85:.1f}" stroke="var(--accent)" stroke-width="2"/>')
-    out.append(f'<text x="{(bx0 + bx1) / 2:.0f}" y="{by0 + 24}" text-anchor="middle" class="s-kucuk">kHz — çizgi aralığı PRF = 1 kHz</text>')
+    out.append(f'<text x="{(bx0 + bx1) / 2:.0f}" y="{by0 + 24}" text-anchor="middle" class="s-kucuk">çizgi aralığı PRF = 1 kHz</text>')
     yaz("g-31-pw-spektrum.svg", out)
 
 
@@ -646,7 +659,8 @@ def g_32():
         fx = [(k - N / 2) * fs / N / 1e6 for k in range(N)]
         xmin, xmax, ymin, ymax = -25, 25, -50, 3
         out.append(eksen(x0, x1, y0, y1, [-20, -10, 0, 10, 20], [0, -20, -40], xmin, xmax, ymin, ymax, lambda v: f"{v:d}", lambda v: f"{v:d}"))
-        dd = path_from(fx, sp, x0, x1, y0, y1, xmin, xmax, ymin, ymax)
+        sel = [k for k in range(N) if xmin <= fx[k] <= xmax]   # path_from x'i kırpmaz; panel dışına taşmasın
+        dd = path_from([fx[k] for k in sel], [sp[k] for k in sel], x0, x1, y0, y1, xmin, xmax, ymin, ymax)
         out.append(f'<path d="{dd}L{x1} {y0}L{x0} {y0}Z" class="spk-sinyal" opacity=".2"/>')
         out.append(f'<path d="{dd}" fill="none" stroke="var(--accent)" stroke-width="1.2"/>')
         bwlar = {"yok": "≈ 1/PW = 1 MHz", "lfm": "≈ B = 10 MHz", "barker": "≈ 13/PW = 13 MHz", "hop": "adımlar ±15 MHz'e yayılır"}
@@ -727,20 +741,20 @@ def g_40():
     out.append(f'<path d="{ds}" fill="none" stroke="var(--accent)" stroke-width="2.4"/>')
     for k in range(n_nokta):
         out.append(f'<circle cx="{xs[k]:.1f}" cy="{py(sinyal[k]):.1f}" r="4" fill="var(--accent)"/>')
-        out.append(f'<text x="{xs[k]:.1f}" y="{py(sinyal[k]) - 9:.1f}" text-anchor="middle" class="s-mono2 s-vurgu">{sinyal[k]:.1f}</text>')
-        out.append(f'<text x="{xs[k]:.1f}" y="{py(gurultu[k]) + 14:.1f}" text-anchor="middle" class="s-mono2">{gurultu[k]:.1f}</text>')
+        out.append(f'<text x="{xs[k] + 6:.1f}" y="{py(sinyal[k]) - 6:.1f}" class="s-mono2 s-vurgu">{sinyal[k]:.1f}</text>')
+        out.append(f'<text x="{xs[k] + 6:.1f}" y="{py(gurultu[k]) + 13:.1f}" class="s-mono2">{gurultu[k]:.1f}</text>')
         # düşey ayraç
         out.append(f'<line x1="{xs[k]:.1f}" y1="{y1}" x2="{xs[k]:.1f}" y2="{y0}" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>')
     # ADC tam ölçek
     fsd = S["adc"]["tam_olcek_dbm"]
     out.append(f'<line x1="{x0}" y1="{py(fsd):.1f}" x2="{x1}" y2="{py(fsd):.1f}" class="spk-filtre"/>')
-    out.append(f'<text x="{x1 - 4}" y="{py(fsd) - 5:.1f}" text-anchor="end" class="s-kucuk s-altin">ADC tam ölçek {fsd:+g} dBm → {fsd - sinyal[-1]:.0f} dB tepe payı</text>')
+    out.append(f'<text x="{x1 - 4}" y="{py(fsd) - 5:.1f}" text-anchor="end" class="s-kucuk s-altin">ADC tam ölçek {fsd:+g} dBm → {fsd - sinyal[-1]:.0f} dB headroom</text>')
     # SNR okları
     for k, etiket in ((0, "SNR giriş"), (n_nokta - 1, "SNR çıkış")):
         X = xs[k] + (14 if k == 0 else -14)
         out.append(f'<line x1="{X:.1f}" y1="{py(sinyal[k]):.1f}" x2="{X:.1f}" y2="{py(gurultu[k]):.1f}" stroke="var(--green)" stroke-width="1.4" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>')
         out.append(f'<text x="{X + (6 if k == 0 else -6):.1f}" y="{(py(sinyal[k]) + py(gurultu[k])) / 2 + 4:.1f}" class="s-kucuk s-yesil" text-anchor="{"start" if k == 0 else "end"}">{etiket} {sinyal[k] - gurultu[k]:.1f} dB</text>')
-    out.append(f'<text x="{x0 + 6}" y="{py(gurultu[0]) + 30:.1f}" class="s-kucuk">kTB·B = {n0:.1f} dBm (300 MHz, NF 0)</text>')
+    out.append(f'<text x="{x0 + 6}" y="{py(fsd) + 18:.1f}" class="s-kucuk">mavi: sinyal · gri: gürültü — girişte kTB·B = {n0:.1f} dBm (300 MHz, NF = 0)</text>')
     # kümülatif NF satırı
     out.append(f'<text x="{x0 - 60}" y="{y0 + 22}" class="s-kucuk">kümülatif NF</text>')
     out.append(f'<text x="{x0 - 60}" y="{y0 + 40}" class="s-kucuk">kümülatif G</text>')
@@ -759,7 +773,7 @@ def g_41():
     W, H = 860, 400
     nf = S["on_uc"]["nf_toplam_db"]
     snr = S["tespit"]["tespit_snr_db"]
-    out = bas("g41", W, H, f"Bant genişliği ile gürültü tabanı ve hassasiyet ilişkisi. Solda logaritmik bant genişliği ekseni (1 kHz–10 GHz): kTB·B çizgisi (NF = 0), NF = {nf} dB ile kayan gürültü tabanı ve +{snr} dB tespit SNR'ı ile MDS; 2 MHz (darbeye eşlenik), 300 MHz (referans) ve 1 GHz noktaları işaretli. Her on kat bant genişliği tabanı 10 dB yükseltir. Sağda 1 µs darbenin spektrumu üstünde iki almaç bandı: dar bant (2 MHz) az gürültü alır ama darbenin frekansını önceden bilmeyi gerektirir; geniş bant (300 MHz) darbeyi nerede olursa olsun yakalar (POI), bedeli 21.8 dB daha yüksek gürültü tabanı.")
+    out = bas("g41", W, H, f"Bant genişliği ile gürültü tabanı ve hassasiyet ilişkisi. Solda logaritmik bant genişliği ekseni (1 kHz–10 GHz): kTB·B çizgisi (NF = 0), NF = {nf} dB ile kayan gürültü tabanı ve +{snr} dB tespit SNR'ı ile MDS; 2 MHz (darbenin ana lobu), 300 MHz (referans) ve 1 GHz noktaları işaretli. Her on kat bant genişliği tabanı 10 dB yükseltir. Sağda 1 µs darbenin spektrumu üstünde iki almaç bandı: dar bant (2 MHz) az gürültü alır ama darbenin frekansını önceden bilmeyi gerektirir; geniş bant (300 MHz) darbeyi nerede olursa olsun yakalar (POI), bedeli 21.8 dB daha yüksek gürültü tabanı.")
     x0, x1, y0, y1 = 70, 470, 330, 50
     bmin, bmax = 1e3, 1e10
     ymin, ymax = -150, -40
@@ -782,14 +796,16 @@ def g_41():
                              (nf, 'stroke="var(--red)" stroke-width="2"', f"taban, NF = {nf} dB"),
                              (nf + snr, 'stroke="var(--green)" stroke-width="2"', f"MDS = taban + {snr} dB")):
         out.append(f'<line x1="{px(bmin):.1f}" y1="{py(KTB + 30 + ofs):.1f}" x2="{px(bmax):.1f}" y2="{py(KTB + 100 + ofs):.1f}" {kls}/>')
-        out.append(f'<text x="{px(1.3e3):.1f}" y="{py(KTB + 31 + ofs) + (13 if ofs == 0 else -5):.1f}" class="s-kucuk">{etiket}</text>')
+        tx, ty = px(2.2e3), py(KTB + 33.4 + ofs) + (13 if ofs == 0 else -5)
+        aci = math.degrees(math.atan2(py(KTB + 30) - py(KTB + 100), px(bmax) - px(bmin)))   # çizgi eğimi
+        out.append(f'<text x="{tx:.1f}" y="{ty:.1f}" class="s-kucuk" transform="rotate(-{aci:.1f} {tx:.1f} {ty:.1f})">{etiket}</text>')
     # noktalar
     for b, ad in ((2e6, "2 MHz"), (300e6, "300 MHz"), (1e9, "1 GHz")):
         t = KTB + db10(b) + nf
         out.append(f'<circle cx="{px(b):.1f}" cy="{py(t):.1f}" r="4.5" fill="var(--red)"/>')
         out.append(f'<circle cx="{px(b):.1f}" cy="{py(t + snr):.1f}" r="4" fill="var(--green)"/>')
-        out.append(f'<text x="{px(b) + 7:.1f}" y="{py(t) + 14:.1f}" class="s-mono2">{ad}: {t:.1f}</text>')
-        out.append(f'<text x="{px(b) + 7:.1f}" y="{py(t + snr) - 6:.1f}" class="s-mono2 s-yesil">MDS {t + snr:.1f}</text>')
+        out.append(kutu_metin(px(b) + 7, py(t) + 14, f"{ad}: {t:.1f}", "s-mono2", "start", 10))
+        out.append(kutu_metin(px(b) - 7, py(t + snr) - 6, f"MDS {t + snr:.1f}", "s-mono2 s-yesil", "end", 10))
     out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 32}" text-anchor="middle" class="s-kucuk">bant genişliği B (log) · dBm — her ×10 bant = +10 dB gürültü</text>')
     # sağ panel: darbe spektrumu + iki bant
     fx0, fx1, fy0, fy1 = 540, 830, 330, 50
@@ -802,9 +818,9 @@ def g_41():
     n300 = KTB + db10(300e6) + nf
     snr300 = S["sinyal"]["seviye_dbm_giris"] - n300
     out.append(f'<rect x="{fx0}" y="{fpy(-snr300):.1f}" width="{fx1 - fx0}" height="{fy0 - fpy(-snr300):.1f}" class="spk-gurultu" opacity=".6"/>')
-    out.append(f'<text x="{fx0 + 4}" y="{fpy(-snr300) - 4:.1f}" class="s-kucuk">gürültü tabanı (300 MHz): darbe tepesinin {snr300:.1f} dB altında</text>')
-    n2 = KTB + db10(2e6) + nf
-    out.append(f'<line x1="{fpx(-1)}" y1="{fpy(-(S["sinyal"]["seviye_dbm_giris"] - n2)):.1f}" x2="{fpx(1)}" y2="{fpy(-(S["sinyal"]["seviye_dbm_giris"] - n2)):.1f}" stroke="var(--ink-2)" stroke-width="3"/>')
+    out.append(f'<text x="{fpx(-8):.1f}" y="{fpy(-snr300) - 18:.1f}" text-anchor="end" class="s-kucuk">taban (300 MHz):</text>')
+    out.append(f'<text x="{fpx(-8):.1f}" y="{fpy(-snr300) - 4:.1f}" text-anchor="end" class="s-kucuk">tepenin {snr300:.1f} dB altında</text>')
+    n2 = KTB + db10(2e6) + nf   # 2 MHz tabanı (tepenin ~45 dB altı) panel aralığının dışında; yazıyla verilir
     nf_ = 1200
     fsx = [xmin + (xmax - xmin) * k / (nf_ - 1) for k in range(nf_)]
     sp = [20 * math.log10(max(abs(sinc(f * 1.0)), 1e-6)) for f in fsx]  # PW 1 µs, f MHz
@@ -815,9 +831,9 @@ def g_41():
     out.append(f'<rect x="{fpx(-150):.1f}" y="{fy1 + 6}" width="{fpx(150) - fpx(-150):.1f}" height="{fy0 - fy1 - 6:.1f}" fill="none" class="spk-filtre"/>')
     out.append(f'<text x="{fpx(-148):.1f}" y="{fy1 + 20}" class="s-kucuk s-altin">geniş: 300 MHz → taban {n300:.1f} dBm, POI yüksek</text>')
     out.append(f'<rect x="{fpx(-1):.1f}" y="{fy1 + 30}" width="{fpx(1) - fpx(-1):.1f}" height="{fy0 - fy1 - 30:.1f}" fill="var(--gold)" opacity=".25"/>')
-    out.append(f'<text x="{fpx(3):.1f}" y="{fy1 + 44}" class="s-kucuk s-altin">dar: 2 MHz → taban {n2:.1f} dBm</text>')
-    out.append(f'<text x="{fpx(3):.1f}" y="{fy1 + 58}" class="s-kucuk">ama f₀ bilinmeli ya da taranmalı</text>')
-    out.append(f'<text x="{fpx(3):.1f}" y="{fy1 + 72}" class="s-kucuk">(POI düşer)</text>')
+    for i, (satir, kls) in enumerate((("dar: 2 MHz →", "s-kucuk s-altin"), (f"taban {n2:.1f} dBm", "s-kucuk s-altin"), (f"(tepenin {S['sinyal']['seviye_dbm_giris'] - n2:.0f} dB altı)", "s-kucuk s-altin"),
+                                      ("ama f₀ bilinmeli", "s-kucuk"), ("ya da taranmalı (POI düşer)", "s-kucuk"))):
+        out.append(f'<text x="{fpx(4):.1f}" y="{fy1 + 44 + 14 * i}" class="{kls}">{satir}</text>')
     out.append(f'<text x="{(fx0 + fx1) / 2:.0f}" y="{fy0 + 32}" text-anchor="middle" class="s-kucuk">f − f₀ (MHz) · dB (darbe tepesine göre)</text>')
     yaz("g-41-bant-gurultu-tabani.svg", out)
 
@@ -825,7 +841,7 @@ def g_41():
 # ================================================================== g-12
 def g_12():
     """Üç cetvel: anten dBm, ADC girişi dBm (+40 dB kazanç), dBFS (0 dBFS = +4 dBm)."""
-    W, H = 860, 340
+    W, H = 860, 420
     G = S["on_uc"]["kazanc_toplam_db"]
     fsd = S["adc"]["tam_olcek_dbm"]
     giris = S["sinyal"]["seviye_dbm_giris"]
@@ -833,7 +849,7 @@ def g_12():
     out = bas("g12", W, H, f"Üç cetvel: aynı seviyenin anten girişinde dBm, ADC girişinde dBm (zincir kazancı +{G} dB) ve sayısal alanda dBFS (0 dBFS = +{fsd} dBm) karşılıkları. İşaretli seviyeler: ADC tam ölçeği, referans darbe (−60 dBm antende → −20 dBm ADC'de → −24 dBFS), 300 MHz gürültü tabanı ve MDS. İki sabit (kazanç ve tam ölçek dBm'i) bilinince FFT ekranındaki dBFS anten girişine referanslanır.")
     x_ant, x_adc, x_fs = 150, 430, 710
     ymin, ymax = -100, 10          # ADC girişi dBm ölçeği
-    y0, y1 = 290, 70
+    y0, y1 = 350, 70
     py = lambda v: y0 - (v - ymin) / (ymax - ymin) * (y0 - y1)
     for x, ad, ofs, kls, sym in ((x_ant, "anten girişi (dBm)", -G, "s-altin", "anten"), (x_adc, "ADC girişi (dBm)", 0, "s-altin", "adc"), (x_fs, "sayısal alan (dBFS)", -fsd, "s-vurgu", "fft")):
         out.append(f'<rect x="{x - 8}" y="{y1}" width="16" height="{y0 - y1}" fill="var(--dia-blok)" stroke="var(--line-2)"/>')
@@ -846,18 +862,19 @@ def g_12():
     isaretler = [(fsd, "ADC tam ölçek", f"+{fsd} dBm = 0 dBFS", "s-kirmizi"),
                  (giris + G, "referans darbe", f"{giris} → {giris + G} dBm → {giris + G - fsd} dBFS", "s-vurgu"),
                  (taban_in + G + 15, "MDS", f"{taban_in + 15:.1f} → {taban_in + 15 + G:.1f} dBm → {taban_in + 15 + G - fsd:.1f} dBFS", "s-yesil"),
-                 (taban_in + G, "gürültü tabanı (300 MHz)", f"{taban_in:.1f} → {taban_in + G:.1f} dBm → {taban_in + G - fsd:.1f} dBFS", "s-kirmizi")]
+                 (taban_in + G, "taban (300 MHz)", f"{taban_in:.1f} → {taban_in + G:.1f} dBm → {taban_in + G - fsd:.1f} dBFS", "s-kirmizi")]
     for v, ad, metin, kls in isaretler:
         yy = py(v)
-        out.append(f'<line x1="{x_ant}" y1="{yy:.1f}" x2="{x_fs}" y2="{yy:.1f}" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>')
+        for xa, xb in ((x_ant + 10, x_adc - 46), (x_adc + 10, x_fs - 46)):   # cetvel tik yazılarının üstünden geçme
+            out.append(f'<line x1="{xa}" y1="{yy:.1f}" x2="{xb}" y2="{yy:.1f}" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>')
         for x in (x_ant, x_adc, x_fs):
             out.append(f'<circle cx="{x}" cy="{yy:.1f}" r="3.5" fill="var(--accent)"/>')
         out.append(f'<text x="{x_fs + 16}" y="{yy + 4:.1f}" class="s-kucuk {kls}">{ad}</text>')
         out.append(f'<text x="{(x_ant + x_adc) / 2:.0f}" y="{yy - 5:.1f}" text-anchor="middle" class="s-kucuk">{metin}</text>')
     out.append(f'<line x1="{x_ant + 16}" y1="{y0 + 18}" x2="{x_adc - 16}" y2="{y0 + 18}" class="yol-analog" marker-end="url(#ok-analog)"/>')
-    out.append(f'<text x="{(x_ant + x_adc) / 2:.0f}" y="{y0 + 36}" text-anchor="middle" class="s-metin2">+{G} dB zincir kazancı (ölçülür, sıcaklıkla kayar)</text>')
+    out.append(f'<text x="{(x_ant + x_adc) / 2:.0f}" y="{y0 + 36}" text-anchor="middle" class="s-metin2">+{G} dB zincir kazancı<tspan x="{(x_ant + x_adc) / 2:.0f}" dy="15">(ölçülür, sıcaklıkla kayar)</tspan></text>')
     out.append(f'<line x1="{x_adc + 16}" y1="{y0 + 18}" x2="{x_fs - 16}" y2="{y0 + 18}" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
-    out.append(f'<text x="{(x_adc + x_fs) / 2:.0f}" y="{y0 + 36}" text-anchor="middle" class="s-metin2">−{fsd} dB: 0 dBFS = +{fsd} dBm (ADC sabiti)</text>')
+    out.append(f'<text x="{(x_adc + x_fs) / 2:.0f}" y="{y0 + 36}" text-anchor="middle" class="s-metin2">−{fsd} dB: 0 dBFS = +{fsd} dBm<tspan x="{(x_adc + x_fs) / 2:.0f}" dy="15">(ADC sabiti, datasheet)</tspan></text>')
     yaz("g-12-uc-cetvel.svg", out)
 
 
@@ -886,7 +903,7 @@ def g_42():
     out.append(f'<line x1="{px(1):.1f}" y1="{py(0.242):.1f}" x2="{px(-1):.1f}" y2="{py(0.242):.1f}" stroke="var(--accent)" stroke-width="1.4"/>')
     out.append(f'<text x="{px(0):.1f}" y="{py(0.242) - 6:.1f}" text-anchor="middle" class="s-kucuk s-vurgu">σ = rms = √güç</text>')
     out.append(f'<text x="{px(3.1):.1f}" y="{py(0.05):.1f}" class="s-kucuk s-kirmizi">P(&gt;3σ) = %0.13</text>')
-    out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 30}" text-anchor="middle" class="s-kucuk">gerilim (σ birimiyle) · −83.2 dBm → σ = 15.5 µV</text>')
+    out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 30}" text-anchor="middle" class="s-kucuk">gerilim (σ) · −83.2 dBm → σ = 15.5 µV</text>')
     cx, cy, R = 430, 165, 95
     out.append('<text x="335" y="30" class="s-baslik">I/Q düzlemi: yönsüz bulut</text>')
     out.append(f'<line x1="{cx - R - 10}" y1="{cy}" x2="{cx + R + 10}" y2="{cy}" stroke="var(--ink-3)" stroke-width="1"/>')
@@ -900,7 +917,7 @@ def g_42():
         i_, q_ = rnd.gauss(0, 1), rnd.gauss(0, 1)
         out.append(f'<circle cx="{cx + R * i_ / 4:.1f}" cy="{cy - R * q_ / 4:.1f}" r="1.6" fill="var(--accent)" opacity=".55"/>')
     out.append(f'<text x="{cx + R + 4}" y="{cy + 14}" class="s-kucuk">I</text><text x="{cx + 4}" y="{cy - R - 2}" class="s-kucuk">Q</text>')
-    out.append(f'<text x="{cx}" y="{cy + R + 34}" text-anchor="middle" class="s-kucuk">I ve Q bağımsız Gauss, her biri σ² güçlü</text>')
+    out.append(f'<text x="{cx}" y="{cy + R + 34}" text-anchor="middle" class="s-kucuk">I, Q bağımsız Gauss, her biri σ² güçlü</text>')
     x0, x1 = 590, 830
     out.append('<text x="590" y="30" class="s-baslik">Zarf √(I²+Q²): Rayleigh</text>')
     rmax = 6
@@ -916,9 +933,9 @@ def g_42():
     py = lambda v: y0 - v / 0.7 * (y0 - y1)
     out.append(f'<line x1="{px(esik):.1f}" y1="{y1}" x2="{px(esik):.1f}" y2="{y0}" class="yol-gurultu"/>')
     out.append(f'<text x="{px(esik) - 4:.1f}" y="{y1 + 14}" text-anchor="end" class="s-kucuk s-kirmizi">eşik {esik}σ → Pfa = 10⁻⁶</text>')
-    out.append(f'<text x="{px(1) + 4:.1f}" y="{py(0.61) - 4:.1f}" class="s-kucuk">tepe σ, ortalama 1.25σ</text>')
-    out.append(f'<text x="{px(2.2):.1f}" y="{py(0.12):.1f}" class="s-kucuk">kesikli: |Gauss| (karşılaştırma)</text>')
-    out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 30}" text-anchor="middle" class="s-kucuk">zarf (σ birimiyle) — eşik bu kuyruğa konur (Bölüm 21, 22)</text>')
+    out.append(f'<text x="{px(1.75) + 4:.1f}" y="{py(0.40):.1f}" class="s-kucuk">tepe σ, ortalama 1.25σ</text>')
+    out.append(f'<text x="{px(esik) - 6:.1f}" y="{py(0.20):.1f}" text-anchor="end" class="s-kucuk">kesikli: |Gauss|</text>')
+    out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 30}" text-anchor="middle" class="s-kucuk">zarf (σ) — eşik bu kuyruğa konur (B21, B22)</text>')
     yaz("g-42-gurultu-istatistigi.svg", out)
 
 

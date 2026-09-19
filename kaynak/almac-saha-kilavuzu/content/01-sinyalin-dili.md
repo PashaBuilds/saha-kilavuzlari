@@ -62,7 +62,7 @@ bant genişliğini frekans ekseninde; filtreyi frekans ekseninde tasarlarsın,
 onun darbeyi ne kadar yumuşattığını zaman ekseninde görürsün. Kılavuz
 boyunca sinyal gösteren neredeyse her görselde iki panel yan yana olacak.
 Fourier'nin sezgisi şimdilik bu kadar; hesabın kendisi (DFT, FFT, bin,
-pencere) {{bolum:17}} ve {{bolum:18}}'in konusu.
+pencere) {{bolum:18}} ve {{bolum:19}}'un konusu.
 
 ## Kavram: güç, gerilim ve 50 Ω dünyası
 
@@ -129,7 +129,8 @@ diye bir işlem yoktur (aşağıdaki tuzağa bak).
 
 Merdivende iki bölge işaretli. Altta gri: 300 MHz bantta gürültü tabanının
 altı — oraya düşen sinyal görünmez ({{bolum:4}}). Üstte kırmızı: ADC tam
-ölçeğinin üstü — oraya çıkan sinyal kırpılır ({{bolum:9}}). Almacın
+ölçeğinin üstü, **doyum** (saturation) bölgesi — oraya çıkan sinyal kırpılır
+(clipping, {{bolum:9}}). Almacın
 **dinamik aralığı**, kabaca bu ikisinin arasıdır; tasarımın büyük kısmı
 darbeyi bu koridorda tutmaktır. Merdivenin bir başka faydası büyüklük hissi
 vermesidir: −83 dBm ile −68 dBm arasındaki 15 dB, "çok az" değil, gücün
@@ -207,7 +208,7 @@ olmalı; genlik (zarf, √(I²+Q²)) veriyorsan 20 çarpanı gerekir. (2) Tabloy
 giden değer tam sayı güç ise ölçek biti (Q formatı) dB'ye sabit bir ofset
 olarak eklenir: $2^{−30}$ ölçekli bir güç için −90.3 dB. (3) Register'a
 yazılan dB, hemen her zaman sabit bir LSB ile tam sayıdır; float'ı
-yuvarlamadan `(int)` ile kırpmak yarım LSB'lik sistematik hata bırakır.
+yuvarlamadan `(int)` ile kesmek (truncation) yarım LSB'lik sistematik hata bırakır.
 
 :::tuzak "Genlik ölçtüm, 10·log aldım"
 Zarf dedektöründen gelen büyüklük (√(I²+Q²)) bir *genliktir*. Yazılımcı bunu
@@ -231,7 +232,7 @@ sonra dB'ye dön. dsp-core'daki `snrBirlestir` tam olarak bunu yapar.
 
 :::saha-notu Spektrum analizörünün "dBm"i neye göre?
 Analizör ekranındaki gürültü tabanı, cihazın **çözünürlük bant genişliğine**
-(RBW) göre ölçülmüş güçtür: RBW 1 MHz'te −114 dBm okuyan taban, RBW 1 kHz'te
+(RBW — resolution bandwidth) göre ölçülmüş güçtür: RBW 1 MHz'te −114 dBm okuyan taban, RBW 1 kHz'te
 −144 dBm olur. Sayıyı not ederken RBW'yi de not et; iki ekranı
 karşılaştırırken $10·log(RBW_2/RBW_1)$ düzeltmesini uygula. Aynı şey FFT
 ekranı için de geçerlidir — orada RBW'nin adı "bin genişliği"dir ({{bolum:18}}).

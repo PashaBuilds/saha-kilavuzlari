@@ -4,7 +4,7 @@
 :::neden-onemli
 Sahadan soru: "Almacın hassasiyeti −68 dBm deniyor; bu sayı nereden çıktı ve
 kartı soğutunca, kabloyu uzatınca, bandı açınca ne olur?" Eşik register'ına
-yazdığın her değer bu sayının üstünde bir yerdedir; yanlış alarm oranı
+yazdığın her değer bu sayının üstünde bir yerdedir; yanlış alarm (false alarm) oranı
 ({{bolum:21}}, {{bolum:23}}) bu sayının etrafındaki gürültünün
 istatistiğine bağlıdır; ADC'nin kaç bit olması gerektiği ({{bolum:9}}) bu
 sayı ile doyum arasındaki mesafeden çıkar. Gürültü, almacın "sıfır" çizgisi
@@ -38,7 +38,7 @@ fısıltı başka köşeden gelirse kaçırırsın (POI).
 
 ## Kavram: kTB — gürültünün fiziği
 
-Eşleştirilmiş bir yüke düşen termal gürültü gücü, Boltzmann sabiti,
+Empedansı eşlenmiş (matched) bir yüke düşen termal gürültü gücü, Boltzmann sabiti,
 sıcaklık ve bant genişliğinin çarpımıdır. Bu üçlünün en kullanışlı hali,
 1 Hz'e düşen güçtür: oda sıcaklığında (290 K, sistem mühendisliğinin
 standart T₀'ı) **−174 dBm/Hz**. Bu sayı, kılavuzun en sık geçen sabitidir;
@@ -102,7 +102,7 @@ o: KICKOFF'un bilinen-cevap örneği: LNA (G = 20 dB, NF = 2 dB) + mixer (NF = 1
 o: Referans zincir (limiter → LNA → preselector → mixer → IF filtre → IF yükselteç → AAF), scenario.json değerleriyle → **{{s:on_uc.nf_friis_db}} dB**, kazanç {{s:on_uc.kazanc_toplam_db}} dB. Aynı bloklar, LNA en sona alınırsa → **16.5 dB**; LNA hiç yoksa → yine **16.5 dB**: sondaki LNA'nın hiçbir katkısı yoktur.
 :::
 
-{{svg:g-40-seviye-diyagrami.svg|Referans ön uç kaskadının seviye diyagramı (hesaplanmış, B = 300 MHz). Üstte blok sembolleri ve her bloğun kazanç/NF'i; altta bloktan bloğa sinyal (mavi, −60 → −20 dBm) ve gürültü (gri). Girişte SNR 29.2 dB, çıkışta 25.8 dB; fark 3.45 dB = Friis NF. Kümülatif NF satırı LNA'dan sonra neredeyse değişmez; ADC tam ölçeği altın kesikli, tepe payı 24 dB.|kaydir}}
+{{svg:g-40-seviye-diyagrami.svg|Referans ön uç kaskadının seviye diyagramı (hesaplanmış, B = 300 MHz). Üstte blok sembolleri ve her bloğun kazanç/NF'i; altta bloktan bloğa sinyal (mavi, −60 → −20 dBm) ve gürültü (gri). Girişte SNR 29.2 dB, çıkışta 25.8 dB; fark 3.45 dB = Friis NF. Kümülatif NF satırı LNA'dan sonra neredeyse değişmez; ADC tam ölçeği altın kesikli, headroom (tepe payı) 24 dB.|kaydir}}
 
 Seviye diyagramı Friis'in resmidir. İki çizgiye bak: sinyal her blokta
 kazanç kadar iner-çıkar; gürültü ise her blokta hem kazançla ölçeklenir hem
@@ -170,8 +170,8 @@ yakalamak isteyince tek darbe için 13–15 dB civarı gerekir; sayının köken
 Tabanın bir de tavanı var. ADC'nin tam ölçeği +{{s:adc.tam_olcek_dbm}} dBm,
 zincir kazancı {{s:on_uc.kazanc_toplam_db}} dB; girişe indirgenmiş doyum
 seviyesi 4 − 40 = **−36 dBm**. Gürültü tabanı −83.2 dBm ile doyum −36 dBm
-arasındaki 47 dB, almacın 300 MHz banttaki **anlık dinamik aralığının** kaba
-üst sınırıdır: aynı anda bundan daha farklı seviyeli iki darbe, biri
+arasındaki 47 dB, almacın 300 MHz banttaki **anlık dinamik aralığının**
+(instantaneous dynamic range) kaba üst sınırıdır: aynı anda bundan daha farklı seviyeli iki darbe, biri
 gürültüde biri doyumda olmadan işlenemez. Bu koridoru genişletmenin yolları
 — daha çok bit, kazanç kontrolü, daha dar bant — {{bolum:5}} ve {{bolum:9}}'un
 konusu; burada yalnızca koridorun iki duvarını göstermiş olduk.
@@ -240,7 +240,7 @@ Tip: reel, bant geçiren
 !Seviye: {{s:sinyal.seviye_dbm_giris}} + {{s:on_uc.kazanc_toplam_db}} = −20 dBm (tepe)
 !Gürültü: −43.2 dBm (300 MHz, sistem NF {{s:on_uc.nf_toplam_db}} dB); yalnız Friis ile −45.8 dBm
 !SNR: 23.2 dB (tek darbe, tepe; girişte 29.2 dB idi)
-Tepe payı: ADC tam ölçeği +{{s:adc.tam_olcek_dbm}} dBm → 24 dB
+Headroom (tepe payı): ADC tam ölçeği +{{s:adc.tam_olcek_dbm}} dBm → 24 dB
 :::
 
 ## FPGA'da nasıl gerçeklenir
@@ -329,7 +329,7 @@ IF yükseltecinin kazancını 32'den 42 dB'ye çıkarınca FFT ekranında darbe
 10 dB yükselir ve "daha iyi görüyoruz" hissi doğar. Oysa gürültü tabanı da
 10 dB yükselmiştir; SNR ve dolayısıyla MDS değişmemiştir (Friis'te IF
 yükselteç LNA'nın 20 dB'sinin arkasındadır, katkısı zaten küçüktü). Değişen
-tek şey doyum payıdır: ADC tam ölçeğine 10 dB yaklaşıldı, güçlü darbeler
+tek şey headroom'dur (tam ölçeğe kalan pay): ADC tam ölçeğine 10 dB yaklaşıldı, güçlü darbeler
 artık kırpılır ve harmonikler üretir ({{bolum:9}}). Hassasiyet zincirin
 *başında*, dinamik aralık zincirin *sonunda* belirlenir; kazanç düğmesi
 ikisini birbirine karşı takas eder, ikisini birden vermez.

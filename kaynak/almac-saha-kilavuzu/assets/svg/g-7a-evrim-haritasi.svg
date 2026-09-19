@@ -1,32 +1,32 @@
-<svg viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g7a">
+<svg viewBox="0 0 920 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g7a">
 <title id="t-g7a">Almaç mimarilerinin tarihsel/evrimsel haritası: 1940'lardan 2020'lere dört soy (zarf, anlık frekans, süperhet, kanallaştırma) üzerinde on mimari; CVR→IFM, süperhet→sayısal IF→direct RF, analog kanallaştırılmış ve compressive→sayısal kanallaştırılmış, IFM→monobit evrim okları; 1990 sonrası hızlı ADC + FPGA çağı vurgulu.</title>
 <text x="60.0" y="22.0" text-anchor="start" class="s-baslik">Almaç mimarilerinin evrim haritası (yaklaşık on yıllar; açık literatüre göre, ± bir on yıl)</text>
-<line x1="60.0" y1="40" x2="60.0" y2="410" class="izgara"/>
-<text x="60.0" y="424.0" text-anchor="middle" class="s-mono2">1940</text>
-<line x1="158.8" y1="40" x2="158.8" y2="410" class="izgara"/>
-<text x="158.8" y="424.0" text-anchor="middle" class="s-mono2">1950</text>
-<line x1="257.6" y1="40" x2="257.6" y2="410" class="izgara"/>
-<text x="257.6" y="424.0" text-anchor="middle" class="s-mono2">1960</text>
-<line x1="356.5" y1="40" x2="356.5" y2="410" class="izgara"/>
-<text x="356.5" y="424.0" text-anchor="middle" class="s-mono2">1970</text>
-<line x1="455.3" y1="40" x2="455.3" y2="410" class="izgara"/>
-<text x="455.3" y="424.0" text-anchor="middle" class="s-mono2">1980</text>
-<line x1="554.1" y1="40" x2="554.1" y2="410" class="izgara"/>
-<text x="554.1" y="424.0" text-anchor="middle" class="s-mono2">1990</text>
-<line x1="652.9" y1="40" x2="652.9" y2="410" class="izgara"/>
-<text x="652.9" y="424.0" text-anchor="middle" class="s-mono2">2000</text>
-<line x1="751.8" y1="40" x2="751.8" y2="410" class="izgara"/>
-<text x="751.8" y="424.0" text-anchor="middle" class="s-mono2">2010</text>
-<line x1="850.6" y1="40" x2="850.6" y2="410" class="izgara"/>
-<text x="850.6" y="424.0" text-anchor="middle" class="s-mono2">2020</text>
+<line x1="60.0" y1="40" x2="60.0" y2="452" class="izgara"/>
+<text x="60.0" y="466.0" text-anchor="middle" class="s-mono2">1940</text>
+<line x1="158.8" y1="40" x2="158.8" y2="452" class="izgara"/>
+<text x="158.8" y="466.0" text-anchor="middle" class="s-mono2">1950</text>
+<line x1="257.6" y1="40" x2="257.6" y2="452" class="izgara"/>
+<text x="257.6" y="466.0" text-anchor="middle" class="s-mono2">1960</text>
+<line x1="356.5" y1="40" x2="356.5" y2="452" class="izgara"/>
+<text x="356.5" y="466.0" text-anchor="middle" class="s-mono2">1970</text>
+<line x1="455.3" y1="40" x2="455.3" y2="452" class="izgara"/>
+<text x="455.3" y="466.0" text-anchor="middle" class="s-mono2">1980</text>
+<line x1="554.1" y1="40" x2="554.1" y2="452" class="izgara"/>
+<text x="554.1" y="466.0" text-anchor="middle" class="s-mono2">1990</text>
+<line x1="652.9" y1="40" x2="652.9" y2="452" class="izgara"/>
+<text x="652.9" y="466.0" text-anchor="middle" class="s-mono2">2000</text>
+<line x1="751.8" y1="40" x2="751.8" y2="452" class="izgara"/>
+<text x="751.8" y="466.0" text-anchor="middle" class="s-mono2">2010</text>
+<line x1="850.6" y1="40" x2="850.6" y2="452" class="izgara"/>
+<text x="850.6" y="466.0" text-anchor="middle" class="s-mono2">2020</text>
 <text x="64.0" y="52.0" text-anchor="start" class="s-kucuk s-altin">zarf soyu</text>
 <line x1="60" y1="100" x2="900" y2="100" stroke="var(--line-2)" stroke-dasharray="3 5"/>
 <text x="64.0" y="132.0" text-anchor="start" class="s-kucuk s-altin">anlık frekans soyu</text>
 <line x1="60" y1="180" x2="900" y2="180" stroke="var(--line-2)" stroke-dasharray="3 5"/>
 <text x="64.0" y="212.0" text-anchor="start" class="s-kucuk s-altin">süperhet soyu</text>
-<line x1="60" y1="260" x2="900" y2="260" stroke="var(--line-2)" stroke-dasharray="3 5"/>
-<text x="64.0" y="292.0" text-anchor="start" class="s-kucuk s-altin">kanallaştırma soyu</text>
-<line x1="60" y1="340" x2="900" y2="340" stroke="var(--line-2)" stroke-dasharray="3 5"/>
+<line x1="60" y1="302" x2="900" y2="302" stroke="var(--line-2)" stroke-dasharray="3 5"/>
+<text x="64.0" y="334.0" text-anchor="start" class="s-kucuk s-altin">kanallaştırma soyu</text>
+<line x1="60" y1="382" x2="900" y2="382" stroke="var(--line-2)" stroke-dasharray="3 5"/>
 <rect x="79.8" y="60.0" width="90.0" height="34.0" rx="6" class="blok-analog"/>
 <text x="85.8" y="74.0" text-anchor="start" class="s-mono2">M-1</text>
 <text x="85.8" y="88.0" text-anchor="start" class="s-kucuk">CVR / TRF</text>
@@ -36,24 +36,24 @@
 <rect x="109.4" y="220.0" width="150.0" height="34.0" rx="6" class="blok-analog"/>
 <text x="115.4" y="234.0" text-anchor="start" class="s-mono2">M-2</text>
 <text x="115.4" y="248.0" text-anchor="start" class="s-kucuk">süperheterodin (taramalı)</text>
-<rect x="336.7" y="300.0" width="130.0" height="34.0" rx="6" class="blok-analog"/>
-<text x="342.7" y="314.0" text-anchor="start" class="s-mono2">M-5</text>
-<text x="342.7" y="328.0" text-anchor="start" class="s-kucuk">analog kanallaştırılmış</text>
+<rect x="336.7" y="342.0" width="130.0" height="34.0" rx="6" class="blok-analog"/>
+<text x="342.7" y="356.0" text-anchor="start" class="s-mono2">M-5</text>
+<text x="342.7" y="370.0" text-anchor="start" class="s-kucuk">analog kanallaştırılmış</text>
 <rect x="376.2" y="140.0" width="150.0" height="34.0" rx="6" class="blok-analog"/>
 <text x="382.2" y="154.0" text-anchor="start" class="s-mono2">M-6</text>
 <text x="382.2" y="168.0" text-anchor="start" class="s-kucuk">compressive · akusto-optik</text>
-<rect x="534.4" y="220.0" width="110.0" height="34.0" rx="6" class="blok-analog"/>
-<text x="540.4" y="234.0" text-anchor="start" class="s-mono2">M-3</text>
-<text x="540.4" y="248.0" text-anchor="start" class="s-kucuk">zero-IF (entegre)</text>
+<rect x="534.4" y="262.0" width="110.0" height="34.0" rx="6" class="blok-analog"/>
+<text x="540.4" y="276.0" text-anchor="start" class="s-mono2">M-3</text>
+<text x="540.4" y="290.0" text-anchor="start" class="s-kucuk">zero-IF (entegre)</text>
 <rect x="573.9" y="220.0" width="100.0" height="34.0" rx="6" class="blok"/>
 <text x="579.9" y="234.0" text-anchor="start" class="s-mono2">M-7</text>
 <text x="579.9" y="248.0" text-anchor="start" class="s-kucuk">sayısal IF</text>
 <rect x="633.2" y="140.0" width="70.0" height="34.0" rx="6" class="blok"/>
 <text x="639.2" y="154.0" text-anchor="start" class="s-mono2">M-10</text>
 <text x="639.2" y="168.0" text-anchor="start" class="s-kucuk">monobit</text>
-<rect x="652.9" y="300.0" width="140.0" height="34.0" rx="6" class="blok"/>
-<text x="658.9" y="314.0" text-anchor="start" class="s-mono2">M-9</text>
-<text x="658.9" y="328.0" text-anchor="start" class="s-kucuk">sayısal kanallaştırılmış</text>
+<rect x="652.9" y="342.0" width="140.0" height="34.0" rx="6" class="blok"/>
+<text x="658.9" y="356.0" text-anchor="start" class="s-mono2">M-9</text>
+<text x="658.9" y="370.0" text-anchor="start" class="s-kucuk">sayısal kanallaştırılmış</text>
 <rect x="771.5" y="220.0" width="110.0" height="34.0" rx="6" class="blok"/>
 <text x="777.5" y="234.0" text-anchor="start" class="s-mono2">M-8</text>
 <text x="777.5" y="248.0" text-anchor="start" class="s-kucuk">direct RF sampling</text>
@@ -63,16 +63,16 @@
 <text x="416.6" y="228.0" text-anchor="middle" class="s-kucuk">IF'te ADC</text>
 <path d="M673.9 237 C713.9 237 731.5 237 771.5 237" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>
 <text x="722.7" y="228.0" text-anchor="middle" class="s-kucuk">ADC RF'e</text>
-<path d="M466.7 317 C506.7 317 612.9 317 652.9 317" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>
-<text x="559.8" y="308.0" text-anchor="middle" class="s-kucuk">filtre bankası → FFT</text>
-<path d="M526.2 157 C566.2 157 612.9 317 652.9 317" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>
-<text x="589.6" y="228.0" text-anchor="middle" class="s-kucuk">analog Fourier → sayısal</text>
-<path d="M298.0 157 C338.0 157 593.2 157 633.2 157" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>
-<text x="465.6" y="148.0" text-anchor="middle" class="s-kucuk">1-bit FFT</text>
-<path d="M259.4 237 C299.4 237 494.4 237 534.4 237" class="yol-analog" fill="none" marker-end="url(#ok-analog)" opacity=".9"/>
-<text x="396.9" y="228.0" text-anchor="middle" class="s-kucuk">IF = 0</text>
-<rect x="554.1" y="40" width="345.9" height="370" class="spk-sinyal" opacity=".06"/>
+<path d="M259.4 237 C299.4 237 494.4 279 534.4 279" class="yol-analog" fill="none" marker-end="url(#ok-analog)" opacity=".9"/>
+<text x="396.9" y="249.0" text-anchor="middle" class="s-kucuk">IF = 0</text>
+<path d="M466.7 366 H652.9" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>
+<text x="559.8" y="380.0" text-anchor="middle" class="s-kucuk">filtre bankası → FFT</text>
+<path d="M480.7 174 V344 Q480.7 352 488.7 352 H652.9" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>
+<text x="488.7" y="328.0" text-anchor="start" class="s-kucuk">analog Fourier → sayısal</text>
+<path d="M298.0 157 C338.0 157 346.2 128 451.2 128 C556.2 128 593.2 157 633.2 157" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)" opacity=".9"/>
+<text x="451.2" y="123.0" text-anchor="middle" class="s-kucuk">1-bit FFT</text>
+<rect x="554.1" y="40" width="345.9" height="412" class="spk-sinyal" opacity=".06"/>
 <text x="560.1" y="52.0" text-anchor="start" class="s-kucuk s-vurgu">hızlı ADC + FPGA çağı →</text>
-<text x="60.0" y="450.0" text-anchor="start" class="s-kucuk">Altın kutular analog, mavi kutular sayısal çekirdekli mimariler. Oklar 'hangi fikir hangisine dönüştü' ilişkisidir; tarihler kaynaklara göre ± bir on yıl oynar.</text>
-<text x="60.0" y="464.0" text-anchor="start" class="s-kucuk">Bugün RWR'lerde M-1 + M-4 ikilisi, ESM/ELINT'te M-7/M-8 + M-9 yaygındır; M-6 ve akusto-optik tarihî ilgi alanıdır.</text>
+<text x="60.0" y="492.0" text-anchor="start" class="s-kucuk">Altın kutular analog, mavi kutular sayısal çekirdekli mimariler. Oklar 'hangi fikir hangisine dönüştü' ilişkisidir; tarihler kaynaklara göre ± bir on yıl oynar.</text>
+<text x="60.0" y="506.0" text-anchor="start" class="s-kucuk">Bugün RWR'lerde M-1 + M-4 ikilisi, ESM/ELINT'te M-7/M-8 + M-9 yaygındır; M-6 ve akusto-optik tarihî ilgi alanıdır.</text>
 </svg>

@@ -4,7 +4,7 @@
   .p-band { fill: none; stroke-dasharray: 6 5; stroke-width: 1.2; }
   .p-et { font-family: var(--sans); font-size: 10px; fill: var(--ink-2); }
   .p-ad { font-family: var(--sans); font-size: 11px; fill: var(--ink); font-weight: 600; }
-  .p-b  { font-family: var(--mono); font-size: 9.5px; fill: var(--ink-3); }
+  .p-b  { font-family: var(--mono); font-size: 10px; fill: var(--ink-3); }
   .p-bas { font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 </style>
 <!-- dünya bantları -->
@@ -19,8 +19,8 @@
 <!-- darbe girişi -->
 <g>
   <path d="M22 130 L36 130 L36 96 L42 96 L42 130 L60 130" class="yol-analog" opacity=".7"/>
-  <text x="22" y="150" class="p-et">gelen darbe</text>
-  <text x="22" y="162" class="p-et">9.4 GHz · 1 µs</text>
+  <text x="22" y="154" class="p-et">gelen darbe</text>
+  <text x="22" y="166" class="p-et">9.4 GHz · 1 µs</text>
 </g>
 <!-- RF zinciri -->
 <a href="#bolum-5"><use href="#sym-anten" x="56" y="60" width="60" height="40"/><text x="86" y="114" text-anchor="middle" class="p-ad">Anten</text><text x="86" y="126" text-anchor="middle" class="p-b">B5</text></a>
@@ -33,7 +33,7 @@
 <path d="M350 140 V100" class="yol-saat" marker-end="url(#ok-saat)"/>
 <!-- IF katı: aşağı dönüş -->
 <path d="M380 80 H396 V140 H80 V176 H90" class="yol-analog" fill="none"/>
-<text x="400" y="76" class="p-et">IF 1.8 GHz</text>
+<text x="400" y="136" class="p-et">IF 1.8 GHz</text>
 <!-- IF filtre + amp + AAF satırı (y=160..200 içinde) -->
 <g transform="translate(0,0)">
   <a href="#bolum-6"><use href="#sym-bpf" x="90" y="156" width="60" height="40"/><text x="120" y="210" text-anchor="middle" class="p-ad">IF filtre</text></a>
@@ -53,7 +53,7 @@
 <text x="586" y="208" class="p-et">14 bit · 33.6 Gbps</text>
 <!-- DDC -->
 <a href="#bolum-14"><use href="#sym-nco" x="30" y="330" width="60" height="40"/><text x="60" y="384" text-anchor="middle" class="p-ad">NCO</text><text x="60" y="396" text-anchor="middle" class="p-b">B14</text></a>
-<a href="#bolum-15"><use href="#sym-mixer-d" x="30" y="280" width="60" height="40"/><text x="10" y="272" class="p-b">B15</text></a>
+<a href="#bolum-15"><use href="#sym-mixer-d" x="30" y="280" width="60" height="40"/><text x="22" y="272" class="p-b">B15</text></a>
 <path d="M60 330 V320" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <a href="#bolum-16"><use href="#sym-fir" x="104" y="280" width="60" height="40"/><text x="134" y="334" text-anchor="middle" class="p-ad">Filtre</text><text x="134" y="346" text-anchor="middle" class="p-b">B16</text></a>
 <a href="#bolum-16"><use href="#sym-dec" x="170" y="280" width="60" height="40"/><text x="200" y="334" text-anchor="middle" class="p-ad">↓8</text></a>
@@ -64,8 +64,8 @@
 <circle cx="262" cy="300" r="3" fill="var(--accent)"/>
 <path d="M262 300 V360 H300" class="yol-sayisal" fill="none"/>
 <path d="M262 300 V460 H300" class="yol-sayisal" fill="none"/>
-<text x="268" y="352" class="p-et s-vurgu" fill="var(--accent)">zaman kolu</text>
-<text x="268" y="452" class="p-et" fill="var(--accent)">frekans kolu</text>
+<text x="268" y="334" class="p-et" fill="var(--accent)">zaman kolu</text>
+<text x="268" y="434" class="p-et" fill="var(--accent)">frekans kolu</text>
 <!-- zaman kolu -->
 <a href="#bolum-22"><use href="#sym-zarf" x="300" y="340" width="60" height="40"/><text x="330" y="394" text-anchor="middle" class="p-ad">Zarf</text><text x="330" y="406" text-anchor="middle" class="p-b">B22</text></a>
 <a href="#bolum-23"><rect x="372" y="340" width="70" height="40" rx="5" class="blok"/><text x="407" y="356" text-anchor="middle" class="p-ad">Gürültü</text><text x="407" y="370" text-anchor="middle" class="p-ad">tahmini</text><text x="407" y="394" text-anchor="middle" class="p-b">B23</text></a>
@@ -94,7 +94,7 @@
 <path d="M262 460 V487 H600" class="yol-sayisal" fill="none" opacity=".5"/>
 <!-- register -->
 <a href="#bolum-30"><use href="#sym-reg" x="900" y="290" width="60" height="40"/><text x="930" y="344" text-anchor="middle" class="p-ad">Register'lar</text><text x="930" y="356" text-anchor="middle" class="p-b">B30</text></a>
-<path d="M900 310 H60 V330" class="yol-kontrol" fill="none" opacity=".8"/>
+<path d="M900 310 H596 V258 H22 V350 H30" class="yol-kontrol" fill="none" opacity=".8"/>
 <text x="700" y="304" class="p-et" fill="var(--green)">FTW · eşik · katsayı · pencere · CFAR N/α</text>
 <!-- yazılım -->
 <a href="#bolum-26"><use href="#sym-dma" x="1046" y="390" width="60" height="40"/><text x="1076" y="444" text-anchor="middle" class="p-ad">DMA</text></a>
@@ -105,5 +105,5 @@
 <path d="M1076 470 V310 H1046" class="yol-kontrol" fill="none"/>
 <text x="1036" y="300" class="p-et" fill="var(--green)">AXI-Lite</text>
 <!-- PDW çıkışı -->
-<text x="1040" y="380" class="p-b">PDW akışı → read()</text>
+<text x="1036" y="378" class="p-et">PDW akışı → read()</text>
 </svg>

@@ -103,7 +103,7 @@ WK.kaydet("w13", function (w) {
     // ---- yanıt çizimi
     WK.temizle(pYanit);
     var g = WK.grafik(pYanit, { W: 640, H: 260, xmin: 0, xmax: fs / 2e6, ymin: -120, ymax: 5, kenar: { sol: 48, sag: 14, ust: 22, alt: 34 } });
-    g.eksenler({ xAdet: 6, yAdet: 6, xAd: "frekans (MHz)", yAd: "dB", baslik: "Frekans yanıtı — " + ad + " @ " + (fs / 1e6) + " MSPS" });
+    g.eksenler({ xAdet: 6, yAdet: 6, xAd: "frekans (MHz)", yAd: "dB", baslik: "Frekans yanıtı — " + ad + " @ " + (fs / 1e6) + " MSPS", xFmt: function (v) { return v.toFixed(0); } });
     if (M > 1) {
       for (var q = 1; q * fsOut - koru < fs / 2; q++) g.bant((q * fsOut - koru) / 1e6, (q * fsOut + koru) / 1e6, "w-dolgu-kirmizi");
       g.dikey(fsOut / 2e6, "w-cizgi-gri", "yeni Nyquist " + (fsOut / 2e6).toFixed(0));
@@ -114,7 +114,7 @@ WK.kaydet("w13", function (w) {
     var fx = fArr.map(function (v) { return v / 1e6; });
     g.cizgi(fx, ys, "w-cizgi-sinyal");
     if (p.tip === "cic") { var yc = []; var cic0 = DSP.cicYanit(Math.max(2, M), Nk, NF); for (k = 0; k < NF; k++) yc.push(cic0[k]); g.cizgi(fx, yc, "w-cizgi-gri"); }
-    g.nokta(fcEtkin / 1e6, edgeDb, 4, "w-nokta"); g.metin(g.px(fcEtkin / 1e6) + 6, g.py(edgeDb) - 6, (fcEtkin / 1e6).toFixed(0) + " MHz: " + edgeDb.toFixed(1) + " dB", "w-not");
+    g.nokta(fcEtkin / 1e6, edgeDb, 4, "w-nokta"); g.metin(g.px(fcEtkin / 1e6) - 6, g.py(edgeDb) + 14, (fcEtkin / 1e6).toFixed(0) + " MHz: " + edgeDb.toFixed(1) + " dB", "w-not", "end");   // noktanın sol altı: Nyquist etiketiyle çakışmaz
     if (M > 1 && aliasMax > -300) g.yatay(aliasMax, "w-cizgi-kirmizi", "alias bastırma " + aliasMax.toFixed(0) + " dB");
     // ---- darbe yanıtı
     var nS = Math.min(8192, Math.max(512, Math.round(fs * 2.6e-6)));
@@ -127,12 +127,13 @@ WK.kaydet("w13", function (w) {
     var toa = DSP.toaHatasi(tr, snrRef);
     WK.temizle(pDarbe);
     var gp = WK.grafik(pDarbe, { W: 640, H: 200, xmin: 0, xmax: nS / fs * 1e6, ymin: -0.1, ymax: 1.25, kenar: { sol: 48, sag: 14, ust: 22, alt: 30 } });
-    gp.eksenler({ xAdet: 6, yAdet: 4, xAd: "zaman (µs)", yAd: "zarf", baslik: "Darbe yanıtı: " + (pwRef * 1e6) + " µs darbe (giriş kesikli, çıkış mavi)", yFmt: function (v) { return v.toFixed(1); } });
+    gp.eksenler({ xAdet: 6, yAdet: 4, xAd: "zaman (µs)", yAd: "zarf", baslik: "Darbe yanıtı: " + (pwRef * 1e6) + " µs darbe (giriş kesikli, çıkış mavi)", xFmt: function (v) { return v.toFixed(1); }, yFmt: function (v) { return v.toFixed(1); } });
     var tx = [], tz = [], ty = [], adim = Math.max(1, Math.floor(nS / 1500));
     for (k = 0; k < nS; k += adim) { tx.push(k / fs * 1e6); tz.push(zarf[k]); ty.push(yz[k]); }
     gp.cizgi(tx, tz, "w-cizgi-gri"); gp.cizgi(tx, ty, "w-cizgi-sinyal");
-    gp.dikey(t10 / fs * 1e6, "w-cizgi-altin", "%10"); gp.dikey(t90 / fs * 1e6, "w-cizgi-altin", "%90");
-    gp.metin(gp.px(0.42) , gp.y1 + 26, "grup gecikmesi " + (gd / fs * 1e9).toFixed(1) + " ns", "w-not");
+    gp.dikey(t10 / fs * 1e6, "w-cizgi-altin"); gp.dikey(t90 / fs * 1e6, "w-cizgi-altin");
+    gp.metin(gp.px(t90 / fs * 1e6) + 5, gp.y1 + 12, "%10–%90: " + (tr * 1e9).toFixed(0) + " ns", "w-not");
+    gp.metin(gp.x1 - 4, gp.y1 + 12, "grup gecikmesi " + (gd / fs * 1e9).toFixed(1) + " ns", "w-not", "end");
     var bwT = p.tip === "cic" ? p.fc : (p.tip === "hb" ? fs / 4 : p.fc);
     WK.sonucYaz(w, {
       "grup gecikmesi": grupOrnek.toFixed(1) + " giriş örneği = " + (grupOrnek / fs * 1e9).toFixed(1) + " ns",

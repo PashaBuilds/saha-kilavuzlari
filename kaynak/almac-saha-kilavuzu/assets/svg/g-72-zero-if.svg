@@ -1,4 +1,4 @@
-<svg viewBox="0 0 860 288" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g72">
+<svg viewBox="0 0 860 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g72">
 <title id="t-g72">M-3 zero-IF/homodyne blok şeması: anten → BPF → LNA → iki mixer (LO = RF, 0° ve 90° faz) → baseband LPF → VGA → iki ADC → I[n] ve Q[n]. Not: image yok, ama DC ofset, I/Q dengesizliği ve LO sızıntısı.</title>
 <text x="20.0" y="24.0" text-anchor="start" class="s-baslik">M-3 · Zero-IF / homodyne — LO = RF, doğrudan baseband I/Q</text>
 <use href="#sym-anten" x="20.0" y="60.0" width="60" height="40"/>
@@ -19,8 +19,8 @@
 <use href="#sym-lo" x="360.0" y="175.0" width="60" height="40"/>
 <text x="390.0" y="228.0" text-anchor="middle" class="s-kucuk">LO = f_RF</text>
 <path d="M390.0 175.0 L390.0 150.0" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
-<rect x="440.0" y="168.0" width="48.0" height="26.0" rx="4" class="blok"/>
-<text x="464.0" y="185.0" text-anchor="middle" class="s-mono2">0° / 90°</text>
+<rect x="292.0" y="168.0" width="56.0" height="26.0" rx="4" class="blok"/>
+<text x="320.0" y="185.0" text-anchor="middle" class="s-mono2">0° / 90°</text>
 <path d="M390.0 110.0 L390.0 60.0" class="yol-saat" fill="none"/>
 <text x="398.0" y="92.0" text-anchor="start" class="s-kucuk">90°</text>
 <path d="M420.0 40.0 L460.0 40.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
@@ -49,8 +49,8 @@
 <text x="690.0" y="175.0" text-anchor="middle" class="s-mono2">düşük fs</text>
 <path d="M720.0 130.0 L760.0 130.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
 <text x="764.0" y="134.0" text-anchor="start" class="s-mono s-vurgu">Q[n]</text>
-<rect x="20.0" y="218.0" width="820.0" height="58.0" rx="6" class="blok" opacity=".8"/>
-<text x="30.0" y="236.0" text-anchor="start" class="s-kucuk">Image problemi yok (image = sinyalin kendisi) ama üç yeni dert: DC ofset (LO kendi kendine karışır), I/Q dengesizliği (bir 'iç image' üretir) ve LO sızıntısı.</text>
-<text x="30.0" y="252.0" text-anchor="start" class="s-kucuk">1/f gürültüsü baseband'de sinyalin üstüne biner. Entegre alıcılarda (tek çip) standarttır; sayısal I/Q düzeltme ile EH bantlarına da girer.</text>
-<text x="30.0" y="268.0" text-anchor="start" class="s-kucuk">Kırmızı olmayan iki yol da analog (altın): I ve Q ayrı ADC'lerle örneklenir — ADC hızı yalnızca sinyal bandı kadar.</text>
+<rect x="20.0" y="236.0" width="820.0" height="58.0" rx="6" class="blok" opacity=".8"/>
+<text x="30.0" y="254.0" text-anchor="start" class="s-kucuk">Image problemi yok (image = sinyalin kendisi) ama üç yeni dert: DC ofset (LO kendi kendine karışır), I/Q dengesizliği (bir 'iç image' üretir) ve LO sızıntısı.</text>
+<text x="30.0" y="270.0" text-anchor="start" class="s-kucuk">1/f gürültüsü baseband'de sinyalin üstüne biner. Entegre alıcılarda (tek çip) standarttır; sayısal I/Q düzeltme ile EH bantlarına da girer.</text>
+<text x="30.0" y="286.0" text-anchor="start" class="s-kucuk">İki kol da ADC'ye kadar analog (altın): I ve Q ayrı ADC'lerle örneklenir — ADC hızı yalnızca sinyal bandı kadar.</text>
 </svg>

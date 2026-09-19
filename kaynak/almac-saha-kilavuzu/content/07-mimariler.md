@@ -24,10 +24,10 @@ görmezsin; gölü noktadan noktaya taraman gerekir ve o sırada başka yerde
 zıplayan balığı kaçırırsın.
 
 Almaç mimarileri bu iki uç arasındaki tüm ara çözümlerdir. **Geniş açık
-almaçlar** (kristal video, IFM) ağdır: anlık bant geniş, POI yüksek,
-hassasiyet ve seçicilik zayıf. **Dar bant taramalı almaçlar** (süperhet)
-oltadır: hassas ve seçici, ama POI düşük. **Kanallaştırılmış almaçlar** aynı
-anda çok olta atmaktır; pahalıdır. Sayısal teknoloji bu takası kaldırmadı;
+almaçlar** (wide-open receiver: kristal video, IFM) ağdır: anlık bant geniş,
+POI yüksek, hassasiyet ve seçicilik zayıf. **Dar bant taramalı almaçlar**
+(süperhet) oltadır: hassas ve seçici, ama POI düşük. **Kanallaştırılmış
+almaçlar** (channelized receiver) aynı anda çok olta atmaktır; pahalıdır. Sayısal teknoloji bu takası kaldırmadı;
 oltaların fiyatını düşürdü ve sayısını artırdı. Bugünün sayısal IF ve direct
 RF almaçları, "ne kadar geniş bir bandı kaç kanalla dinleyeceğin" sorusunu
 donanımdan register'a taşıdı — o yüzden bu bölüm senin bölümün.
@@ -85,8 +85,8 @@ yeşil kontrol, gri kesikli LO/saat. Puanlar 0–5, göreli ve kurgusal-
 
 :::mimari no=1 ad="Kristal video almaç (CVR) ve TRF" sema=g-70-cvr.svg
 ::ilke::
-RF doğrudan bir kare-yasa dedektöre (kristal diyot) verilir; çıkış, sinyalin
-güç zarfıdır ("video"). Logaritmik video yükselteç 60–70 dB'lik giriş
+RF doğrudan bir **square-law** (kare-yasa) dedektöre (kristal diyot) verilir;
+çıkış, sinyalin güç zarfıdır ("video"). Logaritmik video yükselteç 60–70 dB'lik giriş
 aralığını birkaç voltluk çıkışa sığdırır; eşik darbe var/yok kararı verir.
 Frekans dönüşümü yok, LO yok, frekans bilgisi yok. **TRF** (tuned radio
 frequency) aynı iskelette ayarlanabilir dar bir RF filtresi kullanır: biraz
@@ -170,7 +170,7 @@ POI: 3
 Karmaşıklık: 2
 :::
 
-:::mimari no=4 ad="IFM — anlık frekans ölçer" sema=g-73-ifm.svg
+:::mimari no=4 ad="IFM (instantaneous frequency measurement) — anlık frekans ölçer" sema=g-73-ifm.svg
 ::ilke::
 Sinyal limiter'la sabit genliğe getirilir, ikiye bölünür; bir kol
 $τ$ kadar geciktirilir. İki kol bir faz korelatöründe çarpılır: çıkış
@@ -306,7 +306,7 @@ Analog–sayısal sınır LNA'nın hemen arkasındadır.
 - Aynı ADC'den bütün bant: çok kanal, anında yeniden ayar, tamamen yazılım tanımlı bant planı.
 - Blok sayısı en az; RFSoC sınıfı çiplerle tek yonga.
 ::eksi::
-- ADC'nin dinamik aralığı **tüm bantla paylaşılır**: bant içindeki en güçlü sinyal ADC'yi doyurursa herkes kaybeder (analog seçicilik yalnızca Nyquist filtresi kadar).
+- ADC'nin dinamik aralığı **tüm bantla paylaşılır**: bant içindeki en güçlü sinyal ADC'yi doyurursa (saturation) herkes kaybeder (analog seçicilik yalnızca Nyquist filtresi kadar).
 - Frekans planı kaybolmaz, ADC'ye taşınır: harmonikler, interleaving spur'ları, bölge katlanmaları ({{bolum:8}}, {{bolum:10}}).
 - Jitter: 9.4 GHz'te 100 fs jitter SNR'ı ~44 dB'ye sınırlar ({{bolum:9}}); saat dağıtımı en kritik analog problem olur. Yüksek frekansta ADC giriş bandı, NF ve güç tüketimi.
 ::kullanim::
@@ -328,11 +328,11 @@ Karmaşıklık: 3
 Geniş bant ADC (IF'te ya da RF'te) örneklerini bir polyphase FIR bankası ve
 M noktalı FFT, M eşit kanala böler; her FFT çıkışı, kendi decimation
 oranında örneklenmiş bir kanal akışıdır. Her kanalda zarf, CFAR ve ölçüm
-bağımsız çalışır. M-5'in sayısal ikizi; polyphase yapı, düz FFT'nin yaprak
-sızıntısını ve kanal kenarı sorununu FIR prototipiyle düzeltir ({{bolum:17}},
+bağımsız çalışır. M-5'in sayısal ikizi; polyphase yapı, düz FFT'nin spektral
+sızıntısını (leakage) ve kanal kenarı sorununu FIR prototipiyle düzeltir ({{bolum:17}},
 {{bolum:18}}).
 ::arti::
-- M kanal bir kez tasarlanır, hepsi bit bit özdeştir (analogda imkânsız); kanal şekli, örtüşme ve geçiş bandı yazılımla değişir.
+- M kanal bir kez tasarlanır, hepsi bit bit özdeştir (analogda imkânsız); kanal şekli, kanal örtüşmesi (overlap) ve geçiş bandı yazılımla değişir.
 - Geniş anlık bant + kanal başına dar bant hassasiyeti + POI ≈ %100 + eşzamanlı sinyal M'ye kadar.
 - Frekans doğruluğu kanal içi interpolasyon ile kHz sınıfı.
 ::eksi::
@@ -405,13 +405,14 @@ ekolardan Doppler (hız) çıkarılabilir; EH almacında böyle bir referans
 yoktur, bu yüzden EH'de "faz" yalnızca aynı darbe içinde (LFM eğimi, faz
 kodu) ya da kanallar arasında (yön bulma) anlamlıdır.
 
-İkincisi **eşlenik filtredir** (matched filter): radar, gönderdiği dalga
+İkincisi **matched filter**'dır (uyumlu filtre; Türkçede "eşlenik filtre" de
+denir): radar, gönderdiği dalga
 şeklini bildiğinden alıcıda o dalga şeklinin zaman-tersine çevrilmiş
 eşleniğiyle korelasyon alır; SNR'ı $2E/N_0$ ile en iyileyen filtre budur ve
 LFM darbelerde **darbe sıkıştırması** (pulse compression) olarak karşına
 çıkar: 10 µs'lik 10 MHz'lik chirp, 0.1 µs'lik bir tepeye sıkışır ve menzil
-çözünürlüğü 100 kat iyileşir. EH almacı dalga şeklini bilmez; onun "eşlenik
-filtresi" olsa olsa darbe genişliğine uydurulmuş bir video filtresidir
+çözünürlüğü 100 kat iyileşir. EH almacı dalga şeklini bilmez; onun "matched
+filter"ı olsa olsa darbe genişliğine uydurulmuş bir video filtresidir
 ({{bolum:22}}). Bu tek fark, aynı SNR'da radarın EH'den neden çok daha
 zayıf sinyalle çalışabildiğini açıklar.
 
@@ -614,7 +615,7 @@ vermek; "kayıp" sayacını yalnızca o banda bakılan sürede ilerletmek.
 - Kanallaştırma (analog → sayısal polyphase/FFT) hem geniş bandı hem kanal başına hassasiyeti hem eşzamanlı sinyali verir; bedeli karmaşıklıktır.
 - Sayısal IF (referans zincir) analog seçicilik + sayısal her şey: her sütunda 3–5, bugünün orta yolu. Direct RF sınırı LNA'ya çeker; frekans planı ADC'ye taşınır, jitter LO faz gürültüsünün yerini alır.
 - Analog–sayısal sınır tarihsel olarak sola kaydı (video → IF → RF); her adım bir analog problemi DSP problemine çevirdi.
-- Radar almacı koherenttir (STALO/COHO), eşlenik filtre kullanır ve monopulse için eşleşmiş kanallar taşır; EH almacı dalga şeklini bilmez.
+- Radar almacı koherenttir (STALO/COHO), matched filter kullanır ve monopulse için eşleşmiş kanallar taşır; EH almacı dalga şeklini bilmez.
 - RWR/ESM/ELINT aynı katalogdan farklı öncelikle seçer; yazılımcı için PDW alanlarının anlamı ve güveni mimariye bağlıdır — `rf_hesapla()` mimariye göre değişir, eşzamanlılık bayrağı ve tarama çizelgesi PDW'nin parçası olmalıdır.
 :::
 

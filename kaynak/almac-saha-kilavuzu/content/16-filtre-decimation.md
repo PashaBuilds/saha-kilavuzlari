@@ -5,7 +5,7 @@
 Sahadan soru: "Filtre bandını daralttık, gürültü tabanı düştü, hassasiyet
 arttı — ama artık 1 µs'lik darbeleri 1.3 µs ölçüyoruz ve TOA 100 ns kayıyor;
 neden?" Çünkü filtre yalnızca spektrumu değil darbenin **kenarını** da
-şekillendirir: bant genişliği ile yükselme süresi aynı sayının iki yüzüdür.
+şekillendirir: bant genişliği ile yükselme süresi (rise time) aynı sayının iki yüzüdür.
 Sayısal almaçta filtre iki iş yapar: mixer'ın bıraktığı image'ı ve bant dışı
 gürültüyü atar, sonra da örnek hızını düşürmenin (decimation) önünü açar.
 İkisi de zincirin en çok DSP slice yakan, en çok register taşıyan (katsayılar)
@@ -161,7 +161,7 @@ geçirme bandı düz değildir, kenara doğru düşer. Referans CIC (R = 4, N = 
 kazanç $4^4$ = 256 = 8 bit, 100 MHz'de −1.5 dB, **150 MHz'de −3.4 dB** droop;
 alias bandının kenarı olan 450 MHz'de −40 dB, 600 MHz'de sıfır.
 
-{{svg:g-162-cic-yanit.svg|CIC R = 4, N = 4 yanıtı (fs_in = 2400 MSPS, hesaplanmış). Solda 0–1200 MHz: sinc⁴ biçimli yanıt (mavi), 600 ve 1200 MHz'de sıfırlar; ↓4 sonrası (600 MSPS) ±150 MHz'in içine katlanacak alias bantları kırmızı taralı (450–750 ve 1050–1200 MHz); bu bantlarda en zayıf bastırma 450 MHz'de −40 dB. Sağda geçirme bandı büyüteci 0–150 MHz: CIC droop'u 150 MHz'de −3.4 dB (mavi), 31 tap kompanzasyon FIR'ının ters-sinc yanıtı (altın), ikisinin toplamı (yeşil) ±0.1 dB içinde düz. Kompanzasyon FIR'ı 600 MSPS'te çalışır.|kaydir}}
+{{svg:g-162-cic-yanit.svg|CIC R = 4, N = 4 yanıtı (fs_in = 2400 MSPS, hesaplanmış). Solda 0–1200 MHz: sinc⁴ biçimli yanıt (mavi), 600 ve 1200 MHz'de sıfırlar; ↓4 sonrası (600 MSPS) ±150 MHz'in içine katlanacak alias bantları kırmızı taralı (450–750 ve 1050–1200 MHz); bu bantlarda en zayıf bastırma 450 MHz'de −40 dB. Sağda geçirme bandı büyüteci 0–150 MHz: CIC droop'u 150 MHz'de −3.4 dB (mavi), 31 tap kompanzasyon FIR'ının ters-sinc yanıtı (altın), ikisinin toplamı (yeşil) ±0.02 dB içinde düz (hedef ±0.1 dB). Kompanzasyon FIR'ı 600 MSPS'te çalışır.|kaydir}}
 
 Droop'u **kompanzasyon FIR'ı** düzeltir: geçirme bandında CIC'in tersi
 (yükselen), durdurma bandında düşen kısa bir FIR (referans: 31 tap, 600 MSPS'te,
@@ -178,7 +178,7 @@ yükü tam M kat düşer ve yapı SSR ile örtüşür ({{bolum:12}}): SSR-8 giri
 ibarettir. Halfband'in sıfır katsayıları polyphase yapıda özellikle güzel
 oturur: iki yoldan biri yalnızca merkez katsayının gecikmesidir.
 
-{{svg:g-163-cok-kademeli-zincir.svg|Referans senaryonun çok kademeli decimation zinciri (hesaplanmış spektrumlar). Üst şerit bloklar: mixer çıkışı 2400 MSPS kompleks → CIC R = 4, N = 4 (çarpıcısız, +8 bit) → 600 MSPS → kompanzasyon FIR 31 tap → halfband 23 tap ↓2 → 300 MSPS, 16 + 16 bit. Alt şeritte her kademe çıkışının spektrumu (aynı 600 MHz'e katlanmış darbe + gürültü girişi): (a) 2400 MSPS, ±1200 MHz, image −1200'de; (b) CIC sonrası 600 MSPS, ±300 MHz, kenarlarda droop, alias kalıntıları −40 dB altında; (c) kompanzasyon sonrası düz geçirme bandı; (d) halfband + ↓2 sonrası 300 MSPS, ±150 MHz. Her panelde gürültü tabanı ve toplam gürültü gücü (dBFS) yazılıdır: toplam gürültü gücü kademelerde 9 dB düşer, işlem kazancı 6 dB.|kaydir}}
+{{svg:g-163-cok-kademeli-zincir.svg|Referans senaryonun çok kademeli decimation zinciri (hesaplanmış spektrumlar). Üst şerit bloklar: mixer çıkışı 2400 MSPS kompleks → CIC R = 4, N = 4 (çarpıcısız, +8 bit) → 600 MSPS → kompanzasyon FIR 31 tap → halfband 23 tap ↓2 → 300 MSPS, 16 + 16 bit. Alt şeritte her kademe çıkışının spektrumu (aynı 600 MHz'e katlanmış darbe + gürültü girişi): (a) 2400 MSPS, ±1200 MHz, image −1200'de; (b) CIC sonrası 600 MSPS, ±300 MHz, kenarlarda droop, alias kalıntıları −40 dB altında; (c) kompanzasyon sonrası düz geçirme bandı; (d) halfband + ↓2 sonrası 300 MSPS, ±150 MHz. Her panelde gürültü tabanı ve toplam gürültü gücü (dBFS) yazılıdır: toplam gürültü gücü kademelerde ≈ 10 dB düşer (bant 8 kat daraldı; kuram 9 dB), sinyal 3 dB düştüğü için işlem kazancı 6 dB.|kaydir}}
 
 Neden tek kademede 8'e bölmüyoruz? Çünkü tek kademeli bir FIR 2400 MSPS'te
 150 MHz geçirip 300 MHz'den sonra 80 dB bastırmak zorunda kalır: Δω çok küçük,
@@ -220,7 +220,7 @@ o: DDC çıkışı B ≈ 150 MHz → t_r,filtre ≈ 2.3 ns; darbenin kendi kenar
 o: Filtre bandı 1 MHz'e daraltılırsa t_r ≈ 350 ns; aynı SNR'da σ_TOA ≈ 44 ns — gürültü tabanı 22 dB düştüğü için SNR artar, ama kenar 7 kat yavaşladığı için TOA hatası net olarak **kötüleşir**. Dar bant hassasiyeti artırır, zamanlamayı bozar.
 :::
 
-Bir de **geçici rejim** vardır: filtre, dürtü yanıtı uzunluğunca (N örnek)
+Bir de **geçici rejim** (transient) vardır: filtre, dürtü yanıtı uzunluğunca (N örnek)
 "ısınır". Darbe başladığında çıkış hemen tepeye çıkmaz; N tap'lik filtrenin
 çıkışı N örnek boyunca darbenin ve öncesindeki gürültünün karışımıdır. Uzun
 filtre (yüzlerce tap) + kısa darbe (onlarca örnek) birleşimi, darbenin hiç
@@ -228,7 +228,7 @@ tepeye ulaşamaması demektir: ölçülen PA düşük, PW kısa çıkar. Referan
 en uzun filtre 31 tap (600 MSPS'te 52 ns), darbe 1 µs; sorun yok. 50 ns'lik
 darbeler ölçecek bir almaçta aynı zincir sınırda kalır.
 
-**Interpolation** (kısa not): decimation'ın simetriği. Araya M − 1 sıfır
+**Interpolation** (ara değerleme; kısa not): decimation'ın simetriği. Araya M − 1 sıfır
 ekle (↑M), sonra filtreyle ara değerleri doldur; polyphase yapı burada da
 geçerlidir ve verici (DUC) tarafının temel bloğudur. Almaçta nadiren, TOA'yı
 örnek altı çözünürlükte bulmak için darbe kenarını yerel olarak interpolate

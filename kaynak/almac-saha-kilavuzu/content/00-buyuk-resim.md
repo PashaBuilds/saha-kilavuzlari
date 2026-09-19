@@ -45,7 +45,7 @@ Bitirdiğinde şunları yapabiliyor olmalısın:
    yanlarıyla karşılaştırmak.
 9. MATLAB modelinden FPGA gerçeklemesine giden akışı ve bit-true doğrulamayı
    anlamak.
-10. Sahada gördüğün belirtiyi (beklenmeyen spur, patlayan false alarm, kısa
+10. Sahada gördüğün belirtiyi (beklenmeyen spur, patlayan yanlış alarm (false alarm) oranı, kısa
     ölçülen PW, aynalı spektrum) olası nedenlere bağlamak.
 
 ## Büyük resim: Antenden PDW'ye
@@ -85,9 +85,9 @@ sistemi, platformu veya tehdidi temsil etmez.**
 | Gelen sinyal | {{s:sinyal.bant}}, RF = {{s:sinyal.rf_ghz}} GHz, darbeli |
 | Darbe | PW = {{s:sinyal.pw_us}} µs, PRI = {{s:sinyal.pri_ms}} ms (duty %{{s:sinyal.duty_yuzde}}); varyant B: darbe içi {{s:sinyal.varyant_b.chirp_bw_mhz}} MHz LFM |
 | LO (low-side) | {{s:on_uc.lo_ghz}} GHz → IF = {{s:on_uc.if_ghz}} GHz; image = {{s:on_uc.image_ghz}} GHz |
-| Ön uç | sistem gürültü şekli bütçesi NF = {{s:on_uc.nf_toplam_db}} dB, kazanç ≈ {{s:on_uc.kazanc_toplam_db}} dB |
+| Ön uç (front end) | sistem gürültü şekli bütçesi NF = {{s:on_uc.nf_toplam_db}} dB, kazanç ≈ {{s:on_uc.kazanc_toplam_db}} dB |
 | ADC | direct IF sampling, fs = {{s:adc.fs_msps}} MSPS, {{s:adc.bit}} bit, reel çıkış |
-| Nyquist bölgesi | IF {{s:on_uc.if_ghz}} GHz → {{s:adc.nyquist_bolgesi}}. bölge ({{s:adc.bolge_alt_mhz}}–{{s:adc.bolge_ust_mhz}} MHz) → alias = {{s:adc.alias_mhz}} MHz, **spektrum evrik** |
+| Nyquist bölgesi | IF {{s:on_uc.if_ghz}} GHz → {{s:adc.nyquist_bolgesi}}. bölge ({{s:adc.bolge_alt_mhz}}–{{s:adc.bolge_ust_mhz}} MHz) → alias = {{s:adc.alias_mhz}} MHz, **spektrum evrik** (spectral inversion) |
 | DDC | NCO = {{s:ddc.nco_mhz}} MHz, kompleks mixing, toplam decimation = {{s:ddc.decimation_toplam}} |
 | DDC çıkışı | {{s:ddc.cikis_fs_msps}} MSPS kompleks I/Q ({{s:ddc.cikis_bit_i}}+{{s:ddc.cikis_bit_q}} bit), ±{{s:ddc.cikis_bant_mhz}} MHz |
 | Zaman çözünürlüğü | {{s:ddc.ornek_suresi_ns}} ns/örnek; 1 µs darbe = {{s:ddc.darbe_ornek_sayisi}} örnek |
@@ -174,7 +174,7 @@ kaydırıcılar (yanlarında aynı değeri gösteren sayı kutuları), altında
 **preset** düğmeleri ("Referans senaryo" her zaman ilk sırada) ve "Ne
 gözlemlemeliyim?" kutusu bulunur. Kutudaki deneyleri sırayla yap: her deney
 "bu parametreyi değiştirirsem sonuca ne olur?" sorusunun cevabını gösterir.
-Gürültü tohumludur; aynı ayar hep aynı görüntüyü verir. Widget'lar
+Gürültü tohumludur (sabit seed); aynı ayar hep aynı görüntüyü verir. Widget'lar
 JavaScript kapalıyken çalışmaz, yazdırırken son çizilen kare statik görüntü
 olarak kalır.
 :::
@@ -183,7 +183,7 @@ olarak kalır.
 
 Bu kılavuz "radar ve EH" diyor; ikisi aynı fiziği paylaşır ama farklı
 sorular sorar. **Radar almacı** kendi vericisinin gönderdiği dalga biçimini
-bilir: dalga biçimine göre eşlenik (matched) filtre kurabilir, darbeleri
+bilir: dalga biçimine uyarlanmış **matched filtre** (eşlenik filtre) kurabilir, darbeleri
 koherent toplayabilir, Doppler işleyebilir. Bandı dar tutabilir çünkü nerede
 bakacağını bilir. **EH almacı** (RWR, ESM, ELINT) ise sinyali *bilmez*:
 frekansı, darbe genişliği, modülasyonu, geliş zamanı önceden belli değildir.
@@ -195,7 +195,7 @@ gürültü tabanı ve daha düşük hassasiyettir ({{bolum:4}}).
 |---|---|---|
 | Sinyal bilgisi | Bilinen dalga biçimi (kendi vericisi) | Bilinmeyen: frekans, PW, PRI, MOP hepsi ölçülecek |
 | Anlık bant genişliği | Dar (dalga biçimi kadar) | Geniş (GHz mertebesi olabilir) |
-| Temel işlem | Eşlenik filtre, koherent entegrasyon, Doppler | Tespit, parametre ölçümü, PDW üretimi |
+| Temel işlem | Matched filtre, koherent entegrasyon, Doppler | Tespit, parametre ölçümü, PDW üretimi |
 | Öncelik | Menzil/hız doğruluğu, zayıf hedef | POI (yakalama olasılığı), tepki süresi, çok emiter |
 | Hassasiyet | Yüksek (işlem kazancı büyük) | Düşük (geniş bant, tek darbe) |
 | Bu kılavuzda | Farkı anlatıldığı kadar (Bölüm 7, 22, 27) | Ana eksen |
@@ -229,7 +229,7 @@ C: Zaman kolu (zarf → gürültü tahmini → eşik → darbe FSM → parametre
 S: EH almacının radar almacına göre hassasiyetinin düşük olmasının temel nedeni nedir?
 C: Sinyali bilmediği için geniş banda bakmak zorundadır; gürültü gücü bant genişliğiyle orantılı olduğundan gürültü tabanı yükselir. Ayrıca dalga biçimini bilmediğinden eşlenik filtre ve koherent entegrasyon kazancından yararlanamaz.
 S: Referans senaryoda IF neden 1.8 GHz ama NCO 600 MHz'e ayarlı?
-C: ADC 2400 MSPS ile örneklediğinde 1.8 GHz ikinci Nyquist bölgesine düşer ve 600 MHz'e katlanır (2400 − 1800). NCO, katlanmış konumu baseband'e taşır. Ayrıntı Bölüm 8 ve 14'te.
+C: ADC 2400 MSPS ile örneklediğinde 1.8 GHz ikinci Nyquist bölgesine düşer ve 600 MHz'e katlanır (alias: 2400 − 1800). NCO, katlanmış konumu baseband'e taşır. Ayrıntı Bölüm 8 ve 14'te.
 :::
 
 :::kopru

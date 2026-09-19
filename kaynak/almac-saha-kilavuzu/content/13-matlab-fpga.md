@@ -51,7 +51,7 @@ olur.
 
 ## Kavram: akış — kayan noktadan donanıma
 
-{{svg:g-130-gelistirme-akisi.svg|Uçtan uca geliştirme akışı. Kayan noktalı model (MATLAB/Python) → sabit noktalı model (bit genişlikleri, yuvarlama, doyurma kararları; kayan noktayla fark ölçülür) → bit-true referans (donanımın üreteceği bitlerin aynısı) → HDL üretimi dört yoldan biriyle: elle RTL, HDL Coder, Vitis Model Composer, HLS → RTL simülasyonu (test vektörleriyle bit-exact karşılaştırma) → sentez / yerleştirme / timing → donanımda doğrulama (ILA, snapshot, DMA ile yakalama → aynı karşılaştırma). Yeşil oklar PS'e açılan parametreleri, kırmızı geri oklar bir kapıda başarısız olunca dönülen adımı gösterir.|kaydir}}
+{{svg:g-130-gelistirme-akisi.svg|Uçtan uca geliştirme akışı. Kayan noktalı model (MATLAB/Python) → sabit noktalı model (bit genişlikleri, yuvarlama, saturation kararları; kayan noktayla fark ölçülür) → bit-true referans (donanımın üreteceği bitlerin aynısı) → HDL üretimi dört yoldan biriyle: elle RTL, HDL Coder, Vitis Model Composer, HLS → RTL simülasyonu (test vektörleriyle bit-exact karşılaştırma) → sentez / yerleştirme / timing → donanımda doğrulama (ILA, snapshot, DMA ile yakalama → aynı karşılaştırma). Yeşil oklar PS'e açılan parametreleri, kırmızı geri oklar bir kapıda başarısız olunca dönülen adımı gösterir.|kaydir}}
 
 Akışın kapıları şunlardır:
 
@@ -180,7 +180,7 @@ rastgele değil, **kasıtlı** tasarlanır:
 - **Tek ton, bin ortasında**: kazanç ve faz; tam ölçeğe yakın seviyede (−1 dBFS)
   ve çok düşük seviyede (−80 dBFS, LSB davranışı).
 - **İki ton**: intermodülasyon ve taşma; toplamları tam ölçeği aşacak biçimde
-  — **doyurma yolunu zorlamayan test yoktur**.
+  — **saturation yolunu zorlamayan test yoktur**.
 - **Referans darbe**: {{s:sinyal.pw_us}} µs, {{s:sinyal.rise_time_ns}} ns
   kenar; geçici rejim ve TOA ofseti.
 - **Gürültü**: tohumlu, tekrarlanabilir; gürültü tabanının modele göre
@@ -224,7 +224,7 @@ yalnızca kısa patlamalarla. Uzun kayıtlar ve istatistiksel testler (Pfa
 Yakalanan veri modele **aynı stimulusla** karşılaştırılır. Stimulus iki yoldan
 gelir: analog (sinyal üreteci → ADC; gerçekçi ama gürültü ve faz rastgele, bit
 bit karşılaştırma yapılamaz, istatistiksel karşılaştırma yapılır) ya da sayısal
-(**test örüntüsü enjektörü**: ADC yerine BRAM'den okunan ya da PS'ten
+(**test örüntüsü enjektörü** — test pattern injector: ADC yerine BRAM'den okunan ya da PS'ten
 yüklenen bir dizi; deterministik, bit-exact karşılaştırma mümkündür). İyi bir
 kartta ikisi de vardır ve enjektör seçimi bir register bitidir.
 
@@ -331,7 +331,7 @@ print("maks |fark| =", np.abs(e).max(), "LSB; ilk fark örneği:",
       (np.nonzero(e.any(axis=1))[0][:1] or ["yok"])[0])
 ```
 
-{{svg:g-132-fark-desenleri.svg|Karşılaştırma betiğinin dört tipik çıktısı (öğretici, sentetik veri): (a) seyrek, ±1 LSB, yalnızca negatif örneklerde → yuvarlama kuralı uyuşmazlığı; (b) sinyal biçimli büyük fark → hizalama hatası, doğru L ile sıfırlanır; (c) belirli bir örnekten sonra yalnızca tepelerde → taşma/doyurma farkı; (d) yalnızca ilk örneklerde → başlangıç durumu farkı, ısınma atlanır. Fark deseninin biçimi, kaynağı adıyla söyler.}}
+{{svg:g-132-fark-desenleri.svg|Karşılaştırma betiğinin dört tipik çıktısı (öğretici, sentetik veri): (a) seyrek, ±1 LSB, yalnızca negatif örneklerde → yuvarlama kuralı uyuşmazlığı; (b) sinyal biçimli büyük fark → hizalama hatası, doğru L ile sıfırlanır; (c) belirli bir örnekten sonra yalnızca tepelerde → taşma/saturation farkı; (d) yalnızca ilk örneklerde → başlangıç durumu farkı, ısınma atlanır. Fark deseninin biçimi, kaynağı adıyla söyler.}}
 
 Sonuç "maks |fark| = 0" ise donanım modeldir. 1 LSB'lik fark bir yuvarlama
 farkıdır (half-up / half-even / away-from-zero uyuşmazlığı — ilk kontrol);
@@ -365,10 +365,10 @@ eşleşene kadar" seçilmemelidir.
 
 :::tuzak Test vektörü tam ölçeği hiç görmedi
 Bütün vektörler −20 dBFS ton ve gürültü. Simülasyon ve donanım eşleşir; sahada
-yakın bir emiter gelince mixer çıkışı taşar ve RTL'de unutulan doyurma, wrap
-olarak ortaya çıkar ({{bolum:12}}). Model doyurma yapıyordu, RTL yapmıyordu;
+yakın bir emiter gelince mixer çıkışı taşar ve RTL'de unutulan saturation, wrap
+olarak ortaya çıkar ({{bolum:12}}). Model saturation yapıyordu, RTL yapmıyordu;
 ama hiçbir vektör o yolu çalıştırmadığı için fark hiç oluşmadı. Bit-exact
-karşılaştırmanın kapsamı vektörlerin kapsamıdır: **her doyurma, her taşma
+karşılaştırmanın kapsamı vektörlerin kapsamıdır: **her saturation, her taşma
 bayrağı, her register sınırı en az bir vektörle tetiklenmeli** ve
 karşılaştırma raporu "hangi yollar çalıştı" bilgisini (coverage) içermelidir.
 :::

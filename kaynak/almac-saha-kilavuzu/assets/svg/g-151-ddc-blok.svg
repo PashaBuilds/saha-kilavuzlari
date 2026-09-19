@@ -49,12 +49,12 @@
 <!-- çıkış -->
 <text x="648" y="94" class="s-mono2">I · 16 bit</text>
 <text x="648" y="214" class="s-mono2">Q · 16 bit</text>
-<rect x="720" y="120" width="160" height="62" rx="6" class="blok-aktif"/>
-<text x="800" y="140" text-anchor="middle" class="s-metin">DDC çıkışı</text>
-<text x="800" y="156" text-anchor="middle" class="s-mono2">300 MSPS kompleks</text>
-<text x="800" y="172" text-anchor="middle" class="s-mono2">±150 MHz · 9.6 Gbps</text>
-<path d="M700 90 H712 V128" fill="none" class="yol-sayisal"/>
-<path d="M700 210 H712 V174" fill="none" class="yol-sayisal"/>
+<rect x="740" y="120" width="150" height="62" rx="6" class="blok-aktif"/>
+<text x="815" y="140" text-anchor="middle" class="s-metin">DDC çıkışı</text>
+<text x="815" y="156" text-anchor="middle" class="s-mono2">300 MSPS kompleks</text>
+<text x="815" y="172" text-anchor="middle" class="s-mono2">±150 MHz · 9.6 Gbps</text>
+<path d="M722 90 H734 V128" fill="none" class="yol-sayisal"/>
+<path d="M722 210 H734 V174" fill="none" class="yol-sayisal"/>
 <!-- register (PS) -->
 <use href="#sym-reg" x="30" y="260" width="60" height="40"/>
 <text x="100" y="276" class="s-kucuk s-yesil">NCO_FTW · NCO_POW · CTRL.INV · MIX.FS4_EN · FIR katsayıları</text>
@@ -65,7 +65,8 @@
 <use href="#sym-saat" x="820" y="250" width="60" height="40"/>
 <text x="850" y="306" text-anchor="middle" class="s-kucuk">300 MHz fabric</text>
 <path d="M820 270 H700 V232" fill="none" class="yol-saat"/>
-<text x="600" y="300" class="s-kucuk">SSR-8: 2400 MSPS = 8 örnek × 300 MHz; 16 çarpıcı (genel NCO) ya da 0 (fs/4)</text>
+<text x="560" y="300" class="s-kucuk">SSR-8: 2400 MSPS = 8 örnek × 300 MHz</text>
+<text x="560" y="314" class="s-kucuk">16 çarpıcı (genel NCO) ya da 0 (fs/4)</text>
 <!-- image notu -->
 <text x="420" y="30" class="s-kucuk s-kirmizi">mixer çıkışında image −1200 MHz'de → FIR atar; decimation önce yapılırsa banda katlanır</text>
 </svg>
