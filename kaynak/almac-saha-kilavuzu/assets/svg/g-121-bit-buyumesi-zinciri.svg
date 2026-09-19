@@ -1,0 +1,68 @@
+<svg viewBox="0 0 1120 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g121">
+<title id="t-g121">Referans senaryonun bit genişliği yolculuğu: ADC 14 bit → NCO 16 bit ile çarpım 30 bit → kesme noktası 1: 16 bit → CIC R=4 N=4 akümülatörü 24 bit → kesme noktası 2: 16 bit → FIR 16×18 bit çarpım, toplayıcı ağacı 36 bit → kesme noktası 3: 16 bit I ve Q çıkış; her kesme noktasında kuantizasyon gürültüsü ve yuvarlama/taşma davranışı</title>
+<!-- ölçek: 1 bit = 9 px, taban çizgisi y=200, çubuk yukarı büyür -->
+<!-- bloklar -->
+<g>
+  <use href="#sym-adc" x="20" y="40" width="60" height="40"/><text x="50" y="96" text-anchor="middle" class="s-kucuk">ADC</text>
+  <path d="M80 60 H120" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-mixer-d" x="120" y="40" width="60" height="40"/><text x="150" y="96" text-anchor="middle" class="s-kucuk">× NCO</text>
+  <use href="#sym-nco" x="120" y="-6" width="60" height="40"/>
+  <path d="M180 60 H240" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <rect x="240" y="44" width="70" height="32" rx="4" fill="var(--red-soft)" stroke="var(--red)"/><text x="275" y="64" text-anchor="middle" class="s-kucuk s-kirmizi">kesme 1</text>
+  <path d="M310 60 H370" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <rect x="370" y="40" width="90" height="40" rx="5" class="blok"/><text x="415" y="57" text-anchor="middle" class="s-metin">CIC ↓4</text><text x="415" y="72" text-anchor="middle" class="s-kucuk">R = 4, N = 4</text>
+  <path d="M460 60 H520" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <rect x="520" y="44" width="70" height="32" rx="4" fill="var(--red-soft)" stroke="var(--red)"/><text x="555" y="64" text-anchor="middle" class="s-kucuk s-kirmizi">kesme 2</text>
+  <path d="M590 60 H650" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-fir" x="650" y="40" width="60" height="40"/><text x="680" y="96" text-anchor="middle" class="s-kucuk">komp. + halfband</text>
+  <path d="M710 60 H770" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <rect x="770" y="44" width="70" height="32" rx="4" fill="var(--red-soft)" stroke="var(--red)"/><text x="805" y="64" text-anchor="middle" class="s-kucuk s-kirmizi">kesme 3</text>
+  <path d="M840 60 H900" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-dec" x="900" y="40" width="60" height="40"/><text x="930" y="96" text-anchor="middle" class="s-kucuk">↓2</text>
+  <path d="M960 60 H1010" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <text x="1016" y="56" class="s-kucuk">I: 16 bit</text><text x="1016" y="70" class="s-kucuk">Q: 16 bit</text>
+</g>
+<!-- bit çubukları: taban y=300 -->
+<line x1="20" y1="300" x2="1100" y2="300" class="eksen" stroke-dasharray="none"/>
+<text x="20" y="316" class="s-kucuk">kelime genişliği (bit) — mavi: tutulan, kırmızı: kesilen (yuvarlanarak atılan) bitler</text>
+<!-- ADC 14 -->
+<rect x="35" y="174" width="30" height="126" fill="var(--accent)" opacity=".75"/><text x="50" y="166" text-anchor="middle" class="s-mono">14</text><text x="50" y="330" text-anchor="middle" class="s-kucuk">Q1.13</text>
+<!-- çarpım 30 -->
+<rect x="135" y="30" width="30" height="270" fill="var(--accent)" opacity=".75"/><text x="150" y="22" text-anchor="middle" class="s-mono">30</text><text x="150" y="330" text-anchor="middle" class="s-kucuk">Q2.28</text>
+<!-- kesme 1: 16 tutulan + 14 atılan -->
+<rect x="260" y="156" width="30" height="144" fill="var(--accent)" opacity=".75"/>
+<rect x="260" y="30" width="30" height="126" fill="var(--red)" opacity=".55"/>
+<text x="275" y="22" text-anchor="middle" class="s-mono">30→16</text><text x="275" y="330" text-anchor="middle" class="s-kucuk">Q1.15</text>
+<text x="275" y="100" text-anchor="middle" class="s-kucuk s-kirmizi">14 bit atılır</text>
+<!-- CIC 24 -->
+<rect x="400" y="84" width="30" height="216" fill="var(--accent)" opacity=".75"/>
+<rect x="400" y="84" width="30" height="72" fill="var(--gold)" opacity=".6"/>
+<text x="415" y="76" text-anchor="middle" class="s-mono">24</text><text x="415" y="330" text-anchor="middle" class="s-kucuk">akümülatör</text>
+<text x="446" y="122" class="s-kucuk s-altin">+8 = N·log₂R</text>
+<text x="446" y="136" class="s-kucuk s-altin">(bilerek taşar, wrap)</text>
+<!-- kesme 2 -->
+<rect x="540" y="156" width="30" height="144" fill="var(--accent)" opacity=".75"/>
+<rect x="540" y="84" width="30" height="72" fill="var(--red)" opacity=".55"/>
+<text x="555" y="76" text-anchor="middle" class="s-mono">24→16</text><text x="555" y="330" text-anchor="middle" class="s-kucuk">Q1.15</text>
+<text x="555" y="126" text-anchor="middle" class="s-kucuk s-kirmizi">8 bit kaydır</text>
+<!-- FIR 36 -->
+<rect x="665" y="0" width="30" height="300" fill="var(--accent)" opacity=".75"/>
+<rect x="665" y="0" width="30" height="18" fill="var(--gold)" opacity=".6"/>
+<text x="712" y="14" class="s-mono">36 = 16 + 18 + 2</text><text x="680" y="330" text-anchor="middle" class="s-kucuk">Q4.32</text>
+<text x="712" y="30" class="s-kucuk s-altin">+2: ∑|h| ≈ 2.5</text>
+<!-- kesme 3 -->
+<rect x="790" y="156" width="30" height="144" fill="var(--accent)" opacity=".75"/>
+<rect x="790" y="0" width="30" height="156" fill="var(--red)" opacity=".55"/>
+<text x="805" y="330" text-anchor="middle" class="s-kucuk">Q1.15</text>
+<text x="805" y="86" text-anchor="middle" class="s-kucuk s-kirmizi">20 bit atılır</text>
+<text x="805" y="100" text-anchor="middle" class="s-kucuk s-kirmizi">+ doyurma</text>
+<!-- çıkış 16 -->
+<rect x="915" y="156" width="30" height="144" fill="var(--accent)" opacity=".75"/><text x="930" y="148" text-anchor="middle" class="s-mono">16</text>
+<rect x="1030" y="156" width="14" height="144" fill="var(--accent)" opacity=".75"/><rect x="1048" y="156" width="14" height="144" fill="var(--purple)" opacity=".75"/>
+<text x="1046" y="148" text-anchor="middle" class="s-mono">16 + 16</text><text x="1046" y="330" text-anchor="middle" class="s-kucuk">I, Q</text>
+<!-- gürültü notları -->
+<text x="240" y="118" class="s-kucuk">N_q = −98 dBFS</text><text x="240" y="132" class="s-kucuk">round, doyurma gereksiz</text>
+<text x="520" y="200" class="s-kucuk">N_q = −98 dBFS</text><text x="520" y="214" class="s-kucuk">round; kazanç 2⁸ tam</text>
+<text x="770" y="200" class="s-kucuk">N_q = −98 dBFS</text><text x="770" y="214" class="s-kucuk">round + saturation</text>
+<text x="20" y="150" class="s-kucuk">ADC gürültüsü −86 dBFS</text><text x="20" y="164" class="s-kucuk">(14 bit ideal)</text>
+</svg>

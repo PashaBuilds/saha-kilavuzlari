@@ -2,48 +2,43 @@
 <title id="t-g200">FPGA'da streaming FFT veri akışı: DDC çıkışı 300 MSPS 16+16 bit I/Q → overlap tamponu (ping-pong BRAM, her 512 örnekte yeni 1024'lük çerçeve) → pencere çarpımı (Hann katsayı ROM'u, 512 giriş simetrik, tek DSP) → pipelined FFT çekirdeği (N = 1024, radix-2², ölçekleme takvimi register'dan, blok kayan nokta seçeneği) → bin ters çevirme (bit-reversed → doğal sıra) ve fftshift → |X|² = I² + Q² (36 bit → 20 bit dB/log2 LUT) → tepe bul / eşik → FIFO → PS. Kontrol register'ları yeşil: WIN_SEL, FFT_SCALE_SCH, FFT_NFFT, FFT_THR. Zamanlama: çerçeve süresi 3.41 µs, adım 1.71 µs, çekirdek gecikmesi ≈ N + pipeline saat.</title>
 <rect x="20" y="120" width="120" height="70" rx="7" class="blok-aktif"/>
 <text x="80" y="160" text-anchor="middle" class="s-metin">DDC çıkışı</text>
-<text x="80" y="208" text-anchor="middle" class="s-mono2">I/Q 16+16 bit</text>
-<text x="80" y="223" text-anchor="middle" class="s-kucuk">300 MSPS</text>
+<text x="80" y="212" text-anchor="middle" class="s-mono2">I/Q 16+16 bit</text>
+<text x="80" y="227" text-anchor="middle" class="s-kucuk">300 MSPS</text>
 <path d="M140 155 H148" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <rect x="150" y="120" width="120" height="70" rx="7" class="blok"/>
 <text x="210" y="160" text-anchor="middle" class="s-metin">overlap tamponu</text>
-<text x="210" y="208" text-anchor="middle" class="s-mono2">ping-pong BRAM</text>
-<text x="210" y="223" text-anchor="middle" class="s-kucuk">2 × 1024 × 32 bit</text>
+<text x="210" y="212" text-anchor="middle" class="s-mono2">ping-pong BRAM</text>
+<text x="210" y="227" text-anchor="middle" class="s-kucuk">2 × 1024 × 32 bit</text>
 <path d="M270 155 H298" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<rect x="300" y="120" width="120" height="70" rx="7" class="blok"/>
-<use href="#sym-fir" x="330" y="124" width="60" height="40"/>
-<text x="360" y="180" text-anchor="middle" class="s-metin">× pencere</text>
-<text x="360" y="208" text-anchor="middle" class="s-mono2">Hann ROM 512×16</text>
-<text x="360" y="223" text-anchor="middle" class="s-kucuk">1 DSP, simetri</text>
+<use href="#sym-fir" x="315" y="116" width="90" height="60"/>
+<text x="360" y="188" text-anchor="middle" class="s-metin">× pencere</text>
+<text x="360" y="212" text-anchor="middle" class="s-mono2">Hann ROM 512×16</text>
+<text x="360" y="227" text-anchor="middle" class="s-kucuk">1 DSP, simetri</text>
 <path d="M420 155 H448" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<rect x="450" y="120" width="120" height="70" rx="7" class="blok-aktif"/>
-<use href="#sym-fft" x="480" y="124" width="60" height="40"/>
-<text x="510" y="180" text-anchor="middle" class="s-metin">FFT çekirdeği</text>
-<text x="510" y="208" text-anchor="middle" class="s-mono2">pipelined N=1024</text>
-<text x="510" y="223" text-anchor="middle" class="s-kucuk">radix-2², 10 kademe</text>
+<use href="#sym-fft" x="465" y="116" width="90" height="60"/>
+<text x="510" y="188" text-anchor="middle" class="s-metin">FFT çekirdeği</text>
+<text x="510" y="212" text-anchor="middle" class="s-mono2">pipelined N=1024</text>
+<text x="510" y="227" text-anchor="middle" class="s-kucuk">radix-2², 10 kademe</text>
 <path d="M570 155 H598" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <rect x="600" y="120" width="120" height="70" rx="7" class="blok"/>
 <text x="660" y="160" text-anchor="middle" class="s-metin">sıra + shift</text>
-<text x="660" y="208" text-anchor="middle" class="s-mono2">bit-reversed→doğal</text>
-<text x="660" y="223" text-anchor="middle" class="s-kucuk">fftshift (k+N/2)</text>
+<text x="660" y="212" text-anchor="middle" class="s-mono2">bit-reversed→doğal</text>
+<text x="660" y="227" text-anchor="middle" class="s-kucuk">fftshift (k+N/2)</text>
 <path d="M720 155 H738" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<rect x="740" y="120" width="120" height="70" rx="7" class="blok"/>
-<use href="#sym-zarf" x="770" y="124" width="60" height="40"/>
-<text x="800" y="180" text-anchor="middle" class="s-metin">|X|²</text>
-<text x="800" y="208" text-anchor="middle" class="s-mono2">I²+Q² → 36 bit</text>
-<text x="800" y="223" text-anchor="middle" class="s-kucuk">log2 LUT → 20 bit dB</text>
+<use href="#sym-zarf" x="755" y="116" width="90" height="60"/>
+<text x="800" y="188" text-anchor="middle" class="s-metin">|X|²</text>
+<text x="800" y="212" text-anchor="middle" class="s-mono2">I²+Q² → 36 bit</text>
+<text x="800" y="227" text-anchor="middle" class="s-kucuk">log2 LUT → 20 bit dB</text>
 <path d="M860 155 H878" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<rect x="880" y="120" width="120" height="70" rx="7" class="blok"/>
-<use href="#sym-cmp" x="910" y="124" width="60" height="40"/>
-<text x="940" y="180" text-anchor="middle" class="s-metin">tepe / eşik</text>
-<text x="940" y="208" text-anchor="middle" class="s-mono2">en büyük bin + komşu</text>
-<text x="940" y="223" text-anchor="middle" class="s-kucuk">eşik üstü bin listesi</text>
+<use href="#sym-cmp" x="895" y="116" width="90" height="60"/>
+<text x="940" y="188" text-anchor="middle" class="s-metin">tepe / eşik</text>
+<text x="940" y="212" text-anchor="middle" class="s-mono2">en büyük bin + komşu</text>
+<text x="940" y="227" text-anchor="middle" class="s-kucuk">eşik üstü bin listesi</text>
 <path d="M1000 155 H1018" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<rect x="1020" y="120" width="120" height="70" rx="7" class="blok-kontrol"/>
-<use href="#sym-fifo" x="1050" y="124" width="60" height="40"/>
-<text x="1080" y="180" text-anchor="middle" class="s-metin">FIFO → PS</text>
-<text x="1080" y="208" text-anchor="middle" class="s-mono2">AXI-Stream / DMA</text>
-<text x="1080" y="223" text-anchor="middle" class="s-kucuk">bin no, dB, çerçeve no</text>
+<use href="#sym-fifo" x="1035" y="116" width="90" height="60"/>
+<text x="1080" y="188" text-anchor="middle" class="s-metin">FIFO → PS</text>
+<text x="1080" y="212" text-anchor="middle" class="s-mono2">AXI-Stream / DMA</text>
+<text x="1080" y="227" text-anchor="middle" class="s-kucuk">bin no, dB, çerçeve no</text>
 <text x="145" y="148" text-anchor="middle" class="s-kucuk s-vurgu">32 b</text>
 <text x="285" y="148" text-anchor="middle" class="s-kucuk s-vurgu">32 b</text>
 <text x="435" y="148" text-anchor="middle" class="s-kucuk s-vurgu">32 b</text>
@@ -53,18 +48,19 @@
 <text x="1010" y="148" text-anchor="middle" class="s-kucuk s-vurgu">16 b × k</text>
 <rect x="290" y="250" width="150" height="26" rx="4" class="blok-kontrol"/>
 <text x="365" y="267" text-anchor="middle" class="s-mono">WIN_SEL</text>
-<text x="445" y="267" class="s-kucuk s-yesil">0 = dikd., 1 = Hann, 2 = BH</text>
+<text x="365" y="292" text-anchor="middle" class="s-kucuk s-yesil">0 dikd. · 1 Hann · 2 BH · 3 Kaiser</text>
 <path d="M360 250 V192" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
-<rect x="440" y="290" width="150" height="26" rx="4" class="blok-kontrol"/>
-<text x="515" y="307" text-anchor="middle" class="s-mono">FFT_SCALE_SCH</text>
-<text x="595" y="307" class="s-kucuk s-yesil">kademe çifti başına 2 bit, 0x2AA</text>
-<path d="M510 290 V192" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
-<rect x="440" y="290" width="150" height="26" rx="4" class="blok-kontrol"/>
-<text x="515" y="307" text-anchor="middle" class="s-mono">FFT_NFFT</text>
-<text x="595" y="307" class="s-kucuk s-yesil">log2 N = 10</text>
-<rect x="870" y="250" width="150" height="26" rx="4" class="blok-kontrol"/>
-<text x="945" y="267" text-anchor="middle" class="s-mono">FFT_THR</text>
-<text x="1025" y="267" class="s-kucuk s-yesil">eşik (dB, Q8.4)</text>
+<rect x="450" y="250" width="150" height="26" rx="4" class="blok-kontrol"/>
+<text x="525" y="267" text-anchor="middle" class="s-mono">FFT_SCALE_SCH</text>
+<text x="525" y="292" text-anchor="middle" class="s-kucuk s-yesil">kademe çifti başına 2 bit: 0x2AA</text>
+<path d="M510 250 V192" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<rect x="620" y="250" width="150" height="26" rx="4" class="blok-kontrol"/>
+<text x="695" y="267" text-anchor="middle" class="s-mono">FFT_LOG2N</text>
+<text x="695" y="292" text-anchor="middle" class="s-kucuk s-yesil">log2 N = 10</text>
+<path d="M510 250 V192" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<rect x="860" y="250" width="150" height="26" rx="4" class="blok-kontrol"/>
+<text x="935" y="267" text-anchor="middle" class="s-mono">FFT_THR</text>
+<text x="935" y="292" text-anchor="middle" class="s-kucuk s-yesil">eşik, dB (Q8.4)</text>
 <path d="M940 250 V192" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
 <text x="20" y="267" class="s-kucuk">PS (AXI-Lite) register'ları →</text>
 <text x="20" y="350" class="s-baslik">Zamanlama (300 MHz örnek saati, SSR yok)</text>

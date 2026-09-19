@@ -273,14 +273,13 @@ a.terim:hover, a.terim:focus-visible { border-bottom-color: var(--accent); text-
 a.terim::after {
   content: attr(data-tanim);
   position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 30;
-  width: max-content; max-width: 320px;
+  width: max-content; max-width: min(320px, 80vw);
   background: var(--bg-3); color: var(--ink); border: 1px solid var(--line-2);
   border-radius: 8px; padding: 8px 11px; font-size: 13px; line-height: 1.45; font-weight: 400;
   box-shadow: 0 6px 20px rgba(0,0,0,.25);
-  opacity: 0; pointer-events: none; transform: translateY(4px);
-  transition: opacity .15s, transform .15s;
+  display: none; pointer-events: none;  /* display:none: görünmezken taşma alanına girmesin (mobil yatay kaydırma) */
 }
-a.terim:hover::after, a.terim:focus-visible::after { opacity: 1; transform: none; }
+a.terim:hover::after, a.terim:focus-visible::after { display: block; }
 
 /* ================================================================ TABLOLAR */
 .tablo-kap { overflow-x: auto; margin: 1.4em 0; }

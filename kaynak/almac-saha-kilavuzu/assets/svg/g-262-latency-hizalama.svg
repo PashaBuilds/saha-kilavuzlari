@@ -1,4 +1,4 @@
-<svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g262">
+<svg viewBox="0 0 900 418" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g262">
 <title id="t-g262">İki kolun latency hizalaması: giriş darbesi 1–2 µs; zarf ve eşik yaklaşık 0.1 µs gecikmeyle; FSM IN_PULSE ve EMIT; faz tabanlı frekans darbe bitiminde hazır; yüzde 50 örtüşen 3.41 µs FFT çerçeveleri; FFT tepesi kapsayan çerçeve bitişi ve boru hattı sonrası hazır; PDW birleştirici zaman kolu sonucunu bekletip TOA ile eşler ve FIFO'ya yazar</title>
 <text x="30.0" y="24.0" text-anchor="start" class="s-baslik">İki kolun gecikmesi ve PDW birleştirme — referans darbe (1 µs), fs = 300 MSPS, FFT 1024 (3.41 µs çerçeve)</text>
 <text x="190.0" y="78.0" text-anchor="end" class="s-metin2">giriş darbesi</text>
@@ -37,13 +37,13 @@
 <text x="860.0" y="378.0" text-anchor="middle" class="s-mono2">8</text>
 <text x="530.0" y="394.0" text-anchor="middle" class="s-kucuk">zaman (µs) — darbe t = 1.0 µs'de başlar</text>
 <rect x="282.5" y="64" width="82.5" height="22" rx="3" class="blok-aktif"/><text x="323.8" y="79.0" text-anchor="middle" class="s-kucuk">1 µs</text>
-<rect x="290.8" y="102" width="82.5" height="22" rx="3" class="blok-aktif"/><text x="332.0" y="117.0" text-anchor="middle" class="s-kucuk">+0.1 µs (≈ 30 örnek)</text>
+<rect x="290.8" y="102" width="82.5" height="22" rx="3" class="blok-aktif"/><text x="381.2" y="117.0" text-anchor="start" class="s-kucuk">gecikme ≈ 0.1 µs (≈ 30 örnek: zarf + MA + CFAR penceresi)</text>
 <rect x="290.8" y="140" width="4.1" height="22" rx="3" class="blok"/>
 <rect x="294.9" y="140" width="78.4" height="22" rx="3" class="blok-aktif"/><text x="334.1" y="155.0" text-anchor="middle" class="s-kucuk">IN_PULSE</text>
 <rect x="373.2" y="140" width="5.0" height="22" rx="3" class="blok"/>
 <rect x="378.2" y="140" width="3.3" height="22" rx="3" class="blok-kontrol"/>
 <text x="384.8" y="155.0" text-anchor="start" class="s-kucuk s-yesil">EMIT (t ≈ 2.2 µs): TOA, PW, PA hazır</text>
-<rect x="290.8" y="178" width="82.5" height="22" rx="3" class="blok-analog"/><text x="332.0" y="193.0" text-anchor="middle" class="s-kucuk">Δfaz biriktir → darbe biter bitmez f hazır</text>
+<rect x="290.8" y="178" width="82.5" height="22" rx="3" class="blok-analog"/><text x="332.0" y="193.0" text-anchor="middle" class="s-kucuk">Δφ biriktir</text><text x="381.2" y="193.0" text-anchor="start" class="s-kucuk">→ darbe bitince f hazır (t ≈ 2.1 µs)</text>
 <rect x="200.0" y="216" width="281.6" height="10" rx="2" class="blok-aktif"/>
 <rect x="340.8" y="227" width="281.6" height="10" rx="2" class="blok"/>
 <rect x="481.6" y="216" width="281.6" height="10" rx="2" class="blok"/>
@@ -51,10 +51,10 @@
 <rect x="763.2" y="216" width="96.8" height="10" rx="2" class="blok"/>
 <text x="204.1" y="210.0" text-anchor="start" class="s-kucuk">çerçeve 3.41 µs, adım 1.71 µs; darbeyi tam kapsayan çerçeve mavi</text>
 <rect x="790.7" y="254" width="6.6" height="22" rx="3" class="blok-analog"/>
-<text x="800.7" y="269.0" text-anchor="start" class="s-kucuk s-altin">t ≈ 7.2 µs: f_bb, BW (çerçeve bitişi + ~1124 saat boru hattı)</text>
+<text x="782.7" y="269.0" text-anchor="end" class="s-kucuk s-altin">f_bb, BW hazır: kapsayan çerçevenin bitişi + ~1124 saat boru hattı → t ≈ 7.2 µs</text>
 <rect x="381.5" y="292" width="409.2" height="22" rx="3" class="blok"/><text x="586.1" y="307.0" text-anchor="middle" class="s-kucuk">zaman kolu PDW'si bekleme kuyruğunda (TOA anahtarıyla)</text>
 <rect x="790.7" y="292" width="6.6" height="22" rx="3" class="blok-kontrol"/>
 <rect x="797.3" y="330" width="6.6" height="22" rx="3" class="blok-kontrol"/>
-<text x="800.7" y="345.0" text-anchor="start" class="s-kucuk s-yesil">PDW FIFO'da: darbe bitiminden ≈ 5.2 µs sonra</text>
-<text x="30.0" y="386.0" text-anchor="start" class="s-kucuk">Frekans kolu kullanılmıyorsa (faz tabanlı f yeterliyse) PDW t ≈ 2.2 µs'de çıkar; FFT kolu eklenince gecikme çerçeve + boru hattı kadar uzar ve eşleştirme penceresi gerekir.</text>
+<text x="782.7" y="345.0" text-anchor="end" class="s-kucuk s-yesil">PDW FIFO'da: darbe bitiminden ≈ 5.2 µs sonra</text>
+<text x="30.0" y="408.0" text-anchor="start" class="s-kucuk">Frekans kolu kullanılmıyorsa PDW t ≈ 2.2 µs'de çıkar; FFT kolu eklenince gecikme çerçeve + boru hattı kadar uzar, eşleştirme penceresi gerekir.</text>
 </svg>

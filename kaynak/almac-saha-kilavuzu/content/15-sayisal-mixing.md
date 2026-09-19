@@ -141,6 +141,8 @@ o: Referans senaryoda f_NCO = {{s:ddc.nco_mhz}} MHz = {{s:adc.fs_msps}}/4 → **
 o: SSR-8'de her saatte 8 örnek gelir; dört değerli örüntü 8'e tam böler: I = {x0, 0, −x2, 0, x4, 0, −x6, 0}, Q = {0, −x1, 0, x3, 0, −x5, 0, x7}. Yalnızca kablo ve işaret çevirme; **0 DSP**.
 :::
 
+{{svg:g-152-fs4-hilesi.svg|fs/4 hilesi örnek örnek (hesaplanmış, 660 MHz ton, 2400 MSPS). Üstte ADC örnekleri; ortada cos ve −sin dizileri (1, 0, −1, 0 ve 0, −1, 0, 1); altta I ve Q çıkışları: I yalnızca çift indisli örneklerden (her ikide bir işaret ters), Q yalnızca tek indisli örneklerden oluşur. Çarpma yok — işaret çevirme ve sıfırlama; fs/4'ten 60 MHz ötedeki ton I/Q'da 60 MHz'lik yavaş dönüş olarak görünür.}}
+
 Frekans planı böyle seçildiğinde (IF'in katlanmış hali fs/4'e denk gelecek
 biçimde) tasarımcı büyük bir kaynak kazanır ve I/Q çıkışlarının yarısı yapısal
 olarak sıfır olur — bu da filtreyi yarıya böler. Bedeli esnekliktir: fs/4 tek
@@ -161,7 +163,7 @@ olması ve geniş bantta çok tap istemesidir; avantajı, mixing'siz doğrudan
 NCO + mixer'dır; Hilbert, dar bantlı ya da özel ölçüm kollarında görülür.
 
 :::widget id=w12 ad="DDC laboratuvarı"
-- **Referans senaryo** preset'inde dört paneli izle: (1) ±600 MHz'de simetrik ton, (2) NCO = −600 MHz sonrası 0 Hz'de ton ve −1200 MHz'de image, (3) filtre sonrası yalnızca 0 Hz, (4) decimation-by-8 sonrası ±150 MHz eksende aynı ton. Gürültü tabanı satırında filtre öncesi ve sonrası fark ≈ 9 dB (fs/2 : 150 MHz = 8 kat) olsun.
+- **Referans senaryo** preset'inde dört paneli izle: (1) ±600 MHz'de simetrik ton, (2) NCO = −600 MHz sonrası 0 Hz'de ton ve −1200 MHz'de image, (3) filtre sonrası yalnızca 0 Hz, (4) decimation-by-8 sonrası ±150 MHz eksende aynı ton. Sonuç satırlarında filtre sonrası toplam gürültü gücünün ≈ 9 dB (2400 : 300 = 8 kat), sinyal gücünün 3 dB (image yarısı gitti) düştüğünü, yani SNR'ın **≈ 6 dB** arttığını gör — Bölüm 16'nın işlem kazancı.
 - Giriş tonunu **595 MHz** yap (IF'in 5 MHz üstünün evrik hali): çıkışta −5 MHz gör. NCO işaretini **+** yap: ton +5 MHz'e geçsin — "spectral inversion" bitinin yaptığı budur.
 - NCO'yu 601 MHz'e kaydır ve filtre bandını 150 MHz'den **400 MHz**'e genişlet: decimation-by-8 sonrası image ve bant dışı gürültü ±150 MHz'in içine katlansın; "katlanan güç" satırı kırmızıya dönsün. Bandı 150'ye geri al: temizlensin.
 - Giriş tipini **darbe** yap (1 µs): 4. panelde spektrumun sinc zarfı ({{bolum:3}}), ana lob genişliği 2 MHz. Filtre bandını 1 MHz'e daraltırsan darbe spektrumunun yan lobları kesilir ve zaman çiziminde kenarlar yumuşar — Bölüm 16'nın "BW ↔ rise time" konusu.

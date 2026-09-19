@@ -1,4 +1,4 @@
-<svg viewBox="0 0 960 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g112">
+<svg viewBox="0 0 960 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g112">
 <title id="t-g112">SSR (super-sample rate) gösterimi: üstte ADC'nin 2400 MSPS'lik tek örnek akışı x[0], x[1], … ; altta FPGA'da 300 MHz fabric saatinin her vuruşunda 8 örneklik bir vektör: saat n'de lane k örneği x[8n + k] taşır. Sözcük genişliği 8 × 16 bit = 128 bit AXI-Stream; en düşük indisli lane en eski örnektir (sıra sözleşmesi belgelenmeli). 14 bitlik örnek 16 bitlik sözcüğe işaret uzatma ya da MSB hizalama ile yerleşir.</title>
 <text x="20" y="22" class="s-baslik">SSR: 2400 MSPS tek akış → 8 paralel örnek × 300 MHz fabric saati</text>
 <text x="20" y="58" class="s-kucuk s-vurgu">ADC çıkışı: örnek başına 417 ps</text>
@@ -117,8 +117,8 @@
 <text x="740" y="202" class="s-kucuk">bit [127:112] ← lane 7</text>
 <text x="740" y="328" class="s-kucuk">bit [15:0] ← lane 0 (en eski)</text>
 <text x="675" y="348" text-anchor="middle" class="s-kucuk">saat 2 · t = 6.67 ns</text>
-<path d="M20 365H170 V355 H320 V365H470 V355 H620 V365H770 V355 H920 V365" class="yol-saat" style="stroke-dasharray:none"/>
-<text x="20" y="382" class="s-kucuk">fabric saati 300 MHz · veri hızı aynı: 8 × 16 bit × 300 MHz = 38.4 Gb/s</text>
-<text x="20" y="350" class="s-kucuk">Örnek sözcüğü (16 bit): 14 bit 2'nin tümleyeni → işaret uzatma [s s d13 … d0] ya da MSB hizalı [d13 … d0 0 0]; hangisi olduğunu belge söyler, ölçek 4 kat farklıdır.</text>
-<text x="20" y="368" class="s-kucuk">DSP tarafında sonuç: her blok (NCO, FIR, CIC) saat başına 8 örnek işler — Bölüm 12 ve 14'teki SSR gerçeklemesi bu sözleşmeyle başlar.</text>
+<path d="M20 376H170 V366 H320 V376H470 V366 H620 V376H770 V366 H920 V376" class="yol-saat" style="stroke-dasharray:none"/>
+<text x="20" y="394" class="s-kucuk">fabric saati 300 MHz · veri hızı aynı: 8 × 16 bit × 300 MHz = 38.4 Gb/s</text>
+<text x="20" y="420" class="s-kucuk">Örnek sözcüğü (16 bit): 14 bit 2'nin tümleyeni → işaret uzatma [s s d13 … d0] ya da MSB hizalı [d13 … d0 0 0]; hangisi olduğunu belge söyler, ölçek 4 kat farklıdır.</text>
+<text x="20" y="438" class="s-kucuk">DSP tarafında sonuç: her blok (NCO, FIR, CIC) saat başına 8 örnek işler — Bölüm 12 ve 14'teki SSR gerçeklemesi bu sözleşmeyle başlar.</text>
 </svg>

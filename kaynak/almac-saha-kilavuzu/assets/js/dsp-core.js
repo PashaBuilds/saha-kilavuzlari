@@ -262,16 +262,17 @@
   };
 
   /* ------------------------------------------------------------------- pencereler */
-  DSP.pencere = function (tip, N, beta) {
-    var w = new Float64Array(N), k;
+  // simetrik=true → kosinüs pencerelerinde payda N−1 (FIR katsayı tasarımı); varsayılan periyodik (spektral analiz).
+  DSP.pencere = function (tip, N, beta, simetrik) {
+    var w = new Float64Array(N), k, D = simetrik ? (N - 1) : N;
     var a = { "blackman-harris": [0.35875, 0.48829, 0.14128, 0.01168], "flat-top": [0.21557895, 0.41663158, 0.277263158, 0.083578947, 0.006947368] };
     switch (tip) {
       case "rect": for (k = 0; k < N; k++) w[k] = 1; break;
-      case "hann": for (k = 0; k < N; k++) w[k] = 0.5 - 0.5 * Math.cos(TAU * k / N); break;
-      case "hamming": for (k = 0; k < N; k++) w[k] = 0.54 - 0.46 * Math.cos(TAU * k / N); break;
-      case "blackman": for (k = 0; k < N; k++) w[k] = 0.42 - 0.5 * Math.cos(TAU * k / N) + 0.08 * Math.cos(2 * TAU * k / N); break;
+      case "hann": for (k = 0; k < N; k++) w[k] = 0.5 - 0.5 * Math.cos(TAU * k / D); break;
+      case "hamming": for (k = 0; k < N; k++) w[k] = 0.54 - 0.46 * Math.cos(TAU * k / D); break;
+      case "blackman": for (k = 0; k < N; k++) w[k] = 0.42 - 0.5 * Math.cos(TAU * k / D) + 0.08 * Math.cos(2 * TAU * k / D); break;
       case "blackman-harris": case "flat-top":
-        for (k = 0; k < N; k++) { var s = 0; for (var m = 0; m < a[tip].length; m++) s += (m % 2 ? -1 : 1) * a[tip][m] * Math.cos(m * TAU * k / N); w[k] = s; } break;
+        for (k = 0; k < N; k++) { var s = 0; for (var m = 0; m < a[tip].length; m++) s += (m % 2 ? -1 : 1) * a[tip][m] * Math.cos(m * TAU * k / D); w[k] = s; } break;
       case "kaiser": {
         var b = beta === undefined ? 8 : beta, i0b = DSP._i0(b);
         for (k = 0; k < N; k++) { var r = 2 * k / (N - 1) - 1; w[k] = DSP._i0(b * Math.sqrt(Math.max(0, 1 - r * r))) / i0b; }
@@ -406,7 +407,7 @@
   /* ---------------------------------------------------------------- FIR / CIC */
   // Pencereli sinc alçak geçiren: fc (Hz), fs, tap sayısı (tek), pencere tipi
   DSP.firTasarla = function (fcHz, fsHz, tap, pencereTip, beta) {
-    var h = new Float64Array(tap), w = DSP.pencere(pencereTip || "hamming", tap, beta), m = (tap - 1) / 2, s = 0, k;
+    var h = new Float64Array(tap), w = DSP.pencere(pencereTip || "hamming", tap, beta, true), m = (tap - 1) / 2, s = 0, k;
     var fc = fcHz / fsHz;
     for (k = 0; k < tap; k++) { var x = k - m; h[k] = (x === 0 ? 2 * fc : Math.sin(TAU * fc * x) / (PI * x)) * w[k]; s += h[k]; }
     for (k = 0; k < tap; k++) h[k] /= s;

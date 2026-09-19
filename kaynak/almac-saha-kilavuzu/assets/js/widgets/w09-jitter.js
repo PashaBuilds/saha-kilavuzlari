@@ -28,7 +28,7 @@ WK.kaydet("w09", function (w) {
     var baskin = bilesen.reduce(function (a, b) { return b[1] < a[1] ? b : a; });
     // ---- çubuklar
     WK.temizle(cub);
-    var gc = WK.grafik(cub, { W: 640, H: 150, xmin: 20, xmax: 110, ymin: 0, ymax: 4, kenar: { sol: 190, sag: 14, ust: 22, alt: 26 } });
+    var gc = WK.grafik(cub, { W: 640, H: 150, xmin: 20, xmax: 110, ymin: 0, ymax: 4, kenar: { sol: 190, sag: 14, ust: 22, alt: 34 } });
     gc.eksenler({ xAdet: 9, yTik: [], xAd: "SNR (dB) — kısa çubuk = daha çok gürültü = baskın terim", baslik: "Bileşenler ve toplam (güç domeninde birleşik)" });
     var satir = bilesen.concat([["TOPLAM (Nyquist bandı)", toplam]]);
     satir.forEach(function (s, i) {

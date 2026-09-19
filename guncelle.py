@@ -34,6 +34,10 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+# Windows konsolu (cp125x) Unicode işaretleri basamıyor; davranış değişmeden çıktıyı UTF-8'e çevir.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 HUB = Path(__file__).resolve().parent
 UST_DIZIN = HUB.parent
 KAYIT_DOSYASI = HUB / "kilavuzlar.js"

@@ -55,6 +55,6 @@
 <circle cx="859.1" cy="261.7" r="5" style="fill:var(--gold);stroke:var(--bg);stroke-width:1.5"/>
 <text x="851.1" y="283.7" text-anchor="end" class="s-kucuk s-altin">direct RF: 9.4 GHz, 100 fs → 44.6 dB</text>
 <circle cx="569.1" cy="260.2" r="5" style="fill:var(--gold);stroke:var(--bg);stroke-width:1.5"/>
-<text x="577.1" y="282.2" text-anchor="start" class="s-kucuk s-altin">kötü saat: 500 fs → 45.0 dB</text>
+<text x="561.1" y="282.2" text-anchor="end" class="s-kucuk s-altin">kötü saat: 500 fs → 45.0 dB</text>
 <text x="62" y="372" class="s-kucuk">Okuma: f_in 2× → −6 dB; σ 2× → −6 dB. 14 bitin 86 dB'sini 1.8 GHz'te görmek için σ ≈ 4.4 fs gerekir — pratikte erişilmez; jitter GHz girişte baskın terimdir.</text>
 </svg>

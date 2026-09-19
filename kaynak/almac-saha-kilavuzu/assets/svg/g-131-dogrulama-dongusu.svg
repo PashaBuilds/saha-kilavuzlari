@@ -1,0 +1,76 @@
+<svg viewBox="0 0 1040 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g131">
+<title id="t-g131">Doğrulama döngüsü: aynı test vektörü bit-true modele (golden çıktı) ve donanıma (sinyal üreteci→ADC ya da sayısal test örüntüsü enjektörü) gider; zincirin iç noktalarından ILA, snapshot buffer veya DMA ile veri yakalanır; karşılaştırma betiği hizalar, bit bit farkı hesaplar ve ilk fark örneğini raporlar; PS register'ları enjektör seçimi ve snapshot tetiği</title>
+<!-- test vektörü -->
+<rect x="20" y="170" width="120" height="60" rx="8" class="blok-aktif"/>
+<text x="80" y="195" text-anchor="middle" class="s-metin" style="font-weight:700">Test vektörü</text>
+<text x="80" y="212" text-anchor="middle" class="s-kucuk">dosya, sürümlü</text>
+<!-- üst yol: model -->
+<path d="M140 190 H190 V80 H236" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<rect x="240" y="50" width="170" height="60" rx="8" class="blok"/>
+<text x="325" y="75" text-anchor="middle" class="s-metin" style="font-weight:700">Bit-true model</text>
+<text x="325" y="92" text-anchor="middle" class="s-kucuk">MATLAB / Python (tam sayı)</text>
+<path d="M410 80 H736" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="573" y="72" text-anchor="middle" class="s-kucuk">golden çıktı (int16 I/Q)</text>
+<!-- alt yol: donanım -->
+<path d="M140 210 H190 V300 H236" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<!-- stimulus seçimi -->
+<rect x="240" y="250" width="110" height="40" rx="6" class="blok-analog"/>
+<text x="295" y="268" text-anchor="middle" class="s-kucuk">sinyal üreteci</text><text x="295" y="282" text-anchor="middle" class="s-kucuk">(analog, istatistiksel)</text>
+<rect x="240" y="310" width="110" height="40" rx="6" class="blok"/>
+<text x="295" y="328" text-anchor="middle" class="s-kucuk">test örüntüsü</text><text x="295" y="342" text-anchor="middle" class="s-kucuk">enjektörü (bit-exact)</text>
+<path d="M350 270 H376" class="yol-analog" marker-end="url(#ok-analog)"/>
+<use href="#sym-adc" x="380" y="250" width="60" height="40"/>
+<path d="M440 270 H466 V300" fill="none" class="yol-sayisal"/>
+<path d="M350 330 H466 V300" fill="none" class="yol-sayisal"/>
+<!-- çoklayıcı -->
+<path d="M466 285 L486 292 L486 308 L466 315 Z" class="blok"/>
+<text x="476" y="330" text-anchor="middle" class="s-kucuk">mux</text>
+<path d="M486 300 H506" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<!-- zincir -->
+<use href="#sym-mixer-d" x="510" y="280" width="60" height="40"/><text x="540" y="336" text-anchor="middle" class="s-kucuk">mixer</text>
+<path d="M570 300 H586" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<rect x="590" y="284" width="50" height="32" rx="4" class="blok"/><text x="615" y="304" text-anchor="middle" class="s-kucuk">CIC</text>
+<path d="M640 300 H656" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<use href="#sym-fir" x="660" y="280" width="60" height="40"/>
+<path d="M720 300 H736" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<use href="#sym-dec" x="740" y="280" width="60" height="40"/>
+<path d="M800 300 H830" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="836" y="296" class="s-kucuk">zarf,</text><text x="836" y="310" class="s-kucuk">tespit …</text>
+<!-- yakalama noktaları -->
+<g>
+  <circle cx="500" cy="300" r="4" fill="var(--gold)"/><circle cx="580" cy="300" r="4" fill="var(--gold)"/><circle cx="650" cy="300" r="4" fill="var(--gold)"/><circle cx="815" cy="300" r="4" fill="var(--gold)"/>
+  <path d="M500 296 V250 M580 296 V250 M650 296 V250 M815 296 V250" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 3" fill="none"/>
+  <path d="M500 250 H815" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="500" y="244" class="s-kucuk s-altin">yakalama noktaları: 0 ADC · 1 mixer · 2 CIC · 3 DDC çıkışı</text>
+</g>
+<!-- yakalama araçları -->
+<rect x="620" y="150" width="90" height="46" rx="6" class="blok"/><text x="665" y="168" text-anchor="middle" class="s-kucuk">ILA</text><text x="665" y="182" text-anchor="middle" class="s-kucuk">JTAG, sığ, tetikli</text>
+<rect x="720" y="150" width="100" height="46" rx="6" class="blok-aktif"/><text x="770" y="168" text-anchor="middle" class="s-kucuk">snapshot buffer</text><text x="770" y="182" text-anchor="middle" class="s-kucuk">BRAM/DDR, PS okur</text>
+<rect x="830" y="150" width="90" height="46" rx="6" class="blok"/><text x="875" y="168" text-anchor="middle" class="s-kucuk">DMA akışı</text><text x="875" y="182" text-anchor="middle" class="s-kucuk">uzun kayıt, 9.6 Gbps</text>
+<path d="M657 250 V200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M770 250 V200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M875 250 V200" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<!-- karşılaştırma -->
+<rect x="740" y="40" width="200" height="80" rx="8" class="blok-aktif"/>
+<text x="840" y="62" text-anchor="middle" class="s-metin" style="font-weight:700">Karşılaştırma betiği</text>
+<text x="840" y="80" text-anchor="middle" class="s-kucuk">hizala (L) · ısınmayı atla · e = hw − ref</text>
+<text x="840" y="94" text-anchor="middle" class="s-kucuk">max |e| = 0 ? geç : ilk fark örneği</text>
+<text x="840" y="110" text-anchor="middle" class="s-kucuk">→ hangi noktada başladıysa o bloğa dön</text>
+<path d="M770 150 V124" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M665 150 V130 H736" fill="none" class="yol-sayisal"/>
+<path d="M875 150 V130 H944 V80" fill="none" class="yol-sayisal"/>
+<!-- sonuç -->
+<rect x="960" y="50" width="70" height="60" rx="8" class="blok"/>
+<text x="995" y="75" text-anchor="middle" class="s-kucuk s-yesil">fark = 0</text>
+<text x="995" y="92" text-anchor="middle" class="s-kucuk s-kirmizi">fark ≠ 0</text>
+<path d="M940 80 H956" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<!-- PS -->
+<use href="#sym-cpu" x="20" y="330" width="60" height="40"/><text x="50" y="386" text-anchor="middle" class="s-kucuk">PS</text>
+<path d="M80 350 H150 V325 H236" fill="none" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<text x="90" y="344" class="s-kucuk s-yesil">enjektör yükle · mux seç</text>
+<path d="M60 330 V300 H120 V262 H150" fill="none" class="yol-kontrol"/>
+<path d="M150 262 H190 V236 H770 V200" fill="none" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<text x="200" y="230" class="s-kucuk s-yesil">SNAP_CTRL: tetikle, kaynak seç · SNAP_STAT: dolu, OVF</text>
+<!-- dipnot -->
+<text x="20" y="408" class="s-kucuk">Analog stimulus ile yalnızca istatistiksel karşılaştırma (güç, spektrum, SNR); bit bit eşitlik yalnızca sayısal enjektörle mümkündür.</text>
+</svg>

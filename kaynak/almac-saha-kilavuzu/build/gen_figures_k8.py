@@ -153,7 +153,7 @@ def txt(x, y, s, kls="s-metin", anchor="start", extra=""):
 # ================================================================== g-240
 def g240():
     # kurgusal 128-bit format — 4 × 32-bit sözcük, bit 31 solda
-    W, H = 900, 330
+    W, H = 900, 372
     x0, hucre, yb, yh, satir = 70, 24.5, 46, 44, 62
     alanlar = {  # sözcük: [(ust_bit, alt_bit, ad, sinif)]
         0: [(31, 0, "TOA[31:0] — zaman damgası, alt 32 bit (LSB = 3.333 ns)", "blok-aktif")],
@@ -198,8 +198,7 @@ def g241():
     # üst: zaman şeridi — 1 ms PRI, 1 µs darbe
     x0, x1, y = 30, 830, 60
     p.append(f'<line x1="{x0}" y1="{y}" x2="{x1}" y2="{y}" class="eksen"/>')
-    p.append(txt(x0, y - 8, "PRI = 1 ms", "s-kucuk"))
-    p.append(txt(x1, y - 8, "t", "s-kucuk", "end"))
+    p.append(txt(x1 - 14, y - 8, "PRI = 1 ms  →  t", "s-kucuk", "end"))
     # darbe: 1 µs / 1 ms = %0.1 → 0.8 px; görünür olsun diye 3 px ve açıklama
     p.append(f'<rect x="{x0 + 40}" y="{y - 22}" width="3" height="22" class="spk-sinyal"/>')
     p.append(f'<rect x="{x0 + 40 + 800 * 0.98:.0f}" y="{y - 22}" width="3" height="22" class="spk-sinyal" opacity=".45"/>')
@@ -207,12 +206,12 @@ def g241():
     p.append(f'<path d="M{x0 + 41} {y + 4} V{y + 22}" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
     p.append(txt(x0 + 48, y + 20, "→ 1 PDW (128 bit)", "s-mono2"))
     # alt: log ölçekli çubuklar
-    bx0, bx1, by = 250, 820, 110
+    bx0, bx1, by = 330, 820, 110
     logmin, logmax = 5, 11  # 100 kbps .. 100 Gbps
     satirlar = [
         ("ADC çıkışı: 2400 MSPS × 14 bit", 33.6e9, "blok-analog"),
         ("DDC çıkışı: 300 MSPS × 32 bit (I+Q)", 9.6e9, "blok-aktif"),
-        ("yalnız darbe örnekleri: 300 örn × 32 bit × 1 kHz", 9.6e6, "blok-aktif"),
+        ("yalnız darbe örnekleri: 300 × 32 bit × 1 kHz", 9.6e6, "blok-aktif"),
         ("PDW akışı: 128 bit × 1 kHz PRF", 128e3, "blok-kontrol"),
     ]
     for k, (ad, hiz, kls) in enumerate(satirlar):
@@ -298,7 +297,7 @@ def g250():
     p.append(txt(x1 - 4, PY(ton) - 4, "T_on (eşik)", "s-kucuk s-altin", "end"))
     p.append(f'<line x1="{x0}" y1="{PY(toff):.1f}" x2="{x1}" y2="{PY(toff):.1f}" class="yol-gurultu"/>')
     p.append(txt(x1 - 4, PY(toff) + 12, "T_off = T_on − 3 dB (histerezis)", "s-kucuk s-kirmizi", "end"))
-    p.append(txt(x0 + 6, PY(-20) - 4, "gürültü ortalaması −20 dB", "s-kucuk"))
+    p.append(txt(x0 + 6, PY(-1.5), "gürültü ortalaması −20 dB (SNR 20 dB)", "s-kucuk"))
     # TOA / bitiş
     for k, ad in ((bas, "TOA (T_on geçişi)"), (son, "bitiş (T_off geçişi)")):
         p.append(f'<line x1="{PX(ts[k]):.1f}" y1="{y1}" x2="{PX(ts[k]):.1f}" y2="{y0}" class="yol-kontrol"/>')
@@ -316,7 +315,7 @@ def g250():
     # PA
     tepe = max(pdb[bas:son])
     ort = sum(pdb[ka:kb]) / (kb - ka)
-    p.append(txt(PX(0.9), PY(1.5), f"PA: tepe {tepe:.1f} dB · kenarlar hariç ortalama {ort:.1f} dB (taralı bölge)", "s-mono2", "middle"))
+    p.append(txt(PX(0.83), PY(-17), f"PA: tepe {tepe:.1f} dB · kenarlar hariç ortalama {ort:.1f} dB (taralı bölge)", "s-mono2", "middle"))
     # alt panel — anlık frekans
     af = anlik_frekans(i, q, fs)
     afm = [v / 1e6 for v in af]
@@ -330,7 +329,7 @@ def g250():
     p.append(f'<path d="{path_from(ts, afm, x0b, x1b, y0b, y1b, xmin, xmax, ymin2, ymax2)}" class="yol-sayisal" opacity=".9"/>')
     fort = sum(af[ka:kb]) / (kb - ka)
     p.append(f'<line x1="{PX(ts[ka]):.1f}" y1="{PYb(fort / 1e6):.1f}" x2="{PX(ts[kb]):.1f}" y2="{PYb(fort / 1e6):.1f}" class="spk-filtre"/>')
-    p.append(txt(PX(1.62), PYb(fort / 1e6) - 8, f"ölçüm penceresi ortalaması = {fort / 1e6:.3f} MHz (gerçek 5.000)", "s-mono2 s-altin"))
+    p.append(txt(PX(0.83), y0b - 8, f"ölçüm penceresi ortalaması = {fort / 1e6:.3f} MHz (gerçek 5.000)", "s-mono2 s-altin", "middle"))
     p.append(txt(x0b + 6, y1b + 14, "darbe dışında anlık frekans gürültünün rastgele fazıdır → ±fs/2 saçılır; yalnız darbe içinde, kenarlar dışlanarak ortalanır", "s-kucuk"))
     return sarmala("g250", W, H, "Tek darbe üzerinde ölçü noktaları: üstte güç zarfı dB, T_on eşiği, histerezisli T_off, TOA ve bitiş geçişleri, PW oku, yüzde 50 genlik noktası, kenarları dışlayan PA ölçüm bölgesi; altta aynı darbenin anlık frekansı ve ölçüm penceresi ortalaması", "\n".join(p))
 
@@ -360,14 +359,14 @@ def g251():
         tx = time_walk(RISE, oran) * 1e9
         p.append(f'<line x1="{PX(tx):.1f}" y1="{PY(esik):.1f}" x2="{PX(tx):.1f}" y2="{y0}" class="yol-kontrol"/>')
         p.append(f'<circle cx="{PX(tx):.1f}" cy="{PY(esik):.1f}" r="4" fill="var(--green)"/>')
-        p.append(txt(PX(tx) + 4, y0 - 6 - (0 if tepe_db == 0 else 14), f"{tx:.1f} ns", "s-mono2 s-yesil"))
+        p.append(txt(PX(tx) + 3, y0 - 6, f"{tx:.1f} ns", "s-mono2 s-yesil"))
         p.append(txt(x0 + 8, PY(tepe_db) - 5, ad, "s-kucuk"))
     p.append(f'<line x1="{x0}" y1="{PY(esik):.1f}" x2="{x1}" y2="{PY(esik):.1f}" class="spk-filtre"/>')
     p.append(txt(x1 - 4, PY(esik) - 4, "eşik −28 dB", "s-kucuk s-altin", "end"))
     t1 = time_walk(RISE, 10 ** (esik / 20)) * 1e9
     t2 = time_walk(RISE, 10 ** ((esik + 20) / 20)) * 1e9
-    p.append(f'<path d="M{PX(t1):.1f} {PY(-36):.1f} H{PX(t2):.1f}" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>')
-    p.append(txt((PX(t1) + PX(t2)) / 2, PY(-36) - 5, f"Δ = {t2 - t1:.1f} ns", "s-mono2 s-kirmizi", "middle"))
+    p.append(f'<path d="M{PX(t1):.1f} {PY(-34):.1f} H{PX(t2):.1f}" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>')
+    p.append(txt((PX(t1) + PX(t2)) / 2, PY(-34) - 5, f"Δ = {t2 - t1:.1f} ns", "s-mono2 s-kirmizi", "middle"))
     # sağ: eğri t_x(eşik/tepe)
     x0b, x1b, y0b, y1b = 500, 830, 200, 40
     xmin2, xmax2, ymin2, ymax2 = -40, 0, 0, 30
@@ -385,7 +384,8 @@ def g251():
         p.append(txt(PXb(v) - 6, PYb(t) - 7, ad, "s-kucuk s-altin", "end"))
     p.append(f'<line x1="{x0b}" y1="{PYb(3.333):.1f}" x2="{x1b}" y2="{PYb(3.333):.1f}" class="yol-saat"/>')
     p.append(txt(x0b + 4, PYb(3.333) - 4, "1 örnek = 3.33 ns", "s-kucuk"))
-    p.append(txt(x0b + 4, y1b + 14, "t_x = t_r/π · acos(1 − 2·a), a = genlik oranı (rise = 50 ns)", "s-mono2"))
+    p.append(txt(x0b + 4, y1b + 14, "t_x = t_r/π · acos(1 − 2a)", "s-mono2"))
+    p.append(txt(x0b + 4, y1b + 27, "a = genlik oranı, t_r = 50 ns", "s-kucuk"))
     # alt açıklama
     p.append(txt(70, 250, "Referans senaryo: eşik −68 dBm sabit. −60 dBm'lik darbe eşiği tepesinin −8 dB'sinde keser (21.7 ns), −40 dBm'lik darbe −28 dB'sinde (6.4 ns):", "s-metin2"))
     p.append(txt(70, 270, "aynı anda gelen iki darbenin TOA'sı 15.3 ns ≈ 4.6 örnek farklı okunur. Düzeltme: PA'ya bağlı tablo ya da %50 tepe noktasına göre TOA (kesirli).", "s-metin2"))
@@ -398,7 +398,7 @@ def g251():
 
 # ================================================================== g-252
 def g252():
-    W, H = 860, 470
+    W, H = 860, 540
     fs = FS
     t0 = 0.2e-6
     n = 420  # 1.4 µs
@@ -451,12 +451,12 @@ def g252():
         sxy = sum(x * y for x, y in zip(xs2, ys2))
         egim = (nn * sxy - sx * sy) / (nn * sxx - sx * sx)
         sonuc.append((ad, sy / nn, egim))
-    yy = y1b + 14
+    yy = y0b + 46
     for k, (ad, ort, egim) in enumerate(sonuc):
         renk = ("s-vurgu", "s-altin", "s-kirmizi")[k]
-        p.append(txt(x0b + 6, yy + k * 14, f"{ad}: ortalama {ort / 1e6:.2f} MHz · eğim {egim / 1e12:+.2f} MHz/µs", f"s-kucuk {renk}"))
-    p.append(txt(x1b - 6, y0b - 8, "faz kodlu: 180° atlama anlık frekansta ±fs/2'ye varan tek örneklik sivri uç → 'faz atlaması' bayrağı", "s-kucuk s-kirmizi", "end"))
-    p.append(txt(x1b - 6, y0b - 22, "LFM: doğrusal rampa 0 → 10 MHz, eğim = BW/PW = 10 MHz/µs; ortalama yine 5 MHz", "s-kucuk s-altin", "end"))
+        p.append(txt(x0b, yy + k * 15, f"{ad}: pencere ortalaması {ort / 1e6:.2f} MHz · uydurulan eğim {egim / 1e12:+.2f} MHz/µs", f"s-kucuk {renk}"))
+    p.append(txt(x0b, yy + 50, "LFM: doğrusal rampa 0 → 10 MHz, eğim = BW/PW = 10 MHz/µs (kenar dışlama rampanın uçlarını kırpar); ortalama yine 5 MHz.", "s-kucuk"))
+    p.append(txt(x0b, yy + 64, "Faz kodlu: 180° atlama anlık frekansta ±fs/2'ye varan tek örneklik sivri uç üretir → 'faz atlaması' sayacı / bayrağı.", "s-kucuk"))
     return sarmala("g252", W, H, "Darbe içi anlık frekans profili: üstte sabit taşıyıcılı ve LFM darbenin I(t) dalga şekli; altta üç MOP tipinin anlık frekansı — sabit düz çizgi 5 MHz, LFM 0'dan 10 MHz'e doğrusal rampa, 13-bit Barker faz atlamalarında sivri uçlar; ölçüm penceresi ortalamaları ve eğimler", "\n".join(p))
 
 
@@ -500,12 +500,12 @@ def g260():
     p.append(txt(568, 150, "p > T_on (k_f dolmadan): kenar çentiği → darbe sürüyor", "s-kucuk s-kirmizi", "middle"))
     # zaman aşımı: IN_PULSE -> EMIT (üst yay, uzun)
     p.append(ok(0, 0, 0, 0, "yol-kontrol", "ok-kontrol", "M470 174 V70 H850 V174"))
-    p.append(txt(660, 62, "örnek sayacı ≥ MAX_PW: zaman aşımı → SEG bayraklı parça PDW yay, IN_PULSE'ta kal (CW / çok uzun darbe)", "s-kucuk s-yesil", "middle"))
+    p.append(txt(660, 62, "örnek sayacı ≥ MAX_PW: zaman aşımı → SEG bayraklı parça PDW yay, IN_PULSE'ta kal (CW / uzun darbe)", "s-kucuk s-yesil", "middle"))
     p.append(f'<path d="M870 174 V90 H500 V172" class="yol-kontrol" stroke-dasharray="4 3" marker-end="url(#ok-kontrol)"/>')
     # alt notlar
-    p.append(txt(30, 340, "Register'lar: T_on (sabit eşik ya da CFAR eşiği), DET_HYST (T_off), DET_MIN_PW (çentik reddi), DET_MAX_PW (zaman aşımı), k_r / k_f (kenar doğrulama, tipik 1–4 örnek).", "s-metin2"))
-    p.append(txt(30, 360, "Pulse-on-pulse: IN_PULSE içinde tepe birden sıçrarsa (≥ 6 dB) ya da anlık frekans pencere ortalamasından koparsa POP bayrağı kalkar; ayrıştırma yazılımda.", "s-metin2"))
-    p.append(txt(30, 380, "Öğretici şema; gerçek tasarımlarda durum sayısı ve koşullar farklı olabilir. Yeşil: PDW'ye yazılan büyüklükler, kırmızı: reddedilen yollar.", "s-kucuk"))
+    p.append(txt(30, 336, "Register'lar: T_on (sabit eşik ya da CFAR eşiği) · DET_HYST (T_off) · DET_MIN_PW (çentik reddi) · DET_MAX_PW (zaman aşımı) · k_r / k_f (kenar doğrulama, 1–4 örnek)", "s-kucuk"))
+    p.append(txt(30, 352, "Pulse-on-pulse: IN_PULSE içinde tepe ≥ 6 dB sıçrarsa ya da anlık frekans pencere ortalamasından koparsa POP bayrağı kalkar; ayrıştırma yazılımda.", "s-kucuk"))
+    p.append(txt(30, 368, "Öğretici şema; gerçek tasarımlarda durum sayısı ve koşullar farklı olabilir. Yeşil: PDW'ye yazılan büyüklükler, kırmızı: reddedilen yollar.", "s-kucuk"))
     return sarmala("g260", W, H, "Darbe durum makinesi diyagramı: IDLE, RISING, IN_PULSE, FALLING, EMIT durumları; eşik geçişleri ve doğrulama sayaçlarıyla ileri geçişler; gürültü sivrisi ve kenar çentiği için geri dönüş yolları; MAX_PW zaman aşımında SEG bayraklı parça PDW yayımı; EMIT'ten IDLE'a PDW FIFO yazımı", "\n".join(p))
 
 
@@ -578,8 +578,8 @@ def g261():
     p.append(f'<path d="M690 100 V165" class="yol-kontrol"/>')
     p.append(sym("reg", 880, 60, "IRQ_STATUS", "IRQ_MASK"))
     p.append(ok("M940 80 H990", "yol-kontrol", "ok-kontrol"))
-    p.append(txt(1010, 76, "IRQ: FIFO yarım /", "s-kucuk s-yesil"))
-    p.append(txt(1010, 88, "taşma / snapshot hazır", "s-kucuk s-yesil"))
+    p.append(txt(996, 64, "IRQ: FIFO yarım,", "s-kucuk s-yesil"))
+    p.append(txt(996, 76, "taşma, snap hazır", "s-kucuk s-yesil"))
     p.append(f'<path d="M1020 160 V100" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>')
     p.append(txt(1030, 130, "AXI-Lite", "s-kucuk s-yesil"))
     p.append(txt(1030, 142, "okuma/yazma", "s-kucuk s-yesil"))
@@ -594,7 +594,7 @@ def g261():
 
 # ================================================================== g-262
 def g262():
-    W, H = 900, 400
+    W, H = 900, 418
     p = [txt(30, 24, "İki kolun gecikmesi ve PDW birleştirme — referans darbe (1 µs), fs = 300 MSPS, FFT 1024 (3.41 µs çerçeve)", "s-baslik")]
     x0, x1 = 200, 860
     tmin, tmax = 0, 8.0
@@ -613,20 +613,22 @@ def g262():
     p.append(txt((x0 + x1) / 2, y0 + 8 * dy + 30, "zaman (µs) — darbe t = 1.0 µs'de başlar", "s-kucuk", "middle"))
     tb, te = 1.0, 2.0
     lat_zaman = 0.1   # zarf + MA + CFAR penceresi ≈ 30 örnek
-    def bant(satir, ta, tb_, kls, et=None, etkls="s-kucuk"):
+    def bant(satir, ta, tb_, kls, et=None, etkls="s-kucuk", sag=None):
         y = y0 + satir * dy + 4
         s = f'<rect x="{PX(ta):.1f}" y="{y}" width="{max(2, PX(tb_) - PX(ta)):.1f}" height="22" rx="3" class="{kls}"/>'
         if et:
             s += txt((PX(ta) + PX(tb_)) / 2, y + 15, et, etkls, "middle")
+        if sag:
+            s += txt(PX(tb_) + 8, y + 15, sag, etkls)
         return s
     p.append(bant(0, tb, te, "blok-aktif", "1 µs"))
-    p.append(bant(1, tb + lat_zaman, te + lat_zaman, "blok-aktif", "+0.1 µs (≈ 30 örnek)"))
+    p.append(bant(1, tb + lat_zaman, te + lat_zaman, "blok-aktif", None, "s-kucuk", "gecikme ≈ 0.1 µs (≈ 30 örnek: zarf + MA + CFAR penceresi)"))
     p.append(bant(2, tb + lat_zaman, tb + lat_zaman + 0.05, "blok"))
     p.append(bant(2, tb + lat_zaman + 0.05, te + lat_zaman, "blok-aktif", "IN_PULSE"))
     p.append(bant(2, te + lat_zaman, te + lat_zaman + 0.06, "blok"))
     p.append(bant(2, te + lat_zaman + 0.06, te + lat_zaman + 0.1, "blok-kontrol"))
     p.append(txt(PX(te + lat_zaman + 0.14), y0 + 2 * dy + 19, "EMIT (t ≈ 2.2 µs): TOA, PW, PA hazır", "s-kucuk s-yesil"))
-    p.append(bant(3, tb + lat_zaman, te + lat_zaman, "blok-analog", "Δfaz biriktir → darbe biter bitmez f hazır"))
+    p.append(bant(3, tb + lat_zaman, te + lat_zaman, "blok-analog", "Δφ biriktir", "s-kucuk", "→ darbe bitince f hazır (t ≈ 2.1 µs)"))
     # FFT çerçeveleri %50 overlap: 3.41 µs, adım 1.71
     frame = 1024 / FS * 1e6
     k = 0
@@ -641,14 +643,14 @@ def g262():
     kaps_bitis = frame  # çerçeve 0 (0–3.41) darbeyi kapsar
     fft_hazir = kaps_bitis + (1024 + 100) / FS * 1e6
     p.append(bant(5, fft_hazir, fft_hazir + 0.08, "blok-analog"))
-    p.append(txt(PX(fft_hazir) + 10, y0 + 5 * dy + 19, f"t ≈ {fft_hazir:.1f} µs: f_bb, BW (çerçeve bitişi + ~1124 saat boru hattı)", "s-kucuk s-altin"))
+    p.append(txt(PX(fft_hazir) - 8, y0 + 5 * dy + 19, f"f_bb, BW hazır: kapsayan çerçevenin bitişi + ~1124 saat boru hattı → t ≈ {fft_hazir:.1f} µs", "s-kucuk s-altin", "end"))
     # birleştir: bekleme
     p.append(bant(6, te + lat_zaman + 0.1, fft_hazir, "blok", "zaman kolu PDW'si bekleme kuyruğunda (TOA anahtarıyla)"))
     p.append(bant(6, fft_hazir, fft_hazir + 0.08, "blok-kontrol"))
     p.append(bant(7, fft_hazir + 0.08, fft_hazir + 0.16, "blok-kontrol"))
-    p.append(txt(PX(fft_hazir) + 10, y0 + 7 * dy + 19, f"PDW FIFO'da: darbe bitiminden ≈ {fft_hazir - te:.1f} µs sonra", "s-kucuk s-yesil"))
+    p.append(txt(PX(fft_hazir) - 8, y0 + 7 * dy + 19, f"PDW FIFO'da: darbe bitiminden ≈ {fft_hazir - te:.1f} µs sonra", "s-kucuk s-yesil", "end"))
     # açıklama
-    p.append(txt(30, 386, "Frekans kolu kullanılmıyorsa (faz tabanlı f yeterliyse) PDW t ≈ 2.2 µs'de çıkar; FFT kolu eklenince gecikme çerçeve + boru hattı kadar uzar ve eşleştirme penceresi gerekir.", "s-kucuk"))
+    p.append(txt(30, 408, "Frekans kolu kullanılmıyorsa PDW t ≈ 2.2 µs'de çıkar; FFT kolu eklenince gecikme çerçeve + boru hattı kadar uzar, eşleştirme penceresi gerekir.", "s-kucuk"))
     return sarmala("g262", W, H, "İki kolun latency hizalaması: giriş darbesi 1–2 µs; zarf ve eşik yaklaşık 0.1 µs gecikmeyle; FSM IN_PULSE ve EMIT; faz tabanlı frekans darbe bitiminde hazır; yüzde 50 örtüşen 3.41 µs FFT çerçeveleri; FFT tepesi kapsayan çerçeve bitişi ve boru hattı sonrası hazır; PDW birleştirici zaman kolu sonucunu bekletip TOA ile eşler ve FIFO'ya yazar", "\n".join(p))
 
 
@@ -719,7 +721,8 @@ def g270():
             if a == ad:
                 px = x0c + t / T * (x1c - x0c)
                 p.append(f'<rect x="{px - 1.5:.1f}" y="{yy - 8}" width="3" height="16" class="{kls}"/>')
-    p.append(txt(30, 440, "Süreç yazılımdadır: PDW'ler (RF, PW, AOA) kümelenir, küme içinde ΔTOA histogramı PRI adaylarını verir, aday PRI ile darbe dizisi çıkarılır, kalanlar yeniden denenir; iz güncellenir ve kütüphaneyle eşlenir.", "s-kucuk"))
+    p.append(txt(30, 436, "Süreç yazılımdadır: PDW'ler (RF, PW, AOA) kümelenir; küme içinde ΔTOA histogramı PRI adaylarını verir; aday PRI ile darbe dizisi çıkarılır,", "s-kucuk"))
+    p.append(txt(30, 450, "kalanlarla işlem yinelenir; iz güncellenir ve kütüphaneyle eşlenir.", "s-kucuk"))
     return sarmala("g270", W, H, "Karışık PDW akışından emiter izlerine: üstte 10 ms boyunca TOA–RF saçılımı olarak karışık PDW akışı; sol altta ardışık TOA farklarının histogramı ve PRI adayı tepeleri; sağ altta üç kurgusal emiterin ayrılmış darbe dizileri", "\n".join(p))
 
 

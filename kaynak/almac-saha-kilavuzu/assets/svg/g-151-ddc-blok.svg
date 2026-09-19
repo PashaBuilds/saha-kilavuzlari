@@ -1,0 +1,71 @@
+<svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g151">
+<title id="t-g151">DDC blok şeması: ADC'den reel 14 bit örnek iki sayısal mixer'a girer, NCO'nun cos çıkışı I yolunu, −sin çıkışı Q yolunu besler; 30 bitlik çarpımlar 16 bite yuvarlanır; her yolda alçak geçiren FIR ve ↓8 decimator; çıkış 300 MSPS 16+16 bit; PS register'ları FTW, POW, INV ve katsayılar yeşil; 300 MHz fabric saati SSR-8</title>
+<!-- ADC -->
+<use href="#sym-adc" x="30" y="130" width="60" height="40"/>
+<text x="60" y="186" text-anchor="middle" class="s-kucuk">ADC</text>
+<text x="60" y="200" text-anchor="middle" class="s-mono2">14 bit reel</text>
+<text x="60" y="214" text-anchor="middle" class="s-mono2">2400 MSPS</text>
+<!-- dallanma -->
+<path d="M90 150 H130" class="yol-sayisal"/>
+<circle cx="130" cy="150" r="3" fill="var(--accent)"/>
+<path d="M130 150 V90 H196" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M130 150 V210 H196" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="140" y="84" class="s-kucuk">x[n]</text>
+<!-- mixerlar -->
+<use href="#sym-mixer-d" x="200" y="70" width="60" height="40"/>
+<use href="#sym-mixer-d" x="200" y="190" width="60" height="40"/>
+<!-- NCO -->
+<use href="#sym-nco" x="200" y="130" width="60" height="40"/>
+<path d="M230 130 V114" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M230 170 V186" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="238" y="126" class="s-kucuk">cos(ω₀n)</text>
+<text x="238" y="182" class="s-kucuk">−sin(ω₀n)</text>
+<text x="262" y="154" class="s-kucuk">16 bit · fs/4 → {1,0,−1,0}</text>
+<!-- çarpım genişliği -->
+<path d="M260 90 H316" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M260 210 H316" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="288" y="82" text-anchor="middle" class="s-mono2">30 bit</text>
+<text x="288" y="228" text-anchor="middle" class="s-mono2">30 bit</text>
+<!-- yuvarlama -->
+<rect x="320" y="76" width="56" height="28" rx="4" class="blok"/><text x="348" y="94" text-anchor="middle" class="s-kucuk">round →16</text>
+<rect x="320" y="196" width="56" height="28" rx="4" class="blok"/><text x="348" y="214" text-anchor="middle" class="s-kucuk">round →16</text>
+<path d="M376 90 H416" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M376 210 H416" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="396" y="82" text-anchor="middle" class="s-mono2">I</text>
+<text x="396" y="228" text-anchor="middle" class="s-mono2">Q</text>
+<!-- FIR -->
+<use href="#sym-fir" x="420" y="70" width="60" height="40"/>
+<use href="#sym-fir" x="420" y="190" width="60" height="40"/>
+<text x="450" y="60" text-anchor="middle" class="s-kucuk">LPF ±150 MHz</text>
+<path d="M480 90 H516" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M480 210 H516" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<!-- decimator -->
+<use href="#sym-dec" x="520" y="70" width="60" height="40"/>
+<use href="#sym-dec" x="520" y="190" width="60" height="40"/>
+<text x="550" y="60" text-anchor="middle" class="s-kucuk">↓8</text>
+<text x="550" y="250" text-anchor="middle" class="s-kucuk">Bölüm 16: CIC ↓4 + komp. + halfband ↓2</text>
+<path d="M580 90 H640" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M580 210 H640" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<!-- çıkış -->
+<text x="648" y="94" class="s-mono2">I · 16 bit</text>
+<text x="648" y="214" class="s-mono2">Q · 16 bit</text>
+<rect x="720" y="120" width="160" height="62" rx="6" class="blok-aktif"/>
+<text x="800" y="140" text-anchor="middle" class="s-metin">DDC çıkışı</text>
+<text x="800" y="156" text-anchor="middle" class="s-mono2">300 MSPS kompleks</text>
+<text x="800" y="172" text-anchor="middle" class="s-mono2">±150 MHz · 9.6 Gbps</text>
+<path d="M700 90 H712 V128" fill="none" class="yol-sayisal"/>
+<path d="M700 210 H712 V174" fill="none" class="yol-sayisal"/>
+<!-- register (PS) -->
+<use href="#sym-reg" x="30" y="260" width="60" height="40"/>
+<text x="100" y="276" class="s-kucuk s-yesil">NCO_FTW · NCO_POW · CTRL.INV · MIX.FS4_EN · FIR katsayıları</text>
+<path d="M90 280 H180 V170 H196" fill="none" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<path d="M180 280 H450 V236" fill="none" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<text x="100" y="294" class="s-kucuk">PS (AXI-Lite)</text>
+<!-- saat -->
+<use href="#sym-saat" x="820" y="250" width="60" height="40"/>
+<text x="850" y="306" text-anchor="middle" class="s-kucuk">300 MHz fabric</text>
+<path d="M820 270 H700 V232" fill="none" class="yol-saat"/>
+<text x="600" y="300" class="s-kucuk">SSR-8: 2400 MSPS = 8 örnek × 300 MHz; 16 çarpıcı (genel NCO) ya da 0 (fs/4)</text>
+<!-- image notu -->
+<text x="420" y="30" class="s-kucuk s-kirmizi">mixer çıkışında image −1200 MHz'de → FIR atar; decimation önce yapılırsa banda katlanır</text>
+</svg>

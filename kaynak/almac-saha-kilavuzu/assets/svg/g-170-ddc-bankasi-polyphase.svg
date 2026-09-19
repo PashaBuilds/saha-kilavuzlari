@@ -1,0 +1,123 @@
+<svg viewBox="0 0 1120 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g170">
+<title id="t-g170">DDC bankasından polyphase kanallaştırıcıya: solda K paralel DDC (her biri NCO, kompleks mixer, alçak geçiren filtre, decimator); sağda komütatör ile K yola dağıtım, her yolda prototip filtrenin bir polyphase alt-filtresi, K noktalı FFT (Bölüm 18'de açılan kara kutu) ve K kanal çıkışı; aşırı örneklemede komütatör K/2 adımla döner ve FFT girişinde dairesel kaydırma yapılır</title>
+<!-- ================= SOL: DDC bankası ================= -->
+<text x="20" y="26" class="s-baslik">DDC bankası — K kat kaynak</text>
+<text x="20" y="42" class="s-kucuk">K = 16: 16 NCO, 32 mixer, 32 filtre, 32 decimator (SSR-8'de ≈ 1280 DSP)</text>
+<!-- giriş -->
+<text x="14" y="146" class="s-mono">x[n]</text>
+<text x="14" y="160" class="s-kucuk">2400 MSPS</text>
+<path d="M60 150 H90" class="yol-sayisal"/>
+<circle cx="90" cy="150" r="3" fill="var(--accent)"/>
+<path d="M90 150 V80 H116" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M90 150 H116" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M90 150 V220 H116" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M90 220 V330 H116" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<!-- satır 0 -->
+<g>
+  <use href="#sym-mixer-d" x="120" y="60" width="60" height="40"/>
+  <use href="#sym-nco" x="120" y="14" width="60" height="40"/>
+  <path d="M150 54 V60" class="yol-sayisal"/>
+  <text x="184" y="30" class="s-kucuk">f₀ = 0</text>
+  <path d="M180 80 H206" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-fir" x="210" y="60" width="60" height="40"/>
+  <path d="M270 80 H296" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-dec" x="300" y="60" width="60" height="40"/>
+  <path d="M360 80 H396" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <text x="400" y="84" class="s-mono2">kanal 0</text>
+</g>
+<!-- satır 1 -->
+<g>
+  <use href="#sym-mixer-d" x="120" y="130" width="60" height="40"/>
+  <use href="#sym-nco" x="120" y="96" width="60" height="40" opacity=".0"/>
+  <path d="M150 130 V118" class="yol-sayisal"/>
+  <text x="150" y="114" text-anchor="middle" class="s-kucuk">NCO f₁ = Δf</text>
+  <path d="M180 150 H206" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-fir" x="210" y="130" width="60" height="40"/>
+  <path d="M270 150 H296" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-dec" x="300" y="130" width="60" height="40"/>
+  <path d="M360 150 H396" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <text x="400" y="154" class="s-mono2">kanal 1</text>
+</g>
+<!-- satır 2 -->
+<g>
+  <use href="#sym-mixer-d" x="120" y="200" width="60" height="40"/>
+  <path d="M150 200 V188" class="yol-sayisal"/>
+  <text x="150" y="184" text-anchor="middle" class="s-kucuk">NCO f₂ = 2Δf</text>
+  <path d="M180 220 H206" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-fir" x="210" y="200" width="60" height="40"/>
+  <path d="M270 220 H296" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-dec" x="300" y="200" width="60" height="40"/>
+  <path d="M360 220 H396" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <text x="400" y="224" class="s-mono2">kanal 2</text>
+</g>
+<text x="240" y="290" text-anchor="middle" class="s-metin">⋮</text>
+<!-- satır K-1 -->
+<g>
+  <use href="#sym-mixer-d" x="120" y="310" width="60" height="40"/>
+  <path d="M150 310 V298" class="yol-sayisal"/>
+  <text x="150" y="294" text-anchor="middle" class="s-kucuk">NCO f_{K−1}</text>
+  <path d="M180 330 H206" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-fir" x="210" y="310" width="60" height="40"/>
+  <path d="M270 330 H296" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <use href="#sym-dec" x="300" y="310" width="60" height="40"/>
+  <path d="M360 330 H396" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+  <text x="400" y="334" class="s-mono2">kanal K−1</text>
+</g>
+<text x="240" y="376" text-anchor="middle" class="s-kucuk">aynı LPF, aynı ↓M — yalnızca NCO farklı</text>
+<!-- eşittir -->
+<text x="500" y="200" text-anchor="middle" class="s-metin" style="font-size:22px;font-weight:700">≡</text>
+<text x="500" y="222" text-anchor="middle" class="s-kucuk">matematiksel</text>
+<text x="500" y="236" text-anchor="middle" class="s-kucuk">olarak aynı</text>
+<!-- ================= SAĞ: polyphase + FFT ================= -->
+<text x="560" y="26" class="s-baslik">Polyphase filtre bankası + FFT — tek prototip, tek FFT</text>
+<text x="560" y="42" class="s-kucuk">K = 16, N_p = 128: 128 çarpım + 16 noktalı FFT (≈ 230 DSP); NCO ve mixer yok</text>
+<!-- giriş ve komütatör -->
+<text x="554" y="200" class="s-mono">x[n]</text>
+<path d="M590 196 H616" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<circle cx="650" cy="196" r="30" class="blok"/>
+<path d="M650 196 L672 176" stroke="var(--accent)" stroke-width="2.4"/>
+<circle cx="650" cy="196" r="3" fill="var(--accent)"/>
+<path d="M676 168 A 34 34 0 0 1 684 196" fill="none" stroke="var(--accent)" stroke-width="1" marker-end="url(#ok-sayisal)"/>
+<text x="650" y="240" text-anchor="middle" class="s-kucuk">komütatör</text>
+<text x="650" y="254" text-anchor="middle" class="s-kucuk">her giriş örneği bir yola</text>
+<text x="650" y="268" text-anchor="middle" class="s-kucuk">(SSR-8'de kablodan ibaret)</text>
+<!-- yollar -->
+<path d="M676 176 L716 80" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M678 186 L716 130" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M680 196 L716 180" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M678 206 L716 310" fill="none" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<g>
+  <rect x="720" y="62" width="110" height="36" rx="5" class="blok"/><text x="775" y="80" text-anchor="middle" class="s-kucuk">p₀(z): h₀, h_K, h_{2K} …</text><text x="775" y="93" text-anchor="middle" class="s-kucuk">L = 8 tap</text>
+  <rect x="720" y="112" width="110" height="36" rx="5" class="blok"/><text x="775" y="130" text-anchor="middle" class="s-kucuk">p₁(z): h₁, h_{K+1} …</text><text x="775" y="143" text-anchor="middle" class="s-kucuk">L = 8 tap</text>
+  <rect x="720" y="162" width="110" height="36" rx="5" class="blok"/><text x="775" y="180" text-anchor="middle" class="s-kucuk">p₂(z)</text><text x="775" y="193" text-anchor="middle" class="s-kucuk">L = 8 tap</text>
+  <text x="775" y="262" text-anchor="middle" class="s-metin">⋮</text>
+  <rect x="720" y="292" width="110" height="36" rx="5" class="blok"/><text x="775" y="310" text-anchor="middle" class="s-kucuk">p_{K−1}(z)</text><text x="775" y="323" text-anchor="middle" class="s-kucuk">L = 8 tap</text>
+</g>
+<text x="775" y="352" text-anchor="middle" class="s-kucuk">her yol fs/M hızında çalışır</text>
+<text x="775" y="366" text-anchor="middle" class="s-kucuk">(prototip: 128 tap, fc = 75 MHz)</text>
+<!-- FFT kutusu -->
+<path d="M830 80 H866" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M830 130 H866" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M830 180 H866" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M830 310 H866" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<rect x="870" y="56" width="120" height="280" rx="8" class="blok-aktif"/>
+<use href="#sym-fft" x="900" y="160" width="60" height="40"/>
+<text x="930" y="150" text-anchor="middle" class="s-metin" style="font-weight:700">K noktalı FFT</text>
+<text x="930" y="222" text-anchor="middle" class="s-kucuk">kara kutu:</text>
+<text x="930" y="236" text-anchor="middle" class="s-kucuk">K giriş → K kanal</text>
+<text x="930" y="250" text-anchor="middle" class="s-kucuk">aynı anda</text>
+<text x="930" y="272" text-anchor="middle" class="s-kucuk s-vurgu">→ Bölüm 18</text>
+<!-- çıkışlar -->
+<path d="M990 80 H1026" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><text x="1030" y="84" class="s-mono2">kanal 0</text>
+<path d="M990 130 H1026" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><text x="1030" y="134" class="s-mono2">kanal 1</text>
+<path d="M990 180 H1026" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><text x="1030" y="184" class="s-mono2">kanal 2</text>
+<text x="1050" y="262" text-anchor="middle" class="s-metin">⋮</text>
+<path d="M990 310 H1026" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><text x="1030" y="314" class="s-mono2">kanal K−1</text>
+<text x="1030" y="336" class="s-kucuk">her biri 300 MSPS</text>
+<text x="1030" y="350" class="s-kucuk">kompleks, ±150 MHz</text>
+<!-- aşırı örnekleme notu -->
+<path d="M650 226 V300 H700" fill="none" stroke="var(--gold)" stroke-dasharray="4 4"/>
+<text x="560" y="392" class="s-kucuk s-altin">İki kat aşırı örnekleme (M = K/2): komütatör K/2 adımla döner, FFT girişi her blokta K/2 dairesel kaydırılır (kesikli);</text>
+<text x="560" y="408" class="s-kucuk s-altin">çıkış hızı 2·fs/K, komşu kanallar −3 dB'de kesişir, geçiş bandı katlanmaz.</text>
+<text x="20" y="408" class="s-kucuk">Kritik örnekleme (M = K): komütatör tam tur, kaydırma yok; geçiş bandı kanala katlanır (Şekil: kanal yanıtları).</text>
+</svg>

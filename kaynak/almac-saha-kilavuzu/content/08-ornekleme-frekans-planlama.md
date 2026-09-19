@@ -90,6 +90,8 @@ preselector'dan sonra hâlâ −40 dBc kalıyorsa ve sen onu tespit eşiğinin
 giriş katı 1.95 GHz'i göremiyorsa hiçbir filtre bunu düzeltmez; datasheet'te
 "analog input bandwidth" satırı bu yüzden fs'ten ayrı bir satırdır.
 
+{{svg:g-82-aaf-bolge-secimi.svg|AAF'nin bölge seçimindeki rolü, iki plan. Üstte iyi plan: 300 MHz'lik bant 2. bölgenin ortasında (1650–1950 MHz); AAF'nin geçiş bantları bölge sınırlarına 450 MHz uzakta, komşu bölgeler 40 dB'den fazla bastırılmış, ADC çıkışında bant temiz. Altta kötü plan: bant 2100–2400 MHz, bölge sınırına yaslanmış; AAF'nin geçiş bandı 3. bölgeye taşar ve 3. bölgenin gürültüsü katlanıp bandın üst kenarına biner — sayısal filtre bunu geri alamaz.}}
+
 :::analoji Radyo kadranı ve aynı istasyonun kopyaları
 Eski bir radyo kadranında aynı istasyonu birkaç yerde yakalayabilirsin;
 almaç, LO'nun harmoniklerinde de karışım yapar. Kadranda hangisinin
@@ -160,9 +162,9 @@ döneceğiz.
 
 :::widget id=w07 ad="Katlanma ve spur haritası"
 - **Referans senaryo** preset'inde alt panelde sinyalin 450–750 MHz'e evrik indiğini, HD2'nin 900–1200'e (bandın dışına), HD3'ün 150–1050'ye (bandın üstüne) katlandığını gör; "temiz bant" satırı HD3 ve M = 2 image'ını (600 MHz) kirletici olarak saysın.
-- f_in'i 1800'den 1700 MHz'e kaydır: alias 700'e, katlanmış bant 550–850'ye gitsin; M = 4 ofset spur'u 600 MHz artık bandın kenarında. Sonra bandı 300'den 20 MHz'e daralt ve "temiz bant" satırının yeşile dönüp dönmediğini izle (HD3 hâlâ 5100 → 300 MHz civarına düşer, bantla kesişmez).
+- f_in'i 1800'den 1700 MHz'e kaydır (M = 4): alias 700'e, katlanmış bant 550–850'ye gitsin; şimdi HD2 bandı (700–1200) da bandın içine giriyor — IF'i kaydırmak bir spur'u kaçırırken başkasını getirir. Bandı 300'den 20 MHz'e daralt: bant 690–710, HD3 5100 → 300 MHz, M = 4 ofset spur'u 600 MHz bandın dışında; "temiz bant" satırı yeşile dönsün.
 - **Bölge sınırında bant** preset'i: merkez 1250 MHz, bant 1100–1400 → bant fs/2 = 1200'ü aşıyor; alt panelde bandın kendi üstüne katlanıp 1000–1200 aralığına sıkıştığını gör. "bant tek bölgede mi" satırı kırmızı.
-- fs'i 2400'den 3000 MHz'e çıkar (f_in 1800): bölge 2 → alias 1200 MHz, evrik kalır; HD3 5400 → 600 MHz'e gider ve banttan uzaklaşır. fs seçiminin spur'ları nasıl "taşıdığını" gör.
+- fs'i 2400'den 3000 MHz'e çıkar (f_in 1800, bant 300): bölge 2 kalır, alias 1200 MHz, evrik; HD3 merkezi 5400 → 600 MHz'e gider ve HD3 bandı (150–1050) sinyal bandının (1050–1350) yalnızca kenarına değer. fs seçiminin spur'ları nasıl "taşıdığını" gör.
 - **Direct RF 9.4 GHz, 5 GSPS** preset'i: 9.4 GHz 4. bölgeden yine 600 MHz'e evrik iner — direct sampling'in {{bolum:10}}'daki hikâyesi burada başlar.
 :::
 
@@ -174,8 +176,9 @@ iner ({{bolum:6}}). IF filtresi ve AAF 1650–1950 MHz'i bırakır. ADC
 {{s:adc.fs_msps}} MSPS ile örnekler: 2. bölge, alias {{s:adc.alias_mhz}} MHz,
 **spektrum evrik**. Evriklik şu demektir: darbenin içinde frekans zamanla
 *yukarı* süpürülüyorsa (varyant B'nin LFM'i, {{bolum:3}}), ADC çıkışında
-*aşağı* süpürülür; RF'te 9.405 GHz'de duran bir emiter, ADC çıkışında
-600 − 5 = 595 MHz'de değil, 605 MHz'de görünür. Bir kez daha evrilirse
+*aşağı* süpürülür; RF'te 9.405 GHz'de duran bir emiter (IF 1805 MHz), ADC
+çıkışında 605 MHz'de değil, 2400 − 1805 = 595 MHz'de görünür: RF'te +5 MHz,
+baseband'de −5 MHz. Bir kez daha evrilirse
 düzelir — ve LO low-side olduğu için mixer zaten *evirmemişti*; toplam
 evrilme sayısı tektir, düzeltmek gerekir.
 

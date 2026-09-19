@@ -41,13 +41,13 @@
 <ellipse cx="587.3" cy="227.3" rx="92.6" ry="40.9" class="spk-sinyal" opacity=".45"/>
 <text x="587.3" y="231.3" text-anchor="middle" class="s-kucuk s-vurgu">pipeline</text>
 <ellipse cx="726.7" cy="254.5" rx="64.2" ry="40.9" class="spk-image" opacity=".45"/>
-<text x="726.7" y="258.5" text-anchor="middle" class="s-kucuk s-kirmizi">time-interleaved (pipeline/SAR)</text>
+<text x="726.7" y="276.5" text-anchor="middle" class="s-kucuk s-kirmizi">time-interleaved (pipeline/SAR)</text>
 <ellipse cx="761.2" cy="322.7" rx="98.8" ry="27.3" class="spk-gurultu" opacity=".45"/>
 <text x="761.2" y="326.7" text-anchor="middle" class="s-kucuk s-metin2">flash</text>
-<rect x="662.5" y="247.7" width="106.6" height="-40.9" rx="6" fill="none" stroke="var(--green)" stroke-width="1.6" stroke-dasharray="6 4"/>
-<text x="765.1" y="241.7" text-anchor="end" class="s-kucuk s-yesil">direct RF-sampling ADC bölgesi (≈ 1–10 GSPS, 12–14 bit)</text>
+<rect x="662.5" y="206.8" width="106.6" height="40.9" rx="6" fill="none" stroke="var(--green)" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="852" y="84" text-anchor="end" class="s-kucuk s-yesil">yeşil kesikli çerçeve: direct RF-sampling ADC bölgesi (≈ 1–10 GSPS, 12–14 bit)</text>
 <circle cx="700.0" cy="213.6" r="6" style="fill:var(--gold);stroke:var(--bg);stroke-width:1.5"/>
-<text x="710.0" y="227.6" class="s-kucuk s-altin">referans senaryo: 2.4 GSPS, 14 bit</text>
+<text x="710.0" y="203.6" class="s-kucuk s-altin">referans senaryo: 2.4 GSPS, 14 bit</text>
 <text x="78" y="66" class="s-kucuk">Eğilim: hız 10× ↑ ≈ çözünürlük 2–3 bit ↓ (aperture jitter ve güç sınırı). Etiketteki bit ≠ ENOB.</text>
 <text x="70" y="412" class="s-kucuk">Sınırlar kesin değildir; üreticiler bölgeleri sürekli genişletir. Konum yalnızca "hangi mimari nerede yaşar" sezgisi içindir.</text>
 </svg>

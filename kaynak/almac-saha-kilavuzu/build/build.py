@@ -462,7 +462,7 @@ class Derleyici:
         adlar = [("rf", "RF gözüyle"), ("fpga", "FPGA gözüyle"), ("yazilim", "Yazılımcı gözüyle")]
         self.say("uc-goz")
         self.say("ucgoz_n")
-        n = self.sayac["ucgoz_n"]
+        n = f"{self.bolum_no}-{self.sayac['ucgoz_n']}"
         sek, pan = [], []
         ilk = True
         for k, ad in adlar:
@@ -682,10 +682,14 @@ class Derleyici:
                 continue
 
             # svg figürü
-            m = re.match(r"^\{\{svg:([^|}]+)\|([^|}]*)(?:\|([^}]*))?\}\}$", s)
+            m = re.match(r"^\{\{svg:([^|}]+)\|(.*)\}\}$", s)
             if m:
                 flush()
-                out.append(self.figur(m.group(1).strip(), m.group(2).strip(), (m.group(3) or "").strip()))
+                cap, sec = m.group(2), ""
+                mm = re.match(r"^(.*)\|\s*(kaydir|genis)\s*$", cap)
+                if mm:
+                    cap, sec = mm.group(1), mm.group(2)
+                out.append(self.figur(m.group(1).strip(), cap.strip(), sec))
                 i += 1
                 continue
 

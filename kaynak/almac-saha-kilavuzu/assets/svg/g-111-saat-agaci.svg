@@ -2,7 +2,8 @@
 <title id="t-g111">Almaç kartı saat ağacı: sistem referansı (10/100 MHz OCXO ya da şasi referansı) → jitter temizleyici çift döngülü PLL (PLL1 dar bantlı VCXO'ya kilitler, PLL2 geniş bantlı VCO ile GHz'e çarpar) → bölücüler → ADC örnekleme saati 2400 MHz, ADC SYSREF, FPGA GT referans saati, FPGA SYSREF ve isteğe bağlı fabric saati; PS saati ayrı. Saat yolları gri kesikli, çiftler (DCLK/SYSREF) aynı bölücü zincirinden. Jitter bütçesi: σ_toplam² = σ_saat² + σ_aperture².</title>
 <text x="20" y="22" class="s-baslik">Saat ağacı — referanstan ADC örnekleme saatine ve FPGA'ya</text>
 <use href="#sym-saat" x="20" y="100" width="60" height="40"/><text x="50.0" y="153" text-anchor="middle" class="s-kucuk">sistem referansı</text>
-<text x="50" y="166" text-anchor="middle" class="s-kucuk">10 / 100 MHz OCXO ya da şasi</text>
+<text x="20" y="166" class="s-kucuk">10 / 100 MHz OCXO</text>
+<text x="20" y="180" class="s-kucuk">ya da şasi referansı</text>
 <path d="M80 120 H118" class="yol-saat" marker-end="url(#ok-saat)"/>
 <rect x="120" y="50" width="330" height="200" rx="8" class="blok" opacity=".5"/>
 <text x="130" y="68" class="s-metin2">jitter temizleyici / saat üreteci (çift döngü)</text>
@@ -10,12 +11,12 @@
 <path d="M230 120 H258" class="yol-saat" marker-end="url(#ok-saat)"/>
 <rect x="260" y="98" width="70" height="44" rx="4" class="blok"/><text x="295.0" y="117.0" text-anchor="middle" class="s-metin2">VCXO</text><text x="295.0" y="131.0" text-anchor="middle" class="s-kucuk">ör. 100 MHz</text>
 <path d="M330 120 H358" class="yol-saat" marker-end="url(#ok-saat)"/>
-<rect x="360" y="98" width="80" height="44" rx="4" class="blok-aktif"/><text x="400.0" y="117.0" text-anchor="middle" class="s-metin2">PLL2 + VCO</text><text x="400.0" y="131.0" text-anchor="middle" class="s-kucuk">geniş bant, çarpar</text>
-<path d="M400 142 V180" class="yol-saat" marker-end="url(#ok-saat)"/>
-<rect x="300" y="182" width="140" height="40" rx="4" class="blok"/><text x="370.0" y="199.0" text-anchor="middle" class="s-metin2">bölücüler / dağıtım</text><text x="370.0" y="213.0" text-anchor="middle" class="s-kucuk">DCLK + SYSREF çiftleri</text>
-<text x="140" y="180" class="s-kucuk">PLL1 çıkışı: referansın uzun vadeli doğruluğu</text>
-<text x="140" y="194" class="s-kucuk">+ VCXO'nun temiz faz gürültüsü</text>
-<text x="140" y="208" class="s-kucuk">PLL2 çıkışı: GHz sınıfı, σ ≈ on–yüz fs</text>
+<rect x="358" y="98" width="88" height="44" rx="4" class="blok-aktif"/><text x="402.0" y="117.0" text-anchor="middle" class="s-metin2">PLL2 + VCO</text><text x="402.0" y="131.0" text-anchor="middle" class="s-kucuk">geniş bant, çarpar</text>
+<path d="M402 142 V180" class="yol-saat" marker-end="url(#ok-saat)"/>
+<rect x="310" y="182" width="140" height="40" rx="4" class="blok"/><text x="380.0" y="199.0" text-anchor="middle" class="s-metin2">bölücüler / dağıtım</text><text x="380.0" y="213.0" text-anchor="middle" class="s-kucuk">DCLK + SYSREF çiftleri</text>
+<text x="140" y="184" class="s-kucuk">PLL1: referans doğruluğu</text>
+<text x="140" y="198" class="s-kucuk">+ VCXO temizliği</text>
+<text x="140" y="212" class="s-kucuk">PLL2: GHz, σ ≈ on–yüz fs</text>
 <path d="M440 202 H470 V70 H560" class="yol-saat" marker-end="url(#ok-saat)"/>
 <text x="566" y="74" class="s-kucuk">ADC saati 2400 MHz</text>
 <path d="M440 202 H470 V110 H560" class="yol-saat" marker-end="url(#ok-saat)"/>

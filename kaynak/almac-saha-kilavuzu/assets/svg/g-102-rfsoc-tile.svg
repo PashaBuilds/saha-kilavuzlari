@@ -12,9 +12,9 @@
 <rect x="140" y="107" width="66" height="36" rx="4" class="blok-aktif"/><text x="173.0" y="122.0" text-anchor="middle" class="s-metin2">eşik / QMC</text><text x="173.0" y="136.0" text-anchor="middle" class="s-kucuk">ofset-kazanç</text>
 <path d="M206.0 125.0 L224.0 125.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <use href="#sym-mixer-d" x="226" y="105" width="60" height="40"/><text x="256.0" y="158" text-anchor="middle" class="s-kucuk">mixer</text>
-<use href="#sym-nco" x="226" y="159" width="60" height="26"/>
-<path d="M256 159 V145" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<text x="292" y="177" class="s-kucuk">NCO (48 bit FTW)</text>
+<use href="#sym-nco" x="300" y="147" width="50" height="22"/>
+<path d="M300 158 H262 V145" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="354" y="163" class="s-kucuk">NCO (48 bit FTW)</text>
 <path d="M286.0 125.0 L304.0 125.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <use href="#sym-dec" x="306" y="105" width="60" height="40"/><text x="336.0" y="158" text-anchor="middle" class="s-kucuk">decimation</text>
 <path d="M366.0 125.0 L384.0 125.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
@@ -33,9 +33,9 @@
 <rect x="140" y="227" width="66" height="36" rx="4" class="blok-aktif"/><text x="173.0" y="242.0" text-anchor="middle" class="s-metin2">eşik / QMC</text><text x="173.0" y="256.0" text-anchor="middle" class="s-kucuk">ofset-kazanç</text>
 <path d="M206.0 245.0 L224.0 245.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <use href="#sym-mixer-d" x="226" y="225" width="60" height="40"/><text x="256.0" y="278" text-anchor="middle" class="s-kucuk">mixer</text>
-<use href="#sym-nco" x="226" y="279" width="60" height="26"/>
-<path d="M256 279 V265" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<text x="292" y="297" class="s-kucuk">NCO (48 bit FTW)</text>
+<use href="#sym-nco" x="300" y="267" width="50" height="22"/>
+<path d="M300 278 H262 V265" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="354" y="283" class="s-kucuk">NCO (48 bit FTW)</text>
 <path d="M286.0 245.0 L304.0 245.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <use href="#sym-dec" x="306" y="225" width="60" height="40"/><text x="336.0" y="278" text-anchor="middle" class="s-kucuk">decimation</text>
 <path d="M366.0 245.0 L384.0 245.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>

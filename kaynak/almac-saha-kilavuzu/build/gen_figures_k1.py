@@ -822,8 +822,108 @@ def g_41():
     yaz("g-41-bant-gurultu-tabani.svg", out)
 
 
+# ================================================================== g-12
+def g_12():
+    """Üç cetvel: anten dBm, ADC girişi dBm (+40 dB kazanç), dBFS (0 dBFS = +4 dBm)."""
+    W, H = 860, 340
+    G = S["on_uc"]["kazanc_toplam_db"]
+    fsd = S["adc"]["tam_olcek_dbm"]
+    giris = S["sinyal"]["seviye_dbm_giris"]
+    taban_in = KTB + db10(300e6) + S["on_uc"]["nf_toplam_db"]
+    out = bas("g12", W, H, f"Üç cetvel: aynı seviyenin anten girişinde dBm, ADC girişinde dBm (zincir kazancı +{G} dB) ve sayısal alanda dBFS (0 dBFS = +{fsd} dBm) karşılıkları. İşaretli seviyeler: ADC tam ölçeği, referans darbe (−60 dBm antende → −20 dBm ADC'de → −24 dBFS), 300 MHz gürültü tabanı ve MDS. İki sabit (kazanç ve tam ölçek dBm'i) bilinince FFT ekranındaki dBFS anten girişine referanslanır.")
+    x_ant, x_adc, x_fs = 150, 430, 710
+    ymin, ymax = -100, 10          # ADC girişi dBm ölçeği
+    y0, y1 = 290, 70
+    py = lambda v: y0 - (v - ymin) / (ymax - ymin) * (y0 - y1)
+    for x, ad, ofs, kls, sym in ((x_ant, "anten girişi (dBm)", -G, "s-altin", "anten"), (x_adc, "ADC girişi (dBm)", 0, "s-altin", "adc"), (x_fs, "sayısal alan (dBFS)", -fsd, "s-vurgu", "fft")):
+        out.append(f'<rect x="{x - 8}" y="{y1}" width="16" height="{y0 - y1}" fill="var(--dia-blok)" stroke="var(--line-2)"/>')
+        out.append(f'<use href="#sym-{sym}" x="{x - 30}" y="8" width="60" height="40"/>')
+        out.append(f'<text x="{x}" y="{y1 - 8}" text-anchor="middle" class="s-baslik {kls}">{ad}</text>')
+        for v in range(-100, 11, 10):
+            yy = py(v)
+            out.append(f'<line x1="{x - 12}" y1="{yy:.1f}" x2="{x + 12}" y2="{yy:.1f}" stroke="var(--ink-3)" stroke-width="1"/>')
+            out.append(f'<text x="{x - 16}" y="{yy + 4:.1f}" text-anchor="end" class="s-mono2">{v + ofs:+d}</text>')
+    isaretler = [(fsd, "ADC tam ölçek", f"+{fsd} dBm = 0 dBFS", "s-kirmizi"),
+                 (giris + G, "referans darbe", f"{giris} → {giris + G} dBm → {giris + G - fsd} dBFS", "s-vurgu"),
+                 (taban_in + G + 15, "MDS", f"{taban_in + 15:.1f} → {taban_in + 15 + G:.1f} dBm → {taban_in + 15 + G - fsd:.1f} dBFS", "s-yesil"),
+                 (taban_in + G, "gürültü tabanı (300 MHz)", f"{taban_in:.1f} → {taban_in + G:.1f} dBm → {taban_in + G - fsd:.1f} dBFS", "s-kirmizi")]
+    for v, ad, metin, kls in isaretler:
+        yy = py(v)
+        out.append(f'<line x1="{x_ant}" y1="{yy:.1f}" x2="{x_fs}" y2="{yy:.1f}" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>')
+        for x in (x_ant, x_adc, x_fs):
+            out.append(f'<circle cx="{x}" cy="{yy:.1f}" r="3.5" fill="var(--accent)"/>')
+        out.append(f'<text x="{x_fs + 16}" y="{yy + 4:.1f}" class="s-kucuk {kls}">{ad}</text>')
+        out.append(f'<text x="{(x_ant + x_adc) / 2:.0f}" y="{yy - 5:.1f}" text-anchor="middle" class="s-kucuk">{metin}</text>')
+    out.append(f'<line x1="{x_ant + 16}" y1="{y0 + 18}" x2="{x_adc - 16}" y2="{y0 + 18}" class="yol-analog" marker-end="url(#ok-analog)"/>')
+    out.append(f'<text x="{(x_ant + x_adc) / 2:.0f}" y="{y0 + 36}" text-anchor="middle" class="s-metin2">+{G} dB zincir kazancı (ölçülür, sıcaklıkla kayar)</text>')
+    out.append(f'<line x1="{x_adc + 16}" y1="{y0 + 18}" x2="{x_fs - 16}" y2="{y0 + 18}" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>')
+    out.append(f'<text x="{(x_adc + x_fs) / 2:.0f}" y="{y0 + 36}" text-anchor="middle" class="s-metin2">−{fsd} dB: 0 dBFS = +{fsd} dBm (ADC sabiti)</text>')
+    yaz("g-12-uc-cetvel.svg", out)
+
+
+# ================================================================== g-42
+def g_42():
+    """Gürültünün istatistiği: Gauss PDF (gerilim), I/Q saçılımı, zarfın Rayleigh dağılımı ve 5.26σ eşiği."""
+    import random
+    W, H = 860, 330
+    esik = S["tespit"]["esik_rayleigh_sigma"]
+    out = bas("g42", W, H, f"Gürültünün üç istatistik yüzü (hesaplanmış). Solda tek kanalın (I ya da Q) Gauss olasılık yoğunluğu: ortalama 0, standart sapma σ; ±3σ dışı %0.27. Ortada 600 kompleks gürültü örneğinin I/Q düzleminde saçılımı: yönsüz bulut, çoğu 3σ çemberi içinde. Sağda zarfın (√(I²+Q²)) Rayleigh dağılımı: sıfırda sıfır, tepe σ'da, kuyruk Gauss'tan uzun; Pfa = 10⁻⁶ eşiği {esik}σ işaretli (Bölüm 21).")
+    x0, x1, y0, y1 = 50, 290, 270, 60
+    n = 240
+    xs = [-4 + 8 * k / (n - 1) for k in range(n)]
+    ys = [math.exp(-x * x / 2) / math.sqrt(TAU) for x in xs]
+    out.append('<text x="50" y="30" class="s-baslik">Tek kanal: Gauss</text>')
+    out.append(eksen(x0, x1, y0, y1, [-3, -2, -1, 0, 1, 2, 3], [], -4, 4, 0, 0.45, lambda v: (f"{v:+d}σ" if v else "0"), str))
+    d = cizgi_yolu(xs, ys, x0, x1, y0, y1, -4, 4, 0, 0.45, False)
+    out.append(f'<path d="{d}L{x1} {y0}L{x0} {y0}Z" class="spk-gurultu" opacity=".7"/>')
+    out.append(f'<path d="{d}" fill="none" stroke="var(--ink)" stroke-width="1.6"/>')
+    px = lambda v: x0 + (v + 4) / 8 * (x1 - x0)
+    py = lambda v: y0 - v / 0.45 * (y0 - y1)
+    kx = [x for x in xs if x >= 3]
+    ky = [math.exp(-x * x / 2) / math.sqrt(TAU) for x in kx]
+    dk = cizgi_yolu(kx, ky, x0, x1, y0, y1, -4, 4, 0, 0.45, False)
+    out.append(f'<path d="{dk}L{x1} {y0}L{px(3):.1f} {y0}Z" fill="var(--red)" opacity=".6"/>')
+    out.append(f'<line x1="{px(1):.1f}" y1="{py(0.242):.1f}" x2="{px(-1):.1f}" y2="{py(0.242):.1f}" stroke="var(--accent)" stroke-width="1.4"/>')
+    out.append(f'<text x="{px(0):.1f}" y="{py(0.242) - 6:.1f}" text-anchor="middle" class="s-kucuk s-vurgu">σ = rms = √güç</text>')
+    out.append(f'<text x="{px(3.1):.1f}" y="{py(0.05):.1f}" class="s-kucuk s-kirmizi">P(&gt;3σ) = %0.13</text>')
+    out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 30}" text-anchor="middle" class="s-kucuk">gerilim (σ birimiyle) · −83.2 dBm → σ = 15.5 µV</text>')
+    cx, cy, R = 430, 165, 95
+    out.append('<text x="335" y="30" class="s-baslik">I/Q düzlemi: yönsüz bulut</text>')
+    out.append(f'<line x1="{cx - R - 10}" y1="{cy}" x2="{cx + R + 10}" y2="{cy}" stroke="var(--ink-3)" stroke-width="1"/>')
+    out.append(f'<line x1="{cx}" y1="{cy + R + 10}" x2="{cx}" y2="{cy - R - 10}" stroke="var(--ink-3)" stroke-width="1"/>')
+    for r_s, kls in ((1, "var(--line-2)"), (3, "var(--accent)")):
+        out.append(f'<circle cx="{cx}" cy="{cy}" r="{R * r_s / 4:.1f}" fill="none" stroke="{kls}" stroke-width="1" stroke-dasharray="3 3"/>')
+    out.append(f'<text x="{cx + R * 3 / 4 + 2:.1f}" y="{cy - 4}" class="s-kucuk s-vurgu">3σ</text>')
+    out.append(f'<text x="{cx + R / 4 + 2:.1f}" y="{cy - 4}" class="s-kucuk">σ</text>')
+    rnd = random.Random(42)
+    for _ in range(600):
+        i_, q_ = rnd.gauss(0, 1), rnd.gauss(0, 1)
+        out.append(f'<circle cx="{cx + R * i_ / 4:.1f}" cy="{cy - R * q_ / 4:.1f}" r="1.6" fill="var(--accent)" opacity=".55"/>')
+    out.append(f'<text x="{cx + R + 4}" y="{cy + 14}" class="s-kucuk">I</text><text x="{cx + 4}" y="{cy - R - 2}" class="s-kucuk">Q</text>')
+    out.append(f'<text x="{cx}" y="{cy + R + 34}" text-anchor="middle" class="s-kucuk">I ve Q bağımsız Gauss, her biri σ² güçlü</text>')
+    x0, x1 = 590, 830
+    out.append('<text x="590" y="30" class="s-baslik">Zarf √(I²+Q²): Rayleigh</text>')
+    rmax = 6
+    xs = [rmax * k / (n - 1) for k in range(n)]
+    ys = [r * math.exp(-r * r / 2) for r in xs]
+    out.append(eksen(x0, x1, y0, y1, [0, 1, 2, 3, 4, 5, 6], [], 0, rmax, 0, 0.7, lambda v: (f"{v:d}σ" if v else "0"), str))
+    d = cizgi_yolu(xs, ys, x0, x1, y0, y1, 0, rmax, 0, 0.7, False)
+    out.append(f'<path d="{d}L{x1} {y0}L{x0} {y0}Z" class="spk-gurultu" opacity=".7"/>')
+    out.append(f'<path d="{d}" fill="none" stroke="var(--ink)" stroke-width="1.6"/>')
+    gy = [2 * math.exp(-r * r / 2) / math.sqrt(TAU) for r in xs]
+    out.append(f'<path d="{cizgi_yolu(xs, gy, x0, x1, y0, y1, 0, rmax, 0, 0.7, False)}" fill="none" stroke="var(--ink-3)" stroke-width="1" stroke-dasharray="3 3"/>')
+    px = lambda v: x0 + v / rmax * (x1 - x0)
+    py = lambda v: y0 - v / 0.7 * (y0 - y1)
+    out.append(f'<line x1="{px(esik):.1f}" y1="{y1}" x2="{px(esik):.1f}" y2="{y0}" class="yol-gurultu"/>')
+    out.append(f'<text x="{px(esik) - 4:.1f}" y="{y1 + 14}" text-anchor="end" class="s-kucuk s-kirmizi">eşik {esik}σ → Pfa = 10⁻⁶</text>')
+    out.append(f'<text x="{px(1) + 4:.1f}" y="{py(0.61) - 4:.1f}" class="s-kucuk">tepe σ, ortalama 1.25σ</text>')
+    out.append(f'<text x="{px(2.2):.1f}" y="{py(0.12):.1f}" class="s-kucuk">kesikli: |Gauss| (karşılaştırma)</text>')
+    out.append(f'<text x="{(x0 + x1) / 2:.0f}" y="{y0 + 30}" text-anchor="middle" class="s-kucuk">zarf (σ birimiyle) — eşik bu kuyruğa konur (Bölüm 21, 22)</text>')
+    yaz("g-42-gurultu-istatistigi.svg", out)
+
+
 URETICILER = {"g-10": g_10, "g-11": g_11, "g-20": g_20, "g-21": g_21, "g-22": g_22,
-              "g-30": g_30, "g-31": g_31, "g-32": g_32, "g-40": g_40, "g-41": g_41}
+              "g-30": g_30, "g-31": g_31, "g-32": g_32, "g-40": g_40, "g-41": g_41, "g-12": g_12, "g-42": g_42}
 
 
 def main():

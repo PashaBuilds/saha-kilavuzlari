@@ -139,7 +139,7 @@ def g_222():
     guc = kompleks_darbe_gucu(n, random.Random(2222), gur, [(bas, pw, snr_db, rise)])
     Ls = [1, 4, 16, 64]
     esik = -math.log(PFA)  # kare-yasa, L = 1 için eşik / ortalama gürültü gücü = 13.8
-    W, H = 860, 345
+    W, H = 860, 372
     out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g222">',
            '<title id="t-g222">Video filtre (kayan ortalama) uzunluğunun darbe kenarına etkisi: solda 300 örneklik, '
            '15 örnek yükselişli, 15 dB SNR\'lı darbenin ön kenarı L = 1, 4, 16, 64 için; sağda bütün darbe L = 1 ve 16; '
@@ -174,20 +174,20 @@ def g_222():
     x0b, x1b = 500, 840
     xminb, xmaxb = 0, 700
     out.append(eksen(x0b, x1b, y0, y1, [0, 200, 400, 600], [0, 5, 10, 15, 20, 25], xminb, xmaxb, ymin, ymax, fmt_int, fmt_int))
-    out.append(f'<text x="{x0b}" y="{y1 - 10}" class="s-baslik">Bütün darbe (300 örnek): gürültü platoda ve tabanda sakinleşir</text>')
+    out.append(f'<text x="{x0b}" y="{y1 - 10}" class="s-baslik">Bütün darbe (300 örnek): plato ve taban sakinleşir</text>')
     out.append(f'<text x="{(x0b + x1b) / 2}" y="{y0 + 30}" text-anchor="middle" class="s-kucuk">örnek</text>')
     for L, renk, kal, op in ((1, "var(--ink-3)", 1.0, ".7"), (16, "var(--purple)", 1.5, "1")):
         y = kayan_ortalama(guc, L)
         d = path_from(xs, y, x0b, x1b, y0, y1, xminb, xmaxb, ymin, ymax)
         out.append(f'<path d="{d}" fill="none" stroke="{renk}" stroke-width="{kal}" opacity="{op}"/>')
     # lejant
-    ly = 290
     for i, (L, (renk, kal, op)) in enumerate(zip(Ls, stiller)):
-        lx = 60 + i * 200
+        lx = 60 + (i % 2) * 400
+        ly = 314 + (i // 2) * 14
         out.append(f'<line x1="{lx}" y1="{ly}" x2="{lx + 22}" y2="{ly}" stroke="{renk}" stroke-width="2"/>'
-                   f'<text x="{lx + 28}" y="{ly + 4}" class="s-kucuk">L = {L} · std ölç. {stdler[L]:.2f} (teori 1/√L = {1 / math.sqrt(L):.2f}) · kenar +{L - 1}</text>')
-    out.append(f'<text x="60" y="318" class="s-metin2">Kayan ortalama gürültü varyansını L kat düşürür (std: 1 → 1/√L) ama L−1 örneklik kenar yayılması ve (L−1)/2 örnek gecikme ekler;</text>')
-    out.append(f'<text x="60" y="334" class="s-metin2">L = 64, 15 örneklik gerçek yükselişi ≈ 79 örneğe (≈ 260 ns) uzatır. Referans senaryo L = {T["video_filtre_uzunluk"]}: std yarıya iner, kenar 3 örnek (10 ns) yayılır.</text>')
+                   f'<text x="{lx + 28}" y="{ly + 4}" class="s-kucuk">L = {L}: gürültü std ölçülen {stdler[L]:.2f}, teori 1/√L = {1 / math.sqrt(L):.2f} · kenar yayılması +{L - 1} örnek</text>')
+    out.append(f'<text x="60" y="348" class="s-metin2">Kayan ortalama gürültü varyansını L kat düşürür (std 1 → 1/√L) ama L−1 örnek kenar yayılması ve (L−1)/2 örnek gecikme ekler;</text>')
+    out.append(f'<text x="60" y="362" class="s-metin2">L = 64, 15 örneklik gerçek yükselişi ≈ 79 örneğe (≈ 260 ns) uzatır. Referans senaryo L = {T["video_filtre_uzunluk"]}: std yarıya iner, kenar 3 örnek (10 ns) yayılır.</text>')
     out.append("</svg>")
     (SVG / "g-222-video-filtre.svg").write_text("\n".join(out), encoding="utf-8")
     print("  ✓ g-222-video-filtre.svg  std:", {L: round(v, 3) for L, v in stdler.items()})
@@ -204,10 +204,10 @@ def g_232():
     alfa_ca = ca_cfar_alfa(N_REF, PFA)
     k_os = 12
     alfa_os = os_cfar_alfa(N_REF, k_os, PFA)
-    paneller = [("CA", "CA — ortalama: yakın komşu eşiği şişirir (maskeleme)", alfa_ca),
-                ("GO", "GO — büyük yarı: basamak kenarında temiz, maskeleme en kötü", alfa_ca),
-                ("SO", "SO — küçük yarı: maskelemeyi çözer, basamak kenarında yanlış alarm", alfa_ca),
-                ("OS", f"OS — {k_os}. sıra istatistiği: ikisini de büyük ölçüde çözer", alfa_os)]
+    paneller = [("CA", "CA — ortalama: yakın çift birbirini maskeler", alfa_ca),
+                ("GO", "GO — büyük yarı: kenar temiz, maskeleme en kötü", alfa_ca),
+                ("SO", "SO — küçük yarı: çifti çözer, kenarda alarm", alfa_ca),
+                ("OS", f"OS — {k_os}. sıra: ikisini de çözer", alfa_os)]
     W, H = 860, 470
     out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g232">',
            '<title id="t-g232">CA, GO, SO ve OS-CFAR\'ın aynı sahnedeki davranışı: iki yakın 3 hücrelik darbe (6 hücre ara, 20 dB), '
@@ -260,8 +260,8 @@ def g_232():
                 ya += 1
                 out.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="3.2" fill="var(--red)"/>')
         ozet[tip] = (d_say, ya)
-        say_txt = " · ".join(f"{d_say[b]}/3" for b, _, _, _ in darbeler)
-        out.append(f'<text x="{x0 + 4}" y="{y0 - 6}" class="s-kucuk">α = {alfa:.1f} · darbe hücreleri (çift-1, çift-2, yalnız, basamakta): {say_txt}</text>')
+        say_txt = " ".join(f"{d_say[b]}/3" for b, _, _, _ in darbeler)
+        out.append(f'<text x="{x0 + 4}" y="{y0 - 6}" class="s-kucuk">α = {alfa:.1f} · tespit (çift-1 çift-2 yalnız basamak): {say_txt}</text>')
         out.append(f'<text x="{x1 - 4}" y="{y1 + 14}" text-anchor="end" class="s-kucuk {"s-kirmizi" if ya else "s-yesil"}">yanlış alarm: {ya}</text>')
         if i == 0:
             px = x0 + 155 / n * (x1 - x0)

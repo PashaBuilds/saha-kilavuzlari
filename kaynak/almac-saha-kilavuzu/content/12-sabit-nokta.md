@@ -101,7 +101,7 @@ o: CIC (R = 4, N = 4): 16 + 4 · log₂ 4 = 16 + **8** = 24 bitlik akümülatör
 o: Halfband (23 tap): ∑|h_k| ≈ 1.4 → büyüme ⌈log₂ 1.4⌉ = 1 bit; 16 × 18 bit çarpım 34 bit, toplayıcı ağacı 35 bit, çıkışta 16 bit.
 :::
 
-{{svg:g-121-bit-buyumesi-zinciri.svg|Referans senaryonun bit genişliği yolculuğu. ADC 14 bit (Q1.13) → NCO ile 16 bitlik çarpım 30 bit → **kesme noktası 1**: yuvarlayarak 16 bite (Q1.15) → CIC R = 4, N = 4 akümülatörü +8 bit = 24 bit → **kesme noktası 2**: 16 bite → halfband ve kompanzasyon FIR'ı 16 × 18 bit çarpım, toplayıcı ağacı 35 bit → **kesme noktası 3**: 16 bit I, 16 bit Q çıkış. Her kesme noktası bir kuantizasyon gürültüsü kaynağıdır; her birinin altında o noktadaki gürültü seviyesi (dBFS) ve seçilen yuvarlama/taşma davranışı yazılıdır. Kırmızı: kesilen bitler.|kaydir}}
+{{svg:g-121-bit-buyumesi-zinciri.svg|Referans senaryonun bit genişliği yolculuğu. ADC 14 bit (Q1.13) → NCO ile 16 bitlik çarpım 30 bit → **kesme noktası 1**: yuvarlayarak 16 bite (Q1.15) → CIC R = 4, N = 4 akümülatörü +8 bit = 24 bit → **kesme noktası 2**: 16 bite → kompanzasyon FIR'ı ve halfband 16 × 18 bit çarpım, toplayıcı ağacı 36 bit (∑|h| ≈ 2.5 → +2 bit) → **kesme noktası 3**: 16 bit I, 16 bit Q çıkış. Her kesme noktası bir kuantizasyon gürültüsü kaynağıdır; her birinin altında o noktadaki gürültü seviyesi (dBFS) ve seçilen yuvarlama/taşma davranışı yazılıdır. Kırmızı: kesilen bitler.|kaydir}}
 
 Şekildeki üç kesme noktası tesadüf değil: her çarpma ve her akümülatör sonrası
 kelime yeniden **kesilir** (requantize), çünkü aksi hâlde 30, 38, 46 bit
@@ -152,7 +152,7 @@ tanıdık ve sınırlı bir bozulma. Wrap ise dalga şeklinin tepesini **tam öl
 genlikli bir sıçramaya** çevirir; spektrumda geniş bantlı bir patlama olur,
 tespit eşiği her yerde aşılır, ölçülen PW ve frekans anlamsızlaşır.
 
-{{svg:g-122-wrap-vs-saturate.svg|Wrap ve saturation, aynı sinyal üzerinde (hesaplanmış). Solda zaman: +2.5 dBFS'lik bir tonun (tepe 1.33) 16 bit Q1.15'e sığdırılması. Saturation (altın) tepeleri düz keser; wrap (kırmızı) tepe her tam ölçeği aştığında sinyali −1'e fırlatır. Sağda spektrum: ideal ton (mavi), saturation tek harmoniklerle −25 dBc civarı bir bozulma, wrap ise tüm bandı −40 dBFS'lik bir gürültüyle doldurur. Tespit eşiği (kesikli) wrap durumunda her bin'de aşılır.}}
+{{svg:g-122-wrap-vs-saturate.svg|Wrap ve saturation, aynı sinyal üzerinde (hesaplanmış). Solda zaman: +2.5 dBFS'lik bir tonun (tepe 1.33) 16 bit Q1.15'e sığdırılması. Saturation (altın) tepeleri düz keser; wrap (kırmızı) tepe her tam ölçeği aştığında sinyali −1'e fırlatır. Sağda spektrum: ideal ton (mavi), saturation tek harmoniklerle −24 dBFS (≈ −19 dBc) civarı bir bozulma, wrap ise tüm bandı ≈ −58 dBFS'lik bir tabanla doldurur ve en büyük bileşenleri −15 dBFS'e çıkar. −70 dBFS'lik örnek tespit eşiği (kesikli) wrap durumunda her bin'de aşılır.}}
 
 Kural açık: **veri yolunda saturation, faz akümülatöründe wrap.** Faz için
 sarma çalışma ilkesidir ({{bolum:14}}); genlik için felakettir. Kazanç
@@ -164,10 +164,10 @@ set olan ve PS okuyana kadar kalan bir bit. Sahada "spektrum çöp oldu"nun ilk
 kontrolü bu bayraktır.
 
 :::widget id=w10 ad="Sabit nokta oyun alanı"
-- **Referans senaryo** preset'inde (−6 dBFS ton, 16 bit, yuvarlama, saturation) ölçülen SNR'ın 6.02·16 + 1.76 ≈ 98 dB'ye yakın olduğunu, hata sinyalinin ±0.5 LSB içinde kaldığını ve DC bias satırının ≈ 0 olduğunu gör. Bit sayısını 8'e indir: SNR ≈ 50 dB'ye düşsün, hata sinyali 256 kat büyüsün.
+- **Referans senaryo** preset'inde (−6 dBFS ton, 16 bit, yuvarlama, saturation) ölçülen SNR'ın (sinyale göre) 6.02·16 + 1.76 − 6 dB headroom ≈ 92 dB olduğunu, hata sinyalinin ±0.5 LSB içinde kaldığını ve DC bias satırının ≈ 0 olduğunu gör. Bit sayısını 8'e indir: SNR ≈ 44 dB'ye düşsün, hata sinyali (LSB cinsinden aynı, mutlak olarak) 256 kat büyüsün.
 - Yuvarlama modunu **truncation** yap: hata sinyali 0 … −1 LSB arasına kaysın, "DC bias" satırı −0.5 LSB'yi göstersin ve spektrumda 0 Hz'de bir çivi belirsin (16 bitte ≈ −96 dBFS; 8 bitte ≈ −48 dBFS).
-- Giriş seviyesini **+2 dBFS**'e çıkar, taşma modunu saturation'da bırak: tepeler kırpılsın, tek harmonikler belirsin, "taşan örnek" sayacı artsın; SNR 30 dB civarına düşsün ama ana ton hâlâ en güçlü bileşen kalsın.
-- Aynı seviyede **wrap felaketi** preset'ine geç: zaman çiziminde tepeler −1'e fırlasın, spektrumun tamamı −40 dBFS'in üstüne çıksın, SNR 10 dB'nin altına insin. Seviyeyi −0.5 dBFS'e çek: bir anda temizlensin — 2.5 dB'lik kazanç farkı çalışan bir almaçla çöp arasındaki mesafedir.
+- Giriş seviyesini **+2 dBFS**'e çıkar, taşma modunu saturation'da bırak: tepeler kırpılsın, tek harmonikler belirsin, "taşan örnek" sayacı 1700 civarına çıksın; SNR ≈ 20 dB'ye düşsün ama ana ton hâlâ en güçlü bileşen kalsın.
+- Aynı seviyede **wrap felaketi** preset'ine geç: zaman çiziminde tepeler −1'e fırlasın, spektrumun tamamı −60 dBFS'in üstüne çıksın, SNR 10 dB'nin altına insin. Seviyeyi −0.5 dBFS'e çek: bir anda temizlensin — 2.5 dB'lik kazanç farkı çalışan bir almaçla çöp arasındaki mesafedir.
 :::
 
 ## Kavram: headroom, dBFS ve ölçek bütçesi
@@ -190,7 +190,7 @@ kesme sonrası yeniden ölçek. Referans senaryo için kısaltılmış hali:
 | ADC | — | — | 14 bit Q1.13 | — | tam ölçek {{s:adc.tam_olcek_dbm}} dBm; ton −6 dBFS hedef |
 | Mixer (× NCO 16 bit, genlik 1 − LSB) | 14 bit | 1.0 | 30 bit Q2.28 | 16 bit Q1.15, round, sat | kompleks; I ve Q ayrı |
 | CIC R = 4, N = 4 | 16 bit | $4^4$ = 256 = 8 bit | 24 bit | 16 bit, round | kazanç tam $2^8$ → sağa 8 kaydırma, bit kaybı yok |
-| Kompanzasyon FIR (31 tap) | 16 bit | ∑|h| ≈ 1.6 | 35 bit | 16 bit, round, sat | +1 bit büyüme; katsayı 18 bit |
+| Kompanzasyon FIR (31 tap) | 16 bit | ∑|h| ≈ 2.5 | 36 bit | 16 bit, round, sat | +2 bit büyüme; katsayı 18 bit Q2.16 |
 | Halfband (23 tap) | 16 bit | ∑|h| ≈ 1.4 | 35 bit | 16 bit Q1.15, round, sat | çıkış: DDC pasaportu |
 
 Tablonun anlattığı: kademeler arası kazanç 1'e yakın tutulur, büyümeler

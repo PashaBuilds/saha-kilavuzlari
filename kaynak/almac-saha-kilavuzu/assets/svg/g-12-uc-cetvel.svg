@@ -1,0 +1,112 @@
+<svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g12">
+<title id="t-g12">Üç cetvel: aynı seviyenin anten girişinde dBm, ADC girişinde dBm (zincir kazancı +40 dB) ve sayısal alanda dBFS (0 dBFS = +4 dBm) karşılıkları. İşaretli seviyeler: ADC tam ölçeği, referans darbe (−60 dBm antende → −20 dBm ADC'de → −24 dBFS), 300 MHz gürültü tabanı ve MDS. İki sabit (kazanç ve tam ölçek dBm'i) bilinince FFT ekranındaki dBFS anten girişine referanslanır.</title>
+<rect x="142" y="70" width="16" height="220" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<use href="#sym-anten" x="120" y="8" width="60" height="40"/>
+<text x="150" y="62" text-anchor="middle" class="s-baslik s-altin">anten girişi (dBm)</text>
+<line x1="138" y1="290.0" x2="162" y2="290.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="294.0" text-anchor="end" class="s-mono2">-140</text>
+<line x1="138" y1="270.0" x2="162" y2="270.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="274.0" text-anchor="end" class="s-mono2">-130</text>
+<line x1="138" y1="250.0" x2="162" y2="250.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="254.0" text-anchor="end" class="s-mono2">-120</text>
+<line x1="138" y1="230.0" x2="162" y2="230.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="234.0" text-anchor="end" class="s-mono2">-110</text>
+<line x1="138" y1="210.0" x2="162" y2="210.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="214.0" text-anchor="end" class="s-mono2">-100</text>
+<line x1="138" y1="190.0" x2="162" y2="190.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="194.0" text-anchor="end" class="s-mono2">-90</text>
+<line x1="138" y1="170.0" x2="162" y2="170.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="174.0" text-anchor="end" class="s-mono2">-80</text>
+<line x1="138" y1="150.0" x2="162" y2="150.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="154.0" text-anchor="end" class="s-mono2">-70</text>
+<line x1="138" y1="130.0" x2="162" y2="130.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="134.0" text-anchor="end" class="s-mono2">-60</text>
+<line x1="138" y1="110.0" x2="162" y2="110.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="114.0" text-anchor="end" class="s-mono2">-50</text>
+<line x1="138" y1="90.0" x2="162" y2="90.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="94.0" text-anchor="end" class="s-mono2">-40</text>
+<line x1="138" y1="70.0" x2="162" y2="70.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="134" y="74.0" text-anchor="end" class="s-mono2">-30</text>
+<rect x="422" y="70" width="16" height="220" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<use href="#sym-adc" x="400" y="8" width="60" height="40"/>
+<text x="430" y="62" text-anchor="middle" class="s-baslik s-altin">ADC girişi (dBm)</text>
+<line x1="418" y1="290.0" x2="442" y2="290.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="294.0" text-anchor="end" class="s-mono2">-100</text>
+<line x1="418" y1="270.0" x2="442" y2="270.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="274.0" text-anchor="end" class="s-mono2">-90</text>
+<line x1="418" y1="250.0" x2="442" y2="250.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="254.0" text-anchor="end" class="s-mono2">-80</text>
+<line x1="418" y1="230.0" x2="442" y2="230.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="234.0" text-anchor="end" class="s-mono2">-70</text>
+<line x1="418" y1="210.0" x2="442" y2="210.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="214.0" text-anchor="end" class="s-mono2">-60</text>
+<line x1="418" y1="190.0" x2="442" y2="190.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="194.0" text-anchor="end" class="s-mono2">-50</text>
+<line x1="418" y1="170.0" x2="442" y2="170.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="174.0" text-anchor="end" class="s-mono2">-40</text>
+<line x1="418" y1="150.0" x2="442" y2="150.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="154.0" text-anchor="end" class="s-mono2">-30</text>
+<line x1="418" y1="130.0" x2="442" y2="130.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="134.0" text-anchor="end" class="s-mono2">-20</text>
+<line x1="418" y1="110.0" x2="442" y2="110.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="114.0" text-anchor="end" class="s-mono2">-10</text>
+<line x1="418" y1="90.0" x2="442" y2="90.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="94.0" text-anchor="end" class="s-mono2">+0</text>
+<line x1="418" y1="70.0" x2="442" y2="70.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="414" y="74.0" text-anchor="end" class="s-mono2">+10</text>
+<rect x="702" y="70" width="16" height="220" fill="var(--dia-blok)" stroke="var(--line-2)"/>
+<use href="#sym-fft" x="680" y="8" width="60" height="40"/>
+<text x="710" y="62" text-anchor="middle" class="s-baslik s-vurgu">sayısal alan (dBFS)</text>
+<line x1="698" y1="290.0" x2="722" y2="290.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="294.0" text-anchor="end" class="s-mono2">-104</text>
+<line x1="698" y1="270.0" x2="722" y2="270.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="274.0" text-anchor="end" class="s-mono2">-94</text>
+<line x1="698" y1="250.0" x2="722" y2="250.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="254.0" text-anchor="end" class="s-mono2">-84</text>
+<line x1="698" y1="230.0" x2="722" y2="230.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="234.0" text-anchor="end" class="s-mono2">-74</text>
+<line x1="698" y1="210.0" x2="722" y2="210.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="214.0" text-anchor="end" class="s-mono2">-64</text>
+<line x1="698" y1="190.0" x2="722" y2="190.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="194.0" text-anchor="end" class="s-mono2">-54</text>
+<line x1="698" y1="170.0" x2="722" y2="170.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="174.0" text-anchor="end" class="s-mono2">-44</text>
+<line x1="698" y1="150.0" x2="722" y2="150.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="154.0" text-anchor="end" class="s-mono2">-34</text>
+<line x1="698" y1="130.0" x2="722" y2="130.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="134.0" text-anchor="end" class="s-mono2">-24</text>
+<line x1="698" y1="110.0" x2="722" y2="110.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="114.0" text-anchor="end" class="s-mono2">-14</text>
+<line x1="698" y1="90.0" x2="722" y2="90.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="94.0" text-anchor="end" class="s-mono2">-4</text>
+<line x1="698" y1="70.0" x2="722" y2="70.0" stroke="var(--ink-3)" stroke-width="1"/>
+<text x="694" y="74.0" text-anchor="end" class="s-mono2">+6</text>
+<line x1="150" y1="82.0" x2="710" y2="82.0" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="150" cy="82.0" r="3.5" fill="var(--accent)"/>
+<circle cx="430" cy="82.0" r="3.5" fill="var(--accent)"/>
+<circle cx="710" cy="82.0" r="3.5" fill="var(--accent)"/>
+<text x="726" y="86.0" class="s-kucuk s-kirmizi">ADC tam ölçek</text>
+<text x="290" y="77.0" text-anchor="middle" class="s-kucuk">+4 dBm = 0 dBFS</text>
+<line x1="150" y1="130.0" x2="710" y2="130.0" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="150" cy="130.0" r="3.5" fill="var(--accent)"/>
+<circle cx="430" cy="130.0" r="3.5" fill="var(--accent)"/>
+<circle cx="710" cy="130.0" r="3.5" fill="var(--accent)"/>
+<text x="726" y="134.0" class="s-kucuk s-vurgu">referans darbe</text>
+<text x="290" y="125.0" text-anchor="middle" class="s-kucuk">-60 → -20 dBm → -24 dBFS</text>
+<line x1="150" y1="146.4" x2="710" y2="146.4" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="150" cy="146.4" r="3.5" fill="var(--accent)"/>
+<circle cx="430" cy="146.4" r="3.5" fill="var(--accent)"/>
+<circle cx="710" cy="146.4" r="3.5" fill="var(--accent)"/>
+<text x="726" y="150.4" class="s-kucuk s-yesil">MDS</text>
+<text x="290" y="141.4" text-anchor="middle" class="s-kucuk">-68.2 → -28.2 dBm → -32.2 dBFS</text>
+<line x1="150" y1="176.4" x2="710" y2="176.4" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>
+<circle cx="150" cy="176.4" r="3.5" fill="var(--accent)"/>
+<circle cx="430" cy="176.4" r="3.5" fill="var(--accent)"/>
+<circle cx="710" cy="176.4" r="3.5" fill="var(--accent)"/>
+<text x="726" y="180.4" class="s-kucuk s-kirmizi">gürültü tabanı (300 MHz)</text>
+<text x="290" y="171.4" text-anchor="middle" class="s-kucuk">-83.2 → -43.2 dBm → -47.2 dBFS</text>
+<line x1="166" y1="308" x2="414" y2="308" class="yol-analog" marker-end="url(#ok-analog)"/>
+<text x="290" y="326" text-anchor="middle" class="s-metin2">+40 dB zincir kazancı (ölçülür, sıcaklıkla kayar)</text>
+<line x1="446" y1="308" x2="694" y2="308" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="570" y="326" text-anchor="middle" class="s-metin2">−4 dB: 0 dBFS = +4 dBm (ADC sabiti)</text>
+</svg>

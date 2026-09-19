@@ -331,6 +331,8 @@ print("maks |fark| =", np.abs(e).max(), "LSB; ilk fark örneği:",
       (np.nonzero(e.any(axis=1))[0][:1] or ["yok"])[0])
 ```
 
+{{svg:g-132-fark-desenleri.svg|Karşılaştırma betiğinin dört tipik çıktısı (öğretici, sentetik veri): (a) seyrek, ±1 LSB, yalnızca negatif örneklerde → yuvarlama kuralı uyuşmazlığı; (b) sinyal biçimli büyük fark → hizalama hatası, doğru L ile sıfırlanır; (c) belirli bir örnekten sonra yalnızca tepelerde → taşma/doyurma farkı; (d) yalnızca ilk örneklerde → başlangıç durumu farkı, ısınma atlanır. Fark deseninin biçimi, kaynağı adıyla söyler.}}
+
 Sonuç "maks |fark| = 0" ise donanım modeldir. 1 LSB'lik fark bir yuvarlama
 farkıdır (half-up / half-even / away-from-zero uyuşmazlığı — ilk kontrol);
 büyük ve rastgele fark hizalama (L) hatası ya da farklı test vektörüdür;

@@ -34,7 +34,7 @@ WK.kaydet("w19", function (w) {
   kapat();
 
   var pZarf = WK.panel(w, 250), pFrek = WK.panel(w, 190);
-  var tabloKap = WK.el("div", { "class": "w-tablo-kap" });
+  var tabloKap = WK.el("div", { "class": "w-tablo-kap", style: "overflow-x:auto; max-width:100%" });   // geniş tablo kabın içinde kaydırılır
   w.cizim.appendChild(tabloKap);
 
   // --- yerel yardımcılar (küçük) -------------------------------------------------
@@ -78,20 +78,22 @@ WK.kaydet("w19", function (w) {
       var bas = d.bas, son = d.son;
       var f = DSP.darbeFrekansi(sig.i, sig.q, bas, son, fs);
       var egim = DSP.chirpEgimi(sig.i, sig.q, bas, son, fs);
-      var paOrt = DSP.db10(ortaOrtalama(guc, bas, son));
-      var atlama = fazAtlamaSay(sig.i, sig.q, bas, son, 30e6);
-      var mopTahmin = Math.abs(egim) > 2e12 ? "LFM" : (atlama >= 2 ? "faz kodu" : "yok");
+      var paOrt = (son - bas) >= 6 ? DSP.db10(ortaOrtalama(guc, bas, son)) : d.pa_dbfs;   // çok kısa parçada tepe
+      var atlama = fazAtlamaSay(sig.i, sig.q, bas, son, fs / 4);          // 180° atlama → |Δf| ≈ fs/2; gürültü nadiren fs/4'ü aşar
+      var mopTahmin = Math.abs(egim) > 2e12 ? "LFM" : (atlama >= 3 ? "faz kodu" : "yok");
       // en yakın gerçek darbe
       var enIyi = null, enKucuk = Infinity;
       gercek.forEach(function (g) { var e = Math.abs(g.toa - d.toa_s); if (e < enKucuk) { enKucuk = e; enIyi = g; } });
       var sahte = !devam && (!enIyi || enKucuk > pw + 0.5e-6);
+      var parca = !sahte && !devam && !d.kirpildi && d.pw_s < 0.5 * pw;   // darbenin parçası (histerezis/çentik)
       var bayrak = [];
       if (d.kirpildi) bayrak.push("SEG");
       if (devam) bayrak.push("SEG→");
       if (sahte) bayrak.push("SAHTE");
-      if (atlama >= 2) bayrak.push("FAZ↕");
+      if (parca) bayrak.push("PARÇA");
+      if (atlama >= 3) bayrak.push("FAZ↕");
       if (mopTahmin === "LFM") bayrak.push("LFM");
-      pdwler.push({ kirpildi: d.kirpildi, toa: d.toa_s, pw: d.pw_s, paTepe: d.pa_dbfs, paOrt: paOrt, f: f, egim: egim, mop: mopTahmin, bayrak: bayrak, sahte: sahte, devam: devam, g: enIyi, bas: bas, son: son });
+      pdwler.push({ kirpildi: d.kirpildi, parca: parca, toa: d.toa_s, pw: d.pw_s, paTepe: d.pa_dbfs, paOrt: paOrt, f: f, egim: egim, mop: mopTahmin, bayrak: bayrak, sahte: sahte, devam: devam, g: enIyi, bas: bas, son: son });
     });
     // --- zarf paneli
     WK.temizle(pZarf);
@@ -123,12 +125,12 @@ WK.kaydet("w19", function (w) {
     });
     // --- tablo
     tabloKap.innerHTML = "";
-    var tbl = WK.el("table", { "class": "w-mono" });
+    var tbl = WK.el("table", { "class": "w-mono", style: "font-size:12px; white-space:nowrap" });
     var thead = WK.el("thead"), tr = WK.el("tr");
     ["#", "TOA (µs)", "ΔTOA (ns)", "PW (ns)", "ΔPW (ns)", "PA tepe / ort (dB)", "ΔPA (dB)", "f (MHz)", "Δf (kHz)", "MOP / eğim", "bayrak"].forEach(function (h) { tr.appendChild(WK.el("th", { text: h })); });
     thead.appendChild(tr); tbl.appendChild(thead);
     var tb = WK.el("tbody");
-    var eToa = [], ePw = [], eF = [], ePa = [], sahteSay = 0, kacan = 0;
+    var eToa = [], ePw = [], eF = [], ePa = [], sahteSay = 0, parcaSay = 0, kacan = 0;
     pdwler.forEach(function (d, i) {
       var r = WK.el("tr");
       r.appendChild(td(String(i + 1)));
@@ -137,7 +139,8 @@ WK.kaydet("w19", function (w) {
       var dpw = (d.sahte || d.devam || d.kirpildi) ? NaN : (d.pw - d.g.pw) * 1e9;
       var dpa = d.paOrt - 0;                              // gerçek: 0 dB (tepe genliği 1)
       var df = (d.f - F0) / 1e3;
-      if (!d.sahte && !d.bayrak.length) { eToa.push(dt); ePw.push(dpw); eF.push(df); ePa.push(dpa); }
+      var istatistik = !d.sahte && !d.devam && !d.parca;                  // SEG'in ilk parçası TOA/f/PA için sayılır, PW için değil
+      if (istatistik) { eToa.push(dt); eF.push(df); ePa.push(dpa); if (!d.kirpildi) ePw.push(dpw); }
       r.appendChild(td(f3(dt, 1), Math.abs(dt) > 10 ? "uyar" : ""));
       r.appendChild(td(f3(d.pw * 1e9, 0)));
       r.appendChild(td(f3(dpw, 1), Math.abs(dpw) > 20 ? "uyar" : ""));
@@ -146,14 +149,14 @@ WK.kaydet("w19", function (w) {
       r.appendChild(td(f3(d.f / 1e6, 3)));
       r.appendChild(td(f3(df, 1), Math.abs(df) > 50 ? "uyar" : ""));
       r.appendChild(td(d.mop + (d.mop === "LFM" ? " " + f3(d.egim / 1e12, 1) + " MHz/µs" : "")));
-      r.appendChild(td(d.bayrak.join(" ") || "—", d.sahte ? "uyar" : ""));
-      if (d.sahte) sahteSay++;
+      r.appendChild(td(d.bayrak.join(" ") || "—", (d.sahte || d.parca) ? "uyar" : ""));
+      if (d.sahte) sahteSay++; if (d.parca) parcaSay++;
       tb.appendChild(r);
     });
     tbl.appendChild(tb);
     tabloKap.appendChild(tbl);
     // kaçan darbeler
-    gercek.forEach(function (g) { var var_ = pdwler.some(function (d) { return !d.sahte && d.g === g; }); if (!var_) kacan++; });
+    gercek.forEach(function (g) { var var_ = pdwler.some(function (d) { return !d.sahte && !d.parca && d.g === g; }); if (!var_) kacan++; });
     // --- sonuçlar
     var rms = function (a) { if (!a.length) return NaN; var s = 0; a.forEach(function (v) { s += v * v; }); return Math.sqrt(s / a.length); };
     var ort = function (a) { if (!a.length) return NaN; var s = 0; a.forEach(function (v) { s += v; }); return s / a.length; };
@@ -163,15 +166,18 @@ WK.kaydet("w19", function (w) {
     var toaTeori = DSP.toaHatasi(rise, p.snr) * 1e9;
     var fTeori = DSP.crlbFrekans(p.snr, nPw, fs) / 1e3;
     var pfaTeori = Math.exp(-Math.pow(10, p.esik / 10));   // MA'sız kare-yasa; MA gürültüyü daraltır, Pfa düşer
-    var beklenenPw = pw * 1e9 + rise * 1e9 - 2 * DSP.timeWalk(rise, Math.pow(10, (p.esik - p.snr) / 20)) * 1e9;
+    var aOn = Math.pow(10, (p.esik - p.snr) / 20), aOff = Math.pow(10, (p.esik - p.hyst - p.snr) / 20);
+    var beklenenPw = pw * 1e9 + rise * 1e9 - (DSP.timeWalk(rise, aOn) + DSP.timeWalk(rise, aOff)) * 1e9;   // T_on yükselen, T_off düşen kenar
+    var sigFaz = 1 / Math.sqrt(2 * Math.pow(10, p.snr / 10));                                            // örnek başına faz rms (rad)
+    var fBasitTeori = Math.SQRT2 * sigFaz / (2 * Math.PI * 0.8 * pw) / 1e3;                                // uç-nokta (ortalama Δφ) kestiricisi, kHz
     WK.sonucYaz(w, {
       "PDW": pdwler.length + " (gerçek darbe " + gercek.length + ")",
-      "sahte / kaçan": (sahteSay ? "!" : "+") + sahteSay + " / " + kacan,
+      "sahte / parça / kaçan": (sahteSay || parcaSay ? "!" : "+") + sahteSay + " / " + parcaSay + " / " + kacan,
       "min PW altı atılan": String(atilan.length),
       "TOA sapması (ort.)": (eToa.length ? f3(ort(eToa), 1) : "—") + " ns  (time walk + filtre gecikmesi ≈ " + f3(twBias, 1) + " ns)",
       "TOA rms (sapma çıkarılmış)": (eToa.length ? f3(std(eToa), 1) : "—") + " ns  (teori t_r/√(2·SNR) = " + f3(toaTeori, 1) + " ns; 1 örnek = 3.33 ns)",
       "PW ortalama sapması": (ePw.length ? f3(ort(ePw), 1) : "—") + " ns  (eşik tanımından beklenen ≈ " + f3(beklenenPw - pw * 1e9, 1) + " ns)",
-      "f rms hatası": (eF.length ? f3(rms(eF), 1) : "—") + " kHz  (CRLB = " + f3(fTeori, 1) + " kHz, N = " + nPw + ")",
+      "f rms hatası": (eF.length ? f3(rms(eF), 1) : "—") + " kHz  (Δφ ortalaması kestiricisi teorisi ≈ " + f3(fBasitTeori, 1) + " kHz; CRLB = " + f3(fTeori, 1) + " kHz, N = " + nPw + ")",
       "PA sapması (ort.)": (ePa.length ? f3(ort(ePa), 2) : "—") + " dB (gürültü gücü eklenir: +" + f3(10 * Math.log10(1 + Pn), 2) + " dB beklenir)",
       "Pfa (kare-yasa, MA'sız)": pfaTeori.toExponential(1) + (p.esik < 9 ? " !yüksek" : ""),
       "not": "PRI gösterim için " + f3(pri * 1e6, 1) + " µs'e ölçeklendi; referans senaryoda 1 ms"

@@ -1,0 +1,81 @@
+<svg viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g120">
+<title id="t-g120">Q formatı bit haritası: 16 bitlik kelimenin Q1.15 yorumu (işaret −1, kesirler 1/2 … 1/32768, LSB 2^−15), aynı bitlerin Q4.12 yorumu (aralık ±8, LSB 1/4096) ve 14 bitlik ADC kelimesinin 16 bitlik yola sola ya da sağa hizalı yerleşimi</title>
+<!-- ortak: 16 kutu, her biri 44 px, x0 = 100 -->
+<!-- Satır 1: Q1.15 -->
+<text x="16" y="40" class="s-baslik">Q1.15</text>
+<text x="16" y="56" class="s-kucuk">16 bit · aralık −1 … +0.99997</text>
+<text x="16" y="70" class="s-kucuk">LSB = 2⁻¹⁵ ≈ 3.05·10⁻⁵</text>
+<g>
+  <rect x="180" y="30" width="42" height="34" rx="3" fill="var(--red-soft)" stroke="var(--red)"/>
+  <text x="201" y="51" text-anchor="middle" class="s-mono">−1</text>
+  <rect x="222" y="30" width="42" height="34" rx="3" class="blok"/><text x="243" y="51" text-anchor="middle" class="s-mono2">½</text>
+  <rect x="264" y="30" width="42" height="34" rx="3" class="blok"/><text x="285" y="51" text-anchor="middle" class="s-mono2">¼</text>
+  <rect x="306" y="30" width="42" height="34" rx="3" class="blok"/><text x="327" y="51" text-anchor="middle" class="s-mono2">⅛</text>
+  <rect x="348" y="30" width="42" height="34" rx="3" class="blok"/><text x="369" y="51" text-anchor="middle" class="s-mono2">2⁻⁴</text>
+  <rect x="390" y="30" width="42" height="34" rx="3" class="blok"/><text x="411" y="51" text-anchor="middle" class="s-mono2">2⁻⁵</text>
+  <rect x="432" y="30" width="42" height="34" rx="3" class="blok"/><text x="453" y="51" text-anchor="middle" class="s-mono2">2⁻⁶</text>
+  <rect x="474" y="30" width="42" height="34" rx="3" class="blok"/><text x="495" y="51" text-anchor="middle" class="s-mono2">2⁻⁷</text>
+  <rect x="516" y="30" width="42" height="34" rx="3" class="blok"/><text x="537" y="51" text-anchor="middle" class="s-mono2">2⁻⁸</text>
+  <rect x="558" y="30" width="42" height="34" rx="3" class="blok"/><text x="579" y="51" text-anchor="middle" class="s-mono2">2⁻⁹</text>
+  <rect x="600" y="30" width="42" height="34" rx="3" class="blok"/><text x="621" y="51" text-anchor="middle" class="s-mono2">2⁻¹⁰</text>
+  <rect x="642" y="30" width="42" height="34" rx="3" class="blok"/><text x="663" y="51" text-anchor="middle" class="s-mono2">2⁻¹¹</text>
+  <rect x="684" y="30" width="42" height="34" rx="3" class="blok"/><text x="705" y="51" text-anchor="middle" class="s-mono2">2⁻¹²</text>
+  <rect x="726" y="30" width="42" height="34" rx="3" class="blok"/><text x="747" y="51" text-anchor="middle" class="s-mono2">2⁻¹³</text>
+  <rect x="768" y="30" width="42" height="34" rx="3" class="blok"/><text x="789" y="51" text-anchor="middle" class="s-mono2">2⁻¹⁴</text>
+  <rect x="810" y="30" width="42" height="34" rx="3" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="831" y="51" text-anchor="middle" class="s-mono2">2⁻¹⁵</text>
+</g>
+<text x="201" y="24" text-anchor="middle" class="s-kucuk s-kirmizi">bit 15 · işaret</text>
+<text x="831" y="24" text-anchor="middle" class="s-kucuk s-vurgu">bit 0 · LSB</text>
+<!-- ikili nokta -->
+<circle cx="222" cy="72" r="3" fill="var(--gold)"/>
+<text x="222" y="86" text-anchor="middle" class="s-kucuk s-altin">ikili nokta</text>
+<text x="500" y="86" text-anchor="middle" class="s-kucuk">örnek: 0x4000 = 0 100 0000 0000 0000 → +½ = 0.5 → −6.02 dBFS</text>
+
+<!-- Satır 2: Q4.12 -->
+<text x="16" y="130" class="s-baslik">Q4.12</text>
+<text x="16" y="146" class="s-kucuk">aynı 16 bit · aralık −8 … +7.9998</text>
+<text x="16" y="160" class="s-kucuk">LSB = 2⁻¹² ≈ 2.44·10⁻⁴</text>
+<g>
+  <rect x="180" y="120" width="42" height="34" rx="3" fill="var(--red-soft)" stroke="var(--red)"/><text x="201" y="141" text-anchor="middle" class="s-mono">−8</text>
+  <rect x="222" y="120" width="42" height="34" rx="3" fill="var(--gold-soft)" stroke="var(--gold)"/><text x="243" y="141" text-anchor="middle" class="s-mono2">4</text>
+  <rect x="264" y="120" width="42" height="34" rx="3" fill="var(--gold-soft)" stroke="var(--gold)"/><text x="285" y="141" text-anchor="middle" class="s-mono2">2</text>
+  <rect x="306" y="120" width="42" height="34" rx="3" fill="var(--gold-soft)" stroke="var(--gold)"/><text x="327" y="141" text-anchor="middle" class="s-mono2">1</text>
+  <rect x="348" y="120" width="42" height="34" rx="3" class="blok"/><text x="369" y="141" text-anchor="middle" class="s-mono2">½</text>
+  <rect x="390" y="120" width="42" height="34" rx="3" class="blok"/><text x="411" y="141" text-anchor="middle" class="s-mono2">¼</text>
+  <rect x="432" y="120" width="42" height="34" rx="3" class="blok"/><text x="453" y="141" text-anchor="middle" class="s-mono2">⅛</text>
+  <rect x="474" y="120" width="42" height="34" rx="3" class="blok"/><text x="495" y="141" text-anchor="middle" class="s-mono2">2⁻⁴</text>
+  <rect x="516" y="120" width="42" height="34" rx="3" class="blok"/><text x="537" y="141" text-anchor="middle" class="s-mono2">2⁻⁵</text>
+  <rect x="558" y="120" width="42" height="34" rx="3" class="blok"/><text x="579" y="141" text-anchor="middle" class="s-mono2">2⁻⁶</text>
+  <rect x="600" y="120" width="42" height="34" rx="3" class="blok"/><text x="621" y="141" text-anchor="middle" class="s-mono2">2⁻⁷</text>
+  <rect x="642" y="120" width="42" height="34" rx="3" class="blok"/><text x="663" y="141" text-anchor="middle" class="s-mono2">2⁻⁸</text>
+  <rect x="684" y="120" width="42" height="34" rx="3" class="blok"/><text x="705" y="141" text-anchor="middle" class="s-mono2">2⁻⁹</text>
+  <rect x="726" y="120" width="42" height="34" rx="3" class="blok"/><text x="747" y="141" text-anchor="middle" class="s-mono2">2⁻¹⁰</text>
+  <rect x="768" y="120" width="42" height="34" rx="3" class="blok"/><text x="789" y="141" text-anchor="middle" class="s-mono2">2⁻¹¹</text>
+  <rect x="810" y="120" width="42" height="34" rx="3" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="831" y="141" text-anchor="middle" class="s-mono2">2⁻¹²</text>
+</g>
+<circle cx="348" cy="162" r="3" fill="var(--gold)"/>
+<text x="348" y="176" text-anchor="middle" class="s-kucuk s-altin">ikili nokta (3 bit sağa kaydı)</text>
+<text x="600" y="176" text-anchor="middle" class="s-kucuk">aynı 0x4000 → +4.0 — bitler değişmedi, yorum değişti</text>
+
+<!-- Satır 3: ADC 14 bit → 16 bit yol -->
+<text x="16" y="222" class="s-baslik">ADC 14 bit</text>
+<text x="16" y="238" class="s-kucuk">Q1.13 → 16 bitlik yola</text>
+<text x="16" y="252" class="s-kucuk">iki hizalama</text>
+<!-- sola hizalı -->
+<text x="180" y="212" class="s-kucuk s-vurgu">sola hizalı: ADC tam ölçek = yol tam ölçeği; alt 2 bit sıfır (ya da dither)</text>
+<g>
+  <rect x="180" y="218" width="588" height="26" rx="3" fill="var(--accent-soft)" stroke="var(--accent)"/>
+  <text x="474" y="235" text-anchor="middle" class="s-mono2">ADC[13:0] → yol[15:2]</text>
+  <rect x="768" y="218" width="84" height="26" rx="3" fill="none" stroke="var(--ink-3)" stroke-dasharray="3 3"/>
+  <text x="810" y="235" text-anchor="middle" class="s-mono2">0 0</text>
+</g>
+<!-- sağa hizalı -->
+<text x="180" y="270" class="s-kucuk s-altin">sağa hizalı: üst 2 bit işaret genişletme (headroom 12 dB); ADC tam ölçek = −12 dBFS</text>
+<g>
+  <rect x="180" y="276" width="84" height="26" rx="3" fill="var(--gold-soft)" stroke="var(--gold)"/>
+  <text x="222" y="293" text-anchor="middle" class="s-mono2">S S</text>
+  <rect x="264" y="276" width="588" height="26" rx="3" fill="var(--accent-soft)" stroke="var(--accent)"/>
+  <text x="558" y="293" text-anchor="middle" class="s-mono2">ADC[13:0] → yol[13:0]</text>
+</g>
+<text x="180" y="322" class="s-kucuk">Hangisi seçildiği belgede yazmalı: aynı −60 dBm giriş, iki yorumda 12 dB farklı dBFS verir.</text>
+</svg>

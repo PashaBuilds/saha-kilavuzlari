@@ -8,7 +8,7 @@
 <line x1="70" y1="251.8" x2="860" y2="251.8" class="yol-gurultu"/>
 <text x="854" y="246.8" text-anchor="end" class="s-kucuk s-kirmizi">FFT tabanı N = 1024: −86 − 10·log10(512) = -113.1 dBFS/bin</text>
 <line x1="70" y1="262.6" x2="860" y2="262.6" class="yol-saat"/>
-<text x="854" y="257.6" text-anchor="end" class="s-kucuk s-mor">N = 4096 olsaydı: -119.2 dBFS/bin (4× N → −6 dB)</text>
+<text x="854" y="275.6" text-anchor="end" class="s-kucuk s-mor">N = 4096 olsaydı: -119.2 dBFS/bin (4× N → −6 dB)</text>
 <path d="M505.0 49.0 V247.8" stroke="var(--ink-2)" stroke-width="1.2" marker-end="url(#ok-ince)" marker-start="url(#ok-ince)"/>
 <text x="513.0" y="138.6" class="s-metin2">tepe − taban = SNR + işlem kazancı</text>
 <text x="513.0" y="153.0" class="s-metin2">= 86 + 27.1 = 113.1 dB</text>
@@ -40,5 +40,5 @@
 <text x="450" y="526" text-anchor="middle" class="s-mono2 s-yesil">kestirme: FFT tabanı = −SNR − 10·log10(N/2) = −86.0 − 27.1 = -113.1 dBFS</text>
 <text x="70" y="558" class="s-metin2">Üç sayı aynı gürültüyü üç farklı bantta ölçer. Datasheet SNR'ı ile FFT tabanı arasındaki 27 dB "kayıp" değil, bin'in bandın 1/512'si olmasıdır.</text>
 <text x="70" y="578" class="s-metin2">Kompleks I/Q girişte (DDC çıkışı) gürültü N bin'e yayılır: işlem kazancı 10·log10(N) = 30.1 dB; NSD yolu her iki durumda aynı sonucu verir.</text>
-<text x="70" y="604" class="s-kucuk">Sayılar öğretici referans senaryodandır (14 bit ideal, 86.04 dB); gerçek ADC'de SNR datasheet değeri kullanılır. Pencere varsa taban 10·log10(ENBW) kadar yükselir (Hann: +1.76 dB).</text>
+<text x="70" y="604" class="s-kucuk">Sayılar öğretici referans senaryodandır (14 bit ideal); gerçek ADC'de datasheet SNR'ı kullanılır. Pencere varsa taban +10·log10(ENBW) (Hann: +1.76 dB).</text>
 </svg>

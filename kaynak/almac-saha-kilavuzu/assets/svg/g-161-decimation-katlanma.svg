@@ -1,0 +1,77 @@
+<svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g161">
+<title id="t-g161">Decimation'da alias'ın geri katlanması, 600 MSPS'ten M=2 ile 300 MSPS'e: üstte filtre öncesi spektrum ve yeni Nyquist sınırı ±150 MHz; ±150 dışındaki bileşenler (170 MHz'deki ton −130'a, 250 MHz'deki gürültü −50'ye) bandın içine katlanır; ortada halfband filtre katlanacak bölgeleri önceden bastırır (−6 dB tam 150 MHz'de); altta decimation sonrası spektrum, yeni eksen ±150 MHz, kalıntılar stopband seviyesinde</title>
+<!-- ortak eksen yardımcıları: x: −300..300 MHz → 60..840 px (1.3 px/MHz); -->
+<!-- ===== Panel 1: filtre öncesi (600 MSPS) ===== -->
+<g>
+  <text x="60" y="26" class="s-baslik">(1) Decimation öncesi — fs = 600 MSPS, eksen ±300 MHz</text>
+  <rect x="60" y="36" width="780" height="120" class="eksen"/>
+  <!-- yeni Nyquist bölgesi -->
+  <rect x="255" y="36" width="390" height="120" fill="var(--accent)" opacity=".08"/>
+  <line x1="255" y1="36" x2="255" y2="156" stroke="var(--ink-2)" stroke-dasharray="5 4"/>
+  <line x1="645" y1="36" x2="645" y2="156" stroke="var(--ink-2)" stroke-dasharray="5 4"/>
+  <text x="450" y="50" text-anchor="middle" class="s-kucuk">yeni Nyquist bandı ±150 MHz (300 MSPS)</text>
+  <!-- gürültü tabanı -->
+  <path d="M60 140 H840 V156 H60 Z" class="spk-gurultu" opacity=".5"/>
+  <!-- istenen sinyal 0 MHz -->
+  <path d="M430 140 L446 60 L450 56 L454 60 L470 140" class="spk-sinyal" opacity=".5" stroke="var(--accent)" stroke-width="1.4"/>
+  <text x="450" y="70" text-anchor="middle" class="s-kucuk s-vurgu">sinyal 0 MHz</text>
+  <!-- istenmeyen ton 170 -->
+  <line x1="671" y1="140" x2="671" y2="76" stroke="var(--red)" stroke-width="2.4"/>
+  <circle cx="671" cy="76" r="3" fill="var(--red)"/>
+  <text x="676" y="80" class="s-kucuk s-kirmizi">ton +170 MHz</text>
+  <!-- gürültü tümseği 250 -->
+  <path d="M740 140 Q775 96 810 140 Z" fill="var(--red)" opacity=".35"/>
+  <text x="775" y="112" text-anchor="middle" class="s-kucuk s-kirmizi">gürültü 250</text>
+  <!-- eksen etiketleri -->
+  <text x="60" y="170" class="s-mono2">−300</text><text x="255" y="170" text-anchor="middle" class="s-mono2">−150</text><text x="450" y="170" text-anchor="middle" class="s-mono2">0</text><text x="645" y="170" text-anchor="middle" class="s-mono2">+150</text><text x="840" y="170" text-anchor="end" class="s-mono2">+300 MHz</text>
+  <!-- katlanma okları -->
+  <path d="M671 84 C 600 20, 320 20, 281 96" fill="none" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+  <text x="470" y="34" text-anchor="middle" class="s-kucuk s-kirmizi">170 − 300 = −130 MHz</text>
+  <path d="M775 100 C 700 -10, 420 -10, 385 120" fill="none" stroke="var(--red)" stroke-width="1" stroke-dasharray="3 3" opacity=".8"/>
+  <text x="640" y="14" text-anchor="middle" class="s-kucuk s-kirmizi">250 − 300 = −50 MHz</text>
+</g>
+<!-- ===== Panel 2: filtre ===== -->
+<g>
+  <text x="60" y="206" class="s-baslik">(2) Halfband filtre (23 tap): katlanacak bölgeleri önceden bastırır</text>
+  <rect x="60" y="216" width="780" height="120" class="eksen"/>
+  <rect x="255" y="216" width="390" height="120" fill="var(--accent)" opacity=".08"/>
+  <line x1="255" y1="216" x2="255" y2="336" stroke="var(--ink-2)" stroke-dasharray="5 4"/>
+  <line x1="645" y1="216" x2="645" y2="336" stroke="var(--ink-2)" stroke-dasharray="5 4"/>
+  <!-- filtre yanıtı: 0 dB → y=226; −6 dB → 234; −53 dB @200 → 296; −70 → 320 (ölçek ~1.33 px/dB) -->
+  <path d="M60 320 L125 320 L190 296 L216 260 L255 234 L280 228 L310 226 L590 226 L620 228 L645 234 L684 260 L710 296 L775 320 L840 320" class="spk-filtre" stroke-width="1.8"/>
+  <text x="300" y="248" class="s-kucuk s-altin">0 dB</text>
+  <circle cx="645" cy="234" r="3.5" fill="var(--gold)"/><text x="652" y="238" class="s-kucuk s-altin">−6 dB tam 150 MHz'de</text>
+  <circle cx="710" cy="296" r="3.5" fill="var(--gold)"/><text x="717" y="300" class="s-kucuk s-altin">−53 dB @200</text>
+  <text x="780" y="316" class="s-kucuk s-altin">−62 dB @210+</text>
+  <!-- geçiş bandının simetrisi -->
+  <rect x="606" y="216" width="78" height="120" fill="var(--red)" opacity=".14"/>
+  <text x="645" y="330" text-anchor="middle" class="s-kucuk s-kirmizi">geçiş bandı 120–180, 150 etrafında simetrik → kendi üstüne katlanır</text>
+  <!-- ton ve gürültü filtre sonrası -->
+  <line x1="671" y1="320" x2="671" y2="300" stroke="var(--red)" stroke-width="2.4" opacity=".8"/>
+  <text x="676" y="290" class="s-kucuk s-kirmizi">170: −15 dB</text>
+  <text x="60" y="350" class="s-mono2">−300</text><text x="450" y="350" text-anchor="middle" class="s-mono2">0</text><text x="840" y="350" text-anchor="end" class="s-mono2">+300 MHz</text>
+</g>
+<!-- ===== Panel 3: decimation sonrası (300 MSPS) ===== -->
+<g>
+  <text x="60" y="386" class="s-baslik">(3) ↓2 sonrası — fs = 300 MSPS, eksen ±150 MHz (her nokta, öncekinin M = 2 noktasının toplamı)</text>
+  <rect x="255" y="396" width="390" height="120" class="eksen"/>
+  <path d="M255 500 H645 V516 H255 Z" class="spk-gurultu" opacity=".5"/>
+  <!-- sinyal -->
+  <path d="M430 500 L446 420 L450 416 L454 420 L470 500" class="spk-sinyal" opacity=".5" stroke="var(--accent)" stroke-width="1.4"/>
+  <text x="450" y="430" text-anchor="middle" class="s-kucuk s-vurgu">sinyal 0 MHz</text>
+  <!-- katlanmış ton −130 -->
+  <line x1="281" y1="500" x2="281" y2="470" stroke="var(--red)" stroke-width="2.4"/>
+  <text x="286" y="466" class="s-kucuk s-kirmizi">−130 MHz, −15 dB (170'in katlanmış hali)</text>
+  <!-- katlanmış gürültü −50 -->
+  <path d="M370 500 Q385 494 400 500 Z" fill="var(--red)" opacity=".45"/>
+  <text x="385" y="488" text-anchor="middle" class="s-kucuk s-kirmizi">−50: kalıntı, −60 dB altı</text>
+  <text x="255" y="530" text-anchor="middle" class="s-mono2">−150</text><text x="450" y="530" text-anchor="middle" class="s-mono2">0</text><text x="645" y="530" text-anchor="middle" class="s-mono2">+150 MHz</text>
+  <text x="660" y="440" class="s-kucuk">Kural: dışarıda ne kaldıysa içeri</text>
+  <text x="660" y="456" class="s-kucuk">katlanır; filtrenin bastırdığı kadar</text>
+  <text x="660" y="472" class="s-kucuk">zayıf. Halfband'in temiz bandı</text>
+  <text x="660" y="488" class="s-kucuk">bu yüzden ±150 değil ≈ ±120 MHz.</text>
+  <text x="60" y="440" class="s-kucuk">Yeni Nyquist: ±fs_out/2.</text>
+  <text x="60" y="456" class="s-kucuk">Sonraki bloklar (FFT, zarf)</text>
+  <text x="60" y="472" class="s-kucuk">yalnızca bu ekseni görür.</text>
+</g>
+</svg>

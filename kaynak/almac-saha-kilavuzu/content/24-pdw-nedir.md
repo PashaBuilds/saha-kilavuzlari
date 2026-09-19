@@ -116,7 +116,7 @@ s: çözünürlük | 1 LSB'nin karşılığı | alanın birimi
 o: TOA: LSB = 1 örnek = {{s:ddc.ornek_suresi_ns}} ns, **{{s:pdw.toa_bit}} bit** → sarmadan önce 2^48 · 3.333 ns ≈ 10.9 gün. 32 bit seçseydin 14.3 s'de sarardı ve yazılım sarmayı takip etmek zorunda kalırdı.
 o: PW: LSB = {{s:pdw.pw_lsb_ns}} ns, **{{s:pdw.pw_bit}} bit** → azami 3.5 ms; 1 µs darbe = {{s:ddc.darbe_ornek_sayisi}}. Daha uzun darbe FSM tarafından parçalanır ({{bolum:26}}).
 o: PA: LSB = {{s:pdw.pa_lsb_db}} dB (log ölçek), **{{s:pdw.pa_bit}} bit** → 256 dB aralık; lineer güç saklasaydın 90 dB'lik dinamik aralık için 30 bit gerekirdi.
-o: RF: LSB = {{s:pdw.rf_lsb_khz}} kHz, **{{s:pdw.rf_bit}} bit** → mutlak 0–10.49 GHz. {{s:sinyal.rf_ghz}} GHz = 940 000 = 0xE57E0. 10 kHz, 15 dB SNR'da 1 µs darbeden beklenen frekans hatasıyla (≈ 5.7 kHz, {{bolum:25}}) uyumludur.
+o: RF: LSB = {{s:pdw.rf_lsb_khz}} kHz, **{{s:pdw.rf_bit}} bit** → mutlak 0–10.49 GHz. {{s:sinyal.rf_ghz}} GHz = 940 000 = 0xE57E0. 10 kHz, 15 dB SNR'da 1 µs darbeden elde edilebilecek en iyi frekans hatasıyla (CRLB ≈ 5.7 kHz, {{bolum:25}}) uyumludur; daha ince bir LSB ölçümün taşımadığı basamak olurdu.
 o: AOA: LSB = {{s:pdw.aoa_lsb_derece}}°, **{{s:pdw.aoa_bit}} bit** → 409.6° ≥ 360°; 4095 kodu "geçersiz" için ayrılır.
 :::
 
@@ -213,7 +213,7 @@ static void pdw_parse(const pdw_raw_t *r, pdw_t *o)
 }
 
 /* Referans senaryodaki darbe (kurgusal değerler):
- *   w[0]=0x1DCD6500 w[1]=0x030F0000 w[2]=0xFFF0012C w[3]=0x0E0E57E0
+ *   w[0]=0x1DCD6500 w[1]=0x030F0000 w[2]=0xFFF0012C w[3]=0x00EE57E0
  *   → TOA = 500 000 000 örnek = 1.6667 s, PA = 0.25·783 − 255.75 = −60 dBFS
  *     PW = 300 örnek = 1.000 µs, AOA geçersiz (4095), RF = 940 000 · 10 kHz = 9.4 GHz
  *     SEQ = 14, MOP = 0, CH = 0, flags = 0 */

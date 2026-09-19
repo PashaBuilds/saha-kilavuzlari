@@ -2,39 +2,38 @@
 <title id="t-g241">Darbeden PDW'ye veri indirgeme: 1 ms PRI içinde 1 µs darbe; log ölçekli çubuklar ADC çıkışı 33.6 Gbps, DDC çıkışı 9.6 Gbps, yalnız darbe örnekleri 9.6 Mbps ve PDW akışı 128 kbps; oran 75 000:1</title>
 <text x="30.0" y="24.0" text-anchor="start" class="s-baslik">Ham örnekten PDW'ye: veri hızı basamak basamak düşer (log ölçek)</text>
 <line x1="30" y1="60" x2="830" y2="60" class="eksen"/>
-<text x="30.0" y="52.0" text-anchor="start" class="s-kucuk">PRI = 1 ms</text>
-<text x="830.0" y="52.0" text-anchor="end" class="s-kucuk">t</text>
+<text x="816.0" y="52.0" text-anchor="end" class="s-kucuk">PRI = 1 ms  →  t</text>
 <rect x="70" y="38" width="3" height="22" class="spk-sinyal"/>
 <rect x="854" y="38" width="3" height="22" class="spk-sinyal" opacity=".45"/>
 <text x="80.0" y="34.0" text-anchor="start" class="s-kucuk">darbe: 1 µs = 300 örnek (PRI'nin binde biri; ölçeksiz çizildi)</text>
 <path d="M71 64 V82" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
 <text x="78.0" y="80.0" text-anchor="start" class="s-mono2">→ 1 PDW (128 bit)</text>
-<text x="242.0" y="127.0" text-anchor="end" class="s-metin2">ADC çıkışı: 2400 MSPS × 14 bit</text>
-<rect x="250" y="110" width="525.0" height="26" rx="4" class="blok-analog"/>
-<text x="781.0" y="127.0" text-anchor="start" class="s-mono">33.6 Gbps</text>
-<text x="242.0" y="173.0" text-anchor="end" class="s-metin2">DDC çıkışı: 300 MSPS × 32 bit (I+Q)</text>
-<rect x="250" y="156" width="473.3" height="26" rx="4" class="blok-aktif"/>
-<text x="729.3" y="173.0" text-anchor="start" class="s-mono">9.6 Gbps</text>
-<text x="242.0" y="219.0" text-anchor="end" class="s-metin2">yalnız darbe örnekleri: 300 örn × 32 bit × 1 kHz</text>
-<rect x="250" y="202" width="188.3" height="26" rx="4" class="blok-aktif"/>
-<text x="444.3" y="219.0" text-anchor="start" class="s-mono">9.6 Mbps</text>
-<text x="242.0" y="265.0" text-anchor="end" class="s-metin2">PDW akışı: 128 bit × 1 kHz PRF</text>
-<rect x="250" y="248" width="10.2" height="26" rx="4" class="blok-kontrol"/>
-<text x="266.2" y="265.0" text-anchor="start" class="s-mono">128 kbps</text>
-<line x1="250.0" y1="104" x2="250.0" y2="294" class="izgara"/>
-<text x="250.0" y="308.0" text-anchor="middle" class="s-kucuk">10^5</text>
-<line x1="345.0" y1="104" x2="345.0" y2="294" class="izgara"/>
-<text x="345.0" y="308.0" text-anchor="middle" class="s-kucuk">10^6</text>
-<line x1="440.0" y1="104" x2="440.0" y2="294" class="izgara"/>
-<text x="440.0" y="308.0" text-anchor="middle" class="s-kucuk">10^7</text>
-<line x1="535.0" y1="104" x2="535.0" y2="294" class="izgara"/>
-<text x="535.0" y="308.0" text-anchor="middle" class="s-kucuk">10^8</text>
-<line x1="630.0" y1="104" x2="630.0" y2="294" class="izgara"/>
-<text x="630.0" y="308.0" text-anchor="middle" class="s-kucuk">10^9</text>
-<line x1="725.0" y1="104" x2="725.0" y2="294" class="izgara"/>
-<text x="725.0" y="308.0" text-anchor="middle" class="s-kucuk">10^10</text>
+<text x="322.0" y="127.0" text-anchor="end" class="s-metin2">ADC çıkışı: 2400 MSPS × 14 bit</text>
+<rect x="330" y="110" width="451.3" height="26" rx="4" class="blok-analog"/>
+<text x="787.3" y="127.0" text-anchor="start" class="s-mono">33.6 Gbps</text>
+<text x="322.0" y="173.0" text-anchor="end" class="s-metin2">DDC çıkışı: 300 MSPS × 32 bit (I+Q)</text>
+<rect x="330" y="156" width="406.9" height="26" rx="4" class="blok-aktif"/>
+<text x="742.9" y="173.0" text-anchor="start" class="s-mono">9.6 Gbps</text>
+<text x="322.0" y="219.0" text-anchor="end" class="s-metin2">yalnız darbe örnekleri: 300 × 32 bit × 1 kHz</text>
+<rect x="330" y="202" width="161.9" height="26" rx="4" class="blok-aktif"/>
+<text x="497.9" y="219.0" text-anchor="start" class="s-mono">9.6 Mbps</text>
+<text x="322.0" y="265.0" text-anchor="end" class="s-metin2">PDW akışı: 128 bit × 1 kHz PRF</text>
+<rect x="330" y="248" width="8.8" height="26" rx="4" class="blok-kontrol"/>
+<text x="344.8" y="265.0" text-anchor="start" class="s-mono">128 kbps</text>
+<line x1="330.0" y1="104" x2="330.0" y2="294" class="izgara"/>
+<text x="330.0" y="308.0" text-anchor="middle" class="s-kucuk">10^5</text>
+<line x1="411.7" y1="104" x2="411.7" y2="294" class="izgara"/>
+<text x="411.7" y="308.0" text-anchor="middle" class="s-kucuk">10^6</text>
+<line x1="493.3" y1="104" x2="493.3" y2="294" class="izgara"/>
+<text x="493.3" y="308.0" text-anchor="middle" class="s-kucuk">10^7</text>
+<line x1="575.0" y1="104" x2="575.0" y2="294" class="izgara"/>
+<text x="575.0" y="308.0" text-anchor="middle" class="s-kucuk">10^8</text>
+<line x1="656.7" y1="104" x2="656.7" y2="294" class="izgara"/>
+<text x="656.7" y="308.0" text-anchor="middle" class="s-kucuk">10^9</text>
+<line x1="738.3" y1="104" x2="738.3" y2="294" class="izgara"/>
+<text x="738.3" y="308.0" text-anchor="middle" class="s-kucuk">10^10</text>
 <line x1="820.0" y1="104" x2="820.0" y2="294" class="izgara"/>
 <text x="820.0" y="308.0" text-anchor="middle" class="s-kucuk">10^11</text>
-<text x="535.0" y="324.0" text-anchor="middle" class="s-kucuk">bit/s (log)</text>
+<text x="575.0" y="324.0" text-anchor="middle" class="s-kucuk">bit/s (log)</text>
 <text x="30.0" y="318.0" text-anchor="start" class="s-mono2">9.6 Gbps / 128 kbps = 75 000 : 1   ·   ADC'den itibaren 262 500 : 1   ·   darbe örneklerinden PDW'ye 75 : 1 (9600 bit → 128 bit)</text>
 </svg>

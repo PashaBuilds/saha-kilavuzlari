@@ -79,7 +79,7 @@ WK.kaydet("w03", function (w) {
         cizildi++;
       }
     } else {
-      gs.metin(gs.x0 + 8, gs.y1 + 30, "PRF çizgileri " + cizgiSayi + " adet — bu ölçekte çizilmez (aralık " + WK.fmtHz(prf) + ", zarfın altını sürekli doldurur)", "w-not");
+      gs.metin(gs.x0 + 8, gs.y0 - 8, "PRF çizgileri " + cizgiSayi + " adet — bu ölçekte çizilmez (aralık " + WK.fmtHz(prf) + ", zarfın altını sürekli doldurur)", "w-not");
     }
     if (p.mop === "yok") {
       gs.dikey(1 / pw / 1e6, "w-cizgi-gri", "1/PW = " + WK.fmtHz(1 / pw));
@@ -99,7 +99,7 @@ WK.kaydet("w03", function (w) {
       "ilk sıfır 1/PW": WK.fmtHz(1 / pw) + " (ana lob 2/PW = " + WK.fmtHz(2 / pw) + ")",
       "−3 dB genişlik (dikdörtgen)": WK.fmtHz(0.886 / pw),
       "çizgi aralığı": WK.fmtHz(prf) + " · ana lobda ≈ " + Math.round(2 * pri / pw) + " çizgi" + (cizgiSayi <= 400 ? " (" + cizildi + " çizildi)" : ""),
-      "kenar bant genişliği ≈ 0.35/t_r": rise > 0 ? WK.fmtHz(0.35 / rise) : "∞ (ideal kenar)"
+      "kenar için gereken IF bandı ≈ 0.7/t_r": rise > 0 ? WK.fmtHz(0.7 / rise) + " (video: " + WK.fmtHz(0.35 / rise) + ")" : "∞ (ideal kenar)"
     };
     if (p.mop === "lfm") { sonuc["LFM: B·T çarpımı"] = (p.bw * pw).toFixed(1) + " (sıkıştırma kazancı ≈ " + DSP.db10(p.bw * pw).toFixed(1) + " dB)"; sonuc["etkin bant genişliği"] = "+≈ B = " + WK.fmtHz(p.bw) + " (1/PW'nin " + (p.bw * pw).toFixed(0) + " katı)"; }
     if (cipler > 1) { sonuc["Barker: chip süresi"] = WK.fmtS(pw / cipler); sonuc["etkin bant genişliği"] = "+≈ " + cipler + "/PW = " + WK.fmtHz(cipler / pw); }

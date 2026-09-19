@@ -164,5 +164,6 @@
 <rect x="835.2" y="356" width="3" height="16" class="spk-filtre"/>
 <rect x="846.3" y="356" width="3" height="16" class="spk-filtre"/>
 <rect x="857.5" y="356" width="3" height="16" class="spk-filtre"/>
-<text x="30.0" y="440.0" text-anchor="start" class="s-kucuk">Süreç yazılımdadır: PDW'ler (RF, PW, AOA) kümelenir, küme içinde ΔTOA histogramı PRI adaylarını verir, aday PRI ile darbe dizisi çıkarılır, kalanlar yeniden denenir; iz güncellenir ve kütüphaneyle eşlenir.</text>
+<text x="30.0" y="436.0" text-anchor="start" class="s-kucuk">Süreç yazılımdadır: PDW'ler (RF, PW, AOA) kümelenir; küme içinde ΔTOA histogramı PRI adaylarını verir; aday PRI ile darbe dizisi çıkarılır,</text>
+<text x="30.0" y="450.0" text-anchor="start" class="s-kucuk">kalanlarla işlem yinelenir; iz güncellenir ve kütüphaneyle eşlenir.</text>
 </svg>

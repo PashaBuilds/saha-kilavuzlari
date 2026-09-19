@@ -58,7 +58,7 @@ ya da "yok". Gerçek ile karar çaprazlanınca dört sonuç çıkar:
 diğer ikisi bunların tümleyenidir. Eşik tek bir düğmedir ve bu iki sayıyı
 *birlikte* hareket ettirir. Şekle bakalım.
 
-{{svg:g-210-iki-pdf-esik.svg|İki hipotezin zarf dağılımları ve eşik. Üstte lineer eksende: H0 yalnız gürültü (gri, Rayleigh) ve H1 sinyal + gürültü (mavi, Rician, SNR = {{s:tespit.snr_pd09_db}} dB); altın kesikli eşik T = {{s:turetilmis_beklenen.rayleigh_esik_sigma}}σ. Eşiğin sağındaki mavi alan Pd = 0.90; gri kuyruk Pfa = 10⁻⁶ lineer eksende görünmez bile. Altta aynı dağılımlar logaritmik eksende: 10⁻⁶'lık kuyruk artık görünür. Sağ üstte dört sonuç matrisi.}}
+{{svg:g-210-iki-pdf-esik.svg|İki hipotezin zarf dağılımları ve eşik. Üstte lineer eksende: H0 yalnız gürültü (gri, Rayleigh) ve H1 sinyal + gürültü (mavi, Rician, SNR = 13.2 dB); altın kesikli eşik T = 5.257σ. Eşiğin sağındaki mavi alan Pd = 0.90; gri kuyruk Pfa = 10⁻⁶ lineer eksende görünmez bile. Altta aynı dağılımlar logaritmik eksende: 10⁻⁶'lık kuyruk artık görünür. Sağ üstte dört sonuç matrisi.}}
 
 Şeklin söylediği ilk şey şu: **eşik iki dağılımı keser** ve kestiği yerin
 sağında kalan iki alan Pfa ile Pd'dir. İkinci şey: Pfa = 10⁻⁶ gibi bir değer
@@ -114,7 +114,7 @@ Eşiği kaydırdıkça Pfa ile Pd birlikte değişir. Bu çifti bir grafiğe koy
 Characteristic — almaç çalışma karakteristiği). Eğri üzerindeki her nokta
 farklı bir eşiktir; eğrinin kendisi SNR'a bağlıdır.
 
-{{svg:g-211-roc-ailesi.svg|ROC eğri ailesi: tek darbe, bilinmeyen fazlı sinyal (Swerling 0), zarf dedektörü. Her eğri bir SNR; eğri üzerinde ilerlemek eşiği değiştirmektir. Altın nokta referans senaryo: Pfa = 10⁻⁶, SNR = {{s:tespit.snr_pd09_db}} dB → Pd = 0.90; aynı Pfa'da {{s:tespit.snr_pd05_db}} dB yalnızca Pd = 0.50 verir. Köşegen Pd = Pfa, "yazı-tura" çizgisidir.}}
+{{svg:g-211-roc-ailesi.svg|ROC eğri ailesi: tek darbe, bilinmeyen fazlı sinyal (Swerling 0), zarf dedektörü. Her eğri bir SNR; eğri üzerinde ilerlemek eşiği değiştirmektir. Altın nokta referans senaryo: Pfa = 10⁻⁶, SNR = 13.2 dB → Pd = 0.90; aynı Pfa'da 11.2 dB yalnızca Pd = 0.50 verir. Köşegen Pd = Pfa, "yazı-tura" çizgisidir.}}
 
 ROC'un öğrettiği disiplin **Neyman-Pearson** ölçütüdür: *önce* kabul
 edilebilir Pfa'yı seç, *sonra* o Pfa'yı veren eşiği hesapla, Pd ne çıkarsa
@@ -145,7 +145,7 @@ o: Pfa = 10⁻⁶, Pd = 0.5, N = 1 → A = 13.34, B = 0 → SNR ≈ 11.2 dB (kes
 o: Pfa = 10⁻⁶, Pd = 0.9, N = 1 → B = 2.20 → SNR ≈ 13.1 dB (kesin: **{{s:tespit.snr_pd09_db}} dB**). Referans senaryonun {{s:tespit.tespit_snr_db}} dB bütçesi Pd ≈ 0.997 verir; aradaki ≈ 2 dB, Bölüm 23'teki CFAR kaybı ve gerçek gürültünün ideal olmayışı için paydır.
 :::
 
-{{svg:g-212-pd-snr.svg|Pd–SNR eğrileri (tek darbe, Swerling 0, zarf dedektörü); parametre Pfa. Pfa = 10⁻⁶ eğrisinde iki altın nokta: {{s:tespit.snr_pd05_db}} dB → Pd = 0.5 ve {{s:tespit.snr_pd09_db}} dB → Pd = 0.9. Mavi nokta {{s:tespit.tespit_snr_db}} dB bütçe noktası. "Diz" bölgesi diktir: Pd'yi 0.5'ten 0.9'a çıkarmak 2 dB, 0.9'dan 0.99'a çıkarmak 1.3 dB daha ister; Pfa'yı 10⁻³'ten 10⁻⁹'a çekmek aynı Pd için ≈ 4 dB'ye mal olur.}}
+{{svg:g-212-pd-snr.svg|Pd–SNR eğrileri (tek darbe, Swerling 0, zarf dedektörü); parametre Pfa. Pfa = 10⁻⁶ eğrisinde iki altın nokta: 11.2 dB → Pd = 0.5 ve 13.2 dB → Pd = 0.9. Mavi nokta 15 dB bütçe noktası. "Diz" bölgesi diktir: Pd'yi 0.5'ten 0.9'a çıkarmak 2 dB, 0.9'dan 0.99'a çıkarmak 1.3 dB daha ister; Pfa'yı 10⁻³'ten 10⁻⁹'a çekmek aynı Pd için ≈ 4 dB'ye mal olur.}}
 
 Bu eğrilerden aklında kalması gereken iki sayı: **Pd = 0.5 için ≈ 11 dB, Pd =
 0.9 için ≈ 13 dB** (Pfa = 10⁻⁶, tek örnek). {{bolum:4}}'te hassasiyeti hesaplarken

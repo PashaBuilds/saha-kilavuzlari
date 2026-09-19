@@ -93,6 +93,13 @@ kaynak/almac-saha-kilavuzu/
 | K11 | **Widget ölçeği**: 20 widget'ın hepsi kurulur; W-06 (mimari karşılaştırıcı) veri odaklı, W-20 capstone W-04/07/08/11/12/17/18/19 çekirdeklerini birleştirir | §7.3 "sayı bağlayıcı değil, kalite bağlayıcı" — birleştirme gerekirse raporda. |
 | K12 | Bölüm dosyaları `content/NN-ad.md`; başlık `# Bölüm N — Ad`; ikinci satır `::meta` (okuma süresi build'de kelime sayısından, ön koşul/açtığı bölümler/blok/rota elle) | Seri sözdizimiyle uyumlu, guncelle.py'nin bölüm sayımıyla tutarlı. |
 
+| K13 | **Bölüm üretimi paralel alt-ajanlarla** (7 ajan, Kısım bazlı), YAZIM-REHBERI.md + Bölüm 14 referansıyla; ortak dosyalara dokunmaları yasak, ihtiyaçlar raporla toplanır | 31 bölüm + 90 şema + 20 widget tek oturumda; tutarlılık için tek rehber + tek referans bölüm + merkezî tutarlılık turu (Faz 4) |
+| K14 | **W-20 tespit zinciri kapılı gürültü kestirimi kullanır** (`DSP.kapiliGurultuKestirimi`), pencereli CA-CFAR değil | 300 örneklik darbe N=16'lık CA penceresini doldurup kendini maskeliyordu (B23'teki uzun darbe arıza modu); capstone'da öğretici olan "kestirimi darbe varken dondur" pratiğidir. W-18 CA/GO/SO/OS'u ayrıca gösterir. |
+| K15 | Referans darbenin **çıkış SNR'ı 23 dB** (−60 − (−83.2)), 44 değil; B28 tablosu ve poster buna göre düzeltildi | İlk taslakta hesap hatası; W-20 hesabı doğruyu verince metin düzeltildi (widget–metin–şekil üçlüsü tutarlılığı). |
+| K16 | KICKOFF envanterine **ek şekiller**: g-142 (NCO spur spektrumu, hesaplanmış), g-281/g-282 (seviye merdiveni, latency çizgisi), g-291/g-292 (test noktaları, spur kimliği), g-302 (register bit haritası) | "≥3 görsel/bölüm" kuralı ve bölümlerin gerçek ihtiyacı; kapanış raporunda listelenir. |
+| K17 | **Ekler otomatik**: Ek A sözlük glossary.json'dan, Ek B formül dizini kartlardan, Ek F görsel/widget dizini derleme sırasında üretilir | Metin ile dizin kopamaz; yeni terim/şekil eklenince elle güncelleme gerekmez. |
+| K18 | Önizleme için yerel `python -m http.server` (`.claude/launch.json`, gitignore'da); `file://` ile büyük dist'te tarayıcı paneli açılamıyordu | Yalnızca geliştirme kolaylığı; belge `file://` üzerinden de çalışır (kapanış turunda ayrıca doğrulanır). |
+
 ## 5. RF Örnekleme kılavuzuyla örtüşme haritası
 
 Bağlantı biçimi: `../rf-sampling/index.html#<id>` (id'ler derlenmiş çıktıdan doğrulandı).
@@ -117,39 +124,44 @@ Durum: ☐ yok · ◐ taslak · ● tam (şablon 12 madde, ≥3 görsel, widget,
 
 | B | Ad | Görseller | Widget | Durum |
 |---|---|---|---|---|
-| 0 | Bu Kılavuz ve Büyük Resim | G-00 G-01 G-02 | — | ☐ |
-| 1 | Sinyalin Dili | G-10 G-11 | W-01 | ☐ |
-| 2 | Kompleks Sinyal ve I/Q | G-20 G-21 G-22 | W-02 | ☐ |
-| 3 | Darbeli Sinyalin Anatomisi | G-30 G-31 G-32 | W-03 | ☐ |
-| 4 | Gürültü, SNR, Hassasiyet | G-40 G-41 | W-04 | ☐ |
-| 5 | RF Zincirinin Yapıtaşları | G-50 G-51 G-52 | — | ☐ |
-| 6 | Frekans Dönüştürme | G-60 G-61 G-62 | W-05 | ☐ |
-| 7 | Almaç Mimarileri Kataloğu | G-70…G-79 G-7A G-7B | W-06 | ☐ |
-| 8 | Örnekleme ve Frekans Planlama | G-80 G-81 | W-07 | ☐ |
-| 9 | Kuantizasyon ve ADC Metrikleri | G-90 G-91 G-92 G-93 | W-08 W-09 | ☐ |
-| 10 | ADC Mimarileri, Direct RF ADC | G-100…G-103 | — | ☐ |
-| 11 | ADC'den FPGA'ya | G-110 G-111 G-112 | — | ☐ |
-| 12 | Sabit Nokta ve DSP Yapıtaşları | G-120 G-121 G-122 | W-10 | ☐ |
-| 13 | MATLAB'dan FPGA'ya | G-130 G-131 | — | ☐ |
-| 14 | NCO | G-140 G-141 | W-11 | ☐ |
-| 15 | Sayısal Mixing | G-150 G-151 | W-12 | ☐ |
-| 16 | Filtreleme ve Decimation | G-160…G-163 | W-13 | ☐ |
-| 17 | Kanallaştırma | G-170 G-171 G-172 | — | ☐ |
-| 18 | FFT Temelleri | G-180 G-181 G-182 | W-14 | ☐ |
-| 19 | Pencereleme | G-190 G-191 | W-15 | ☐ |
-| 20 | FPGA'da FFT, Frekans Ölçümü | G-200 G-201 G-202 | W-16 | ☐ |
-| 21 | Tespit Teorisi | G-210 G-211 G-212 | W-17 | ☐ |
-| 22 | Zarf ve Entegrasyon | G-220 G-221 G-222 | — | ☐ |
-| 23 | Gürültü Tahmini ve CFAR | G-230…G-233 | W-18 | ☐ |
-| 24 | PDW Nedir | G-240 G-241 | — | ☐ |
-| 25 | Parametre Ölçümü | G-250 G-251 G-252 | W-19 | ☐ |
-| 26 | Darbe FSM ve PDW Veri Yolu | G-260 G-261 G-262 | — | ☐ |
-| 27 | PDW'den Sonrası | G-270 | — | ☐ |
-| 28 | Uçtan Uca Referans Tasarım | G-280 | W-20 | ☐ |
-| 29 | Doğrulama ve Hata Ayıklama | G-290 | — | ☐ |
-| 30 | Kontrol Yüzeyi | G-300 G-301 | — | ☐ |
-| A–F | Ekler | — | — | ☐ |
+| 0 | Bu Kılavuz ve Büyük Resim | G-00 G-01 G-02 | — | ● |
+| 1 | Sinyalin Dili | G-10 G-11 | W-01 | ● |
+| 2 | Kompleks Sinyal ve I/Q | G-20 G-21 G-22 | W-02 | ● |
+| 3 | Darbeli Sinyalin Anatomisi | G-30 G-31 G-32 | W-03 | ● |
+| 4 | Gürültü, SNR, Hassasiyet | G-40 G-41 | W-04 | ● |
+| 5 | RF Zincirinin Yapıtaşları | G-50 G-51 G-52 | — | ● |
+| 6 | Frekans Dönüştürme | G-60 G-61 G-62 | W-05 | ● |
+| 7 | Almaç Mimarileri Kataloğu | G-70…G-79 G-7A G-7B | W-06 | ● |
+| 8 | Örnekleme ve Frekans Planlama | G-80 G-81 | W-07 | ● |
+| 9 | Kuantizasyon ve ADC Metrikleri | G-90 G-91 G-92 G-93 | W-08 W-09 | ● |
+| 10 | ADC Mimarileri, Direct RF ADC | G-100…G-103 | — | ● |
+| 11 | ADC'den FPGA'ya | G-110 G-111 G-112 | — | ● |
+| 12 | Sabit Nokta ve DSP Yapıtaşları | G-120 G-121 G-122 | W-10 | ● |
+| 13 | MATLAB'dan FPGA'ya | G-130 G-131 | — | ● |
+| 14 | NCO | G-140 G-141 +G-142 | W-11 | ● |
+| 15 | Sayısal Mixing | G-150 G-151 | W-12 | ● |
+| 16 | Filtreleme ve Decimation | G-160…G-163 | W-13 | ● |
+| 17 | Kanallaştırma | G-170 G-171 G-172 | — | ● |
+| 18 | FFT Temelleri | G-180 G-181 G-182 | W-14 | ● |
+| 19 | Pencereleme | G-190 G-191 | W-15 | ● |
+| 20 | FPGA'da FFT, Frekans Ölçümü | G-200 G-201 G-202 | W-16 | ● |
+| 21 | Tespit Teorisi | G-210 G-211 G-212 | W-17 | ● |
+| 22 | Zarf ve Entegrasyon | G-220 G-221 G-222 | — | ● |
+| 23 | Gürültü Tahmini ve CFAR | G-230…G-233 | W-18 | ● |
+| 24 | PDW Nedir | G-240 G-241 | — | ● |
+| 25 | Parametre Ölçümü | G-250 G-251 G-252 | W-19 | ● |
+| 26 | Darbe FSM ve PDW Veri Yolu | G-260 G-261 G-262 | — | ● |
+| 27 | PDW'den Sonrası | G-270 | — | ● |
+| 28 | Uçtan Uca Referans Tasarım | G-280 | W-20 | ● |
+| 29 | Doğrulama ve Hata Ayıklama | G-290 | — | ● |
+| 30 | Kontrol Yüzeyi | G-300 G-301 | — | ● |
+| A–F | Ekler | — | — | ● (A sözlük, B formül dizini, F görsel dizini otomatik) |
 
 ## 7. Yürütme günlüğü
 
 - Faz 0: repo çekildi, seri tarandı, KICKOFF taşındı, scenario.json yazıldı, bu plan.
+- Faz 1: iskelet (CSS, build.py, check.py, dsp-core + 34 test, widget-kit, site.js, symbols.svg) + dikey dilim Bölüm 0 ve Bölüm 14 (W-11) — commit 94650f6.
+- Faz 2 (paralel): Kısım I–VIII yedi alt-ajana dağıtıldı (ilk deneme Fable kota limitine takıldı, ikinci deneme tamamlandı). Bu arada Bölüm 28–30, Ekler A–F, W-20, gen_figures ve raf kaydı yazıldı — commit'ler ce31ba1, 2bf4ce4.
+- Faz 3: W-20 capstone, Bölüm 28 büyük pasaport tablosu, sözlük 94 → 129 terim (ajan raporlarından), formül/görsel dizinleri otomatik.
+- Faz 4 (kalite turu): check.py tam geçiş (dış URL 0, id benzersiz, iç bağlantı tam, SVG sabit renk 0, G/W envanteri tam, 34 JS + 16 Python testi); üç-göz id tekrarı ve altyazı içi makro hataları derleyicide düzeltildi; mobil 380 px yatay taşma (sözlük baloncuğu) giderildi; iki temada ve 20 widget'ta konsol hatası yok; raf kartı doğrulandı; guncelle.py'ye Windows konsol UTF-8 asgari düzeltmesi.
+- Toplam: 31 bölüm + 6 ek, 104 şekil (13'ü KICKOFF envanterine ek), 20 widget, 83 formül kartı, ≈109 500 kelime (kod/tablo dahil), dist 3,7 MB.

@@ -41,7 +41,7 @@ duymadan önce hafif bir "boğuklaşma" hissedersin: o, P1dB'dir.
 
 ## Kavram: bloklar ve her birinin tek cümlelik işi
 
-{{svg:g-50-rf-bloklar.svg|RF zincirinin on yapıtaşı: her kart bir sembol (bu kılavuzun tüm blok şemalarında aynı sembol kullanılır), tek satırlık işlev ve kilit parametreler. Altta zincirdeki tipik sıra. Aynı sembol dili {{bolum:7}}'deki mimari kartlarında tekrar karşına çıkacak.}}
+{{svg:g-50-rf-bloklar.svg|RF zincirinin on yapıtaşı: her kart bir sembol (bu kılavuzun tüm blok şemalarında aynı sembol kullanılır), tek satırlık işlev ve kilit parametreler. Altta zincirdeki tipik sıra. Aynı sembol dili Bölüm 7'deki mimari kartlarında tekrar karşına çıkacak.}}
 
 Anten bu kılavuzda yalnızca bir arayüzdür: havadaki alanı 50 Ω'luk bir hatta
 gerilime çevirir; bizim için önemli olan kazancı (dBi), bandı ve uyumsuzluğu

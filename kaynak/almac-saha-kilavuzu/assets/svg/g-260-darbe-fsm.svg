@@ -32,9 +32,9 @@
 <path d="M640 174 C610 130, 530 130, 500 174" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
 <text x="568.0" y="150.0" text-anchor="middle" class="s-kucuk s-kirmizi">p &gt; T_on (k_f dolmadan): kenar çentiği → darbe sürüyor</text>
 <path d="M470 174 V70 H850 V174" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
-<text x="660.0" y="62.0" text-anchor="middle" class="s-kucuk s-yesil">örnek sayacı ≥ MAX_PW: zaman aşımı → SEG bayraklı parça PDW yay, IN_PULSE'ta kal (CW / çok uzun darbe)</text>
+<text x="660.0" y="62.0" text-anchor="middle" class="s-kucuk s-yesil">örnek sayacı ≥ MAX_PW: zaman aşımı → SEG bayraklı parça PDW yay, IN_PULSE'ta kal (CW / uzun darbe)</text>
 <path d="M870 174 V90 H500 V172" class="yol-kontrol" stroke-dasharray="4 3" marker-end="url(#ok-kontrol)"/>
-<text x="30.0" y="340.0" text-anchor="start" class="s-metin2">Register'lar: T_on (sabit eşik ya da CFAR eşiği), DET_HYST (T_off), DET_MIN_PW (çentik reddi), DET_MAX_PW (zaman aşımı), k_r / k_f (kenar doğrulama, tipik 1–4 örnek).</text>
-<text x="30.0" y="360.0" text-anchor="start" class="s-metin2">Pulse-on-pulse: IN_PULSE içinde tepe birden sıçrarsa (≥ 6 dB) ya da anlık frekans pencere ortalamasından koparsa POP bayrağı kalkar; ayrıştırma yazılımda.</text>
-<text x="30.0" y="380.0" text-anchor="start" class="s-kucuk">Öğretici şema; gerçek tasarımlarda durum sayısı ve koşullar farklı olabilir. Yeşil: PDW'ye yazılan büyüklükler, kırmızı: reddedilen yollar.</text>
+<text x="30.0" y="336.0" text-anchor="start" class="s-kucuk">Register'lar: T_on (sabit eşik ya da CFAR eşiği) · DET_HYST (T_off) · DET_MIN_PW (çentik reddi) · DET_MAX_PW (zaman aşımı) · k_r / k_f (kenar doğrulama, 1–4 örnek)</text>
+<text x="30.0" y="352.0" text-anchor="start" class="s-kucuk">Pulse-on-pulse: IN_PULSE içinde tepe ≥ 6 dB sıçrarsa ya da anlık frekans pencere ortalamasından koparsa POP bayrağı kalkar; ayrıştırma yazılımda.</text>
+<text x="30.0" y="368.0" text-anchor="start" class="s-kucuk">Öğretici şema; gerçek tasarımlarda durum sayısı ve koşullar farklı olabilir. Yeşil: PDW'ye yazılan büyüklükler, kırmızı: reddedilen yollar.</text>
 </svg>

@@ -1,0 +1,83 @@
+<svg viewBox="0 0 1000 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g160">
+<title id="t-g160">FIR yapısı, tapped delay line: giriş örnekleri z^-1 gecikme elemanlarından geçer, her düğüm (tap) bir katsayı h_k ile çarpılır, toplayıcı ağacında toplanır; simetrik katsayılarda tap çiftleri çarpımdan önce toplanır; altta dürtü yanıtı katsayıların kendisi, grup gecikmesi (N−1)/2; katsayı RAM'i PS'ten yazılabilir</title>
+<!-- giriş -->
+<text x="20" y="64" class="s-mono">x[n]</text>
+<path d="M60 60 H96" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<!-- gecikme hattı: 5 gecikme + … -->
+<circle cx="100" cy="60" r="3" fill="var(--accent)"/>
+<use href="#sym-gecikme" x="120" y="40" width="60" height="40"/>
+<path d="M100 60 H120" class="yol-sayisal"/>
+<circle cx="200" cy="60" r="3" fill="var(--accent)"/>
+<path d="M180 60 H240" class="yol-sayisal"/>
+<use href="#sym-gecikme" x="240" y="40" width="60" height="40"/>
+<circle cx="320" cy="60" r="3" fill="var(--accent)"/>
+<path d="M300 60 H360" class="yol-sayisal"/>
+<use href="#sym-gecikme" x="360" y="40" width="60" height="40"/>
+<circle cx="440" cy="60" r="3" fill="var(--accent)"/>
+<path d="M420 60 H470" class="yol-sayisal"/>
+<text x="500" y="65" text-anchor="middle" class="s-metin">…</text>
+<path d="M530 60 H560" class="yol-sayisal"/>
+<use href="#sym-gecikme" x="560" y="40" width="60" height="40"/>
+<circle cx="640" cy="60" r="3" fill="var(--accent)"/>
+<path d="M620 60 H680" class="yol-sayisal"/>
+<use href="#sym-gecikme" x="680" y="40" width="60" height="40"/>
+<circle cx="760" cy="60" r="3" fill="var(--accent)"/>
+<path d="M740 60 H760" class="yol-sayisal"/>
+<text x="150" y="32" text-anchor="middle" class="s-kucuk">gecikme hattı: N − 1 register (SSR'da BRAM)</text>
+<!-- tap etiketleri -->
+<text x="100" y="98" text-anchor="middle" class="s-mono2">x[n]</text>
+<text x="200" y="98" text-anchor="middle" class="s-mono2">x[n−1]</text>
+<text x="320" y="98" text-anchor="middle" class="s-mono2">x[n−2]</text>
+<text x="440" y="98" text-anchor="middle" class="s-mono2">x[n−3]</text>
+<text x="640" y="98" text-anchor="middle" class="s-mono2">x[n−N+2]</text>
+<text x="760" y="98" text-anchor="middle" class="s-mono2">x[n−N+1]</text>
+<!-- çarpıcılar -->
+<g>
+  <path d="M100 63 V116" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><circle cx="100" cy="132" r="13" class="blok"/><path d="M93 125 L107 139 M107 125 L93 139" class="yol-sayisal" stroke-width="1.6"/>
+  <path d="M200 63 V116" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><circle cx="200" cy="132" r="13" class="blok"/><path d="M193 125 L207 139 M207 125 L193 139" class="yol-sayisal" stroke-width="1.6"/>
+  <path d="M320 63 V116" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><circle cx="320" cy="132" r="13" class="blok"/><path d="M313 125 L327 139 M327 125 L313 139" class="yol-sayisal" stroke-width="1.6"/>
+  <path d="M440 63 V116" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><circle cx="440" cy="132" r="13" class="blok"/><path d="M433 125 L447 139 M447 125 L433 139" class="yol-sayisal" stroke-width="1.6"/>
+  <path d="M640 63 V116" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><circle cx="640" cy="132" r="13" class="blok"/><path d="M633 125 L647 139 M647 125 L633 139" class="yol-sayisal" stroke-width="1.6"/>
+  <path d="M760 63 V116" class="yol-sayisal" marker-end="url(#ok-sayisal)"/><circle cx="760" cy="132" r="13" class="blok"/><path d="M753 125 L767 139 M767 125 L753 139" class="yol-sayisal" stroke-width="1.6"/>
+</g>
+<!-- katsayı RAM (yeşil) -->
+<rect x="60" y="176" width="740" height="26" rx="5" class="blok-kontrol"/>
+<text x="430" y="193" text-anchor="middle" class="s-kucuk s-yesil">katsayı RAM'i — h₀ … h_{N−1}, 18 bit Q2.16, PS tarafından yazılır (çift banka)</text>
+<g class="yol-kontrol">
+  <path d="M100 176 V148" marker-end="url(#ok-kontrol)"/><path d="M200 176 V148" marker-end="url(#ok-kontrol)"/><path d="M320 176 V148" marker-end="url(#ok-kontrol)"/>
+  <path d="M440 176 V148" marker-end="url(#ok-kontrol)"/><path d="M640 176 V148" marker-end="url(#ok-kontrol)"/><path d="M760 176 V148" marker-end="url(#ok-kontrol)"/>
+</g>
+<text x="118" y="136" class="s-mono2">h₀</text><text x="218" y="136" class="s-mono2">h₁</text><text x="338" y="136" class="s-mono2">h₂</text><text x="458" y="136" class="s-mono2">h₃</text><text x="658" y="136" class="s-mono2">h_{N−2}</text><text x="778" y="136" class="s-mono2">h_{N−1}</text>
+<!-- toplayıcı ağacı -->
+<path d="M100 145 V226 H820" fill="none" class="yol-sayisal"/>
+<path d="M200 145 V226 M320 145 V226 M440 145 V226 M640 145 V226 M760 145 V226" class="yol-sayisal"/>
+<use href="#sym-topla" x="820" y="206" width="60" height="40"/>
+<text x="850" y="200" text-anchor="middle" class="s-kucuk">toplayıcı ağacı</text>
+<text x="850" y="262" text-anchor="middle" class="s-kucuk">+⌈log₂N⌉ bit</text>
+<path d="M880 226 H930" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="934" y="230" class="s-mono">y[n]</text>
+<text x="905" y="214" text-anchor="middle" class="s-kucuk">round + sat → 16</text>
+<!-- simetri (kesikli) -->
+<path d="M100 60 C 100 20, 760 20, 760 60" fill="none" stroke="var(--gold)" stroke-dasharray="4 4" stroke-width="1.2"/>
+<text x="430" y="16" text-anchor="middle" class="s-kucuk s-altin">simetri h_k = h_{N−1−k}: uçlar çarpımdan önce toplanır → çarpıcı sayısı ⌈N/2⌉</text>
+<!-- dürtü yanıtı -->
+<g transform="translate(60,290)">
+  <line x1="0" y1="60" x2="480" y2="60" class="eksen"/>
+  <text x="0" y="-6" class="s-kucuk">dürtü yanıtı = katsayılar (23 tap halfband: çift indisler sıfır)</text>
+  <g stroke="var(--accent)" stroke-width="2.5">
+    <line x1="20" y1="60" x2="20" y2="60.5"/><line x1="40" y1="60" x2="40" y2="60"/><line x1="60" y1="60" x2="60" y2="56"/><line x1="80" y1="60" x2="80" y2="60"/>
+    <line x1="100" y1="60" x2="100" y2="66"/><line x1="120" y1="60" x2="120" y2="60"/><line x1="140" y1="60" x2="140" y2="46"/><line x1="160" y1="60" x2="160" y2="60"/>
+    <line x1="180" y1="60" x2="180" y2="80"/><line x1="200" y1="60" x2="200" y2="60"/><line x1="220" y1="60" x2="220" y2="10"/><line x1="240" y1="60" x2="240" y2="-6"/>
+    <line x1="260" y1="60" x2="260" y2="10"/><line x1="280" y1="60" x2="280" y2="60"/><line x1="300" y1="60" x2="300" y2="80"/><line x1="320" y1="60" x2="320" y2="60"/>
+    <line x1="340" y1="60" x2="340" y2="46"/><line x1="360" y1="60" x2="360" y2="60"/><line x1="380" y1="60" x2="380" y2="66"/><line x1="400" y1="60" x2="400" y2="60"/>
+    <line x1="420" y1="60" x2="420" y2="56"/><line x1="440" y1="60" x2="440" y2="60"/><line x1="460" y1="60" x2="460" y2="60.5"/>
+  </g>
+  <line x1="240" y1="-10" x2="240" y2="76" stroke="var(--gold)" stroke-dasharray="3 3"/>
+  <text x="246" y="84" class="s-kucuk s-altin">merkez: grup gecikmesi (N−1)/2 = 11 örnek</text>
+  <text x="20" y="76" class="s-mono2">k=0</text><text x="460" y="76" text-anchor="end" class="s-mono2">k=22</text>
+</g>
+<text x="600" y="300" class="s-kucuk">Lineer faz: simetrik katsayı → her frekans aynı gecikir,</text>
+<text x="600" y="316" class="s-kucuk">darbe kenarı biçimini korur; TOA ofseti sabit, kalibre edilir.</text>
+<text x="600" y="340" class="s-kucuk">Kaynak (tek örnek/saat): ⌈N/2⌉ DSP, N−1 FF/BRAM;</text>
+<text x="600" y="356" class="s-kucuk">SSR-8'de ×8; polyphase ↓M ile ÷M.</text>
+</svg>

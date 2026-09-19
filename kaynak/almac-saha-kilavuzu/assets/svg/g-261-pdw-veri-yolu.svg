@@ -46,8 +46,8 @@
 <path d="M690 100 V165" class="yol-kontrol"/>
 <use href="#sym-reg" x="880" y="60" width="60" height="40"/><text x="910.0" y="114.0" text-anchor="middle" class="s-kucuk">IRQ_STATUS</text><text x="910.0" y="126.0" text-anchor="middle" class="s-kucuk">IRQ_MASK</text>
 <path d="M940 80 H990" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
-<text x="1010.0" y="76.0" text-anchor="start" class="s-kucuk s-yesil">IRQ: FIFO yarım /</text>
-<text x="1010.0" y="88.0" text-anchor="start" class="s-kucuk s-yesil">taşma / snapshot hazır</text>
+<text x="996.0" y="64.0" text-anchor="start" class="s-kucuk s-yesil">IRQ: FIFO yarım,</text>
+<text x="996.0" y="76.0" text-anchor="start" class="s-kucuk s-yesil">taşma, snap hazır</text>
 <path d="M1020 160 V100" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
 <text x="1030.0" y="130.0" text-anchor="start" class="s-kucuk s-yesil">AXI-Lite</text>
 <text x="1030.0" y="142.0" text-anchor="start" class="s-kucuk s-yesil">okuma/yazma</text>

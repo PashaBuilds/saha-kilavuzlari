@@ -80,7 +80,7 @@ WK.kaydet("w16", function (w) {
     ctx.textAlign = "center"; ctx.textBaseline = "top";
     for (var t = 0; t <= SURE + 1e-12; t += 1e-6) { var x = mL + ((t * fs - N / 2) / hop + 0.5) * pw_; x = Math.max(mL, Math.min(W - mR, x)); ctx.fillText((t * 1e6).toFixed(0) + " µs", x, H - mB + 6); }
     ctx.textAlign = "left"; ctx.font = "bold 12px system-ui, sans-serif";
-    ctx.fillText("Spektrogram — N = " + N + ", adım " + hop + " örnek (" + (hop / fs * 1e9).toFixed(0) + " ns), " + (p.pen === "hann" ? "Hann" : p.pen) + " · koyuluk: −50…0 dB · altın çerçeve = en güçlü tepe", mL, 5);
+    ctx.fillText("Spektrogram — N = " + N + ", adım " + hop + " (" + (hop / fs * 1e9).toFixed(0) + " ns), " + (p.pen === "hann" ? "Hann" : p.pen) + " · −50…0 dB · altın = en güçlü çerçeve", mL, 5);
     ctx.save(); ctx.translate(12, (mT + H - mB) / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = "center"; ctx.font = "11px system-ui, sans-serif"; ctx.fillText("frekans (MHz)", 0, 0); ctx.restore();
     ctx.textAlign = "center"; ctx.font = "11px system-ui, sans-serif"; ctx.fillText("çerçeve merkezi zamanı", (mL + W - mR) / 2, H - 14);
     // --- zaman paneli (SVG): zarf + çerçeve ızgarası
@@ -94,14 +94,17 @@ WK.kaydet("w16", function (w) {
     for (j = 0; j < nf; j += gost) { var t0 = baslar[j] / fs * 1e6, t1 = (baslar[j] + N) / fs * 1e6; g.ekle("rect", { x: g.px(t0), y: g.py(1.25) + (j / gost % 2) * 6, width: g.px(t1) - g.px(t0), height: 5, "class": j === enIyiCer ? "w-dolgu-altin" : "w-dolgu-gurultu" }); }
     // --- sayılar
     var doluluk = Math.min(1, L / N), kayip = L < N ? DSP.db10(N / L) : 0, cerDarbe = L > N ? Math.floor((L - N) / hop) + 1 : 0;
-    var teoriTepeTaban = p.snr + DSP.db10(Math.min(L, N) * Math.min(L, N) / N) - (p.mop === "lfm" ? DSP.db10(Math.max(1, p.bw / bin * Math.min(L, N) / L)) : 0);
+    // teori: darbe çerçevenin ortasında — pencere ağırlıklı koherent toplam² / gürültü Σw²
+    var s2 = 0, sp = 0, a0 = L >= N ? 0 : Math.floor((N - L) / 2), a1 = L >= N ? N : a0 + L;
+    for (k = 0; k < N; k++) { s2 += win[k] * win[k]; if (k >= a0 && k < a1) sp += win[k]; }
+    var teoriTepeTaban = p.snr + DSP.db10(sp * sp / s2) - (p.mop === "lfm" ? DSP.db10(Math.max(1, p.bw / bin * Math.min(L, N) / L)) : 0);
     WK.sonucYaz(w, {
       "bin genişliği": WK.fmtHz(bin),
       "çerçeve süresi N/fs": WK.fmtS(Tcer) + " (" + N + " örnek)",
       "darbe örnek sayısı L": L + " (" + WK.fmtS(p.pw) + ")",
       "çerçeve / darbe": L >= N ? "+" + cerDarbe + " çerçeve tamamen darbe içinde" : "!darbe çerçeveden kısa: doluluk %" + (doluluk * 100).toFixed(0),
-      "SNR kaybı 10·log10(N/L)": (kayip > 3 ? "!" : (kayip > 0 ? "" : "+")) + kayip.toFixed(1) + " dB",
-      "en iyi çerçeve tepe − taban": (enIyi - taban).toFixed(1) + " dB (teori ≈ " + teoriTepeTaban.toFixed(1) + ")",
+      "SNR kaybı 10·log10(N/L)": (kayip > 3 ? "!" : (kayip > 0 ? "" : "+")) + kayip.toFixed(1) + " dB (dikdörtgen çerçeve; pencere ortadaki darbeyi kayırır)",
+      "en iyi çerçeve tepe − taban": (enIyi - taban).toFixed(1) + " dB (teori, darbe ortalanmış: " + teoriTepeTaban.toFixed(1) + ")",
       "LFM'de bin başına yayılma": p.mop === "lfm" ? (p.bw / bin * Math.min(L, N) / L).toFixed(1) + " bin (çerçeve içi süpürme / bin)" : "—",
       "frekans çözünürlüğü ↔ zaman çözünürlüğü": WK.fmtHz(bin) + " ↔ " + WK.fmtS(Tcer) + " (çarpım = 1)"
     });

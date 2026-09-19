@@ -1,4 +1,4 @@
-<svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g240">
+<svg viewBox="0 0 900 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g240">
 <title id="t-g240">Kurgusal 128-bit PDW bit alan haritası: dört 32-bit sözcük; W0 TOA alt 32 bit; W1 TOA üst 16 bit, PA 10 bit, bayraklar 6 bit; W2 PW 20 bit, AOA 12 bit; W3 RF 20 bit, sıra numarası 8 bit, MOP tipi 2 bit, kanal 2 bit</title>
 <text x="70.0" y="22.0" text-anchor="start" class="s-baslik">Kurgusal, öğretici 128-bit PDW formatı — 4 × 32-bit sözcük, little-endian; bit 31 solda, bit 0 sağda</text>
 <text x="841.8" y="40.0" text-anchor="middle" class="s-kucuk">0</text>

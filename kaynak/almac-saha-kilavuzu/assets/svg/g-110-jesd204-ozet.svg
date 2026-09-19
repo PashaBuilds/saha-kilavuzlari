@@ -1,26 +1,28 @@
 <svg viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g110">
 <title id="t-g110">JESD204 özet: solda ADC (TX) ve FPGA (RX) tarafında aynalı dört katman — transport, scrambler, data link, PHY — ve aralarındaki L lane; parametre seti (L, M, F, S, N, N′, K) iki uçta aynı olmalı. Sağda subclass 1 zamanlaması: device clock, SYSREF kenarı her iki cihazın LMFC/LEMC sayacını hizalar, SYNC~ bırakılır, ILAS ve veri LMFC sınırında başlar, RX elastik tampon veriyi LMFC + RBD anında bırakır → deterministik gecikme.</title>
 <text x="20" y="22" class="s-baslik">JESD204B/C tek bakışta — katmanlar (sol) ve SYSREF ile deterministik gecikme (sağ)</text>
-<rect x="20" y="60" width="150" height="44" rx="5" class="blok-aktif"/><text x="95.0" y="79.0" text-anchor="middle" class="s-metin2">Transport</text><text x="95.0" y="93.0" text-anchor="middle" class="s-kucuk">M örnek → oktet → frame (F, S, N′)</text>
-<rect x="330" y="60" width="150" height="44" rx="5" class="blok-aktif"/><text x="405.0" y="79.0" text-anchor="middle" class="s-metin2">Transport</text><text x="405.0" y="93.0" text-anchor="middle" class="s-kucuk">M örnek → oktet → frame (F, S, N′)</text>
-<rect x="20" y="116" width="150" height="44" rx="5" class="blok-aktif"/><text x="95.0" y="135.0" text-anchor="middle" class="s-metin2">Scrambler</text><text x="95.0" y="149.0" text-anchor="middle" class="s-kucuk">1+x¹⁴+x¹⁵ (B) · x⁵⁸+x³⁹+1 (C)</text>
-<rect x="330" y="116" width="150" height="44" rx="5" class="blok-aktif"/><text x="405.0" y="135.0" text-anchor="middle" class="s-metin2">Scrambler</text><text x="405.0" y="149.0" text-anchor="middle" class="s-kucuk">1+x¹⁴+x¹⁵ (B) · x⁵⁸+x³⁹+1 (C)</text>
-<rect x="20" y="172" width="150" height="44" rx="5" class="blok-aktif"/><text x="95.0" y="191.0" text-anchor="middle" class="s-metin2">Data link</text><text x="95.0" y="205.0" text-anchor="middle" class="s-kucuk">B: CGS/ILAS, 8b/10b · C: sync header, 64b/66b</text>
-<rect x="330" y="172" width="150" height="44" rx="5" class="blok-aktif"/><text x="405.0" y="191.0" text-anchor="middle" class="s-metin2">Data link</text><text x="405.0" y="205.0" text-anchor="middle" class="s-kucuk">B: CGS/ILAS, 8b/10b · C: sync header, 64b/66b</text>
-<rect x="20" y="228" width="150" height="44" rx="5" class="blok"/><text x="95.0" y="247.0" text-anchor="middle" class="s-metin2">PHY (SerDes)</text><text x="95.0" y="261.0" text-anchor="middle" class="s-kucuk">CDR, eşitleme, L lane</text>
-<rect x="330" y="228" width="150" height="44" rx="5" class="blok"/><text x="405.0" y="247.0" text-anchor="middle" class="s-metin2">PHY (SerDes)</text><text x="405.0" y="261.0" text-anchor="middle" class="s-kucuk">CDR, eşitleme, L lane</text>
-<text x="95" y="52" text-anchor="middle" class="s-metin2">ADC = TX</text>
+<rect x="20" y="60" width="190" height="44" rx="5" class="blok-aktif"/><text x="115.0" y="79.0" text-anchor="middle" class="s-metin2">Transport</text><text x="115.0" y="93.0" text-anchor="middle" class="s-kucuk">M örnek → oktet → frame (F, S, N′)</text>
+<rect x="310" y="60" width="190" height="44" rx="5" class="blok-aktif"/><text x="405.0" y="79.0" text-anchor="middle" class="s-metin2">Transport</text><text x="405.0" y="93.0" text-anchor="middle" class="s-kucuk">M örnek → oktet → frame (F, S, N′)</text>
+<rect x="20" y="116" width="190" height="44" rx="5" class="blok-aktif"/><text x="115.0" y="135.0" text-anchor="middle" class="s-metin2">Scrambler</text><text x="115.0" y="149.0" text-anchor="middle" class="s-kucuk">1+x¹⁴+x¹⁵ (B) · x⁵⁸+x³⁹+1 (C)</text>
+<rect x="310" y="116" width="190" height="44" rx="5" class="blok-aktif"/><text x="405.0" y="135.0" text-anchor="middle" class="s-metin2">Scrambler</text><text x="405.0" y="149.0" text-anchor="middle" class="s-kucuk">1+x¹⁴+x¹⁵ (B) · x⁵⁸+x³⁹+1 (C)</text>
+<rect x="20" y="172" width="190" height="44" rx="5" class="blok-aktif"/><text x="115.0" y="191.0" text-anchor="middle" class="s-metin2">Data link</text><text x="115.0" y="205.0" text-anchor="middle" class="s-kucuk">B: CGS/ILAS, 8b/10b · C: 64b/66b</text>
+<rect x="310" y="172" width="190" height="44" rx="5" class="blok-aktif"/><text x="405.0" y="191.0" text-anchor="middle" class="s-metin2">Data link</text><text x="405.0" y="205.0" text-anchor="middle" class="s-kucuk">B: CGS/ILAS, 8b/10b · C: 64b/66b</text>
+<rect x="20" y="228" width="190" height="44" rx="5" class="blok"/><text x="115.0" y="247.0" text-anchor="middle" class="s-metin2">PHY (SerDes)</text><text x="115.0" y="261.0" text-anchor="middle" class="s-kucuk">CDR, eşitleme, L lane</text>
+<rect x="310" y="228" width="190" height="44" rx="5" class="blok"/><text x="405.0" y="247.0" text-anchor="middle" class="s-metin2">PHY (SerDes)</text><text x="405.0" y="261.0" text-anchor="middle" class="s-kucuk">CDR, eşitleme, L lane</text>
+<text x="115" y="52" text-anchor="middle" class="s-metin2">ADC = TX</text>
 <text x="405" y="52" text-anchor="middle" class="s-metin2">FPGA = RX</text>
-<path d="M170 250 H330" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<path d="M170 258 H330" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<path d="M170 266 H330" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<path d="M170 274 H330" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
-<text x="250" y="244" text-anchor="middle" class="s-kucuk s-vurgu">L lane · lane hızı = fs·N′·M·(10/8 | 66/64)/L</text>
-<path d="M250 60 V240" class="yol-saat"/>
-<text x="250" y="130" text-anchor="middle" class="s-kucuk" transform="rotate(-90 250 130)">parametreler iki uçta aynı</text>
-<text x="20" y="300" class="s-kucuk">Senaryo, 204B örneği: M = 1, N = 14, N′ = 16, fs = 2400 MSPS → 38.4 Gb/s ham; L = 8 → lane 6.0 Gb/s</text>
-<text x="20" y="318" class="s-kucuk">204C, 64b/66b: L = 4 → lane 9.90 Gb/s (≈ %3 ek yük, 204B'de %25)</text>
-<text x="20" y="344" class="s-kucuk s-altin">Yazılımcı: link-up = SYNC~ / CGS / ILAS / veri; hata sayaçları ve "link kalktı ama veri çöp" → parametre uyuşmazlığı</text>
+<path d="M210 250 H310" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M210 258 H310" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M210 266 H310" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M210 274 H310" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="260" y="242" text-anchor="middle" class="s-kucuk s-vurgu">L lane</text>
+<path d="M260 60 V232" class="yol-saat"/>
+<text x="260" y="140" text-anchor="middle" class="s-kucuk" transform="rotate(-90 260 140)">parametreler iki uçta aynı</text>
+<text x="20" y="300" class="s-kucuk">lane hızı = fs · N′ · M · (10/8 | 66/64) / L</text>
+<text x="20" y="316" class="s-kucuk">Senaryo (204B): M = 1, N′ = 16, fs = 2400 MSPS → 38.4 Gb/s; L = 8 → 6.0 Gb/s/lane</text>
+<text x="20" y="332" class="s-kucuk">204C (64b/66b): L = 4 → 9.9 Gb/s/lane; ek yük %3 (204B: %25)</text>
+<text x="20" y="356" class="s-kucuk s-altin">Yazılımcı: SYNC~ / CGS / ILAS / veri durumları, hata sayaçları;</text>
+<text x="20" y="370" class="s-kucuk s-altin">"link kalktı ama veri çöp" → parametre uyuşmazlığı</text>
 <text x="540" y="52" class="s-metin2">Subclass 1 zamanlaması (şematik)</text>
 <text x="534" y="92" text-anchor="end" class="s-kucuk">device clock</text>
 <path d="M540 104 H940" class="izgara"/>
@@ -53,6 +55,6 @@
 <rect x="900" y="310" width="40" height="16" class="spk-sinyal"/>
 <path d="M870 316 H898" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
 <text x="540" y="322" class="s-kucuk">elastik tampon veriyi LMFC + RBD anında bırakır</text>
-<text x="540" y="350" class="s-kucuk">→ gecikme her açılışta ve her çipte aynı = deterministik gecikme; çok çip için SYSREF ortak</text>
-<text x="540" y="368" class="s-kucuk">RFSoC'da bu katmanlar yok: örnekler AXI-Stream ile PL'ye gelir; SYSREF yine çok tile hizası için gerekir</text>
+<text x="540" y="350" class="s-kucuk">→ her açılışta, her çipte aynı gecikme; çok çip için ortak SYSREF</text>
+<text x="540" y="368" class="s-kucuk">RFSoC: bu katmanlar yok (AXI-Stream); SYSREF çok tile hizası için kalır</text>
 </svg>

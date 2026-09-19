@@ -1,0 +1,67 @@
+<svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g82">
+<title id="t-g82">Anti-alias filtrenin bölge seçimindeki rolü, iki plan yan yana. Üstte iyi plan: 300 MHz'lik bant 2. bölgenin ortasında (1650–1950 MHz), AAF geçiş bantları bölge sınırlarına 450 MHz uzakta, komşu bölgelerden katlanan gürültü ve spur'lar bandın dışına düşer. Altta kötü plan: bant 2100–2400 MHz, bölge sınırına yaslanmış; AAF'nin geçiş bandı 3. bölgeye taşar ve 3. bölgenin gürültüsü katlanıp bandın üst kenarına biner. Sağ panellerde ADC çıkışı (0–fs/2).</title>
+<text x="60" y="72" class="s-baslik">İyi plan: bant bölgenin ortasında</text>
+<rect x="60.0" y="80" width="166.7" height="100" class="blok" opacity=".45"/>
+<text x="143.3" y="94" text-anchor="middle" class="s-kucuk">1. bölge</text>
+<rect x="226.7" y="80" width="166.7" height="100" class="blok-aktif" opacity=".45"/>
+<text x="310.0" y="94" text-anchor="middle" class="s-kucuk">2. bölge</text>
+<rect x="393.3" y="80" width="166.7" height="100" class="blok" opacity=".45"/>
+<text x="476.7" y="94" text-anchor="middle" class="s-kucuk">3. bölge</text>
+<polyline points="60.0,180.0 62.8,180.0 65.6,180.0 68.3,180.0 71.1,180.0 73.9,180.0 76.7,180.0 79.4,180.0 82.2,180.0 85.0,180.0 87.8,180.0 90.6,180.0 93.3,180.0 96.1,180.0 98.9,180.0 101.7,180.0 104.4,180.0 107.2,180.0 110.0,180.0 112.8,180.0 115.6,180.0 118.3,180.0 121.1,180.0 123.9,180.0 126.7,180.0 129.4,180.0 132.2,180.0 135.0,180.0 137.8,180.0 140.6,180.0 143.3,180.0 146.1,180.0 148.9,180.0 151.7,180.0 154.4,180.0 157.2,180.0 160.0,180.0 162.8,180.0 165.6,180.0 168.3,180.0 171.1,180.0 173.9,180.0 176.7,180.0 179.4,180.0 182.2,180.0 185.0,180.0 187.8,180.0 190.6,180.0 193.3,180.0 196.1,180.0 198.9,180.0 201.7,180.0 204.4,180.0 207.2,180.0 210.0,180.0 212.8,180.0 215.6,178.5 218.3,176.5 221.1,174.5 223.9,172.4 226.7,170.3 229.4,168.1 232.2,165.8 235.0,163.4 237.8,161.0 240.6,158.4 243.3,155.8 246.1,153.0 248.9,150.1 251.7,147.1 254.4,143.9 257.2,140.6 260.0,137.0 262.8,133.3 265.6,129.4 268.3,125.2 271.1,120.7 273.9,115.8 276.7,110.6 279.4,105.0 282.2,98.9 285.0,92.5 287.8,86.3 290.6,82.0 293.3,80.4 296.1,80.0 298.9,80.0 301.7,80.0 304.4,80.0 307.2,80.0 310.0,80.0 312.8,80.0 315.6,80.0 318.3,80.0 321.1,80.0 323.9,80.0 326.7,80.4 329.4,82.0 332.2,86.3 335.0,92.5 337.8,98.9 340.6,105.0 343.3,110.6 346.1,115.8 348.9,120.7 351.7,125.2 354.4,129.4 357.2,133.3 360.0,137.0 362.8,140.6 365.6,143.9 368.3,147.1 371.1,150.1 373.9,153.0 376.7,155.8 379.4,158.4 382.2,161.0 385.0,163.4 387.8,165.8 390.6,168.1 393.3,170.3 396.1,172.4 398.9,174.5 401.7,176.5 404.4,178.5 407.2,180.0 410.0,180.0 412.8,180.0 415.6,180.0 418.3,180.0 421.1,180.0 423.9,180.0 426.7,180.0 429.4,180.0 432.2,180.0 435.0,180.0 437.8,180.0 440.6,180.0 443.3,180.0 446.1,180.0 448.9,180.0 451.7,180.0 454.4,180.0 457.2,180.0 460.0,180.0 462.8,180.0 465.6,180.0 468.3,180.0 471.1,180.0 473.9,180.0 476.7,180.0 479.4,180.0 482.2,180.0 485.0,180.0 487.8,180.0 490.6,180.0 493.3,180.0 496.1,180.0 498.9,180.0 501.7,180.0 504.4,180.0 507.2,180.0 510.0,180.0 512.8,180.0 515.6,180.0 518.3,180.0 521.1,180.0 523.9,180.0 526.7,180.0 529.4,180.0 532.2,180.0 535.0,180.0 537.8,180.0 540.6,180.0 543.3,180.0 546.1,180.0 548.9,180.0 551.7,180.0 554.4,180.0 557.2,180.0 560.0,180.0" class="spk-filtre" fill="none" />
+<rect x="289.2" y="78.0" width="41.7" height="8" class="spk-sinyal"/>
+<path d="M60 180 H560" class="eksen"/>
+<path d="M60.0 180 v4" class="eksen"/><text x="60.0" y="195" text-anchor="middle" class="s-kucuk">0</text>
+<path d="M143.3 180 v4" class="eksen"/><text x="143.3" y="195" text-anchor="middle" class="s-kucuk">600</text>
+<path d="M226.7 180 v4" class="eksen"/><text x="226.7" y="195" text-anchor="middle" class="s-kucuk">1200</text>
+<path d="M310.0 180 v4" class="eksen"/><text x="310.0" y="195" text-anchor="middle" class="s-kucuk">1800</text>
+<path d="M393.3 180 v4" class="eksen"/><text x="393.3" y="195" text-anchor="middle" class="s-kucuk">2400</text>
+<path d="M476.7 180 v4" class="eksen"/><text x="476.7" y="195" text-anchor="middle" class="s-kucuk">3000</text>
+<path d="M560.0 180 v4" class="eksen"/><text x="560.0" y="195" text-anchor="middle" class="s-kucuk">3600</text>
+<text x="54" y="84.0" text-anchor="end" class="s-mono2">0</text><text x="54" y="134.0" text-anchor="end" class="s-mono2">−40</text><text x="54" y="184.0" text-anchor="end" class="s-mono2">−80</text>
+<text x="560" y="210" text-anchor="end" class="s-kucuk">MHz · AAF yanıtı (dB, altın) · geçirme bandı 1650–1950</text>
+<text x="620" y="72" class="s-baslik">ADC çıkışı</text>
+<rect x="620" y="80" width="250" height="100" class="blok" opacity=".4"/>
+<rect x="713.8" y="110" width="62.5" height="70" class="spk-sinyal"/>
+<text x="745.0" y="106" text-anchor="middle" class="s-kucuk s-vurgu">sinyal 450–750</text>
+<text x="624" y="94" class="s-kucuk s-yesil">komşu bölgeler ≥ 40 dB bastırılmış → bant temiz</text>
+<path d="M620 180 H870" class="eksen"/>
+<path d="M620.0 180 v4" class="eksen"/><text x="620.0" y="195" text-anchor="middle" class="s-kucuk">0</text>
+<path d="M682.5 180 v4" class="eksen"/><text x="682.5" y="195" text-anchor="middle" class="s-kucuk">300</text>
+<path d="M745.0 180 v4" class="eksen"/><text x="745.0" y="195" text-anchor="middle" class="s-kucuk">600</text>
+<path d="M807.5 180 v4" class="eksen"/><text x="807.5" y="195" text-anchor="middle" class="s-kucuk">900</text>
+<path d="M870.0 180 v4" class="eksen"/><text x="870.0" y="195" text-anchor="middle" class="s-kucuk">1200</text>
+<text x="60" y="262" class="s-baslik">Kötü plan: bant bölge sınırına yaslanmış</text>
+<rect x="60.0" y="270" width="166.7" height="100" class="blok" opacity=".45"/>
+<text x="143.3" y="284" text-anchor="middle" class="s-kucuk">1. bölge</text>
+<rect x="226.7" y="270" width="166.7" height="100" class="blok-aktif" opacity=".45"/>
+<text x="310.0" y="284" text-anchor="middle" class="s-kucuk">2. bölge</text>
+<rect x="393.3" y="270" width="166.7" height="100" class="blok" opacity=".45"/>
+<text x="476.7" y="284" text-anchor="middle" class="s-kucuk">3. bölge</text>
+<polyline points="60.0,370.0 62.8,370.0 65.6,370.0 68.3,370.0 71.1,370.0 73.9,370.0 76.7,370.0 79.4,370.0 82.2,370.0 85.0,370.0 87.8,370.0 90.6,370.0 93.3,370.0 96.1,370.0 98.9,370.0 101.7,370.0 104.4,370.0 107.2,370.0 110.0,370.0 112.8,370.0 115.6,370.0 118.3,370.0 121.1,370.0 123.9,370.0 126.7,370.0 129.4,370.0 132.2,370.0 135.0,370.0 137.8,370.0 140.6,370.0 143.3,370.0 146.1,370.0 148.9,370.0 151.7,370.0 154.4,370.0 157.2,370.0 160.0,370.0 162.8,370.0 165.6,370.0 168.3,370.0 171.1,370.0 173.9,370.0 176.7,370.0 179.4,370.0 182.2,370.0 185.0,370.0 187.8,370.0 190.6,370.0 193.3,370.0 196.1,370.0 198.9,370.0 201.7,370.0 204.4,370.0 207.2,370.0 210.0,370.0 212.8,370.0 215.6,370.0 218.3,370.0 221.1,370.0 223.9,370.0 226.7,370.0 229.4,370.0 232.2,370.0 235.0,370.0 237.8,370.0 240.6,370.0 243.3,370.0 246.1,370.0 248.9,370.0 251.7,370.0 254.4,370.0 257.2,370.0 260.0,370.0 262.8,370.0 265.6,370.0 268.3,370.0 271.1,370.0 273.9,370.0 276.7,369.4 279.4,367.5 282.2,365.5 285.0,363.5 287.8,361.4 290.6,359.2 293.3,357.0 296.1,354.6 298.9,352.2 301.7,349.7 304.4,347.1 307.2,344.4 310.0,341.6 312.8,338.6 315.6,335.5 318.3,332.2 321.1,328.8 323.9,325.2 326.7,321.4 329.4,317.3 332.2,312.9 335.0,308.3 337.8,303.3 340.6,297.9 343.3,292.0 346.1,285.7 348.9,279.2 351.7,273.8 354.4,270.9 357.2,270.1 360.0,270.0 362.8,270.0 365.6,270.0 368.3,270.0 371.1,270.0 373.9,270.0 376.7,270.0 379.4,270.0 382.2,270.0 385.0,270.0 387.8,270.1 390.6,270.9 393.3,273.8 396.1,279.2 398.9,285.7 401.7,292.0 404.4,297.9 407.2,303.3 410.0,308.3 412.8,312.9 415.6,317.3 418.3,321.4 421.1,325.2 423.9,328.8 426.7,332.2 429.4,335.5 432.2,338.6 435.0,341.6 437.8,344.4 440.6,347.1 443.3,349.7 446.1,352.2 448.9,354.6 451.7,357.0 454.4,359.2 457.2,361.4 460.0,363.5 462.8,365.5 465.6,367.5 468.3,369.4 471.1,370.0 473.9,370.0 476.7,370.0 479.4,370.0 482.2,370.0 485.0,370.0 487.8,370.0 490.6,370.0 493.3,370.0 496.1,370.0 498.9,370.0 501.7,370.0 504.4,370.0 507.2,370.0 510.0,370.0 512.8,370.0 515.6,370.0 518.3,370.0 521.1,370.0 523.9,370.0 526.7,370.0 529.4,370.0 532.2,370.0 535.0,370.0 537.8,370.0 540.6,370.0 543.3,370.0 546.1,370.0 548.9,370.0 551.7,370.0 554.4,370.0 557.2,370.0 560.0,370.0" class="spk-filtre" fill="none" />
+<rect x="351.7" y="268.0" width="41.7" height="8" class="spk-sinyal"/>
+<rect x="396.1" y="320.0" width="19.4" height="50.0" class="spk-image"/>
+<text x="421.6" y="360.0" class="s-kucuk s-kirmizi">3. bölge &lt; 40 dB bastırılmış</text>
+<path d="M60 370 H560" class="eksen"/>
+<path d="M60.0 370 v4" class="eksen"/><text x="60.0" y="385" text-anchor="middle" class="s-kucuk">0</text>
+<path d="M143.3 370 v4" class="eksen"/><text x="143.3" y="385" text-anchor="middle" class="s-kucuk">600</text>
+<path d="M226.7 370 v4" class="eksen"/><text x="226.7" y="385" text-anchor="middle" class="s-kucuk">1200</text>
+<path d="M310.0 370 v4" class="eksen"/><text x="310.0" y="385" text-anchor="middle" class="s-kucuk">1800</text>
+<path d="M393.3 370 v4" class="eksen"/><text x="393.3" y="385" text-anchor="middle" class="s-kucuk">2400</text>
+<path d="M476.7 370 v4" class="eksen"/><text x="476.7" y="385" text-anchor="middle" class="s-kucuk">3000</text>
+<path d="M560.0 370 v4" class="eksen"/><text x="560.0" y="385" text-anchor="middle" class="s-kucuk">3600</text>
+<text x="54" y="274.0" text-anchor="end" class="s-mono2">0</text><text x="54" y="324.0" text-anchor="end" class="s-mono2">−40</text><text x="54" y="374.0" text-anchor="end" class="s-mono2">−80</text>
+<text x="560" y="400" text-anchor="end" class="s-kucuk">MHz · AAF yanıtı (dB, altın) · geçirme bandı 2100–2400</text>
+<text x="620" y="262" class="s-baslik">ADC çıkışı</text>
+<rect x="620" y="270" width="250" height="100" class="blok" opacity=".4"/>
+<rect x="620.0" y="300" width="62.5" height="70" class="spk-sinyal"/>
+<text x="651.2" y="296" text-anchor="middle" class="s-kucuk s-vurgu">sinyal 0–300</text>
+<rect x="624.2" y="340" width="29.2" height="30" class="spk-image"/>
+<text x="624" y="284" class="s-kucuk s-kirmizi">3. bölge gürültüsü → 20–160 MHz, bandın üstünde</text>
+<path d="M620 370 H870" class="eksen"/>
+<path d="M620.0 370 v4" class="eksen"/><text x="620.0" y="385" text-anchor="middle" class="s-kucuk">0</text>
+<path d="M682.5 370 v4" class="eksen"/><text x="682.5" y="385" text-anchor="middle" class="s-kucuk">300</text>
+<path d="M745.0 370 v4" class="eksen"/><text x="745.0" y="385" text-anchor="middle" class="s-kucuk">600</text>
+<path d="M807.5 370 v4" class="eksen"/><text x="807.5" y="385" text-anchor="middle" class="s-kucuk">900</text>
+<path d="M870.0 370 v4" class="eksen"/><text x="870.0" y="385" text-anchor="middle" class="s-kucuk">1200</text>
+<text x="60" y="422" class="s-kucuk">Kural: geçirme bandını bölgenin ortasına koy; geçiş bandı bölge sınırını aşmasın. Sınıra yaslanan bant, komşu bölgenin gürültüsünü ve spur'larını kendi üstüne katlar; sayısal filtre bunu geri alamaz.</text>
+</svg>
