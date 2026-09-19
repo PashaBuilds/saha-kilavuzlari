@@ -1,0 +1,86 @@
+<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g52">
+<title id="t-g52">Seviye planı: referans senaryonun yedi bloklu RF zinciri boyunca sinyal (mavi, −60 dBm giriş), güçlü emiter (altın, −20 dBm) ve gürültü tabanı (gri, kTB + kümülatif NF + kümülatif kazanç, B = 300 MHz); her blok altında kazanç, NF, kümülatif NF ve kümülatif kazanç; kırmızı çizgiler blok çıkış P1dB'leri ve ADC tam ölçeği; çıkışta SNR oku ve güçlü sinyalin ADC'yi taşırma miktarı.</title>
+<text x="70.0" y="22.0" text-anchor="start" class="s-baslik">Seviye planı (referans senaryo, kurgusal P1dB bütçesi) — B = 300 MHz</text>
+<line x1="70" y1="65.7" x2="870" y2="65.7" class="izgara"/><text x="64.0" y="69.7" text-anchor="end" class="s-mono2">20</text>
+<line x1="70" y1="117.1" x2="870" y2="117.1" class="izgara"/><text x="64.0" y="121.1" text-anchor="end" class="s-mono2">0</text>
+<line x1="70" y1="168.6" x2="870" y2="168.6" class="izgara"/><text x="64.0" y="172.6" text-anchor="end" class="s-mono2">-20</text>
+<line x1="70" y1="220.0" x2="870" y2="220.0" class="izgara"/><text x="64.0" y="224.0" text-anchor="end" class="s-mono2">-40</text>
+<line x1="70" y1="271.4" x2="870" y2="271.4" class="izgara"/><text x="64.0" y="275.4" text-anchor="end" class="s-mono2">-60</text>
+<line x1="70" y1="322.9" x2="870" y2="322.9" class="izgara"/><text x="64.0" y="326.9" text-anchor="end" class="s-mono2">-80</text>
+<line x1="70" y1="374.3" x2="870" y2="374.3" class="izgara"/><text x="64.0" y="378.3" text-anchor="end" class="s-mono2">-100</text>
+<rect x="70" y="40" width="800" height="360" class="eksen"/>
+<text x="120.0" y="416.0" text-anchor="middle" class="s-kucuk">giriş</text>
+<text x="220.0" y="416.0" text-anchor="middle" class="s-kucuk">Limiter</text>
+<text x="220.0" y="430.0" text-anchor="middle" class="s-mono2">G -0.5 · NF 0.5</text>
+<text x="220.0" y="444.0" text-anchor="middle" class="s-mono2 s-altin">NF_kum 0.50 dB</text>
+<text x="220.0" y="458.0" text-anchor="middle" class="s-mono2">G_kum -0.5 dB</text>
+<text x="320.0" y="416.0" text-anchor="middle" class="s-kucuk">LNA</text>
+<text x="320.0" y="430.0" text-anchor="middle" class="s-mono2">G +20 · NF 2</text>
+<text x="320.0" y="444.0" text-anchor="middle" class="s-mono2 s-altin">NF_kum 2.50 dB</text>
+<text x="320.0" y="458.0" text-anchor="middle" class="s-mono2">G_kum +19.5 dB</text>
+<text x="420.0" y="416.0" text-anchor="middle" class="s-kucuk">Preselector</text>
+<text x="420.0" y="430.0" text-anchor="middle" class="s-mono2">G -2 · NF 2</text>
+<text x="420.0" y="444.0" text-anchor="middle" class="s-mono2 s-altin">NF_kum 2.52 dB</text>
+<text x="420.0" y="458.0" text-anchor="middle" class="s-mono2">G_kum +17.5 dB</text>
+<text x="520.0" y="416.0" text-anchor="middle" class="s-kucuk">Mixer</text>
+<text x="520.0" y="430.0" text-anchor="middle" class="s-mono2">G -7 · NF 7</text>
+<text x="520.0" y="444.0" text-anchor="middle" class="s-mono2 s-altin">NF_kum 2.69 dB</text>
+<text x="520.0" y="458.0" text-anchor="middle" class="s-mono2">G_kum +10.5 dB</text>
+<text x="620.0" y="416.0" text-anchor="middle" class="s-kucuk">IF filtre</text>
+<text x="620.0" y="430.0" text-anchor="middle" class="s-mono2">G -3 · NF 3</text>
+<text x="620.0" y="444.0" text-anchor="middle" class="s-mono2 s-altin">NF_kum 2.89 dB</text>
+<text x="620.0" y="458.0" text-anchor="middle" class="s-mono2">G_kum +7.5 dB</text>
+<text x="720.0" y="416.0" text-anchor="middle" class="s-kucuk">IF yükselteç</text>
+<text x="720.0" y="430.0" text-anchor="middle" class="s-mono2">G +32 · NF 4</text>
+<text x="720.0" y="444.0" text-anchor="middle" class="s-mono2 s-altin">NF_kum 3.45 dB</text>
+<text x="720.0" y="458.0" text-anchor="middle" class="s-mono2">G_kum +39.5 dB</text>
+<text x="820.0" y="416.0" text-anchor="middle" class="s-kucuk">AAF + sürücü</text>
+<text x="820.0" y="430.0" text-anchor="middle" class="s-mono2">G +0.5 · NF 6</text>
+<text x="820.0" y="444.0" text-anchor="middle" class="s-mono2 s-altin">NF_kum 3.45 dB</text>
+<text x="820.0" y="458.0" text-anchor="middle" class="s-mono2">G_kum +40.0 dB</text>
+<path d="M120.0 354.3 L220.0 354.3 L320.0 297.8 L420.0 302.9 L520.0 320.4 L620.0 327.6 L720.0 243.9 L820.0 242.6 L820.0 400 L120.0 400 Z" class="spk-gurultu" opacity=".35"/>
+<path d="M120.0 354.3 L220.0 354.3 L320.0 297.8 L420.0 302.9 L520.0 320.4 L620.0 327.6 L720.0 243.9 L820.0 242.6" fill="none" stroke="var(--ink-3)" stroke-width="1.6"/>
+<path d="M120.0 271.4 L220.0 272.7 L320.0 221.3 L420.0 226.4 L520.0 244.4 L620.0 252.1 L720.0 169.9 L820.0 168.6" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+<circle cx="120.0" cy="271.4" r="3.5" fill="var(--accent)"/>
+<circle cx="220.0" cy="272.7" r="3.5" fill="var(--accent)"/>
+<circle cx="320.0" cy="221.3" r="3.5" fill="var(--accent)"/>
+<circle cx="420.0" cy="226.4" r="3.5" fill="var(--accent)"/>
+<circle cx="520.0" cy="244.4" r="3.5" fill="var(--accent)"/>
+<circle cx="620.0" cy="252.1" r="3.5" fill="var(--accent)"/>
+<circle cx="720.0" cy="169.9" r="3.5" fill="var(--accent)"/>
+<circle cx="820.0" cy="168.6" r="3.5" fill="var(--accent)"/>
+<text x="814.0" y="160.6" text-anchor="end" class="s-kucuk">-20 dBm</text>
+<text x="126.0" y="263.4" text-anchor="start" class="s-kucuk">referans darbe (-60 dBm giriş)</text>
+<path d="M120.0 168.6 L220.0 169.9 L320.0 118.4 L420.0 123.6 L520.0 141.6 L620.0 149.3 L720.0 67.0 L820.0 65.7" fill="none" stroke="var(--gold)" stroke-width="2.2"/>
+<circle cx="120.0" cy="168.6" r="3.5" fill="var(--gold)"/>
+<circle cx="220.0" cy="169.9" r="3.5" fill="var(--gold)"/>
+<circle cx="320.0" cy="118.4" r="3.5" fill="var(--gold)"/>
+<circle cx="420.0" cy="123.6" r="3.5" fill="var(--gold)"/>
+<circle cx="520.0" cy="141.6" r="3.5" fill="var(--gold)"/>
+<circle cx="620.0" cy="149.3" r="3.5" fill="var(--gold)"/>
+<circle cx="720.0" cy="67.0" r="3.5" fill="var(--gold)"/>
+<circle cx="820.0" cy="65.7" r="3.5" fill="var(--gold)"/>
+<text x="814.0" y="57.7" text-anchor="end" class="s-kucuk">+20 dBm</text>
+<text x="126.0" y="160.6" text-anchor="start" class="s-kucuk">güçlü emiter (-20 dBm giriş)</text>
+<text x="126.0" y="368.3" text-anchor="start" class="s-kucuk">kTB = -92.2 dBm</text>
+<text x="814.0" y="256.6" text-anchor="end" class="s-kucuk">-48.8 dBm (NF 3.45 + G 40)</text>
+<line x1="302.0" y1="78.6" x2="338.0" y2="78.6" stroke="var(--red)" stroke-width="2.4"/>
+<text x="342.0" y="82.6" text-anchor="start" class="s-kucuk s-kirmizi">OP1dB +15</text>
+<line x1="502.0" y1="104.3" x2="538.0" y2="104.3" stroke="var(--red)" stroke-width="2.4"/>
+<text x="542.0" y="108.3" text-anchor="start" class="s-kucuk s-kirmizi">OP1dB +5</text>
+<line x1="702.0" y1="45.1" x2="738.0" y2="45.1" stroke="var(--red)" stroke-width="2.4"/>
+<text x="742.0" y="49.1" text-anchor="start" class="s-kucuk s-kirmizi">OP1dB +28</text>
+<line x1="802.0" y1="50.3" x2="838.0" y2="50.3" stroke="var(--red)" stroke-width="2.4"/>
+<text x="842.0" y="54.3" text-anchor="start" class="s-kucuk s-kirmizi">OP1dB +26</text>
+<line x1="790.0" y1="106.9" x2="846.0" y2="106.9" stroke="var(--red)" stroke-width="2.4" stroke-dasharray="5 3"/>
+<text x="786.0" y="110.9" text-anchor="end" class="s-kucuk s-kirmizi">ADC FS +4 dBm</text>
+<path d="M830.0 168.6 V242.6" class="yol-sayisal" marker-end="url(#ok-sayisal)" marker-start="url(#ok-sayisal)"/>
+<text x="834.0" y="209.6" text-anchor="start" class="s-kucuk s-vurgu">SNR 28.8 dB</text>
+<path d="M774.0 106.9 V65.7" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+<text x="770.0" y="90.3" text-anchor="end" class="s-kucuk s-kirmizi">16 dB taşma → zayıflatıcı</text>
+<text x="24.0" y="220.0" text-anchor="middle" class="s-kucuk" transform="rotate(-90 24 220.0)">seviye (dBm)</text>
+<text x="70.0" y="480.0" text-anchor="start" class="s-kucuk">Friis ile zincir NF = 3.45 dB (bütçe: 6 dB, {{bolum:4}}). Kurgusal IP3 bütçesiyle zincir IIP3 ≈ -6.6 dBm; tavan ADC tam ölçeği: giriş -36 dBm.</text>
+<text x="70.0" y="498.0" text-anchor="start" class="s-kucuk">Gri: gürültü tabanı (kTB + NF_kum + G_kum). Mavi: −60 dBm referans darbe. Altın: −20 dBm güçlü emiter — son katlar sıkışmadan ADC dolar.</text>
+<text x="70.0" y="516.0" text-anchor="start" class="s-kucuk">Kırmızı çizgiler: blokların çıkış P1dB'si; sinyal bu çizgiye 3 dB'den fazla yaklaşınca IMD3 hızla büyür (eğim 3).</text>
+<text x="70.0" y="534.0" text-anchor="start" class="s-kucuk">Anlık dinamik aralık ≈ ADC FS girişi (−36 dBm) − MDS (−83 dBm) ≈ 47 dB; zayıflatıcı adımlarıyla 'toplam' dinamik aralık 30 dB daha genişler.</text>
+</svg>

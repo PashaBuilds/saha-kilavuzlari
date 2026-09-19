@@ -560,6 +560,21 @@
     return { esik: esik, tespit: tespit };
   };
 
+  // Kapılı (gated) gürültü kestirimi: üstel ortalama, darbe varken dondurulur.
+  // guc: kare yasa; alfa: eşik çarpanı; tau: zaman sabiti (örnek). Dönüş {esik, tahmin}.
+  DSP.kapiliGurultuKestirimi = function (guc, alfa, tau) {
+    var n = guc.length, esik = new Float64Array(n), tahmin = new Float64Array(n);
+    var k, ilk = Math.min(n, Math.max(8, tau)), m = 0;
+    for (k = 0; k < ilk; k++) m += guc[k];
+    m = m / ilk; var a = 1 / tau;
+    for (k = 0; k < n; k++) {
+      var e = alfa * m;
+      esik[k] = e; tahmin[k] = m;
+      if (guc[k] < e) m += a * (guc[k] - m);   // darbe yokken güncelle, varken dondur
+    }
+    return { esik: esik, tahmin: tahmin };
+  };
+
   /* --------------------------------------------------------------- darbe FSM / PDW */
   // guc: kare yasa örnekleri; esik: sabit sayı veya dizi; hister: dB; minPw: örnek; fs: Hz
   // Dönüş: [{toa_s, pw_s, pa_dbfs, pa_lin, bas, son, kirpildi}]

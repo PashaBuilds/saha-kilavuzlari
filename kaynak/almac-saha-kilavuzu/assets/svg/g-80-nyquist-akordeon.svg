@@ -1,0 +1,99 @@
+<svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g80">
+<title id="t-g80">Nyquist bölgeleri ve katlanma, akordeon görünümü: üstte gerçek frekans ekseni 0–3·fs, altı bölgeye bölünmüş; her bölgede aynı asimetrik bant (alçak kenar A, yüksek kenar B). Altta eksen fs/2 katlarında akordeon gibi katlanır: tek bölgeler düz, çift bölgeler aynalı (A ile B yer değiştirir) olarak 0–fs/2 üzerine iner; en altta ADC çıkışında hepsinin üst üste bindiği tek bant. Referans senaryo: fs = 2400 MHz, IF 1800 MHz 2. bölgede, evrik.</title>
+<text x="70" y="24" class="s-baslik">Gerçek frekans ekseni — bölgeler (n−1)·fs/2 … n·fs/2</text>
+<rect x="70.0" y="48" width="131.7" height="62" class="blok" opacity=".6"/>
+<text x="135.8" y="62" text-anchor="middle" class="s-kucuk">1. bölge</text>
+<polygon points="109.5,110 109.5,98 162.2,74 162.2,110" class="spk-sinyal"/>
+<text x="107.5" y="107" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="164.2" y="107" class="s-kucuk s-vurgu">B</text>
+<rect x="201.7" y="48" width="131.7" height="62" class="blok-aktif" opacity=".6"/>
+<text x="267.5" y="62" text-anchor="middle" class="s-kucuk">2. bölge · evrik</text>
+<polygon points="241.2,110 241.2,98 293.8,74 293.8,110" class="spk-sinyal"/>
+<text x="239.2" y="107" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="295.8" y="107" class="s-kucuk s-vurgu">B</text>
+<rect x="333.3" y="48" width="131.7" height="62" class="blok" opacity=".6"/>
+<text x="399.2" y="62" text-anchor="middle" class="s-kucuk">3. bölge</text>
+<polygon points="372.8,110 372.8,98 425.5,74 425.5,110" class="spk-sinyal"/>
+<text x="370.8" y="107" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="427.5" y="107" class="s-kucuk s-vurgu">B</text>
+<rect x="465.0" y="48" width="131.7" height="62" class="blok" opacity=".6"/>
+<text x="530.8" y="62" text-anchor="middle" class="s-kucuk">4. bölge · evrik</text>
+<polygon points="504.5,110 504.5,98 557.2,74 557.2,110" class="spk-sinyal"/>
+<text x="502.5" y="107" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="559.2" y="107" class="s-kucuk s-vurgu">B</text>
+<rect x="596.7" y="48" width="131.7" height="62" class="blok" opacity=".6"/>
+<text x="662.5" y="62" text-anchor="middle" class="s-kucuk">5. bölge</text>
+<polygon points="636.2,110 636.2,98 688.8,74 688.8,110" class="spk-sinyal"/>
+<text x="634.2" y="107" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="690.8" y="107" class="s-kucuk s-vurgu">B</text>
+<rect x="728.3" y="48" width="131.7" height="62" class="blok" opacity=".6"/>
+<text x="794.2" y="62" text-anchor="middle" class="s-kucuk">6. bölge · evrik</text>
+<polygon points="767.8,110 767.8,98 820.5,74 820.5,110" class="spk-sinyal"/>
+<text x="765.8" y="107" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="822.5" y="107" class="s-kucuk s-vurgu">B</text>
+<path d="M70 110 H860" class="eksen"/>
+<path d="M70.0 110 v5" class="eksen"/><text x="70.0" y="127" text-anchor="middle" class="s-kucuk">0</text>
+<text x="70.0" y="140" text-anchor="middle" class="s-mono2">0</text>
+<path d="M201.7 110 v5" class="eksen"/><text x="201.7" y="127" text-anchor="middle" class="s-kucuk">fs/2</text>
+<text x="201.7" y="140" text-anchor="middle" class="s-mono2">1200</text>
+<path d="M333.3 110 v5" class="eksen"/><text x="333.3" y="127" text-anchor="middle" class="s-kucuk">fs</text>
+<text x="333.3" y="140" text-anchor="middle" class="s-mono2">2400</text>
+<path d="M465.0 110 v5" class="eksen"/><text x="465.0" y="127" text-anchor="middle" class="s-kucuk">3fs/2</text>
+<text x="465.0" y="140" text-anchor="middle" class="s-mono2">3600</text>
+<path d="M596.7 110 v5" class="eksen"/><text x="596.7" y="127" text-anchor="middle" class="s-kucuk">2fs</text>
+<text x="596.7" y="140" text-anchor="middle" class="s-mono2">4800</text>
+<path d="M728.3 110 v5" class="eksen"/><text x="728.3" y="127" text-anchor="middle" class="s-kucuk">5fs/2</text>
+<text x="728.3" y="140" text-anchor="middle" class="s-mono2">6000</text>
+<path d="M860.0 110 v5" class="eksen"/><text x="860.0" y="127" text-anchor="middle" class="s-kucuk">3fs</text>
+<text x="860.0" y="140" text-anchor="middle" class="s-mono2">7200</text>
+<text x="860" y="154" text-anchor="end" class="s-kucuk">MHz (fs = 2400)</text>
+<path d="M267.5 40 V110" class="yol-analog"/><text x="271.5" y="44" class="s-kucuk s-altin">IF 1800</text>
+<text x="70" y="163" class="s-baslik">Akordeon: eksen fs/2 katlarında katlanır</text>
+<rect x="70" y="175" width="400" height="24" class="blok" opacity=".5"/>
+<polygon points="190.0,199 190.0,191 350.0,177 350.0,199" class="spk-sinyal"/>
+<text x="187.0" y="197" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="353.0" y="197" class="s-kucuk s-vurgu">B</text>
+<text x="478" y="191.0" class="s-kucuk">1. bölge → düz</text>
+<path d="M470 199 A 6 6 0 0 1 470 207" class="yol-saat"/>
+<rect x="70" y="205" width="400" height="24" class="blok-aktif" opacity=".5"/>
+<polygon points="190.0,229 190.0,207 350.0,221 350.0,229" class="spk-sinyal"/>
+<text x="187.0" y="227" text-anchor="end" class="s-kucuk s-vurgu">B</text>
+<text x="353.0" y="227" class="s-kucuk s-vurgu">A</text>
+<text x="478" y="221.0" class="s-kucuk">2. bölge → evrik</text>
+<path d="M70 229 A 6 6 0 0 0 70 237" class="yol-saat"/>
+<rect x="70" y="235" width="400" height="24" class="blok" opacity=".5"/>
+<polygon points="190.0,259 190.0,251 350.0,237 350.0,259" class="spk-sinyal"/>
+<text x="187.0" y="257" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="353.0" y="257" class="s-kucuk s-vurgu">B</text>
+<text x="478" y="251.0" class="s-kucuk">3. bölge → düz</text>
+<path d="M470 259 A 6 6 0 0 1 470 267" class="yol-saat"/>
+<rect x="70" y="265" width="400" height="24" class="blok" opacity=".5"/>
+<polygon points="190.0,289 190.0,267 350.0,281 350.0,289" class="spk-sinyal"/>
+<text x="187.0" y="287" text-anchor="end" class="s-kucuk s-vurgu">B</text>
+<text x="353.0" y="287" class="s-kucuk s-vurgu">A</text>
+<text x="478" y="281.0" class="s-kucuk">4. bölge → evrik</text>
+<path d="M70 289 A 6 6 0 0 0 70 297" class="yol-saat"/>
+<rect x="70" y="295" width="400" height="24" class="blok" opacity=".5"/>
+<polygon points="190.0,319 190.0,311 350.0,297 350.0,319" class="spk-sinyal"/>
+<text x="187.0" y="317" text-anchor="end" class="s-kucuk s-vurgu">A</text>
+<text x="353.0" y="317" class="s-kucuk s-vurgu">B</text>
+<text x="478" y="311.0" class="s-kucuk">5. bölge → düz</text>
+<path d="M470 319 A 6 6 0 0 1 470 327" class="yol-saat"/>
+<rect x="70" y="325" width="400" height="24" class="blok" opacity=".5"/>
+<polygon points="190.0,349 190.0,327 350.0,341 350.0,349" class="spk-sinyal"/>
+<text x="187.0" y="347" text-anchor="end" class="s-kucuk s-vurgu">B</text>
+<text x="353.0" y="347" class="s-kucuk s-vurgu">A</text>
+<text x="478" y="341.0" class="s-kucuk">6. bölge → evrik</text>
+<text x="70" y="363" class="s-kucuk">0</text><text x="470" y="363" text-anchor="end" class="s-kucuk">fs/2</text>
+<text x="590" y="163" class="s-baslik">ADC çıkışı (0 – fs/2)</text>
+<text x="590" y="179" class="s-kucuk">tek bölge kalır; tek/çift kaynaklar</text>
+<text x="590" y="192" class="s-kucuk">ayırt edilemez — AAF yalnızca birini bırakmalı</text>
+<polygon points="671.0,310 671.0,290 779.0,250 779.0,310" class="spk-sinyal"/>
+<polygon points="671.0,310 671.0,250 779.0,290 779.0,310" class="spk-image"/>
+<path d="M590 310 H860" class="eksen"/>
+<text x="590" y="326" class="s-kucuk">0</text><text x="860" y="326" text-anchor="end" class="s-kucuk">fs/2</text>
+<text x="590" y="346" class="s-kucuk s-vurgu">mavi: 1, 3, 5. bölge (düz)</text>
+<text x="590" y="360" class="s-kucuk s-kirmizi">kırmızı: 2, 4, 6. bölge (aynalı)</text>
+<text x="590" y="382" class="s-metin2">Senaryo: IF 1800 → 600 MHz, evrik</text>
+<text x="590" y="398" class="s-kucuk">(2. bölge; alt kenar 1650 → 750, üst kenar 1950 → 450)</text>
+</svg>

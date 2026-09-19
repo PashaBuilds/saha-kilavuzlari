@@ -1,0 +1,124 @@
+<svg viewBox="0 0 960 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g112">
+<title id="t-g112">SSR (super-sample rate) gösterimi: üstte ADC'nin 2400 MSPS'lik tek örnek akışı x[0], x[1], … ; altta FPGA'da 300 MHz fabric saatinin her vuruşunda 8 örneklik bir vektör: saat n'de lane k örneği x[8n + k] taşır. Sözcük genişliği 8 × 16 bit = 128 bit AXI-Stream; en düşük indisli lane en eski örnektir (sıra sözleşmesi belgelenmeli). 14 bitlik örnek 16 bitlik sözcüğe işaret uzatma ya da MSB hizalama ile yerleşir.</title>
+<text x="20" y="22" class="s-baslik">SSR: 2400 MSPS tek akış → 8 paralel örnek × 300 MHz fabric saati</text>
+<text x="20" y="58" class="s-kucuk s-vurgu">ADC çıkışı: örnek başına 417 ps</text>
+<rect x="20" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="38" y="87" text-anchor="middle" class="s-mono2">x[0]</text>
+<rect x="58" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="76" y="87" text-anchor="middle" class="s-mono2">x[1]</text>
+<rect x="96" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="114" y="87" text-anchor="middle" class="s-mono2">x[2]</text>
+<rect x="134" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="152" y="87" text-anchor="middle" class="s-mono2">x[3]</text>
+<rect x="172" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="190" y="87" text-anchor="middle" class="s-mono2">x[4]</text>
+<rect x="210" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="228" y="87" text-anchor="middle" class="s-mono2">x[5]</text>
+<rect x="248" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="266" y="87" text-anchor="middle" class="s-mono2">x[6]</text>
+<rect x="286" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="304" y="87" text-anchor="middle" class="s-mono2">x[7]</text>
+<rect x="324" y="70" width="36" height="26" rx="3" class="blok"/>
+<text x="342" y="87" text-anchor="middle" class="s-mono2">x[8]</text>
+<rect x="362" y="70" width="36" height="26" rx="3" class="blok"/>
+<text x="380" y="87" text-anchor="middle" class="s-mono2">x[9]</text>
+<rect x="400" y="70" width="36" height="26" rx="3" class="blok"/>
+<text x="418" y="87" text-anchor="middle" class="s-mono2">x[10]</text>
+<rect x="438" y="70" width="36" height="26" rx="3" class="blok"/>
+<text x="456" y="87" text-anchor="middle" class="s-mono2">x[11]</text>
+<rect x="476" y="70" width="36" height="26" rx="3" class="blok"/>
+<text x="494" y="87" text-anchor="middle" class="s-mono2">x[12]</text>
+<rect x="514" y="70" width="36" height="26" rx="3" class="blok"/>
+<text x="532" y="87" text-anchor="middle" class="s-mono2">x[13]</text>
+<rect x="552" y="70" width="36" height="26" rx="3" class="blok"/>
+<text x="570" y="87" text-anchor="middle" class="s-mono2">x[14]</text>
+<rect x="590" y="70" width="36" height="26" rx="3" class="blok"/>
+<text x="608" y="87" text-anchor="middle" class="s-mono2">x[15]</text>
+<rect x="628" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="646" y="87" text-anchor="middle" class="s-mono2">x[16]</text>
+<rect x="666" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="684" y="87" text-anchor="middle" class="s-mono2">x[17]</text>
+<rect x="704" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="722" y="87" text-anchor="middle" class="s-mono2">x[18]</text>
+<rect x="742" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="760" y="87" text-anchor="middle" class="s-mono2">x[19]</text>
+<rect x="780" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="798" y="87" text-anchor="middle" class="s-mono2">x[20]</text>
+<rect x="818" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="836" y="87" text-anchor="middle" class="s-mono2">x[21]</text>
+<rect x="856" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="874" y="87" text-anchor="middle" class="s-mono2">x[22]</text>
+<rect x="894" y="70" width="36" height="26" rx="3" class="blok-aktif"/>
+<text x="912" y="87" text-anchor="middle" class="s-mono2">x[23]</text>
+<text x="936" y="87" class="s-kucuk">…</text>
+<path d="M20 114H39 V104 H58 V114H77 V104 H96 V114H115 V104 H134 V114H153 V104 H172 V114H191 V104 H210 V114H229 V104 H248 V114H267 V104 H286 V114H305 V104 H324 V114H343 V104 H362 V114H381 V104 H400 V114H419 V104 H438 V114H457 V104 H476 V114H495 V104 H514 V114H533 V104 H552 V114H571 V104 H590 V114H609 V104 H628 V114H647 V104 H666 V114H685 V104 H704 V114H723 V104 H742 V114H761 V104 H780 V114H799 V104 H818 V114H837 V104 H856 V114H875 V104 H894 V114H913 V104 H932 V114" class="yol-saat" style="stroke-dasharray:none"/>
+<text x="20" y="130" class="s-kucuk">örnekleme saati 2400 MHz (fabric bunu tutamaz)</text>
+<path d="M172.0 136 V166" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="178.0" y="156" class="s-kucuk">saat 0</text>
+<path d="M476.0 136 V166" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="482.0" y="156" class="s-kucuk">saat 1</text>
+<path d="M780.0 136 V166" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="786.0" y="156" class="s-kucuk">saat 2</text>
+<text x="20" y="178" class="s-kucuk s-vurgu">FPGA: her fabric saatinde 8 örneklik sözcük (tdata[127:0])</text>
+<rect x="20" y="190" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="24" y="202" class="s-mono2">lane 0: x[0]</text>
+<rect x="20" y="208" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="24" y="220" class="s-mono2">lane 1: x[1]</text>
+<rect x="20" y="226" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="24" y="238" class="s-mono2">lane 2: x[2]</text>
+<rect x="20" y="244" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="24" y="256" class="s-mono2">lane 3: x[3]</text>
+<rect x="20" y="262" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="24" y="274" class="s-mono2">lane 4: x[4]</text>
+<rect x="20" y="280" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="24" y="292" class="s-mono2">lane 5: x[5]</text>
+<rect x="20" y="298" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="24" y="310" class="s-mono2">lane 6: x[6]</text>
+<rect x="20" y="316" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="24" y="328" class="s-mono2">lane 7: x[7]</text>
+<text x="140" y="202" class="s-kucuk">bit [127:112] ← lane 7</text>
+<text x="140" y="328" class="s-kucuk">bit [15:0] ← lane 0 (en eski)</text>
+<text x="75" y="348" text-anchor="middle" class="s-kucuk">saat 0 · t = 0.00 ns</text>
+<rect x="320" y="190" width="110" height="16" rx="2" class="blok"/>
+<text x="324" y="202" class="s-mono2">lane 0: x[8]</text>
+<rect x="320" y="208" width="110" height="16" rx="2" class="blok"/>
+<text x="324" y="220" class="s-mono2">lane 1: x[9]</text>
+<rect x="320" y="226" width="110" height="16" rx="2" class="blok"/>
+<text x="324" y="238" class="s-mono2">lane 2: x[10]</text>
+<rect x="320" y="244" width="110" height="16" rx="2" class="blok"/>
+<text x="324" y="256" class="s-mono2">lane 3: x[11]</text>
+<rect x="320" y="262" width="110" height="16" rx="2" class="blok"/>
+<text x="324" y="274" class="s-mono2">lane 4: x[12]</text>
+<rect x="320" y="280" width="110" height="16" rx="2" class="blok"/>
+<text x="324" y="292" class="s-mono2">lane 5: x[13]</text>
+<rect x="320" y="298" width="110" height="16" rx="2" class="blok"/>
+<text x="324" y="310" class="s-mono2">lane 6: x[14]</text>
+<rect x="320" y="316" width="110" height="16" rx="2" class="blok"/>
+<text x="324" y="328" class="s-mono2">lane 7: x[15]</text>
+<text x="440" y="202" class="s-kucuk">bit [127:112] ← lane 7</text>
+<text x="440" y="328" class="s-kucuk">bit [15:0] ← lane 0 (en eski)</text>
+<text x="375" y="348" text-anchor="middle" class="s-kucuk">saat 1 · t = 3.33 ns</text>
+<rect x="620" y="190" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="624" y="202" class="s-mono2">lane 0: x[16]</text>
+<rect x="620" y="208" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="624" y="220" class="s-mono2">lane 1: x[17]</text>
+<rect x="620" y="226" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="624" y="238" class="s-mono2">lane 2: x[18]</text>
+<rect x="620" y="244" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="624" y="256" class="s-mono2">lane 3: x[19]</text>
+<rect x="620" y="262" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="624" y="274" class="s-mono2">lane 4: x[20]</text>
+<rect x="620" y="280" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="624" y="292" class="s-mono2">lane 5: x[21]</text>
+<rect x="620" y="298" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="624" y="310" class="s-mono2">lane 6: x[22]</text>
+<rect x="620" y="316" width="110" height="16" rx="2" class="blok-aktif"/>
+<text x="624" y="328" class="s-mono2">lane 7: x[23]</text>
+<text x="740" y="202" class="s-kucuk">bit [127:112] ← lane 7</text>
+<text x="740" y="328" class="s-kucuk">bit [15:0] ← lane 0 (en eski)</text>
+<text x="675" y="348" text-anchor="middle" class="s-kucuk">saat 2 · t = 6.67 ns</text>
+<path d="M20 365H170 V355 H320 V365H470 V355 H620 V365H770 V355 H920 V365" class="yol-saat" style="stroke-dasharray:none"/>
+<text x="20" y="382" class="s-kucuk">fabric saati 300 MHz · veri hızı aynı: 8 × 16 bit × 300 MHz = 38.4 Gb/s</text>
+<text x="20" y="350" class="s-kucuk">Örnek sözcüğü (16 bit): 14 bit 2'nin tümleyeni → işaret uzatma [s s d13 … d0] ya da MSB hizalı [d13 … d0 0 0]; hangisi olduğunu belge söyler, ölçek 4 kat farklıdır.</text>
+<text x="20" y="368" class="s-kucuk">DSP tarafında sonuç: her blok (NCO, FIR, CIC) saat başına 8 örnek işler — Bölüm 12 ve 14'teki SSR gerçeklemesi bu sözleşmeyle başlar.</text>
+</svg>

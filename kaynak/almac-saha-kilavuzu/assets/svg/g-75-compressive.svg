@@ -1,0 +1,41 @@
+<svg viewBox="0 0 860 278" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g75">
+<title id="t-g75">M-6 compressive (microscan) almaç blok şeması: anten → LNA → mixer (hızlı süpürülen chirp LO) → IF filtre → dispersif gecikme hattı (SAW chirp filtre) → dedektör → eşik ve zaman ölçümü, tepe zamanı frekansa karşılık gelir. Altta akusto-optik Bragg cell almacın kısa tarih notu.</title>
+<text x="20.0" y="24.0" text-anchor="start" class="s-baslik">M-6 · Compressive (microscan) almaç — hızlı tarama + dispersif hat; kısa tarih: akusto-optik (Bragg cell)</text>
+<use href="#sym-anten" x="20.0" y="60.0" width="60" height="40"/>
+<text x="50.0" y="113.0" text-anchor="middle" class="s-kucuk">anten</text>
+<path d="M80.0 80.0 L120.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-amp" x="120.0" y="60.0" width="60" height="40"/>
+<text x="150.0" y="113.0" text-anchor="middle" class="s-kucuk">LNA</text>
+<path d="M180.0 80.0 L220.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-mixer" x="220.0" y="60.0" width="60" height="40"/>
+<text x="250.0" y="113.0" text-anchor="middle" class="s-kucuk">mixer</text>
+<path d="M280.0 80.0 L320.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-bpf" x="320.0" y="60.0" width="60" height="40"/>
+<text x="350.0" y="113.0" text-anchor="middle" class="s-kucuk">IF filtre</text>
+<path d="M380.0 80.0 L420.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-blok" x="420.0" y="60.0" width="60" height="40"/>
+<text x="450.0" y="113.0" text-anchor="middle" class="s-kucuk">dispersif gecikme</text>
+<text x="450.0" y="125.0" text-anchor="middle" class="s-mono2">SAW chirp filtre</text>
+<path d="M480.0 80.0 L520.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-diyot" x="520.0" y="60.0" width="60" height="40"/>
+<text x="550.0" y="113.0" text-anchor="middle" class="s-kucuk">dedektör</text>
+<path d="M580.0 80.0 L620.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-cmp" x="620.0" y="60.0" width="60" height="40"/>
+<text x="650.0" y="113.0" text-anchor="middle" class="s-kucuk">eşik + zaman</text>
+<text x="650.0" y="125.0" text-anchor="middle" class="s-mono2">t → f</text>
+<text x="450.0" y="76.0" text-anchor="middle" class="s-mono2">τ(f)</text>
+<use href="#sym-lo" x="200.0" y="130.0" width="60" height="40"/>
+<text x="230.0" y="183.0" text-anchor="middle" class="s-kucuk">chirp LO</text>
+<text x="230.0" y="195.0" text-anchor="middle" class="s-mono2">hızlı süpürme</text>
+<path d="M230.0 130.0 L230.0 100.0" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
+<rect x="300.0" y="126.0" width="240.0" height="48.0" rx="6" class="blok" opacity=".9"/>
+<text x="310.0" y="144.0" text-anchor="start" class="s-kucuk">LO frekansı süpürülür; dispersif hat</text>
+<text x="310.0" y="160.0" text-anchor="start" class="s-kucuk">chirp'i tek darbeye sıkıştırır → tepe zamanı = frekans</text>
+<path d="M680.0 80.0 L710.0 80.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<text x="714.0" y="84.0" text-anchor="start" class="s-kucuk s-vurgu">f, PA</text>
+<rect x="20.0" y="196.0" width="820.0" height="70.0" rx="6" class="blok" opacity=".8"/>
+<text x="30.0" y="214.0" text-anchor="start" class="s-kucuk">Akusto-optik (Bragg cell) almaç — tarih notu: RF sinyali bir kristalde ses dalgasına, lazer ışığı bu 'kırınım ağı'ndan frekansa orantılı açıyla saparak</text>
+<text x="30.0" y="230.0" text-anchor="start" class="s-kucuk">fotodedektör dizisine düşer: her piksel bir frekans kanalı. 1970–80'lerde geniş anlık bant + çok sinyal için çekiciydi; dinamik aralığı (~30–40 dB) ve</text>
+<text x="30.0" y="246.0" text-anchor="start" class="s-kucuk">kalibrasyon güçlüğü nedeniyle yerini sayısal FFT/kanallaştırıcıya bıraktı. Compressive almaç da aynı kaderi paylaştı: FFT, 'analog Fourier dönüşümü'nü gereksiz kıldı.</text>
+<text x="30.0" y="262.0" text-anchor="start" class="s-kucuk s-altin">İkisi de Fourier dönüşümünü analog yolla yapıyordu; bugün aynı işlev M-9'un içindedir.</text>
+</svg>

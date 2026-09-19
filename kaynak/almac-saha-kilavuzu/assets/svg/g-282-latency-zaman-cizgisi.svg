@@ -1,0 +1,46 @@
+<svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g282">
+<title id="t-g282">Latency zaman çizgisi: darbe antene 0 anında çarpar ve 1 µs sürer; ADC+JESD ≈ 0.3 µs, DDC ≈ 0.1 µs, zarf/CFAR ≈ 0.06 µs, darbe FSM darbe bitiminde (1.4 µs) PDW'nin zaman alanlarını üretir; FFT çerçevesi 3.41 µs gözlem + ≈ 0.2 µs işlem ile ≈ 4 µs'de biter; PDW birleştirme zaman kolunu ≈ 2.5 µs bekletir; PDW FIFO'ya ≈ 4.2 µs'de yazılır; PS kesme politikasına göre görür</title>
+<style>
+  .lz .t { font-family: var(--sans); font-size: 11px; fill: var(--ink); }
+  .lz .t2 { font-family: var(--sans); font-size: 10px; fill: var(--ink-2); }
+  .lz .m { font-family: var(--mono); font-size: 10px; fill: var(--ink-3); }
+  .lz .bar { rx: 4; }
+</style>
+<g class="lz">
+<!-- zaman ekseni: 0..5 µs → x 140..860 -->
+<line x1="140" y1="290" x2="860" y2="290" class="eksen"/>
+<g class="m">
+  <text x="140" y="306" text-anchor="middle">0</text><text x="284" y="306" text-anchor="middle">1 µs</text><text x="428" y="306" text-anchor="middle">2 µs</text>
+  <text x="572" y="306" text-anchor="middle">3 µs</text><text x="716" y="306" text-anchor="middle">4 µs</text><text x="860" y="306" text-anchor="middle">5 µs</text>
+</g>
+<g stroke="var(--dia-grid)"><line x1="284" y1="30" x2="284" y2="290"/><line x1="428" y1="30" x2="428" y2="290"/><line x1="572" y1="30" x2="572" y2="290"/><line x1="716" y1="30" x2="716" y2="290"/></g>
+<!-- satırlar -->
+<text class="t" x="20" y="48">Darbe (antende)</text>
+<rect class="bar" x="140" y="36" width="144" height="16" fill="var(--gold)" opacity=".8"/>
+<text class="t2" x="290" y="48">PW = 1 µs</text>
+<text class="t" x="20" y="78">ADC + JESD204</text>
+<rect class="bar" x="183" y="66" width="144" height="16" fill="var(--ink-3)" opacity=".8"/>
+<text class="t2" x="333" y="78">+0.3 µs (deterministik)</text>
+<text class="t" x="20" y="108">DDC çıkışı</text>
+<rect class="bar" x="196" y="96" width="144" height="16" fill="var(--accent)" opacity=".8"/>
+<text class="t2" x="346" y="108">+0.09 µs (NCO 5 + filtreler ≈ 27 örnek)</text>
+<text class="t" x="20" y="138">Zarf + CFAR</text>
+<rect class="bar" x="204" y="126" width="144" height="16" fill="var(--accent)" opacity=".8"/>
+<text class="t2" x="354" y="138">+0.06 µs (video 4 + CFAR ileri bakış 10)</text>
+<text class="t" x="20" y="168">Darbe FSM → TOA/PW/PA</text>
+<rect class="bar" x="348" y="156" width="8" height="16" fill="var(--green)"/>
+<text class="t2" x="362" y="168">darbe bitince: ≈ 1.45 µs'de zaman kolu hazır</text>
+<text class="t" x="20" y="198">FFT (1024, %50 overlap)</text>
+<rect class="bar" x="196" y="186" width="491" height="16" fill="var(--purple)" opacity=".6"/>
+<rect class="bar" x="687" y="186" width="30" height="16" fill="var(--purple)"/>
+<text class="t2" x="722" y="198">3.41 µs çerçeve + ≈ 0.2 µs işlem</text>
+<text class="t" x="20" y="228">PDW birleştirme</text>
+<line x1="352" y1="220" x2="716" y2="220" stroke="var(--ink-3)" stroke-dasharray="4 3"/>
+<text class="t2" x="440" y="216">zaman kolu ≈ 2.5 µs bekletilir (hizalama gecikme hattı)</text>
+<rect class="bar" x="716" y="216" width="8" height="16" fill="var(--green)"/>
+<text class="t" x="20" y="258">PDW FIFO → DMA → PS</text>
+<rect class="bar" x="724" y="246" width="20" height="16" fill="var(--green)" opacity=".8"/>
+<text class="t2" x="750" y="258">FIFO'ya ≈ 4.2 µs; PS'te görünme: kesme eşiği / zaman aşımı (µs … ms)</text>
+<text class="t2" x="140" y="24" style="fill:var(--ink-3)">darbe bitti → PDW yazıldı ≈ 3.2 µs; FFT çerçevesini kısaltmak (256 nokta) bunu ≈ 1 µs'ye indirir ama bin 1.2 MHz'e çıkar (B20)</text>
+</g>
+</svg>

@@ -64,5 +64,5 @@
 <text x="537.2" y="56" text-anchor="end" class="s-metin s-altin">13.2 dB → Pd = 0.9</text>
 <circle cx="610" cy="40.72" r="4" fill="var(--accent)" stroke="var(--ink)" stroke-width="1"/>
 <text x="618" y="54.72" class="s-kucuk s-vurgu">15 dB (bütçe) → Pd ≈ 0.997</text>
-<text x="70" y="335" class="s-metin2">Pfa'yı 10⁻³'ten 10⁻⁹'a çekmek, aynı Pd için ≈ 3 dB daha fazla SNR ister; 0.5 → 0.9 arası yalnızca 2 dB'dir ("diz" bölgesi dik).</text>
+<text x="70" y="335" class="s-metin2">Pfa'yı 10⁻³'ten 10⁻⁹'a çekmek, aynı Pd için ≈ 4 dB daha fazla SNR ister (10.8 → 14.7 dB); 0.5 → 0.9 arası yalnızca 2 dB'dir ("diz" bölgesi dik).</text>
 </svg>

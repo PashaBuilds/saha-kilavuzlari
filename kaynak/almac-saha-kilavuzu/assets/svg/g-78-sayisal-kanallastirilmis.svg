@@ -1,0 +1,66 @@
+<svg viewBox="0 0 860 246" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g78">
+<title id="t-g78">M-9 sayısal kanallaştırılmış almaç blok şeması: anten → LNA → BPF → geniş bant ADC → seri-paralel komütatör → polyphase FIR bankası → M-nokta FFT → M kanal → kanal başına zarf ve CFAR. Not: analog filtre bankasının sayısal ikizi, en yüksek karmaşıklık.</title>
+<text x="20.0" y="24.0" text-anchor="start" class="s-baslik">M-9 · Sayısal kanallaştırılmış almaç — polyphase filtre bankası + FFT: N kanal, tek ADC</text>
+<use href="#sym-anten" x="20.0" y="60.0" width="60" height="40"/>
+<text x="50.0" y="113.0" text-anchor="middle" class="s-kucuk">anten</text>
+<path d="M80.0 80.0 L112.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-amp" x="112.0" y="60.0" width="60" height="40"/>
+<text x="142.0" y="113.0" text-anchor="middle" class="s-kucuk">LNA</text>
+<path d="M172.0 80.0 L204.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-bpf" x="204.0" y="60.0" width="60" height="40"/>
+<text x="234.0" y="113.0" text-anchor="middle" class="s-kucuk">BPF</text>
+<path d="M264.0 80.0 L296.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-adc" x="296.0" y="60.0" width="60" height="40"/>
+<text x="326.0" y="113.0" text-anchor="middle" class="s-kucuk">ADC</text>
+<text x="326.0" y="125.0" text-anchor="middle" class="s-mono2">geniş bant</text>
+<rect x="320.0" y="30.0" width="90.0" height="100.0" rx="6" class="blok"/>
+<text x="365.0" y="70.0" text-anchor="middle" class="s-kucuk">seri → paralel</text>
+<text x="365.0" y="86.0" text-anchor="middle" class="s-mono2">(↓M komütatör)</text>
+<path d="M356.0 80.0 L320.0 80.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<rect x="440.0" y="30.0" width="110.0" height="100.0" rx="6" class="blok"/>
+<text x="495.0" y="66.0" text-anchor="middle" class="s-metin">polyphase</text>
+<text x="495.0" y="82.0" text-anchor="middle" class="s-metin">FIR bankası</text>
+<text x="495.0" y="98.0" text-anchor="middle" class="s-mono2">E₀(z) … E_{M−1}(z)</text>
+<path d="M410.0 45.0 L440.0 45.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M550.0 45.0 L580.0 45.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M410.0 65.0 L440.0 65.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M550.0 65.0 L580.0 65.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M410.0 85.0 L440.0 85.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M550.0 85.0 L580.0 85.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M410.0 105.0 L440.0 105.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M550.0 105.0 L580.0 105.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M410.0 120.0 L440.0 120.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M550.0 120.0 L580.0 120.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<use href="#sym-fft" x="580.0" y="60.0" width="60" height="40"/>
+<text x="610.0" y="113.0" text-anchor="middle" class="s-kucuk">M-nokta FFT</text>
+<text x="610.0" y="125.0" text-anchor="middle" class="s-mono2">her M örnekte bir</text>
+<path d="M640.0 45.0 L690.0 45.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<rect x="690.0" y="37.0" width="70.0" height="16.0" rx="3" class="blok"/>
+<text x="725.0" y="49.0" text-anchor="middle" class="s-mono2">kanal 0</text>
+<path d="M760.0 45.0 L790.0 45.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M640.0 65.0 L690.0 65.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<rect x="690.0" y="57.0" width="70.0" height="16.0" rx="3" class="blok"/>
+<text x="725.0" y="69.0" text-anchor="middle" class="s-mono2">kanal 1</text>
+<path d="M760.0 65.0 L790.0 65.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M640.0 85.0 L690.0 85.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<rect x="690.0" y="77.0" width="70.0" height="16.0" rx="3" class="blok"/>
+<text x="725.0" y="89.0" text-anchor="middle" class="s-mono2">kanal 2</text>
+<path d="M760.0 85.0 L790.0 85.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M640.0 105.0 L690.0 105.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<rect x="690.0" y="97.0" width="70.0" height="16.0" rx="3" class="blok"/>
+<text x="725.0" y="109.0" text-anchor="middle" class="s-mono2">⋮</text>
+<path d="M760.0 105.0 L790.0 105.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<path d="M640.0 120.0 L690.0 120.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<rect x="690.0" y="112.0" width="70.0" height="16.0" rx="3" class="blok"/>
+<text x="725.0" y="124.0" text-anchor="middle" class="s-mono2">kanal M−1</text>
+<path d="M760.0 120.0 L790.0 120.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<rect x="790.0" y="30.0" width="60.0" height="100.0" rx="6" class="blok"/>
+<text x="820.0" y="74.0" text-anchor="middle" class="s-kucuk">zarf +</text>
+<text x="820.0" y="88.0" text-anchor="middle" class="s-kucuk">CFAR</text>
+<text x="820.0" y="102.0" text-anchor="middle" class="s-kucuk">/ kanal</text>
+<rect x="20.0" y="160.0" width="820.0" height="74.0" rx="6" class="blok" opacity=".8"/>
+<text x="30.0" y="178.0" text-anchor="start" class="s-kucuk">M-5'in sayısal ikizi: N kanal bir kez tasarlanır, filtre şekli her kanalda birebir aynıdır (analogda imkânsız). Kanal başına hassasiyet dar banda göre, POI ≈ %100,</text>
+<text x="30.0" y="194.0" text-anchor="start" class="s-kucuk">eşzamanlı sinyal kanal sayısı kadar. FFT çıkışının her bin'i bir kanal; polyphase FIR, düz FFT'nin yaprak sızıntısını ve kenar 'tavşan kulaklarını' düzeltir.</text>
+<text x="30.0" y="210.0" text-anchor="start" class="s-kucuk">Karmaşıklığı en yüksek mimari: bellek, DSP slice ve kanal-arası mantık (aynı darbe komşu kanallarda). Bölüm 17 (kanallaştırma) ve 18 (FFT) ayrıntıyı verir.</text>
+<text x="30.0" y="226.0" text-anchor="start" class="s-kucuk s-altin">Referans zincirin tek kanallı DDC'si bu yapının M = 1 halidir.</text>
+</svg>

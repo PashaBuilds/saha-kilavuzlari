@@ -1,0 +1,35 @@
+<svg viewBox="0 0 860 196" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g70">
+<title id="t-g70">M-1 kristal video almaç blok şeması: anten → geniş bant BPF → (RF yükselteç) → kristal dedektör → video filtre → logaritmik video yükselteç → eşik; çıkışta TOA, PW, PA. Altta not: hassasiyet düşük, POI yüksek; TRF varyantı.</title>
+<text x="20.0" y="24.0" text-anchor="start" class="s-baslik">M-1 · Kristal video almaç (CVR) — RF → doğrudan zarf; frekans bilgisi yok</text>
+<use href="#sym-anten" x="20.0" y="60.0" width="60" height="40"/>
+<text x="50.0" y="113.0" text-anchor="middle" class="s-kucuk">anten</text>
+<path d="M80.0 80.0 L120.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-bpf" x="120.0" y="60.0" width="60" height="40"/>
+<text x="150.0" y="113.0" text-anchor="middle" class="s-kucuk">geniş BPF</text>
+<text x="150.0" y="125.0" text-anchor="middle" class="s-mono2">2–18 GHz</text>
+<path d="M180.0 80.0 L220.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-amp" x="220.0" y="60.0" width="60" height="40"/>
+<text x="250.0" y="113.0" text-anchor="middle" class="s-kucuk">RF yükselteç</text>
+<text x="250.0" y="125.0" text-anchor="middle" class="s-mono2">(isteğe bağlı)</text>
+<path d="M280.0 80.0 L320.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-diyot" x="320.0" y="60.0" width="60" height="40"/>
+<text x="350.0" y="113.0" text-anchor="middle" class="s-kucuk">kristal dedektör</text>
+<text x="350.0" y="125.0" text-anchor="middle" class="s-mono2">kare-yasa</text>
+<path d="M380.0 80.0 L420.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-lpf" x="420.0" y="60.0" width="60" height="40"/>
+<text x="450.0" y="113.0" text-anchor="middle" class="s-kucuk">video filtre</text>
+<text x="450.0" y="125.0" text-anchor="middle" class="s-mono2">~MHz</text>
+<path d="M480.0 80.0 L520.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-amp" x="520.0" y="60.0" width="60" height="40"/>
+<text x="550.0" y="113.0" text-anchor="middle" class="s-kucuk">log video amp</text>
+<text x="550.0" y="125.0" text-anchor="middle" class="s-mono2">60–70 dB</text>
+<path d="M580.0 80.0 L620.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-cmp" x="620.0" y="60.0" width="60" height="40"/>
+<text x="650.0" y="113.0" text-anchor="middle" class="s-kucuk">eşik</text>
+<text x="650.0" y="125.0" text-anchor="middle" class="s-mono2">→ darbe var/yok</text>
+<path d="M680.0 80.0 L710.0 80.0" class="yol-sayisal" fill="none" marker-end="url(#ok-sayisal)"/>
+<text x="714.0" y="84.0" text-anchor="start" class="s-kucuk s-vurgu">TOA · PW · PA</text>
+<rect x="20.0" y="140.0" width="820.0" height="44.0" rx="6" class="blok" opacity=".8"/>
+<text x="30.0" y="158.0" text-anchor="start" class="s-kucuk">Zarf tüm bant üzerinden alınır: hassasiyet düşük (geniş B → yüksek gürültü), eşzamanlı darbeler üst üste biner; ama darbe geldiği anda görülür (POI ≈ %100).</text>
+<text x="30.0" y="174.0" text-anchor="start" class="s-kucuk">TRF (tuned radio frequency) aynı iskelettir: BPF dar ve ayarlanabilir → biraz seçicilik, hâlâ mixer yok.</text>
+</svg>

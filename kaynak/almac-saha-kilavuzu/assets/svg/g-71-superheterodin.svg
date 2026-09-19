@@ -1,0 +1,49 @@
+<svg viewBox="0 0 860 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g71">
+<title id="t-g71">M-2 süperheterodin blok şeması: anten → ayarlı preselector → LNA → mixer 1 (taramalı LO₁) → yüksek ilk IF filtresi → mixer 2 (sabit LO₂) → dar ikinci IF filtresi → IF/log yükselteç → dedektör; tarama kontrol register'ı yeşil. Not: dar anlık bant, düşük POI, en iyi hassasiyet.</title>
+<text x="20.0" y="24.0" text-anchor="start" class="s-baslik">M-2 · Süperheterodin (taramalı, çift dönüşüm) — dar pencere, yüksek hassasiyet</text>
+<use href="#sym-anten" x="20.0" y="60.0" width="60" height="40"/>
+<text x="50.0" y="113.0" text-anchor="middle" class="s-kucuk">anten</text>
+<path d="M80.0 80.0 L112.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-bpf" x="112.0" y="60.0" width="60" height="40"/>
+<text x="142.0" y="113.0" text-anchor="middle" class="s-kucuk">preselector</text>
+<text x="142.0" y="125.0" text-anchor="middle" class="s-mono2">ayarlı YIG</text>
+<path d="M172.0 80.0 L204.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-amp" x="204.0" y="60.0" width="60" height="40"/>
+<text x="234.0" y="113.0" text-anchor="middle" class="s-kucuk">LNA</text>
+<path d="M264.0 80.0 L296.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-mixer" x="296.0" y="60.0" width="60" height="40"/>
+<text x="326.0" y="113.0" text-anchor="middle" class="s-kucuk">mixer 1</text>
+<path d="M356.0 80.0 L388.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-bpf" x="388.0" y="60.0" width="60" height="40"/>
+<text x="418.0" y="113.0" text-anchor="middle" class="s-kucuk">IF₁ filtre</text>
+<text x="418.0" y="125.0" text-anchor="middle" class="s-mono2">yüksek IF</text>
+<path d="M448.0 80.0 L480.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-mixer" x="480.0" y="60.0" width="60" height="40"/>
+<text x="510.0" y="113.0" text-anchor="middle" class="s-kucuk">mixer 2</text>
+<path d="M540.0 80.0 L572.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-bpf" x="572.0" y="60.0" width="60" height="40"/>
+<text x="602.0" y="113.0" text-anchor="middle" class="s-kucuk">IF₂ filtre</text>
+<text x="602.0" y="125.0" text-anchor="middle" class="s-mono2">dar, ~MHz</text>
+<path d="M632.0 80.0 L664.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-amp" x="664.0" y="60.0" width="60" height="40"/>
+<text x="694.0" y="113.0" text-anchor="middle" class="s-kucuk">IF amp / log</text>
+<path d="M724.0 80.0 L756.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<use href="#sym-diyot" x="756.0" y="60.0" width="60" height="40"/>
+<text x="786.0" y="113.0" text-anchor="middle" class="s-kucuk">dedektör</text>
+<use href="#sym-lo" x="296.0" y="130.0" width="60" height="40"/>
+<text x="326.0" y="183.0" text-anchor="middle" class="s-kucuk">LO₁ (sentezleyici)</text>
+<text x="326.0" y="195.0" text-anchor="middle" class="s-mono2">taramalı</text>
+<path d="M326.0 130.0 L326.0 100.0" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
+<use href="#sym-lo" x="480.0" y="130.0" width="60" height="40"/>
+<text x="510.0" y="183.0" text-anchor="middle" class="s-kucuk">LO₂ (sabit)</text>
+<path d="M510.0 130.0 L510.0 100.0" class="yol-saat" fill="none" marker-end="url(#ok-saat)"/>
+<use href="#sym-reg" x="140.0" y="130.0" width="60" height="40"/>
+<text x="170.0" y="183.0" text-anchor="middle" class="s-kucuk">tarama kontrolü</text>
+<path d="M200.0 150.0 L296.0 150.0" class="yol-kontrol" fill="none" marker-end="url(#ok-kontrol)"/>
+<path d="M170.0 130.0 L170.0 100.0" class="yol-kontrol" fill="none" marker-end="url(#ok-kontrol)"/>
+<path d="M816.0 80.0 L842.0 80.0" class="yol-analog" fill="none" marker-end="url(#ok-analog)"/>
+<text x="776.0" y="118.0" text-anchor="start" class="s-kucuk">video → eşik</text>
+<rect x="20.0" y="200.0" width="820.0" height="44.0" rx="6" class="blok" opacity=".8"/>
+<text x="30.0" y="218.0" text-anchor="start" class="s-kucuk">Anlık bant IF₂ filtresi kadar dardır; bandı LO₁ ile taramak gerekir → POI düşer. Karşılığında en iyi hassasiyet ve seçicilik, temiz dinamik aralık.</text>
+<text x="30.0" y="234.0" text-anchor="start" class="s-kucuk">İlk IF yüksek (image uzak, preselector kolay), ikinci IF düşük (dar filtre kolay): çift dönüşümün klasik gerekçesi (Bölüm 6).</text>
+</svg>

@@ -1,0 +1,98 @@
+<svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g40">
+<title id="t-g40">Referans ön uç kaskadının seviye diyagramı (hesaplanmış, B = 300 MHz). Üstte blok sembolleri: limiter, LNA, preselector, mixer, IF filtre, IF yükselteç, AAF + sürücü. Altta bloktan bloğa sinyal seviyesi (mavi, −60 dBm girişten −20 dBm çıkışa) ve gürültü seviyesi (gri dolgu). Girişte SNR 29.2 dB, çıkışta 25.8 dB; fark 3.45 dB = Friis ile kaskad NF'i. Her bloğun altında kümülatif NF: LNA'dan sonra neredeyse değişmez. ADC tam ölçeği +4 dBm altın kesikli.</title>
+<use href="#sym-anten" x="90.0" y="14" width="60" height="40"/>
+<use href="#sym-limiter" x="145.7" y="14" width="60" height="40"/>
+<text x="175.7" y="68" text-anchor="middle" class="s-kucuk">Limiter</text>
+<text x="175.7" y="82" text-anchor="middle" class="s-mono2">G -0.5 · NF 0.5</text>
+<line x1="205.7" y1="34" x2="257.1" y2="34" class="yol-analog"/>
+<use href="#sym-amp" x="257.1" y="14" width="60" height="40"/>
+<text x="287.1" y="68" text-anchor="middle" class="s-kucuk">LNA</text>
+<text x="287.1" y="82" text-anchor="middle" class="s-mono2">G +20 · NF 2</text>
+<line x1="317.1" y1="34" x2="368.6" y2="34" class="yol-analog"/>
+<use href="#sym-bpf" x="368.6" y="14" width="60" height="40"/>
+<text x="398.6" y="68" text-anchor="middle" class="s-kucuk">Preselector</text>
+<text x="398.6" y="82" text-anchor="middle" class="s-mono2">G -2 · NF 2</text>
+<line x1="428.6" y1="34" x2="480.0" y2="34" class="yol-analog"/>
+<use href="#sym-mixer" x="480.0" y="14" width="60" height="40"/>
+<text x="510.0" y="68" text-anchor="middle" class="s-kucuk">Mixer</text>
+<text x="510.0" y="82" text-anchor="middle" class="s-mono2">G -7 · NF 7</text>
+<line x1="540.0" y1="34" x2="591.4" y2="34" class="yol-analog"/>
+<use href="#sym-bpf" x="591.4" y="14" width="60" height="40"/>
+<text x="621.4" y="68" text-anchor="middle" class="s-kucuk">IF filtre</text>
+<text x="621.4" y="82" text-anchor="middle" class="s-mono2">G -3 · NF 3</text>
+<line x1="651.4" y1="34" x2="702.9" y2="34" class="yol-analog"/>
+<use href="#sym-amp" x="702.9" y="14" width="60" height="40"/>
+<text x="732.9" y="68" text-anchor="middle" class="s-kucuk">IF yükselteç</text>
+<text x="732.9" y="82" text-anchor="middle" class="s-mono2">G +32 · NF 4</text>
+<line x1="762.9" y1="34" x2="814.3" y2="34" class="yol-analog"/>
+<use href="#sym-lpf" x="814.3" y="14" width="60" height="40"/>
+<text x="844.3" y="68" text-anchor="middle" class="s-kucuk">AAF + sürücü</text>
+<text x="844.3" y="82" text-anchor="middle" class="s-mono2">G +0.5 · NF 6</text>
+<line x1="120.0" y1="34" x2="145.7" y2="34" class="yol-analog"/>
+<text x="940" y="34" text-anchor="start" class="s-kucuk">→ ADC</text>
+<line x1="900.0" y1="34" x2="936.0" y2="34" class="yol-analog" marker-end="url(#ok-analog)"/>
+<use href="#sym-lo" x="480.0" y="88" width="60" height="40"/>
+<text x="544.0" y="112" class="s-kucuk">LO 7.6 GHz</text>
+<line x1="80" y1="143.6" x2="940" y2="143.6" class="izgara"/><text x="74" y="147.6" text-anchor="end" class="s-mono2">0</text><line x1="80" y1="190.9" x2="940" y2="190.9" class="izgara"/><text x="74" y="194.9" text-anchor="end" class="s-mono2">-20</text><line x1="80" y1="238.2" x2="940" y2="238.2" class="izgara"/><text x="74" y="242.2" text-anchor="end" class="s-mono2">-40</text><line x1="80" y1="285.5" x2="940" y2="285.5" class="izgara"/><text x="74" y="289.5" text-anchor="end" class="s-mono2">-60</text><line x1="80" y1="332.7" x2="940" y2="332.7" class="izgara"/><text x="74" y="336.7" text-anchor="end" class="s-mono2">-80</text><line x1="80" y1="380.0" x2="940" y2="380.0" class="izgara"/><text x="74" y="384.0" text-anchor="end" class="s-mono2">-100</text><rect x="80" y="120" width="860" height="260" class="eksen"/>
+<text x="28" y="250" class="s-kucuk" transform="rotate(-90 28 250)" text-anchor="middle">seviye (dBm)</text>
+<path d="M120.0 380L120.0 354.5L231.4 354.5L231.4 354.5L342.9 354.5L342.9 302.5L454.3 302.5L454.3 307.2L565.7 307.2L565.7 323.3L677.1 323.3L677.1 329.9L788.6 329.9L788.6 253.0L900.0 253.0L900.0 251.8L900.0 380Z" class="spk-gurultu" opacity=".7"/>
+<path d="M120.0 354.5L231.4 354.5L231.4 354.5L342.9 354.5L342.9 302.5L454.3 302.5L454.3 307.2L565.7 307.2L565.7 323.3L677.1 323.3L677.1 329.9L788.6 329.9L788.6 253.0L900.0 253.0L900.0 251.8" fill="none" stroke="var(--ink-2)" stroke-width="1.4"/>
+<path d="M120.0 285.5L231.4 285.5L231.4 286.6L342.9 286.6L342.9 239.4L454.3 239.4L454.3 244.1L565.7 244.1L565.7 260.6L677.1 260.6L677.1 267.7L788.6 267.7L788.6 192.1L900.0 192.1L900.0 190.9" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+<circle cx="120.0" cy="285.5" r="4" fill="var(--accent)"/>
+<text x="120.0" y="276.5" text-anchor="middle" class="s-mono2 s-vurgu">-60.0</text>
+<text x="120.0" y="368.5" text-anchor="middle" class="s-mono2">-89.2</text>
+<line x1="120.0" y1="120" x2="120.0" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
+<circle cx="231.4" cy="286.6" r="4" fill="var(--accent)"/>
+<text x="231.4" y="277.6" text-anchor="middle" class="s-mono2 s-vurgu">-60.5</text>
+<text x="231.4" y="368.5" text-anchor="middle" class="s-mono2">-89.2</text>
+<line x1="231.4" y1="120" x2="231.4" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
+<circle cx="342.9" cy="239.4" r="4" fill="var(--accent)"/>
+<text x="342.9" y="230.4" text-anchor="middle" class="s-mono2 s-vurgu">-40.5</text>
+<text x="342.9" y="316.5" text-anchor="middle" class="s-mono2">-67.2</text>
+<line x1="342.9" y1="120" x2="342.9" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
+<circle cx="454.3" cy="244.1" r="4" fill="var(--accent)"/>
+<text x="454.3" y="235.1" text-anchor="middle" class="s-mono2 s-vurgu">-42.5</text>
+<text x="454.3" y="321.2" text-anchor="middle" class="s-mono2">-69.2</text>
+<line x1="454.3" y1="120" x2="454.3" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
+<circle cx="565.7" cy="260.6" r="4" fill="var(--accent)"/>
+<text x="565.7" y="251.6" text-anchor="middle" class="s-mono2 s-vurgu">-49.5</text>
+<text x="565.7" y="337.3" text-anchor="middle" class="s-mono2">-76.0</text>
+<line x1="565.7" y1="120" x2="565.7" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
+<circle cx="677.1" cy="267.7" r="4" fill="var(--accent)"/>
+<text x="677.1" y="258.7" text-anchor="middle" class="s-mono2 s-vurgu">-52.5</text>
+<text x="677.1" y="343.9" text-anchor="middle" class="s-mono2">-78.8</text>
+<line x1="677.1" y1="120" x2="677.1" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
+<circle cx="788.6" cy="192.1" r="4" fill="var(--accent)"/>
+<text x="788.6" y="183.1" text-anchor="middle" class="s-mono2 s-vurgu">-20.5</text>
+<text x="788.6" y="267.0" text-anchor="middle" class="s-mono2">-46.3</text>
+<line x1="788.6" y1="120" x2="788.6" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
+<circle cx="900.0" cy="190.9" r="4" fill="var(--accent)"/>
+<text x="900.0" y="181.9" text-anchor="middle" class="s-mono2 s-vurgu">-20.0</text>
+<text x="900.0" y="265.8" text-anchor="middle" class="s-mono2">-45.8</text>
+<line x1="900.0" y1="120" x2="900.0" y2="380" stroke="var(--line)" stroke-width=".8" stroke-dasharray="2 4"/>
+<line x1="80" y1="134.2" x2="940" y2="134.2" class="spk-filtre"/>
+<text x="936" y="129.2" text-anchor="end" class="s-kucuk s-altin">ADC tam ölçek +4 dBm → 24 dB tepe payı</text>
+<line x1="134.0" y1="285.5" x2="134.0" y2="354.5" stroke="var(--green)" stroke-width="1.4" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>
+<text x="140.0" y="324.0" class="s-kucuk s-yesil" text-anchor="start">SNR giriş 29.2 dB</text>
+<line x1="886.0" y1="190.9" x2="886.0" y2="251.8" stroke="var(--green)" stroke-width="1.4" marker-end="url(#ok-kontrol)" marker-start="url(#ok-kontrol)"/>
+<text x="880.0" y="225.3" class="s-kucuk s-yesil" text-anchor="end">SNR çıkış 25.8 dB</text>
+<text x="86" y="384.5" class="s-kucuk">kTB·B = -89.2 dBm (300 MHz, NF 0)</text>
+<text x="20" y="402" class="s-kucuk">kümülatif NF</text>
+<text x="20" y="420" class="s-kucuk">kümülatif G</text>
+<text x="231.4" y="402" text-anchor="middle" class="s-mono s-kirmizi">0.50</text>
+<text x="231.4" y="420" text-anchor="middle" class="s-mono2">-0.5</text>
+<text x="342.9" y="402" text-anchor="middle" class="s-mono s-kirmizi">2.50</text>
+<text x="342.9" y="420" text-anchor="middle" class="s-mono2">+19.5</text>
+<text x="454.3" y="402" text-anchor="middle" class="s-mono s-kirmizi">2.52</text>
+<text x="454.3" y="420" text-anchor="middle" class="s-mono2">+17.5</text>
+<text x="565.7" y="402" text-anchor="middle" class="s-mono s-kirmizi">2.69</text>
+<text x="565.7" y="420" text-anchor="middle" class="s-mono2">+10.5</text>
+<text x="677.1" y="402" text-anchor="middle" class="s-mono s-kirmizi">2.89</text>
+<text x="677.1" y="420" text-anchor="middle" class="s-mono2">+7.5</text>
+<text x="788.6" y="402" text-anchor="middle" class="s-mono s-kirmizi">3.45</text>
+<text x="788.6" y="420" text-anchor="middle" class="s-mono2">+39.5</text>
+<text x="900.0" y="402" text-anchor="middle" class="s-mono s-kirmizi">3.45</text>
+<text x="900.0" y="420" text-anchor="middle" class="s-mono2">+40.0</text>
+<text x="510" y="446" text-anchor="middle" class="s-metin2">Friis: kaskad NF = 3.45 dB = SNR kaybı (29.2 → 25.8 dB). LNA'dan sonraki blokların katkısı 20 dB kazançla bölünür.</text>
+<text x="510" y="464" text-anchor="middle" class="s-kucuk">Sistem bütçesi NF = 6 dB: LNA öncesi kablo/konektör kaybı (~1 dB doğrudan eklenir) + ADC eşdeğer gürültüsü + sıcaklık/üretim payı. Sayılar öğreticidir.</text>
+</svg>

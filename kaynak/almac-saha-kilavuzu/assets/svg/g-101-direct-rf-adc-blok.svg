@@ -1,0 +1,71 @@
+<svg viewBox="0 0 1000 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g101">
+<title id="t-g101">Jenerik direct RF-sampling ADC iç blok şeması: analog giriş tamponu ve track-and-hold (altın), M yollu time-interleaved ADC çekirdekleri, interleave kalibrasyon bloğu; sayısal tarafta (mavi) çip içi DDC — NCO, kompleks mixer, decimation filtreleri — ve JESD204 verici (lane'ler). Saat girişi, çip içi PLL/bölücü ve SYSREF gri kesikli; SPI/register ve kalibrasyon kontrolü yeşil. Bypass yolu: DDC atlanıp tam hız reel örnek çıkışı.</title>
+<text x="20" y="24" class="s-baslik">Direct RF-sampling ADC — jenerik iç yapı (blok adları üreticiye göre değişir)</text>
+<rect x="20" y="40" width="300" height="200" rx="8" class="blok" opacity=".35"/>
+<text x="30" y="56" class="s-kucuk s-altin">ANALOG</text>
+<rect x="330" y="40" width="470" height="200" rx="8" class="blok" opacity=".35"/>
+<text x="340" y="56" class="s-kucuk s-vurgu">SAYISAL (çip içi)</text>
+<rect x="810" y="40" width="170" height="200" rx="8" class="blok" opacity=".35"/>
+<text x="820" y="56" class="s-kucuk s-vurgu">ARAYÜZ</text>
+<text x="22" y="124" class="s-kucuk s-altin">RF / IF</text>
+<path d="M60.0 120.0 L78.0 120.0" class="yol-analog" marker-end="url(#ok-analog)"/>
+<use href="#sym-amp" x="80" y="100" width="60" height="40"/><text x="110.0" y="153" text-anchor="middle" class="s-kucuk">giriş tamponu</text>
+<path d="M140.0 120.0 L158.0 120.0" class="yol-analog" marker-end="url(#ok-analog)"/>
+<rect x="160" y="100" width="50" height="40" rx="4" class="blok-analog"/><text x="185.0" y="124.0" text-anchor="middle" class="s-metin2">T/H</text>
+<text x="185" y="154" text-anchor="middle" class="s-kucuk">örnekle-tut</text>
+<path d="M210 120 L232 80" class="yol-analog"/>
+<use href="#sym-adc" x="234" y="68" width="40" height="24"/>
+<path d="M274 80 L296 120" class="yol-sayisal"/>
+<path d="M210 120 L232 107" class="yol-analog"/>
+<use href="#sym-adc" x="234" y="95" width="40" height="24"/>
+<path d="M274 107 L296 120" class="yol-sayisal"/>
+<path d="M210 120 L232 134" class="yol-analog"/>
+<use href="#sym-adc" x="234" y="122" width="40" height="24"/>
+<path d="M274 134 L296 120" class="yol-sayisal"/>
+<path d="M210 120 L232 161" class="yol-analog"/>
+<use href="#sym-adc" x="234" y="149" width="40" height="24"/>
+<path d="M274 161 L296 120" class="yol-sayisal"/>
+<text x="254" y="190" text-anchor="middle" class="s-kucuk">M çekirdek, her biri fs/M</text>
+<text x="254" y="204" text-anchor="middle" class="s-kucuk">(time-interleaved)</text>
+<rect x="300" y="100" width="22" height="40" rx="4" class="blok"/><text x="311.0" y="124.0" text-anchor="middle" class="s-metin2"></text>
+<text x="311" y="123" text-anchor="middle" class="s-mono2" transform="rotate(-90 311 123)">MUX</text>
+<path d="M322.0 120.0 L342.0 120.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<rect x="344" y="98" width="76" height="44" rx="4" class="blok"/><text x="382.0" y="117.0" text-anchor="middle" class="s-metin2">IL kalibrasyon</text><text x="382.0" y="131.0" text-anchor="middle" class="s-kucuk">offset/kazanç/skew</text>
+<path d="M420.0 120.0 L440.0 120.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<rect x="442" y="66" width="300" height="118" rx="6" fill="none" stroke="var(--accent)" stroke-dasharray="5 4"/>
+<text x="450" y="80" class="s-kucuk s-vurgu">DDC (kanal başına; 1–N kanal)</text>
+<use href="#sym-mixer-d" x="460" y="100" width="60" height="40"/><text x="490.0" y="153" text-anchor="middle" class="s-kucuk">kompleks mixer</text>
+<use href="#sym-nco" x="460" y="156" width="60" height="30"/><text x="490.0" y="199" text-anchor="middle" class="s-kucuk">NCO</text>
+<path d="M490 156 V140" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M520.0 120.0 L538.0 120.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<use href="#sym-lpf" x="540" y="100" width="60" height="40"/><text x="570.0" y="153" text-anchor="middle" class="s-kucuk">filtre</text>
+<path d="M600.0 120.0 L618.0 120.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<use href="#sym-dec" x="620" y="100" width="60" height="40"/><text x="650.0" y="153" text-anchor="middle" class="s-kucuk">decimation ÷D</text>
+<path d="M680.0 120.0 L700.0 120.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="708" y="114" class="s-kucuk s-vurgu">I/Q</text><text x="708" y="128" class="s-kucuk">fs/D</text>
+<path d="M430 86 H760 V180 H812" class="yol-sayisal" stroke-dasharray="4 3" marker-end="url(#ok-sayisal)"/>
+<text x="600" y="80" text-anchor="middle" class="s-kucuk">bypass: reel örnek, tam fs</text>
+<path d="M740.0 120.0 L812.0 120.0" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<rect x="814" y="70" width="150" height="100" rx="4" class="blok-aktif"/><text x="889.0" y="117.0" text-anchor="middle" class="s-metin2">JESD204B/C TX</text><text x="889.0" y="131.0" text-anchor="middle" class="s-kucuk">transport · scrambler · link · PHY</text>
+<path d="M964 90 H990" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M964 110 H990" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M964 130 H990" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M964 150 H990" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="964" y="184" text-anchor="end" class="s-kucuk">L lane × 6–25 Gb/s</text>
+<text x="964" y="198" text-anchor="end" class="s-kucuk">→ FPGA GT</text>
+<use href="#sym-saat" x="40" y="280" width="60" height="40"/><text x="70.0" y="333" text-anchor="middle" class="s-kucuk">CLK girişi (fs veya fs/k)</text>
+<path d="M100 300 H140" class="yol-saat" marker-end="url(#ok-saat)"/>
+<rect x="142" y="280" width="110" height="40" rx="4" class="blok"/><text x="197.0" y="297.0" text-anchor="middle" class="s-metin2">PLL / bölücü</text><text x="197.0" y="311.0" text-anchor="middle" class="s-kucuk">çip içi (opsiyonel)</text>
+<path d="M252 300 H700" class="yol-saat"/>
+<path d="M254 300 V168" class="yol-saat" marker-end="url(#ok-saat)"/>
+<text x="262" y="292" class="s-kucuk">örnekleme saati → T/H ve çekirdekler; sayısal saat → DDC, JESD</text>
+<path d="M700 300 V190" class="yol-saat" marker-end="url(#ok-saat)"/>
+<path d="M889 300 V172" class="yol-saat" marker-end="url(#ok-saat)"/>
+<path d="M700 300 H889" class="yol-saat"/>
+<text x="860" y="318" class="s-kucuk">SYSREF → LMFC/LEMC</text>
+<path d="M820 330 H889 V300" class="yol-saat"/>
+<use href="#sym-reg" x="40" y="330" width="60" height="30"/><text x="70.0" y="373" text-anchor="middle" class="s-kucuk">SPI / register</text>
+<path d="M100 345 H382 V142" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<path d="M382 345 H490 V186" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
+<text x="400" y="360" class="s-kucuk s-yesil">kalibrasyon başlat/izle · NCO FTW · decimation · JESD parametreleri</text>
+</svg>

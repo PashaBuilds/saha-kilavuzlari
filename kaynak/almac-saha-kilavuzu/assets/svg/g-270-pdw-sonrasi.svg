@@ -1,0 +1,168 @@
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g270">
+<title id="t-g270">Karışık PDW akışından emiter izlerine: üstte 10 ms boyunca TOA–RF saçılımı olarak karışık PDW akışı; sol altta ardışık TOA farklarının histogramı ve PRI adayı tepeleri; sağ altta üç kurgusal emiterin ayrılmış darbe dizileri</title>
+<text x="30.0" y="22.0" text-anchor="start" class="s-baslik">PDW'den sonrası: karışık akış → PRI histogramı → emiter izleri (üç kurgusal emiter, 10 ms)</text>
+<line x1="70.0" y1="40" x2="70.0" y2="170" class="izgara"/><text x="70.0" y="184" text-anchor="middle" class="s-mono2">0</text><line x1="228.0" y1="40" x2="228.0" y2="170" class="izgara"/><text x="228.0" y="184" text-anchor="middle" class="s-mono2">2</text><line x1="386.0" y1="40" x2="386.0" y2="170" class="izgara"/><text x="386.0" y="184" text-anchor="middle" class="s-mono2">4</text><line x1="544.0" y1="40" x2="544.0" y2="170" class="izgara"/><text x="544.0" y="184" text-anchor="middle" class="s-mono2">6</text><line x1="702.0" y1="40" x2="702.0" y2="170" class="izgara"/><text x="702.0" y="184" text-anchor="middle" class="s-mono2">8</text><line x1="860.0" y1="40" x2="860.0" y2="170" class="izgara"/><text x="860.0" y="184" text-anchor="middle" class="s-mono2">10</text><line x1="70" y1="162.8" x2="860" y2="162.8" class="izgara"/><text x="64" y="166.8" text-anchor="end" class="s-mono2">9.0</text><line x1="70" y1="133.9" x2="860" y2="133.9" class="izgara"/><text x="64" y="137.9" text-anchor="end" class="s-mono2">9.2</text><line x1="70" y1="105.0" x2="860" y2="105.0" class="izgara"/><text x="64" y="109.0" text-anchor="end" class="s-mono2">9.4</text><line x1="70" y1="76.1" x2="860" y2="76.1" class="izgara"/><text x="64" y="80.1" text-anchor="end" class="s-mono2">9.6</text><line x1="70" y1="47.2" x2="860" y2="47.2" class="izgara"/><text x="64" y="51.2" text-anchor="end" class="s-mono2">9.8</text><rect x="70" y="40" width="790" height="130" class="eksen"/>
+<text x="14.0" y="105.0" text-anchor="middle" class="s-kucuk" transform="rotate(-90 14 105.0)">RF (GHz)</text>
+<text x="465.0" y="198.0" text-anchor="middle" class="s-kucuk">TOA (ms) — almaçtan çıkan haliyle: kimin darbesi olduğu bilinmiyor</text>
+<circle cx="74.1" cy="67.5" r="2.6" class="spk-sinyal"/>
+<circle cx="98.6" cy="66.9" r="2.6" class="spk-sinyal"/>
+<circle cx="107.2" cy="145.7" r="2.6" class="spk-sinyal"/>
+<circle cx="115.0" cy="105.4" r="2.6" class="spk-sinyal"/>
+<circle cx="147.6" cy="67.0" r="2.6" class="spk-sinyal"/>
+<circle cx="156.2" cy="145.5" r="2.6" class="spk-sinyal"/>
+<circle cx="172.1" cy="67.0" r="2.6" class="spk-sinyal"/>
+<circle cx="194.0" cy="105.1" r="2.6" class="spk-sinyal"/>
+<circle cx="196.6" cy="68.4" r="2.6" class="spk-sinyal"/>
+<circle cx="217.8" cy="145.3" r="2.6" class="spk-sinyal"/>
+<circle cx="245.6" cy="68.8" r="2.6" class="spk-sinyal"/>
+<circle cx="266.8" cy="145.3" r="2.6" class="spk-sinyal"/>
+<circle cx="270.0" cy="66.9" r="2.6" class="spk-sinyal"/>
+<circle cx="273.0" cy="105.4" r="2.6" class="spk-sinyal"/>
+<circle cx="294.5" cy="66.8" r="2.6" class="spk-sinyal"/>
+<circle cx="328.4" cy="145.3" r="2.6" class="spk-sinyal"/>
+<circle cx="343.5" cy="66.3" r="2.6" class="spk-sinyal"/>
+<circle cx="352.0" cy="104.5" r="2.6" class="spk-sinyal"/>
+<circle cx="368.0" cy="68.2" r="2.6" class="spk-sinyal"/>
+<circle cx="377.4" cy="144.4" r="2.6" class="spk-sinyal"/>
+<circle cx="392.5" cy="67.9" r="2.6" class="spk-sinyal"/>
+<circle cx="417.0" cy="68.3" r="2.6" class="spk-sinyal"/>
+<circle cx="431.0" cy="104.5" r="2.6" class="spk-sinyal"/>
+<circle cx="439.0" cy="145.6" r="2.6" class="spk-sinyal"/>
+<circle cx="441.5" cy="66.9" r="2.6" class="spk-sinyal"/>
+<circle cx="466.0" cy="67.4" r="2.6" class="spk-sinyal"/>
+<circle cx="488.0" cy="145.3" r="2.6" class="spk-sinyal"/>
+<circle cx="490.5" cy="67.4" r="2.6" class="spk-sinyal"/>
+<circle cx="510.0" cy="105.2" r="2.6" class="spk-sinyal"/>
+<circle cx="514.9" cy="66.8" r="2.6" class="spk-sinyal"/>
+<circle cx="539.4" cy="68.1" r="2.6" class="spk-sinyal"/>
+<circle cx="549.6" cy="146.3" r="2.6" class="spk-sinyal"/>
+<circle cx="563.9" cy="67.6" r="2.6" class="spk-sinyal"/>
+<circle cx="588.4" cy="68.1" r="2.6" class="spk-sinyal"/>
+<circle cx="589.0" cy="105.3" r="2.6" class="spk-sinyal"/>
+<circle cx="598.6" cy="144.6" r="2.6" class="spk-sinyal"/>
+<circle cx="612.9" cy="67.5" r="2.6" class="spk-sinyal"/>
+<circle cx="637.4" cy="66.8" r="2.6" class="spk-sinyal"/>
+<circle cx="660.2" cy="145.9" r="2.6" class="spk-sinyal"/>
+<circle cx="661.9" cy="66.6" r="2.6" class="spk-sinyal"/>
+<circle cx="668.0" cy="104.5" r="2.6" class="spk-sinyal"/>
+<circle cx="686.4" cy="67.9" r="2.6" class="spk-sinyal"/>
+<circle cx="709.2" cy="144.8" r="2.6" class="spk-sinyal"/>
+<circle cx="710.9" cy="68.5" r="2.6" class="spk-sinyal"/>
+<circle cx="735.4" cy="67.1" r="2.6" class="spk-sinyal"/>
+<circle cx="759.8" cy="66.9" r="2.6" class="spk-sinyal"/>
+<circle cx="770.8" cy="146.2" r="2.6" class="spk-sinyal"/>
+<circle cx="784.3" cy="66.3" r="2.6" class="spk-sinyal"/>
+<circle cx="808.8" cy="67.0" r="2.6" class="spk-sinyal"/>
+<circle cx="819.8" cy="145.0" r="2.6" class="spk-sinyal"/>
+<circle cx="826.0" cy="105.3" r="2.6" class="spk-sinyal"/>
+<circle cx="833.3" cy="66.9" r="2.6" class="spk-sinyal"/>
+<circle cx="857.8" cy="67.0" r="2.6" class="spk-sinyal"/>
+<text x="854.0" y="54.0" text-anchor="end" class="s-mono2">53 PDW</text>
+<line x1="70.0" y1="230" x2="70.0" y2="400" class="izgara"/><text x="70.0" y="414" text-anchor="middle" class="s-mono2">0</text><line x1="157.5" y1="230" x2="157.5" y2="400" class="izgara"/><text x="157.5" y="414" text-anchor="middle" class="s-mono2">0.3</text><line x1="245.0" y1="230" x2="245.0" y2="400" class="izgara"/><text x="245.0" y="414" text-anchor="middle" class="s-mono2">0.6</text><line x1="332.5" y1="230" x2="332.5" y2="400" class="izgara"/><text x="332.5" y="414" text-anchor="middle" class="s-mono2">0.9</text><line x1="420.0" y1="230" x2="420.0" y2="400" class="izgara"/><text x="420.0" y="414" text-anchor="middle" class="s-mono2">1.2</text><rect x="70" y="230" width="350" height="170" class="eksen"/>
+<text x="245.0" y="428.0" text-anchor="middle" class="s-kucuk">ΔTOA (ms) — 1.–3. mertebe farkların histogramı</text>
+<text x="30.0" y="315.0" text-anchor="middle" class="s-kucuk" transform="rotate(-90 30 315.0)">sayı</text>
+<rect x="70.0" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="75.8" y="369.4" width="4.8" height="30.6" class="spk-sinyal" opacity=".8"/>
+<rect x="81.7" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="87.5" y="379.6" width="4.8" height="20.4" class="spk-sinyal" opacity=".8"/>
+<rect x="93.3" y="384.7" width="4.8" height="15.3" class="spk-sinyal" opacity=".8"/>
+<rect x="99.2" y="374.5" width="4.8" height="25.5" class="spk-sinyal" opacity=".8"/>
+<rect x="105.0" y="369.4" width="4.8" height="30.6" class="spk-sinyal" opacity=".8"/>
+<rect x="116.7" y="384.7" width="4.8" height="15.3" class="spk-sinyal" opacity=".8"/>
+<rect x="122.5" y="379.6" width="4.8" height="20.4" class="spk-sinyal" opacity=".8"/>
+<rect x="128.3" y="379.6" width="4.8" height="20.4" class="spk-sinyal" opacity=".8"/>
+<rect x="134.2" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="140.0" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="145.8" y="364.3" width="4.8" height="35.7" class="spk-sinyal" opacity=".8"/>
+<rect x="151.7" y="384.7" width="4.8" height="15.3" class="spk-sinyal" opacity=".8"/>
+<rect x="157.5" y="252.2" width="4.8" height="147.8" class="spk-sinyal" opacity=".8"/>
+<rect x="163.3" y="384.7" width="4.8" height="15.3" class="spk-sinyal" opacity=".8"/>
+<rect x="169.2" y="374.5" width="4.8" height="25.5" class="spk-sinyal" opacity=".8"/>
+<rect x="175.0" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="180.8" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="186.7" y="384.7" width="4.8" height="15.3" class="spk-sinyal" opacity=".8"/>
+<rect x="192.5" y="379.6" width="4.8" height="20.4" class="spk-sinyal" opacity=".8"/>
+<rect x="198.3" y="384.7" width="4.8" height="15.3" class="spk-sinyal" opacity=".8"/>
+<rect x="204.2" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="210.0" y="369.4" width="4.8" height="30.6" class="spk-sinyal" opacity=".8"/>
+<rect x="215.8" y="364.3" width="4.8" height="35.7" class="spk-sinyal" opacity=".8"/>
+<rect x="221.7" y="384.7" width="4.8" height="15.3" class="spk-sinyal" opacity=".8"/>
+<rect x="227.5" y="389.8" width="4.8" height="10.2" class="spk-sinyal" opacity=".8"/>
+<rect x="233.3" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="239.2" y="374.5" width="4.8" height="25.5" class="spk-sinyal" opacity=".8"/>
+<rect x="245.0" y="343.9" width="4.8" height="56.1" class="spk-sinyal" opacity=".8"/>
+<rect x="250.8" y="364.3" width="4.8" height="35.7" class="spk-sinyal" opacity=".8"/>
+<rect x="256.7" y="389.8" width="4.8" height="10.2" class="spk-sinyal" opacity=".8"/>
+<rect x="262.5" y="389.8" width="4.8" height="10.2" class="spk-sinyal" opacity=".8"/>
+<rect x="274.2" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="280.0" y="384.7" width="4.8" height="15.3" class="spk-sinyal" opacity=".8"/>
+<rect x="285.8" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="297.5" y="394.9" width="4.8" height="5.1" class="spk-sinyal" opacity=".8"/>
+<rect x="326.7" y="389.8" width="4.8" height="10.2" class="spk-sinyal" opacity=".8"/>
+<text x="160.4" y="242.0" text-anchor="middle" class="s-kucuk s-altin">C: 0.31</text>
+<text x="250.8" y="254.0" text-anchor="middle" class="s-kucuk s-altin">B: 0.62 / 0.78</text>
+<text x="361.7" y="242.0" text-anchor="middle" class="s-kucuk s-altin">A: 1.00</text>
+<text x="74.0" y="394.0" text-anchor="start" class="s-kucuk">tepeler aday PRI'ler; alt harmonikler (2·PRI…) elenir</text>
+<rect x="500" y="230" width="360" height="170" class="eksen"/>
+<text x="680.0" y="428.0" text-anchor="middle" class="s-kucuk">TOA (ms) — emiter izlerine ayrılmış</text>
+<text x="506.0" y="248.0" text-anchor="start" class="s-kucuk">Emiter A (kurgusal): RF 9.40 GHz · PRI 1.00 ms · PW 1.0 µs</text>
+<line x1="500" y1="260" x2="860" y2="260" class="izgara"/>
+<rect x="519.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<rect x="555.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<rect x="591.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<rect x="627.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<rect x="663.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<rect x="699.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<rect x="735.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<rect x="771.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<rect x="843.0" y="252" width="3" height="16" class="spk-sinyal"/>
+<text x="506.0" y="300.0" text-anchor="start" class="s-kucuk">Emiter B (kurgusal): RF 9.12 GHz · PRI 0.62 / 0.78 ms (stagger) · PW 2.5 µs</text>
+<line x1="500" y1="312" x2="860" y2="312" class="izgara"/>
+<rect x="515.5" y="304" width="3" height="16" class="spk-image"/>
+<rect x="537.8" y="304" width="3" height="16" class="spk-image"/>
+<rect x="565.9" y="304" width="3" height="16" class="spk-image"/>
+<rect x="588.2" y="304" width="3" height="16" class="spk-image"/>
+<rect x="616.3" y="304" width="3" height="16" class="spk-image"/>
+<rect x="638.6" y="304" width="3" height="16" class="spk-image"/>
+<rect x="666.7" y="304" width="3" height="16" class="spk-image"/>
+<rect x="689.0" y="304" width="3" height="16" class="spk-image"/>
+<rect x="717.1" y="304" width="3" height="16" class="spk-image"/>
+<rect x="739.4" y="304" width="3" height="16" class="spk-image"/>
+<rect x="767.5" y="304" width="3" height="16" class="spk-image"/>
+<rect x="789.8" y="304" width="3" height="16" class="spk-image"/>
+<rect x="817.9" y="304" width="3" height="16" class="spk-image"/>
+<rect x="840.2" y="304" width="3" height="16" class="spk-image"/>
+<text x="506.0" y="352.0" text-anchor="start" class="s-kucuk">Emiter C (kurgusal): RF 9.66 GHz · PRI 0.31 ms · PW 0.4 µs</text>
+<line x1="500" y1="364" x2="860" y2="364" class="izgara"/>
+<rect x="500.4" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="511.5" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="533.9" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="545.0" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="556.2" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="578.5" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="589.7" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="600.8" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="623.1" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="634.3" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="645.5" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="656.6" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="667.8" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="678.9" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="690.1" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="701.3" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="712.4" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="723.6" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="734.7" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="745.9" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="757.1" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="768.2" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="779.4" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="790.5" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="801.7" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="812.9" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="824.0" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="835.2" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="846.3" y="356" width="3" height="16" class="spk-filtre"/>
+<rect x="857.5" y="356" width="3" height="16" class="spk-filtre"/>
+<text x="30.0" y="440.0" text-anchor="start" class="s-kucuk">Süreç yazılımdadır: PDW'ler (RF, PW, AOA) kümelenir, küme içinde ΔTOA histogramı PRI adaylarını verir, aday PRI ile darbe dizisi çıkarılır, kalanlar yeniden denenir; iz güncellenir ve kütüphaneyle eşlenir.</text>
+</svg>
