@@ -32,7 +32,7 @@ Sonra `index.html`'e çift tıkla. Hepsi bu — sunucu, kurulum, internet gerekm
 | **Ethernet ve Ağ İletişimi** | Kılavuz | PHY/MAC'ten ARP, IP, TCP/UDP, DNS ve TLS'e; Wireshark, gömülü Ethernet, arıza teşhisi |
 | **Lokal LLM Dünyası** | Kılavuz | Quantization, MoE & mimariler, VRAM hesabı, Ollama/LM Studio, lokal API — modeli kendi makinende koşturmak |
 | **Vivado'yu Yazılımcı Gibi Okumak** | Kılavuz | Donanımcının teslim ettiği projeyi analiz etmek: blok dizayn, PS IP/CIPS ayarları, MIO/EMIO, Address Editor → xparameters.h, .xsa → Vitis |
-| **Antenden PDW'ye** | Kılavuz | Radar/EH sayısal almaç zinciri: RF ön uç, almaç mimarileri, direct RF ADC, DDC (NCO/mixing/filtre), FFT, CFAR, PDW üretimi, PS kontrol yüzeyi — 20 interaktif widget, tek referans senaryo |
+| **Antenden DTK'ya** | Kılavuz | Radar/EH sayısal almaç zinciri: RF ön uç, almaç mimarileri, direct RF ADC, DDC (NCO/mixing/filtre), FFT, CFAR, DTK/PDW üretimi, PS kontrol yüzeyi — 20 interaktif widget, tek referans senaryo |
 
 ## Repo yapısı
 

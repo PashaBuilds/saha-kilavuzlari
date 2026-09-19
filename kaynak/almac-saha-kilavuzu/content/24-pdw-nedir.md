@@ -1,4 +1,4 @@
-# Bölüm 24 — PDW Nedir
+# Bölüm 24 — PDW (DTK) Nedir
 ::kisim VIII — PDW Üretimi
 ::meta onkosul=3,22,23 acar=25,26,27,30 blok=pdw rota=yazilimci
 

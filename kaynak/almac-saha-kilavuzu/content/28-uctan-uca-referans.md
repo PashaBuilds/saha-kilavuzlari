@@ -18,7 +18,7 @@ kurgusaldır; mantık gerçektir.
 
 {{svg:g-280-poster-sayili.svg|Poster şemanın sayılarla dolu hali. Her durağın altında referans darbenin o noktadaki değerleri: frekans konumu, fs, bit, veri hızı, sinyal seviyesi ve SNR. Altın: analog, mavi: sayısal, yeşil: yazılım. Bölüm 0'daki posterle aynı yerleşim; oradaki her blok burada sayıya kavuşur.|kaydir}}
 
-Darbenin yolculuğu, Bölüm 0'daki cümleyle: antene {{s:sinyal.rf_ghz}} GHz'de,
+Darbenin yolculuğu (antenden DTK'ya), Bölüm 0'daki cümleyle: antene {{s:sinyal.rf_ghz}} GHz'de,
 {{s:sinyal.seviye_dbm_giris}} dBm tepe güçle, {{s:sinyal.pw_us}} µs süren bir
 darbe çarpar. LNA onu gürültü şeklini bozmadan yükseltir; mixer
 {{s:on_uc.lo_ghz}} GHz LO ile {{s:on_uc.if_ghz}} GHz IF'e indirir; image olan

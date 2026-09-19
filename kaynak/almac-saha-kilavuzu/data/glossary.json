@@ -478,8 +478,8 @@
  {
   "kisaltma": "PDW",
   "en": "Pulse Descriptor Word",
-  "tr": "darbe tanımlayıcı sözcük",
-  "tanim": "Bir darbenin ölçülmüş özelliklerinin (TOA, PW, PA, RF, AOA, bayraklar) sabit formatlı sayısal kaydı.",
+  "tr": "darbe tanımlayıcı kelime (DTK)",
+  "tanim": "Bir darbenin ölçülmüş özelliklerinin (TOA, PW, PA, RF, AOA, bayraklar) sabit formatlı sayısal kaydı. Türkçe ekip dilinde DTK.",
   "bolum": 24
  },
  {
@@ -901,5 +901,12 @@
   "tr": "akıştan belleğe",
   "tanim": "DMA'nın PL → DDR (yazma) yönü; PDW ve snapshot akışı bu yolu kullanır.",
   "bolum": 26
+ },
+ {
+  "kisaltma": "DTK",
+  "en": "Pulse Descriptor Word (PDW)",
+  "tr": "darbe tanımlayıcı kelime",
+  "tanim": "PDW'nin Türkiye'deki yerleşik kısaltması; bu kılavuzda başlıkta DTK, teknik anlatımda PDW kullanılır — aynı kavram.",
+  "bolum": 24
  }
 ]

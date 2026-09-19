@@ -11,8 +11,10 @@ yazılan kod, çalıştığında bile *neden* çalıştığını söyleyemez.
 
 Bu kılavuz o zinciri **tek bir darbenin yolculuğu** üzerinden anlatır. Darbe
 antene çarpar, yükseltilir, frekansı indirilir, sayıya çevrilir, FPGA'da
-süzülür, tespit edilir, ölçülür ve bir **PDW** (Pulse Descriptor Word — darbe
-tanımlayıcı sözcük) olarak senin `read()` çağrına düşer. Her bölüm bu
+süzülür, tespit edilir, ölçülür ve bir **DTK** — Darbe Tanımlayıcı Kelime, İngilizce
+literatürde **PDW** (Pulse Descriptor Word) — olarak senin `read()` çağrına düşer.
+Türkiye'de ekip içi konuşmada DTK, standart ve kaynakçada PDW denir; bu kılavuz
+başlıkta DTK'yı, teknik anlatımda PDW'yi kullanır — ikisi aynı şeydir. Her bölüm bu
 yolculuğun bir durağıdır.
 
 ## Kimin için, ne vadediyor

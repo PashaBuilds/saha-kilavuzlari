@@ -52,11 +52,11 @@ CSS_FILE = ROOT / "assets" / "css" / "kilavuz.css"
 DATA = ROOT / "data"
 OUT = ROOT / "dist" / "index.html"
 
-BASLIK = "Antenden PDW'ye — Saha Kılavuzu"
-ANA_BASLIK = "Antenden PDW'ye"
-ALT_BASLIK = "Radar ve Elektronik Harp Sayısal Almaç Sistemleri Saha Kılavuzu"
-ACIKLAMA = ("Bir darbenin antenden PDW'ye yolculuğu: RF ön uç, ADC, DDC, FFT, CFAR ve "
-            "PDW üretimi — FPGA'lı almaç kartının PS tarafında çalışan gömülü yazılımcı için.")
+BASLIK = "Antenden DTK'ya — Saha Kılavuzu"
+ANA_BASLIK = "Antenden DTK'ya"
+ALT_BASLIK = "Radar ve Elektronik Harp Sayısal Almaç Sistemleri Saha Kılavuzu · DTK = Darbe Tanımlayıcı Kelime (PDW, Pulse Descriptor Word)"
+ACIKLAMA = ("Bir darbenin antenden DTK'ya (PDW) yolculuğu: RF ön uç, ADC, DDC, FFT, CFAR ve "
+            "PDW/DTK üretimi — FPGA'lı almaç kartının PS tarafında çalışan gömülü yazılımcı için.")
 KAPAK_NOT = ("Tüm sayısal örnekler kurgusal bir referans senaryodan türetilmiştir; gerçek bir "
              "sistemi, platformu veya tehdidi temsil etmez. Yalnızca açık literatür kullanılmıştır.")
 RF_YOL = "../rf-sampling/index.html"
@@ -829,7 +829,7 @@ KAPAK_DALGA = """
 <path class="yol-analog" d="M0 32 L120 32 C125 32 126 6 130 6 C134 6 135 58 139 58 C143 58 144 6 148 6 C152 6 153 58 157 58 C161 58 162 6 166 6 C170 6 171 58 175 58 C179 58 180 6 184 6 C188 6 189 58 193 58 C197 58 198 6 202 6 C206 6 207 32 212 32 L760 32" opacity=".9"/>
 <path class="yol-sayisal" d="M420 56 L440 56 L440 20 L452 20 L452 44 L464 44 L464 12 L476 12 L476 50 L488 50 L488 26 L500 26 L500 40 L512 40 L512 16 L524 16 L524 48 L536 48 L536 56 L560 56" opacity=".9"/>
 <path class="yol-kontrol" d="M600 44 h20 v-22 h14 v22 h10 v-10 h14 v10 h10 v-22 h14 v22 h10 v-10 h14 v10 h10 v-22 h14 v22 h16" opacity=".9"/>
-<text x="0" y="12" class="s-kucuk">anten</text><text x="760" y="12" text-anchor="end" class="s-kucuk">PDW</text>
+<text x="0" y="12" class="s-kucuk">anten</text><text x="760" y="12" text-anchor="end" class="s-kucuk">DTK / PDW</text>
 </svg>
 """
 
@@ -980,7 +980,7 @@ def main():
 {chr(10).join(b["html"] for b in bolumler)}
 </div>
 <footer class="dipnot">
-<p>Saha Kılavuzu Serisi — Antenden PDW'ye. Tek dosya, bağımlılıksız; USB ile taşınabilir, internetsiz açılır.
+<p>Saha Kılavuzu Serisi — Antenden DTK'ya (PDW). Tek dosya, bağımlılıksız; USB ile taşınabilir, internetsiz açılır.
 Sayısal örnekler kurgusaldır; yalnızca açık literatür kullanılmıştır.</p>
 </footer>
 </main>

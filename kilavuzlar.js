@@ -157,14 +157,14 @@ window.KILAVUZLAR = [
     sira: 5,
     slug: "almac",
     kaynak: "almac-saha-kilavuzu",
-    baslik: "Antenden PDW'ye",
+    baslik: "Antenden DTK'ya",
     aciklama:
-      "Tek bir radar darbesinin antenden PDW FIFO'suna yolculuğu: RF ön uç ve " +
+      "Tek bir radar darbesinin antenden DTK (Darbe Tanımlayıcı Kelime, PDW) FIFO'suna yolculuğu: RF ön uç ve " +
       "almaç mimarileri, direct RF-sampling ADC, FPGA'da DDC (NCO, mixing, " +
       "filtre, decimation), FFT ve pencereleme, CFAR tespit, PDW üretimi ve PS " +
       "kontrol yüzeyi. Yirmi interaktif laboratuvar ve tek bir kurgusal referans " +
       "senaryoyla — register'a eşik yazan gömülü yazılımcının gözünden.",
-    etiketler: ["Almaç Mimarileri", "Direct RF ADC", "DDC · NCO", "FFT & Pencere", "CFAR & PDW", "20 Widget"],
+    etiketler: ["Almaç Mimarileri", "Direct RF ADC", "DDC · NCO", "FFT & Pencere", "CFAR & DTK/PDW", "20 Widget"],
     bolum: "31 bölüm + 6 ek",
     bolumSayi: 37,
     sema: 104,
