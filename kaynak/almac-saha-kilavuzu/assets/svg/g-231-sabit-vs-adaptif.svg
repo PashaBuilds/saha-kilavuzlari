@@ -1,4 +1,4 @@
-<svg viewBox="0 0 860 425" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g231">
+<svg viewBox="0 0 860 442" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g231">
 <title id="t-g231">Sabit eşik ile adaptif CA-CFAR eşiğinin karşılaştırması: gürültü tabanı 600. hücrede 6 dB yükselir; üst panelde sabit eşik ikinci yarıda çok sayıda yanlış alarm (kırmızı) üretir, alt panelde CFAR eşiği (altın kesikli) gürültüyü izler ve yanlış alarm üretmez; tespitler mavi</title>
 <rect x="60" y="36" width="780" height="150" fill="var(--dia-panel)" stroke="var(--line)"/>
 <line x1="60" y1="36" x2="60" y2="186" class="izgara"/>
@@ -112,5 +112,6 @@
 <circle cx="724.85" cy="251.61" r="2" fill="var(--accent)"/>
 <line x1="450.33" y1="230" x2="450.33" y2="380" stroke="var(--red)" stroke-width="1" stroke-dasharray="3 3"/>
 <text x="453.58" y="50" class="s-kucuk s-kirmizi">gürültü tabanı +6 dB (kazanç/sıcaklık/ortam değişti)</text>
-<text x="60" y="410" class="s-metin2">Sabit eşik: 24 yanlış alarm (kırmızı) — ikinci yarıda "hep sinyal var". CA-CFAR: 0 yanlış alarm, 4 darbe de tespit (mavi); eşik basamağı N/2+G = 10 hücrede öğrenir, darbe komşuluğunda bir miktar yükselir.</text>
+<text x="60" y="422" class="s-metin2">Sabit eşik: 24 yanlış alarm (kırmızı) — ikinci yarıda "hep sinyal var". CA-CFAR: 0 yanlış alarm, 4 darbe de tespit (mavi);</text>
+<text x="60" y="437" class="s-metin2">eşik basamağı N/2+G = 10 hücrede öğrenir, darbe komşuluğunda bir miktar yükselir.</text>
 </svg>

@@ -79,10 +79,15 @@ def cfar(guc, tip, N, G, alfa, k=None):
             t = sorted(sol + sag)
             kk = k or round(0.75 * N)
             z = t[min(len(t) - 1, max(0, kk - 1))]
-        elif tip == "GO":
-            z = max(sum(sol) / len(sol) if sol else 0, sum(sag) / len(sag) if sag else 0)
-        elif tip == "SO":
-            z = min(sum(sol) / len(sol) if sol else 0, sum(sag) / len(sag) if sag else 0)
+        elif tip in ("GO", "SO"):
+            # dizi kenarında bir yarı boşsa öteki yarı kullanılır; yoksa SO'da eşik 0'a düşer
+            # ve ilk/son G+1 hücrede yapay yanlış alarm çıkar
+            m_sol = sum(sol) / len(sol) if sol else None
+            m_sag = sum(sag) / len(sag) if sag else None
+            if m_sol is None or m_sag is None:
+                z = m_sol if m_sag is None else m_sag
+            else:
+                z = max(m_sol, m_sag) if tip == "GO" else min(m_sol, m_sag)
         else:
             z = (sum(sol) + sum(sag)) / max(1, len(sol) + len(sag))
         esik[c] = alfa * z
@@ -168,7 +173,8 @@ def g_222():
         parca = yu[256:]
         m = sum(parca) / len(parca)
         stdler[L] = math.sqrt(sum((v - m) ** 2 for v in parca) / len(parca))
-        d = path_from(xs, y, x0, x1, y0, y1, xmin, xmax, ymin, ymax)
+        # yalnız eksen aralığındaki örnekler (path_from y'yi kırpar, x'i kırpmaz)
+        d = path_from(xs[xmin:xmax + 1], y[xmin:xmax + 1], x0, x1, y0, y1, xmin, xmax, ymin, ymax)
         out.append(f'<path d="{d}" fill="none" stroke="{renk}" stroke-width="{kal}" opacity="{op}"/>')
     # sağ panel: bütün darbe, L=1 ve L=16
     x0b, x1b = 500, 840
@@ -185,7 +191,7 @@ def g_222():
         lx = 60 + (i % 2) * 400
         ly = 314 + (i // 2) * 14
         out.append(f'<line x1="{lx}" y1="{ly}" x2="{lx + 22}" y2="{ly}" stroke="{renk}" stroke-width="2"/>'
-                   f'<text x="{lx + 28}" y="{ly + 4}" class="s-kucuk">L = {L}: gürültü std ölçülen {stdler[L]:.2f}, teori 1/√L = {1 / math.sqrt(L):.2f} · kenar yayılması +{L - 1} örnek</text>')
+                   f'<text x="{lx + 28}" y="{ly + 4}" class="s-kucuk">L = {L}: gürültü std {stdler[L]:.2f} (teori 1/√L = {1 / math.sqrt(L):.2f}) · kenar +{L - 1} örnek</text>')
     out.append(f'<text x="60" y="348" class="s-metin2">Kayan ortalama gürültü varyansını L kat düşürür (std 1 → 1/√L) ama L−1 örnek kenar yayılması ve (L−1)/2 örnek gecikme ekler;</text>')
     out.append(f'<text x="60" y="362" class="s-metin2">L = 64, 15 örneklik gerçek yükselişi ≈ 79 örneğe (≈ 260 ns) uzatır. Referans senaryo L = {T["video_filtre_uzunluk"]}: std yarıya iner, kenar 3 örnek (10 ns) yayılır.</text>')
     out.append("</svg>")
@@ -206,13 +212,13 @@ def g_232():
     alfa_os = os_cfar_alfa(N_REF, k_os, PFA)
     paneller = [("CA", "CA — ortalama: yakın çift birbirini maskeler", alfa_ca),
                 ("GO", "GO — büyük yarı: kenar temiz, maskeleme en kötü", alfa_ca),
-                ("SO", "SO — küçük yarı: çifti çözer, kenarda alarm", alfa_ca),
+                ("SO", "SO — küçük yarı: çifti çözer, kenarda payı erir", alfa_ca),
                 ("OS", f"OS — {k_os}. sıra: ikisini de çözer", alfa_os)]
-    W, H = 860, 470
+    W, H = 860, 486
     out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g232">',
            '<title id="t-g232">CA, GO, SO ve OS-CFAR\'ın aynı sahnedeki davranışı: iki yakın 3 hücrelik darbe (6 hücre ara, 20 dB), '
            'yalnız bir darbe, 420. hücrede +8 dB gürültü basamağı ve basamağın içinde bir darbe; her panelde güç gri, eşik altın kesikli, '
-           'tespit mavi, yanlış alarm kırmızı; CA ve GO yakın çifti maskeler, SO basamak kenarında yanlış alarm verir, OS ikisini de büyük ölçüde çözer</title>']
+           'tespit mavi, yanlış alarm kırmızı; CA ve GO yakın çifti maskeler, SO basamak kenarında eşiği 8 dB düşük kurar (yanlış alarm payı erir), OS ikisini de çözer</title>']
     xmin, xmax, ymin, ymax = 0, n, -10, 30
     xs = list(range(n))
     gdb = [db(v) for v in guc]
@@ -261,14 +267,20 @@ def g_232():
                 out.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="3.2" fill="var(--red)"/>')
         ozet[tip] = (d_say, ya)
         say_txt = " ".join(f"{d_say[b]}/3" for b, _, _, _ in darbeler)
+        # gri gürültü dolgusunun üstünde okunsun diye arka plan
+        out.append(f'<rect x="{x0 + 2}" y="{y0 - 17}" width="318" height="14" rx="2" fill="var(--dia-panel)" opacity=".9"/>')
         out.append(f'<text x="{x0 + 4}" y="{y0 - 6}" class="s-kucuk">α = {alfa:.1f} · tespit (çift-1 çift-2 yalnız basamak): {say_txt}</text>')
         out.append(f'<text x="{x1 - 4}" y="{y1 + 14}" text-anchor="end" class="s-kucuk {"s-kirmizi" if ya else "s-yesil"}">yanlış alarm: {ya}</text>')
         if i == 0:
-            px = x0 + 155 / n * (x1 - x0)
-            out.append(f'<text x="{px:.1f}" y="{y1 + 30}" text-anchor="middle" class="s-kucuk s-vurgu">iki yakın darbe (6 hücre ara)</text>')
-            out.append(f'<text x="{bx + 4:.1f}" y="{y0 - 20}" class="s-kucuk s-kirmizi">+8 dB basamak</text>')
-    out.append(f'<text x="60" y="{H - 24}" class="s-metin2">Aynı sahne, aynı N = {N_REF}, G = {GUARD}, Pfa = 10⁻⁶. Mavi nokta = darbe hücresinde tespit, kırmızı = gürültü hücresinde yanlış alarm.</text>')
-    out.append(f'<text x="60" y="{H - 8}" class="s-metin2">Yakın çift CA/GO\'da birbirini maskeler; SO basamağın hemen sağında "küçük yarı"yı seçip alarm üretir; OS her ikisine de dayanıklıdır (bedeli sıralama ağı).</text>')
+            out.append(f'<text x="{x0 + 4}" y="{y1 + 14}" class="s-kucuk s-vurgu">↓ iki yakın darbe (6 hücre ara)</text>')
+            out.append(f'<rect x="{bx + 2:.1f}" y="{y0 - 33}" width="86" height="14" rx="2" fill="var(--dia-panel)" opacity=".9"/>')
+            out.append(f'<text x="{bx + 4:.1f}" y="{y0 - 22}" class="s-kucuk s-kirmizi">+8 dB basamak</text>')
+    ya_so = ozet["SO"][1]
+    so_txt = (f'SO basamağın hemen sağında "küçük yarı"yı seçer, eşik 8 dB düşük kalır ({ya_so} yanlış alarm);'
+              if ya_so else 'SO basamağın hemen sağında "küçük yarı"yı seçer, eşik 8 dB düşük kalır (bu gerçekleşmede alarm çıkmadı, pay 5 dB);')
+    out.append(f'<text x="60" y="{H - 40}" class="s-metin2">Aynı sahne, aynı N = {N_REF}, G = {GUARD}, Pfa = 10⁻⁶. Mavi nokta = darbe hücresinde tespit, kırmızı = gürültü hücresinde yanlış alarm.</text>')
+    out.append(f'<text x="60" y="{H - 24}" class="s-metin2">Yakın çift CA/GO\'da birbirini maskeler; {so_txt}</text>')
+    out.append(f'<text x="60" y="{H - 8}" class="s-metin2">OS her ikisine de dayanıklıdır (bedeli sıralama ağı).</text>')
     out.append("</svg>")
     (SVG / "g-232-cfar-ailesi-sahne.svg").write_text("\n".join(out), encoding="utf-8")
     print("  ✓ g-232-cfar-ailesi-sahne.svg ", {k: (list(v[0].values()), v[1]) for k, v in ozet.items()})

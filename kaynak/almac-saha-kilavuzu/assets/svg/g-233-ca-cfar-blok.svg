@@ -89,12 +89,13 @@
 <text x="680" y="323" text-anchor="middle" class="s-mono">CFAR_N</text>
 <rect x="730" y="306" width="80" height="26" rx="4" class="blok-kontrol"/>
 <text x="770" y="323" text-anchor="middle" class="s-mono">CFAR_G</text>
-<text x="725" y="352" text-anchor="middle" class="s-kucuk s-yesil">tap seçimi (mux) · yalnızca 2ⁿ değerler</text>
+<text x="740" y="352" text-anchor="middle" class="s-kucuk s-yesil">tap seçimi (mux) · yalnızca 2ⁿ değerler</text>
 <use href="#sym-cpu" x="560" y="300" width="60" height="40"/>
 <text x="590" y="352" text-anchor="middle" class="s-kucuk">PS (AXI-Lite)</text>
 <path d="M620 320 H640" class="yol-kontrol" marker-end="url(#ok-kontrol)"/>
 <!-- saat / gecikme notu -->
-<text x="14" y="300" class="s-kucuk">Gecikme: pencere yarısı 10 hücre + pipeline ≈ 4 saat → bayrak, gücün 14 hücre gerisinden gelir;</text>
-<text x="14" y="314" class="s-kucuk">TOA bu sabit gecikmeyle düzeltilir. Kaynak: ~1 SRL/BRAM, 3 toplayıcı, 1 DSP slice, 1 karşılaştırıcı.</text>
-<text x="14" y="340" class="s-kucuk">Renk dili: sayısal veri mavi, test hücresi altın, PS register'ları yeşil.</text>
+<text x="14" y="300" class="s-kucuk">Gecikme: pencere yarısı 10 hücre + pipeline ≈ 4 saat →</text>
+<text x="14" y="314" class="s-kucuk">bayrak gücün 14 hücre gerisinden gelir; TOA bu sabitle düzeltilir.</text>
+<text x="14" y="328" class="s-kucuk">Kaynak: ~1 SRL/BRAM, 3 toplayıcı, 1 DSP slice, 1 karşılaştırıcı.</text>
+<text x="14" y="366" class="s-kucuk">Renk dili: sayısal veri mavi, test hücresi altın, PS register'ları yeşil.</text>
 </svg>

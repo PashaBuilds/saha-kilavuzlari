@@ -178,10 +178,11 @@ def g240():
             p.append(f'<rect x="{xa:.1f}" y="{y}" width="{gen:.1f}" height="{yh}" rx="4" class="{kls}"/>')
             kisa = ad if gen > 150 else ad.split(" ")[0]
             p.append(txt(xa + gen / 2, y + yh / 2 + 4.5, kisa, "s-mono" if gen > 60 else "s-mono2", "middle"))
-        # hücre çizgileri
+        # hücre tikleri (tam boy çizgi alan etiketini kesiyordu → üst/alt 5 px)
         for b in range(33):
             px = x0 + b * hucre
-            p.append(f'<line x1="{px:.1f}" y1="{y}" x2="{px:.1f}" y2="{y + yh}" class="izgara"/>')
+            p.append(f'<line x1="{px:.1f}" y1="{y}" x2="{px:.1f}" y2="{y + 5}" class="izgara"/>'
+                     f'<line x1="{px:.1f}" y1="{y + yh - 5}" x2="{px:.1f}" y2="{y + yh}" class="izgara"/>')
     # açıklama
     ya = yb + 4 * satir + 6
     p.append(txt(x0, ya, "Ölçüm alanları (mavi): TOA 48 + PW 20 + PA 10 + RF 20 + AOA 12 = 110 bit", "s-metin2"))
@@ -192,7 +193,7 @@ def g240():
 
 # ================================================================== g-241
 def g241():
-    W, H = 860, 340
+    W, H = 860, 352
     p = []
     p.append(txt(30, 24, "Ham örnekten PDW'ye: veri hızı basamak basamak düşer (log ölçek)", "s-baslik"))
     # üst: zaman şeridi — 1 ms PRI, 1 µs darbe
@@ -228,7 +229,7 @@ def g241():
         p.append(txt(px, by + 4 * 46 + 14, f"10^{d}", "s-kucuk", "middle"))
     p.append(txt((bx0 + bx1) / 2, by + 4 * 46 + 30, "bit/s (log)", "s-kucuk", "middle"))
     # oranlar
-    p.append(txt(30, 318, "9.6 Gbps / 128 kbps = 75 000 : 1   ·   ADC'den itibaren 262 500 : 1   ·   darbe örneklerinden PDW'ye 75 : 1 (9600 bit → 128 bit)", "s-mono2"))
+    p.append(txt(30, 342, "9.6 Gbps / 128 kbps = 75 000 : 1   ·   ADC'den itibaren 262 500 : 1   ·   darbe örneklerinden PDW'ye 75 : 1 (9600 bit → 128 bit)", "s-mono2"))
     return sarmala("g241", W, H, "Darbeden PDW'ye veri indirgeme: 1 ms PRI içinde 1 µs darbe; log ölçekli çubuklar ADC çıkışı 33.6 Gbps, DDC çıkışı 9.6 Gbps, yalnız darbe örnekleri 9.6 Mbps ve PDW akışı 128 kbps; oran 75 000:1", "\n".join(p))
 
 
@@ -267,7 +268,7 @@ def g242():
 
 # ================================================================== g-250
 def g250():
-    W, H = 860, 470
+    W, H = 860, 490
     fs = FS
     t0 = 0.3e-6
     n = 600  # 2 µs
@@ -297,7 +298,8 @@ def g250():
     p.append(txt(x1 - 4, PY(ton) - 4, "T_on (eşik)", "s-kucuk s-altin", "end"))
     p.append(f'<line x1="{x0}" y1="{PY(toff):.1f}" x2="{x1}" y2="{PY(toff):.1f}" class="yol-gurultu"/>')
     p.append(txt(x1 - 4, PY(toff) + 12, "T_off = T_on − 3 dB (histerezis)", "s-kucuk s-kirmizi", "end"))
-    p.append(txt(x0 + 6, PY(-1.5), "gürültü ortalaması −20 dB (SNR 20 dB)", "s-kucuk"))
+    p.append(txt(x0 + 6, PY(-1.5), "gürültü ortalaması", "s-kucuk"))
+    p.append(txt(x0 + 6, PY(-1.5) + 12, "−20 dB (SNR 20 dB)", "s-kucuk"))
     # TOA / bitiş
     for k, ad in ((bas, "TOA (T_on geçişi)"), (son, "bitiş (T_off geçişi)")):
         p.append(f'<line x1="{PX(ts[k]):.1f}" y1="{y1}" x2="{PX(ts[k]):.1f}" y2="{y0}" class="yol-kontrol"/>')
@@ -311,11 +313,11 @@ def g250():
     # %50 noktası
     k50 = int((t0 + RISE / 2) * fs)
     p.append(f'<circle cx="{PX(ts[k50]):.1f}" cy="{PY(-6):.1f}" r="3.5" fill="var(--gold)"/>')
-    p.append(txt(PX(ts[k50]) + 6, PY(-6) - 6, "%50 genlik (−6 dB) noktası", "s-kucuk s-altin"))
+    p.append(txt(PX(ts[k50]) + 10, PY(-6) + 14, "← %50 genlik (−6 dB) noktası", "s-kucuk s-altin"))
     # PA
     tepe = max(pdb[bas:son])
     ort = sum(pdb[ka:kb]) / (kb - ka)
-    p.append(txt(PX(0.83), PY(-17), f"PA: tepe {tepe:.1f} dB · kenarlar hariç ortalama {ort:.1f} dB (taralı bölge)", "s-mono2", "middle"))
+    p.append(txt(PX(0.8), PY(-17), f"PA: tepe {tepe:.1f} dB · kenarlar hariç ort. {ort:.1f} dB (taralı)", "s-mono2", "middle"))
     # alt panel — anlık frekans
     af = anlik_frekans(i, q, fs)
     afm = [v / 1e6 for v in af]
@@ -330,7 +332,7 @@ def g250():
     fort = sum(af[ka:kb]) / (kb - ka)
     p.append(f'<line x1="{PX(ts[ka]):.1f}" y1="{PYb(fort / 1e6):.1f}" x2="{PX(ts[kb]):.1f}" y2="{PYb(fort / 1e6):.1f}" class="spk-filtre"/>')
     p.append(txt(PX(0.83), y0b - 8, f"ölçüm penceresi ortalaması = {fort / 1e6:.3f} MHz (gerçek 5.000)", "s-mono2 s-altin", "middle"))
-    p.append(txt(x0b + 6, y1b + 14, "darbe dışında anlık frekans gürültünün rastgele fazıdır → ±fs/2 saçılır; yalnız darbe içinde, kenarlar dışlanarak ortalanır", "s-kucuk"))
+    p.append(txt(x0b, y0b + 48, "Darbe dışında anlık frekans gürültünün rastgele fazıdır → ±fs/2'ye saçılır; yalnız darbe içinde, kenarlar dışlanarak ortalanır.", "s-kucuk"))
     return sarmala("g250", W, H, "Tek darbe üzerinde ölçü noktaları: üstte güç zarfı dB, T_on eşiği, histerezisli T_off, TOA ve bitiş geçişleri, PW oku, yüzde 50 genlik noktası, kenarları dışlayan PA ölçüm bölgesi; altta aynı darbenin anlık frekansı ve ölçüm penceresi ortalaması", "\n".join(p))
 
 
@@ -365,8 +367,8 @@ def g251():
     p.append(txt(x1 - 4, PY(esik) - 4, "eşik −28 dB", "s-kucuk s-altin", "end"))
     t1 = time_walk(RISE, 10 ** (esik / 20)) * 1e9
     t2 = time_walk(RISE, 10 ** ((esik + 20) / 20)) * 1e9
-    p.append(f'<path d="M{PX(t1):.1f} {PY(-34):.1f} H{PX(t2):.1f}" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>')
-    p.append(txt((PX(t1) + PX(t2)) / 2, PY(-34) - 5, f"Δ = {t2 - t1:.1f} ns", "s-mono2 s-kirmizi", "middle"))
+    p.append(f'<path d="M{PX(t1):.1f} {PY(-36):.1f} H{PX(t2):.1f}" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>')
+    p.append(txt(PX(t2) + 46, PY(-36) + 4, f"Δ = {t2 - t1:.1f} ns (time walk)", "s-mono2 s-kirmizi"))
     # sağ: eğri t_x(eşik/tepe)
     x0b, x1b, y0b, y1b = 500, 830, 200, 40
     xmin2, xmax2, ymin2, ymax2 = -40, 0, 0, 30
@@ -378,21 +380,23 @@ def g251():
     p.append(f'<path d="{path_from(xs, ys, x0b, x1b, y0b, y1b, xmin2, xmax2, ymin2, ymax2)}" class="yol-sayisal"/>')
     def PXb(v): return x0b + (v - xmin2) / (xmax2 - xmin2) * (x1b - x0b)
     def PYb(v): return y0b - (v - ymin2) / (ymax2 - ymin2) * (y0b - y1b)
-    for v, ad in ((-28, "−28 dB → 6.4 ns"), (-8, "−8 dB → 21.7 ns"), (-6, "−6 dB (%50) → 25 ns")):
+    for v, ad, dy in ((-28, "−28 dB → 6.4 ns", -7), (-8, "−8 dB → 21.7 ns", 12), (-6, "−6 dB (%50) → 25 ns", -7)):
         t = time_walk(RISE, 10 ** (v / 20)) * 1e9
         p.append(f'<circle cx="{PXb(v):.1f}" cy="{PYb(t):.1f}" r="4" fill="var(--gold)"/>')
-        p.append(txt(PXb(v) - 6, PYb(t) - 7, ad, "s-kucuk s-altin", "end"))
+        p.append(txt(PXb(v) - 7, PYb(t) + dy, ad, "s-kucuk s-altin", "end"))
     p.append(f'<line x1="{x0b}" y1="{PYb(3.333):.1f}" x2="{x1b}" y2="{PYb(3.333):.1f}" class="yol-saat"/>')
     p.append(txt(x0b + 4, PYb(3.333) - 4, "1 örnek = 3.33 ns", "s-kucuk"))
-    p.append(txt(x0b + 4, y1b + 14, "t_x = t_r/π · acos(1 − 2a)", "s-mono2"))
-    p.append(txt(x0b + 4, y1b + 27, "a = genlik oranı, t_r = 50 ns", "s-kucuk"))
+    p.append(txt(x0b + 4, y1b + 84, "t_x = t_r/π · acos(1 − 2a)", "s-mono2"))
+    p.append(txt(x0b + 4, y1b + 97, "a = genlik oranı, t_r = 50 ns", "s-kucuk"))
     # alt açıklama
-    p.append(txt(70, 250, "Referans senaryo: eşik −68 dBm sabit. −60 dBm'lik darbe eşiği tepesinin −8 dB'sinde keser (21.7 ns), −40 dBm'lik darbe −28 dB'sinde (6.4 ns):", "s-metin2"))
-    p.append(txt(70, 270, "aynı anda gelen iki darbenin TOA'sı 15.3 ns ≈ 4.6 örnek farklı okunur. Düzeltme: PA'ya bağlı tablo ya da %50 tepe noktasına göre TOA (kesirli).", "s-metin2"))
+    p.append(txt(70, 250, "Referans senaryo: eşik −68 dBm sabit. −60 dBm'lik darbe eşiği tepesinin −8 dB'sinde keser (21.7 ns),", "s-metin2"))
+    p.append(txt(70, 268, "−40 dBm'lik darbe −28 dB'sinde (6.4 ns): aynı anda gelen iki darbenin TOA'sı 15.3 ns ≈ 4.6 örnek farklı okunur.", "s-metin2"))
+    p.append(txt(70, 286, "Düzeltme: PA'ya bağlı tablo ya da %50 tepe noktasına göre TOA (kesirli).", "s-metin2"))
     # alt: PW etkisi küçük şerit
-    p.append(txt(70, 305, "PW'ye etkisi (simetrik kenarlar): PW_ölçülen = PW_%50 + t_r − 2·t_x. Eşik tepenin −8 dB'sindeyse +6.6 ns, −28 dB'sindeyse +37.2 ns uzun okunur;", "s-metin2"))
-    p.append(txt(70, 325, "histerezis düşen kenarı daha da geç kestirir (T_off = T_on − 3 dB → düşen kenarda birkaç ns daha).", "s-metin2"))
-    p.append(txt(70, 360, "Sayılar kosinüs kenarlı öğretici darbe modeline aittir; gerçek kenar şekli farklıysa eğri değişir, mekanizma değişmez.", "s-kucuk"))
+    p.append(txt(70, 316, "PW'ye etkisi (simetrik kenarlar): PW_ölçülen = PW_%50 + t_r − 2·t_x. Eşik tepenin −8 dB'sindeyse +6.6 ns,", "s-metin2"))
+    p.append(txt(70, 334, "−28 dB'sindeyse +37.2 ns uzun okunur; histerezis düşen kenarı daha da geç kestirir", "s-metin2"))
+    p.append(txt(70, 352, "(T_off = T_on − 3 dB → düşen kenarda birkaç ns daha).", "s-metin2"))
+    p.append(txt(70, 384, "Sayılar kosinüs kenarlı öğretici darbe modeline aittir; gerçek kenar şekli farklıysa eğri değişir, mekanizma değişmez.", "s-kucuk"))
     return sarmala("g251", W, H, "Time walk: solda yükselen kenar yakınlaştırması, güçlü ve zayıf darbenin aynı sabit eşiği farklı anlarda kesmesi; sağda TOA gecikmesinin eşik/tepe oranına göre eğrisi, −28, −8 ve −6 dB noktaları ve bir örnek süresi çizgisi", "\n".join(p))
 
 
@@ -406,7 +410,7 @@ def g252():
     seri = [
         ("sabit taşıyıcı (f_bb = 5 MHz)", "yok", 0.0, "yol-sayisal", 11),
         ("LFM: 10 MHz / 1 µs, merkez 5 MHz", "lfm", CHIRP_BW, "yol-analog", 12),
-        ("13-bit Barker (faz kodlu), 5 MHz", "barker13", 0.0, "yol-gurultu", 13),
+        ("13-bit Barker (faz kodlu), 5 MHz", "barker13", 0.0, "yol-mor", 13),
     ]
     ts = [k / fs * 1e6 for k in range(n)]
     p = [txt(70, 22, "Darbe içi anlık frekans profili — MOP imzası (SNR = 25 dB, fs = 300 MSPS)", "s-baslik")]
@@ -422,7 +426,7 @@ def g252():
     # I(t): yalnızca LFM ve sabit üst panelde (okunurluk)
     for ad, mop, kls, i, q in veriler[:2]:
         p.append(f'<path d="{path_from(ts, i, x0, x1, y0, y1, xmin, xmax, -1.3, 1.3)}" class="{kls}" opacity=".85"/>')
-    p.append(txt(x0 + 6, y1 + 14, "mavi: sabit taşıyıcı · altın: LFM (kenarlara doğru sıklaşan salınım)", "s-kucuk"))
+    p.append(txt(x0, y0 + 30, "mavi: sabit taşıyıcı · altın: LFM (kenarlara doğru sıklaşan salınım)", "s-kucuk"))
     # alt: anlık frekans
     x0b, x1b, y0b, y1b = 70, 830, 420, 230
     ymin, ymax = -5, 15
@@ -441,7 +445,8 @@ def g252():
         # darbe dışını çizme
         xs = ts[bas:son]
         ys = afm[bas:son]
-        p.append(f'<path d="{path_from(xs, ys, x0b, x1b, y0b, y1b, xmin, xmax, ymin, ymax)}" class="{kls}" opacity=".9"/>')
+        stil = ' fill="none" stroke="var(--purple)" stroke-width="1.3" stroke-dasharray="3 2"' if kls == "yol-mor" else f' class="{kls}"'
+        p.append(f'<path d="{path_from(xs, ys, x0b, x1b, y0b, y1b, xmin, xmax, ymin, ymax)}"{stil} opacity=".9"/>')
         # ölçümler: ortalama ve eğim (kenarlar hariç)
         xs2 = [k / fs for k in range(ka, kb)]
         ys2 = af[ka:kb]
@@ -453,7 +458,7 @@ def g252():
         sonuc.append((ad, sy / nn, egim))
     yy = y0b + 46
     for k, (ad, ort, egim) in enumerate(sonuc):
-        renk = ("s-vurgu", "s-altin", "s-kirmizi")[k]
+        renk = ("s-vurgu", "s-altin", "s-mor")[k]
         p.append(txt(x0b, yy + k * 15, f"{ad}: pencere ortalaması {ort / 1e6:.2f} MHz · uydurulan eğim {egim / 1e12:+.2f} MHz/µs", f"s-kucuk {renk}"))
     p.append(txt(x0b, yy + 50, "LFM: doğrusal rampa 0 → 10 MHz, eğim = BW/PW = 10 MHz/µs (kenar dışlama rampanın uçlarını kırpar); ortalama yine 5 MHz.", "s-kucuk"))
     p.append(txt(x0b, yy + 64, "Faz kodlu: 180° atlama anlık frekansta ±fs/2'ye varan tek örneklik sivri uç üretir → 'faz atlaması' sayacı / bayrağı.", "s-kucuk"))

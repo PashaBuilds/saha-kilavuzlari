@@ -16,25 +16,27 @@
 <text x="78.0" y="122.3" text-anchor="start" class="s-kucuk">zayıf darbe (−20 dB)</text>
 <line x1="70" y1="156.4" x2="420" y2="156.4" class="spk-filtre"/>
 <text x="416.0" y="152.4" text-anchor="end" class="s-kucuk s-altin">eşik −28 dB</text>
-<path d="M92.4 178.2 H146.1" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
-<text x="119.2" y="173.2" text-anchor="middle" class="s-mono2 s-kirmizi">Δ = 15.3 ns</text>
+<path d="M92.4 185.5 H146.1" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+<text x="192.1" y="189.5" text-anchor="start" class="s-mono2 s-kirmizi">Δ = 15.3 ns (time walk)</text>
 <line x1="500.0" y1="40" x2="500.0" y2="200" class="izgara"/><text x="500.0" y="214" text-anchor="middle" class="s-mono2">-40</text><line x1="582.5" y1="40" x2="582.5" y2="200" class="izgara"/><text x="582.5" y="214" text-anchor="middle" class="s-mono2">-30</text><line x1="665.0" y1="40" x2="665.0" y2="200" class="izgara"/><text x="665.0" y="214" text-anchor="middle" class="s-mono2">-20</text><line x1="747.5" y1="40" x2="747.5" y2="200" class="izgara"/><text x="747.5" y="214" text-anchor="middle" class="s-mono2">-10</text><line x1="830.0" y1="40" x2="830.0" y2="200" class="izgara"/><text x="830.0" y="214" text-anchor="middle" class="s-mono2">0</text><line x1="500" y1="200.0" x2="830" y2="200.0" class="izgara"/><text x="494" y="204.0" text-anchor="end" class="s-mono2">0</text><line x1="500" y1="146.7" x2="830" y2="146.7" class="izgara"/><text x="494" y="150.7" text-anchor="end" class="s-mono2">10</text><line x1="500" y1="93.3" x2="830" y2="93.3" class="izgara"/><text x="494" y="97.3" text-anchor="end" class="s-mono2">20</text><line x1="500" y1="40.0" x2="830" y2="40.0" class="izgara"/><text x="494" y="44.0" text-anchor="end" class="s-mono2">30</text><rect x="500" y="40" width="330" height="160" class="eksen"/>
 <text x="665.0" y="230.0" text-anchor="middle" class="s-kucuk">eşik / tepe (dB)</text>
 <text x="460.0" y="120.0" text-anchor="middle" class="s-kucuk" transform="rotate(-90 460 120.0)">TOA gecikmesi (ns)</text>
 <path d="M500.0 183.0L502.1 182.7L504.1 182.5L506.2 182.2L508.2 182.0L510.3 181.7L512.4 181.5L514.4 181.2L516.5 180.9L518.6 180.6L520.6 180.4L522.7 180.1L524.8 179.8L526.8 179.5L528.9 179.2L530.9 178.9L533.0 178.6L535.1 178.3L537.1 177.9L539.2 177.6L541.2 177.3L543.3 177.0L545.4 176.6L547.4 176.3L549.5 175.9L551.6 175.6L553.6 175.2L555.7 174.9L557.8 174.5L559.8 174.1L561.9 173.8L563.9 173.4L566.0 173.0L568.1 172.6L570.1 172.2L572.2 171.8L574.2 171.4L576.3 170.9L578.4 170.5L580.4 170.1L582.5 169.6L584.6 169.2L586.6 168.8L588.7 168.3L590.8 167.8L592.8 167.4L594.9 166.9L596.9 166.4L599.0 165.9L601.1 165.4L603.1 164.9L605.2 164.4L607.2 163.8L609.3 163.3L611.4 162.8L613.4 162.2L615.5 161.7L617.6 161.1L619.6 160.5L621.7 159.9L623.8 159.4L625.8 158.8L627.9 158.1L629.9 157.5L632.0 156.9L634.1 156.3L636.1 155.6L638.2 154.9L640.2 154.3L642.3 153.6L644.4 152.9L646.4 152.2L648.5 151.5L650.6 150.8L652.6 150.0L654.7 149.3L656.8 148.5L658.8 147.8L660.9 147.0L662.9 146.2L665.0 145.4L667.1 144.6L669.1 143.7L671.2 142.9L673.2 142.0L675.3 141.1L677.4 140.2L679.4 139.3L681.5 138.4L683.6 137.5L685.6 136.5L687.7 135.6L689.8 134.6L691.8 133.6L693.9 132.6L695.9 131.5L698.0 130.5L700.1 129.4L702.1 128.3L704.2 127.2L706.2 126.1L708.3 125.0L710.4 123.8L712.4 122.6L714.5 121.4L716.6 120.2L718.6 118.9L720.7 117.6L722.8 116.3L724.8 115.0L726.9 113.7L728.9 112.3L731.0 110.9L733.1 109.4L735.1 108.0L737.2 106.5L739.2 105.0L741.3 103.4L743.4 101.9L745.4 100.3L747.5 98.6L749.6 96.9L751.6 95.2L753.7 93.5L755.8 91.7L757.8 89.8L759.9 88.0L761.9 86.1L764.0 84.1L766.1 82.1L768.1 80.0L770.2 77.9L772.2 75.7L774.3 73.5L776.4 71.2L778.4 68.9L780.5 66.5L782.6 64.0L784.6 61.4L786.7 58.8L788.8 56.1L790.8 53.2L792.9 50.3L794.9 47.3L797.0 44.2L799.1 40.9L801.1 40.0L803.2 40.0L805.2 40.0L807.3 40.0L809.4 40.0L811.4 40.0L813.5 40.0L815.6 40.0L817.6 40.0L819.7 40.0L821.8 40.0L823.8 40.0L825.9 40.0L827.9 40.0L830.0 40.0" class="yol-sayisal"/>
 <circle cx="599.0" cy="165.9" r="4" fill="var(--gold)"/>
-<text x="593.0" y="158.9" text-anchor="end" class="s-kucuk s-altin">−28 dB → 6.4 ns</text>
+<text x="592.0" y="158.9" text-anchor="end" class="s-kucuk s-altin">−28 dB → 6.4 ns</text>
 <circle cx="764.0" cy="84.1" r="4" fill="var(--gold)"/>
-<text x="758.0" y="77.1" text-anchor="end" class="s-kucuk s-altin">−8 dB → 21.7 ns</text>
+<text x="757.0" y="96.1" text-anchor="end" class="s-kucuk s-altin">−8 dB → 21.7 ns</text>
 <circle cx="780.5" cy="66.5" r="4" fill="var(--gold)"/>
-<text x="774.5" y="59.5" text-anchor="end" class="s-kucuk s-altin">−6 dB (%50) → 25 ns</text>
+<text x="773.5" y="59.5" text-anchor="end" class="s-kucuk s-altin">−6 dB (%50) → 25 ns</text>
 <line x1="500" y1="182.2" x2="830" y2="182.2" class="yol-saat"/>
 <text x="504.0" y="178.2" text-anchor="start" class="s-kucuk">1 örnek = 3.33 ns</text>
-<text x="504.0" y="54.0" text-anchor="start" class="s-mono2">t_x = t_r/π · acos(1 − 2a)</text>
-<text x="504.0" y="67.0" text-anchor="start" class="s-kucuk">a = genlik oranı, t_r = 50 ns</text>
-<text x="70.0" y="250.0" text-anchor="start" class="s-metin2">Referans senaryo: eşik −68 dBm sabit. −60 dBm'lik darbe eşiği tepesinin −8 dB'sinde keser (21.7 ns), −40 dBm'lik darbe −28 dB'sinde (6.4 ns):</text>
-<text x="70.0" y="270.0" text-anchor="start" class="s-metin2">aynı anda gelen iki darbenin TOA'sı 15.3 ns ≈ 4.6 örnek farklı okunur. Düzeltme: PA'ya bağlı tablo ya da %50 tepe noktasına göre TOA (kesirli).</text>
-<text x="70.0" y="305.0" text-anchor="start" class="s-metin2">PW'ye etkisi (simetrik kenarlar): PW_ölçülen = PW_%50 + t_r − 2·t_x. Eşik tepenin −8 dB'sindeyse +6.6 ns, −28 dB'sindeyse +37.2 ns uzun okunur;</text>
-<text x="70.0" y="325.0" text-anchor="start" class="s-metin2">histerezis düşen kenarı daha da geç kestirir (T_off = T_on − 3 dB → düşen kenarda birkaç ns daha).</text>
-<text x="70.0" y="360.0" text-anchor="start" class="s-kucuk">Sayılar kosinüs kenarlı öğretici darbe modeline aittir; gerçek kenar şekli farklıysa eğri değişir, mekanizma değişmez.</text>
+<text x="504.0" y="124.0" text-anchor="start" class="s-mono2">t_x = t_r/π · acos(1 − 2a)</text>
+<text x="504.0" y="137.0" text-anchor="start" class="s-kucuk">a = genlik oranı, t_r = 50 ns</text>
+<text x="70.0" y="250.0" text-anchor="start" class="s-metin2">Referans senaryo: eşik −68 dBm sabit. −60 dBm'lik darbe eşiği tepesinin −8 dB'sinde keser (21.7 ns),</text>
+<text x="70.0" y="268.0" text-anchor="start" class="s-metin2">−40 dBm'lik darbe −28 dB'sinde (6.4 ns): aynı anda gelen iki darbenin TOA'sı 15.3 ns ≈ 4.6 örnek farklı okunur.</text>
+<text x="70.0" y="286.0" text-anchor="start" class="s-metin2">Düzeltme: PA'ya bağlı tablo ya da %50 tepe noktasına göre TOA (kesirli).</text>
+<text x="70.0" y="316.0" text-anchor="start" class="s-metin2">PW'ye etkisi (simetrik kenarlar): PW_ölçülen = PW_%50 + t_r − 2·t_x. Eşik tepenin −8 dB'sindeyse +6.6 ns,</text>
+<text x="70.0" y="334.0" text-anchor="start" class="s-metin2">−28 dB'sindeyse +37.2 ns uzun okunur; histerezis düşen kenarı daha da geç kestirir</text>
+<text x="70.0" y="352.0" text-anchor="start" class="s-metin2">(T_off = T_on − 3 dB → düşen kenarda birkaç ns daha).</text>
+<text x="70.0" y="384.0" text-anchor="start" class="s-kucuk">Sayılar kosinüs kenarlı öğretici darbe modeline aittir; gerçek kenar şekli farklıysa eğri değişir, mekanizma değişmez.</text>
 </svg>
