@@ -1,0 +1,50 @@
+<svg viewBox="0 0 980 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g291">
+<title id="t-g291">Test sinyali enjeksiyon noktaları ve snapshot ölçüm noktaları: anten girişine RF üreteci, IF girişine üreteç, DDC girişine dahili test üreteci (sayısal loopback), tespit zincirine bilinen I/Q dizisi; snapshot tamponları ADC ham, DDC çıkışı, zarf/eşik, FFT ve PDW noktalarında</title>
+<style>
+  .tn .enj { font-family: var(--sans); font-size: 10.5px; fill: var(--gold); }
+  .tn .snp { font-family: var(--sans); font-size: 10.5px; fill: var(--green); }
+  .tn .ad { font-family: var(--sans); font-size: 11px; fill: var(--ink); font-weight: 600; }
+  .tn .t2 { font-family: var(--sans); font-size: 10px; fill: var(--ink-2); }
+</style>
+<g class="tn">
+<!-- zincir -->
+<line x1="40" y1="150" x2="940" y2="150" class="yol-sayisal" opacity=".35"/>
+<use href="#sym-anten" x="40" y="130" width="60" height="40"/><text class="ad" x="70" y="190" text-anchor="middle">Anten</text>
+<use href="#sym-amp" x="130" y="130" width="60" height="40"/><text class="ad" x="160" y="190" text-anchor="middle">LNA</text>
+<use href="#sym-mixer" x="220" y="130" width="60" height="40"/><text class="ad" x="250" y="190" text-anchor="middle">Mixer</text>
+<use href="#sym-bpf" x="310" y="130" width="60" height="40"/><text class="ad" x="340" y="190" text-anchor="middle">IF / AAF</text>
+<use href="#sym-adc" x="400" y="130" width="60" height="40"/><text class="ad" x="430" y="190" text-anchor="middle">ADC</text>
+<rect x="490" y="130" width="60" height="40" rx="5" class="blok"/><text class="ad" x="520" y="154" text-anchor="middle">DDC</text>
+<use href="#sym-zarf" x="580" y="130" width="60" height="40"/><text class="ad" x="610" y="190" text-anchor="middle">Zarf</text>
+<use href="#sym-cmp" x="670" y="130" width="60" height="40"/><text class="ad" x="700" y="190" text-anchor="middle">CFAR</text>
+<use href="#sym-fft" x="670" y="60" width="60" height="40"/><text class="ad" x="700" y="52" text-anchor="middle">FFT</text>
+<path d="M550 150 H580" class="yol-sayisal"/><path d="M565 150 V80 H670" class="yol-sayisal" fill="none"/>
+<rect x="760" y="130" width="70" height="40" rx="5" class="blok"/><text class="ad" x="795" y="148" text-anchor="middle">Ölçüm</text><text class="ad" x="795" y="162" text-anchor="middle">+ PDW</text>
+<use href="#sym-fifo" x="860" y="130" width="60" height="40"/><text class="ad" x="890" y="190" text-anchor="middle">FIFO→DMA</text>
+<!-- enjeksiyon noktaları (üstte altın) -->
+<g>
+  <path d="M70 128 V96" class="yol-analog" marker-end="url(#ok-analog)" transform="rotate(180 70 112)"/>
+  <rect x="20" y="70" width="100" height="26" rx="5" class="blok-analog"/><text class="enj" x="70" y="87" text-anchor="middle">RF üreteci · CW / darbe</text>
+  <path d="M340 128 V96" class="yol-analog" transform="rotate(180 340 112)" marker-end="url(#ok-analog)"/>
+  <rect x="280" y="70" width="120" height="26" rx="5" class="blok-analog"/><text class="enj" x="340" y="87" text-anchor="middle">IF üreteci (mixer atlanır)</text>
+  <path d="M500 128 V96" class="yol-sayisal" transform="rotate(180 500 112)" marker-end="url(#ok-sayisal)"/>
+  <rect x="430" y="70" width="140" height="26" rx="5" class="blok"/><text class="enj" x="500" y="87" text-anchor="middle">dahili test üreteci (loopback)</text>
+  <path d="M610 128 V96" class="yol-sayisal" transform="rotate(180 610 112)" marker-end="url(#ok-sayisal)"/>
+  <rect x="580" y="70" width="80" height="26" rx="5" class="blok"/><text class="enj" x="620" y="87" text-anchor="middle">bilinen I/Q</text>
+  <text class="enj" x="20" y="30" style="font-weight:700">ENJEKSİYON — bilinen sinyal buradan girer</text>
+  <text class="t2" x="20" y="46">soldan sağa: analog sorunları dışlayarak ilerle</text>
+</g>
+<!-- snapshot noktaları (altta yeşil) -->
+<g>
+  <circle cx="475" cy="150" r="5" fill="var(--green)"/><path d="M475 155 V212" class="yol-kontrol"/><rect x="430" y="212" width="90" height="26" rx="5" class="blok-kontrol"/><text class="snp" x="475" y="229" text-anchor="middle">ADC ham (SSR)</text>
+  <circle cx="565" cy="150" r="5" fill="var(--green)"/><path d="M565 155 V246" class="yol-kontrol"/><rect x="525" y="246" width="80" height="26" rx="5" class="blok-kontrol"/><text class="snp" x="565" y="263" text-anchor="middle">DDC I/Q</text>
+  <circle cx="655" cy="150" r="5" fill="var(--green)"/><path d="M655 155 V212" class="yol-kontrol"/><rect x="615" y="212" width="80" height="26" rx="5" class="blok-kontrol"/><text class="snp" x="655" y="229" text-anchor="middle">zarf + eşik</text>
+  <circle cx="745" cy="150" r="5" fill="var(--green)"/><path d="M745 155 V246" class="yol-kontrol"/><rect x="705" y="246" width="80" height="26" rx="5" class="blok-kontrol"/><text class="snp" x="745" y="263" text-anchor="middle">tespit bayrağı</text>
+  <circle cx="745" cy="80" r="5" fill="var(--green)"/><path d="M745 85 V125" class="yol-kontrol"/><text class="snp" x="752" y="112">FFT büyüklük</text>
+  <circle cx="845" cy="150" r="5" fill="var(--green)"/><path d="M845 155 V212" class="yol-kontrol"/><rect x="805" y="212" width="80" height="26" rx="5" class="blok-kontrol"/><text class="snp" x="845" y="229" text-anchor="middle">PDW akışı</text>
+  <text class="snp" x="20" y="240" style="font-weight:700">SNAPSHOT — örnekler burada yakalanır</text>
+  <text class="t2" x="20" y="256">her tamponda: örnek sayacı + zaman damgası</text>
+  <text class="t2" x="20" y="272">tetik: yazılım ya da ilk tespit (pretrigger ile)</text>
+</g>
+</g>
+</svg>

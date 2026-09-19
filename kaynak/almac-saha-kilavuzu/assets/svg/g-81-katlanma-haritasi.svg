@@ -1,0 +1,61 @@
+<svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g81">
+<title id="t-g81">Referans senaryonun katlanma haritası: üstte gerçek frekans ekseni (0–6 GHz) üzerinde Nyquist bölgeleri, IF bandı 1650–1950 MHz, HD2 bandı 3300–3900 MHz, HD3 bandı 4950–5850 MHz ve image 5.8 GHz; altta ADC çıkışında 1. bölgeye (0–1200 MHz) katlanmış halleri: sinyal 450–750 MHz evrik, HD2 900–1200 MHz, HD3 150–1050 MHz sinyalin üstüne biner, image AAF ile bastırılmazsa 1000 MHz</title>
+<text x="60" y="22" class="s-baslik">Gerçek frekans (AAF girişi)</text>
+<rect x="60.0" y="50" width="81.0" height="70" class="blok" opacity=".55"/>
+<text x="100.5" y="68" text-anchor="middle" class="s-kucuk">1. bölge</text>
+<rect x="141.0" y="50" width="81.0" height="70" class="blok-aktif" opacity=".55"/>
+<text x="181.5" y="68" text-anchor="middle" class="s-kucuk">2. bölge (evrik)</text>
+<rect x="222.0" y="50" width="81.0" height="70" class="blok" opacity=".55"/>
+<text x="262.5" y="68" text-anchor="middle" class="s-kucuk">3. bölge</text>
+<rect x="303.0" y="50" width="81.0" height="70" class="blok" opacity=".55"/>
+<text x="343.5" y="68" text-anchor="middle" class="s-kucuk">4. bölge (evrik)</text>
+<rect x="384.0" y="50" width="81.0" height="70" class="blok" opacity=".55"/>
+<text x="424.5" y="68" text-anchor="middle" class="s-kucuk">5. bölge</text>
+<path d="M60 120 H870" class="eksen"/>
+<path d="M60.0 120 v5" class="eksen"/><text x="60.0" y="137" text-anchor="middle" class="s-kucuk">0</text>
+<path d="M141.0 120 v5" class="eksen"/><text x="141.0" y="137" text-anchor="middle" class="s-kucuk">600</text>
+<path d="M222.0 120 v5" class="eksen"/><text x="222.0" y="137" text-anchor="middle" class="s-kucuk">1200</text>
+<path d="M303.0 120 v5" class="eksen"/><text x="303.0" y="137" text-anchor="middle" class="s-kucuk">1800</text>
+<path d="M384.0 120 v5" class="eksen"/><text x="384.0" y="137" text-anchor="middle" class="s-kucuk">2400</text>
+<path d="M465.0 120 v5" class="eksen"/><text x="465.0" y="137" text-anchor="middle" class="s-kucuk">3000</text>
+<path d="M546.0 120 v5" class="eksen"/><text x="546.0" y="137" text-anchor="middle" class="s-kucuk">3600</text>
+<path d="M627.0 120 v5" class="eksen"/><text x="627.0" y="137" text-anchor="middle" class="s-kucuk">4200</text>
+<path d="M708.0 120 v5" class="eksen"/><text x="708.0" y="137" text-anchor="middle" class="s-kucuk">4800</text>
+<path d="M789.0 120 v5" class="eksen"/><text x="789.0" y="137" text-anchor="middle" class="s-kucuk">5400</text>
+<path d="M870.0 120 v5" class="eksen"/><text x="870.0" y="137" text-anchor="middle" class="s-kucuk">6000</text>
+<text x="870" y="152" text-anchor="end" class="s-kucuk">MHz · fs/2 = 1200, fs = 2400</text>
+<rect x="282.8" y="80" width="40.5" height="40" class="spk-sinyal"/>
+<text x="303.0" y="76" text-anchor="middle" class="s-kucuk s-vurgu">IF bandı 1650–1950</text>
+<rect x="505.5" y="94" width="81.0" height="26" class="spk-image"/>
+<text x="546.0" y="90" text-anchor="middle" class="s-kucuk s-kirmizi">HD2 3300–3900</text>
+<rect x="728.2" y="102" width="121.5" height="18" class="spk-image"/>
+<text x="789.0" y="98" text-anchor="middle" class="s-kucuk s-kirmizi">HD3 4950–5850</text>
+<path d="M843.0 56 V120" class="yol-gurultu"/><text x="847.0" y="64" class="s-kucuk s-kirmizi">image 5800 (mixer)</text>
+<path d="M60.0 114.0L62.0 114.0L64.1 114.0L66.1 114.0L68.1 114.0L70.2 114.0L72.2 114.0L74.2 114.0L76.2 114.0L78.3 114.0L80.3 114.0L82.3 114.0L84.4 114.0L86.4 114.0L88.4 114.0L90.5 114.0L92.5 114.0L94.5 114.0L96.5 114.0L98.6 114.0L100.6 114.0L102.6 114.0L104.7 114.0L106.7 114.0L108.7 114.0L110.8 114.0L112.8 114.0L114.8 114.0L116.8 114.0L118.9 114.0L120.9 114.0L122.9 114.0L125.0 114.0L127.0 114.0L129.0 114.0L131.1 114.0L133.1 114.0L135.1 114.0L137.1 114.0L139.2 114.0L141.2 114.0L143.2 114.0L145.3 114.0L147.3 114.0L149.3 114.0L151.4 114.0L153.4 114.0L155.4 114.0L157.4 114.0L159.5 114.0L161.5 114.0L163.5 114.0L165.6 114.0L167.6 114.0L169.6 114.0L171.7 114.0L173.7 114.0L175.7 114.0L177.7 114.0L179.8 114.0L181.8 114.0L183.8 114.0L185.9 114.0L187.9 114.0L189.9 114.0L192.0 114.0L194.0 114.0L196.0 114.0L198.0 114.0L200.1 114.0L202.1 114.0L204.1 114.0L206.2 114.0L208.2 114.0L210.2 114.0L212.3 114.0L214.3 114.0L216.3 114.0L218.3 114.0L220.4 114.0L222.4 114.0L224.4 114.0L226.5 114.0L228.5 114.0L230.5 114.0L232.6 114.0L234.6 114.0L236.6 114.0L238.6 114.0L240.7 114.0L242.7 114.0L244.7 114.0L246.8 114.0L248.8 114.0L250.8 113.1L252.9 109.4L254.9 105.6L256.9 101.8L258.9 98.1L261.0 94.3L263.0 90.6L265.0 86.8L267.1 83.0L269.1 79.3L271.1 75.5L273.2 71.8L275.2 68.0L277.2 64.2L279.2 60.5L281.3 56.7L283.3 54.0L285.3 54.0L287.4 54.0L289.4 54.0L291.4 54.0L293.5 54.0L295.5 54.0L297.5 54.0L299.5 54.0L301.6 54.0L303.6 54.0L305.6 54.0L307.7 54.0L309.7 54.0L311.7 54.0L313.8 54.0L315.8 54.0L317.8 54.0L319.8 54.0L321.9 54.0L323.9 55.2L325.9 59.0L328.0 62.7L330.0 66.5L332.0 70.3L334.1 74.0L336.1 77.8L338.1 81.5L340.2 85.3L342.2 89.1L344.2 92.8L346.2 96.6L348.3 100.3L350.3 104.1L352.3 107.9L354.4 111.6L356.4 114.0L358.4 114.0L360.5 114.0L362.5 114.0L364.5 114.0L366.5 114.0L368.6 114.0L370.6 114.0L372.6 114.0L374.7 114.0L376.7 114.0L378.7 114.0L380.8 114.0L382.8 114.0L384.8 114.0L386.8 114.0L388.9 114.0L390.9 114.0L392.9 114.0L395.0 114.0L397.0 114.0L399.0 114.0L401.1 114.0L403.1 114.0L405.1 114.0L407.1 114.0L409.2 114.0L411.2 114.0L413.2 114.0L415.3 114.0L417.3 114.0L419.3 114.0L421.4 114.0L423.4 114.0L425.4 114.0L427.4 114.0L429.5 114.0L431.5 114.0L433.5 114.0L435.6 114.0L437.6 114.0L439.6 114.0L441.7 114.0L443.7 114.0L445.7 114.0L447.7 114.0L449.8 114.0L451.8 114.0L453.8 114.0L455.9 114.0L457.9 114.0L459.9 114.0L462.0 114.0L464.0 114.0L466.0 114.0L468.0 114.0L470.1 114.0L472.1 114.0L474.1 114.0L476.2 114.0L478.2 114.0L480.2 114.0L482.3 114.0L484.3 114.0L486.3 114.0L488.3 114.0L490.4 114.0L492.4 114.0L494.4 114.0L496.5 114.0L498.5 114.0L500.5 114.0L502.6 114.0L504.6 114.0L506.6 114.0L508.6 114.0L510.7 114.0L512.7 114.0L514.7 114.0L516.8 114.0L518.8 114.0L520.8 114.0L522.9 114.0L524.9 114.0L526.9 114.0L528.9 114.0L531.0 114.0L533.0 114.0L535.0 114.0L537.1 114.0L539.1 114.0L541.1 114.0L543.2 114.0L545.2 114.0L547.2 114.0L549.2 114.0L551.3 114.0L553.3 114.0L555.3 114.0L557.4 114.0L559.4 114.0L561.4 114.0L563.5 114.0L565.5 114.0L567.5 114.0L569.5 114.0L571.6 114.0L573.6 114.0L575.6 114.0L577.7 114.0L579.7 114.0L581.7 114.0L583.8 114.0L585.8 114.0L587.8 114.0L589.8 114.0L591.9 114.0L593.9 114.0L595.9 114.0L598.0 114.0L600.0 114.0L602.0 114.0L604.1 114.0L606.1 114.0L608.1 114.0L610.2 114.0L612.2 114.0L614.2 114.0L616.2 114.0L618.3 114.0L620.3 114.0L622.3 114.0L624.4 114.0L626.4 114.0L628.4 114.0L630.5 114.0L632.5 114.0L634.5 114.0L636.5 114.0L638.6 114.0L640.6 114.0L642.6 114.0L644.7 114.0L646.7 114.0L648.7 114.0L650.8 114.0L652.8 114.0L654.8 114.0L656.8 114.0L658.9 114.0L660.9 114.0L662.9 114.0L665.0 114.0L667.0 114.0L669.0 114.0L671.1 114.0L673.1 114.0L675.1 114.0L677.1 114.0L679.2 114.0L681.2 114.0L683.2 114.0L685.3 114.0L687.3 114.0L689.3 114.0L691.4 114.0L693.4 114.0L695.4 114.0L697.4 114.0L699.5 114.0L701.5 114.0L703.5 114.0L705.6 114.0L707.6 114.0L709.6 114.0L711.7 114.0L713.7 114.0L715.7 114.0L717.7 114.0L719.8 114.0L721.8 114.0L723.8 114.0L725.9 114.0L727.9 114.0L729.9 114.0L732.0 114.0L734.0 114.0L736.0 114.0L738.0 114.0L740.1 114.0L742.1 114.0L744.1 114.0L746.2 114.0L748.2 114.0L750.2 114.0L752.3 114.0L754.3 114.0L756.3 114.0L758.3 114.0L760.4 114.0L762.4 114.0L764.4 114.0L766.5 114.0L768.5 114.0L770.5 114.0L772.6 114.0L774.6 114.0L776.6 114.0L778.6 114.0L780.7 114.0L782.7 114.0L784.7 114.0L786.8 114.0L788.8 114.0L790.8 114.0L792.9 114.0L794.9 114.0L796.9 114.0L798.9 114.0L801.0 114.0L803.0 114.0L805.0 114.0L807.1 114.0L809.1 114.0L811.1 114.0L813.2 114.0L815.2 114.0L817.2 114.0L819.2 114.0L821.3 114.0L823.3 114.0L825.3 114.0L827.4 114.0L829.4 114.0L831.4 114.0L833.5 114.0L835.5 114.0L837.5 114.0L839.5 114.0L841.6 114.0L843.6 114.0L845.6 114.0L847.7 114.0L849.7 114.0L851.7 114.0L853.8 114.0L855.8 114.0L857.8 114.0L859.8 114.0L861.9 114.0L863.9 114.0L865.9 114.0L868.0 114.0L870.0 114.0" class="spk-filtre"/>
+<text x="370.5" y="50" class="s-kucuk s-altin">AAF (bant geçiren) yanıtı</text>
+<path d="M303.0 142 C 303.0 240, 141.0 190, 141.0 258" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<path d="M546.0 142 C 546.0 240, 222.0 190, 222.0 258" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+<path d="M789.0 142 C 789.0 240, 141.0 190, 141.0 258" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+<path d="M843.0 142 C 843.0 240, 195.0 190, 195.0 258" class="yol-gurultu" marker-end="url(#ok-gurultu)"/>
+<text x="60" y="252" class="s-baslik">ADC çıkışı — 1. bölgeye katlanmış (0–fs/2)</text>
+<rect x="60" y="270" width="810" height="60" class="blok" opacity=".4"/>
+<path d="M60 330 H870" class="eksen"/>
+<path d="M60.0 330 v5" class="eksen"/><text x="60.0" y="347" text-anchor="middle" class="s-kucuk">0</text>
+<path d="M161.2 330 v5" class="eksen"/><text x="161.2" y="347" text-anchor="middle" class="s-kucuk">150</text>
+<path d="M262.5 330 v5" class="eksen"/><text x="262.5" y="347" text-anchor="middle" class="s-kucuk">300</text>
+<path d="M363.8 330 v5" class="eksen"/><text x="363.8" y="347" text-anchor="middle" class="s-kucuk">450</text>
+<path d="M465.0 330 v5" class="eksen"/><text x="465.0" y="347" text-anchor="middle" class="s-kucuk">600</text>
+<path d="M566.2 330 v5" class="eksen"/><text x="566.2" y="347" text-anchor="middle" class="s-kucuk">750</text>
+<path d="M667.5 330 v5" class="eksen"/><text x="667.5" y="347" text-anchor="middle" class="s-kucuk">900</text>
+<path d="M768.8 330 v5" class="eksen"/><text x="768.8" y="347" text-anchor="middle" class="s-kucuk">1050</text>
+<path d="M870.0 330 v5" class="eksen"/><text x="870.0" y="347" text-anchor="middle" class="s-kucuk">1200</text>
+<text x="870" y="362" text-anchor="end" class="s-kucuk">MHz</text>
+<rect x="161.2" y="316" width="607.5" height="14" class="spk-image"/>
+<text x="465.0" y="312" text-anchor="middle" class="s-kucuk s-kirmizi">HD3 → 150–1050 (3× genişler, bandın üstüne biner)</text>
+<rect x="667.5" y="300" width="202.5" height="16" class="spk-image"/>
+<text x="768.8" y="296" text-anchor="middle" class="s-kucuk s-kirmizi">HD2 → 900–1200</text>
+<rect x="363.8" y="272" width="202.5" height="44" class="spk-sinyal"/>
+<text x="465.0" y="268" text-anchor="middle" class="s-kucuk s-vurgu">sinyal → 450–750, EVRİK (alt kenar 1950 → 450)</text>
+<path d="M735.0 270 V330" class="yol-gurultu"/><text x="738.0" y="290" class="s-kucuk s-kirmizi">image → 1000 (AAF ~−60 dB)</text>
+<text x="465.0" y="380" text-anchor="middle" class="s-metin2">fs/4 = 600 MHz: NCO buraya kurulur; HD3 ve 2-yollu interleaving image tam buraya katlanır</text>
+</svg>

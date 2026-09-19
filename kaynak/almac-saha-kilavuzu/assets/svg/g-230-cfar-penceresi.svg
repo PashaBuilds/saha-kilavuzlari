@@ -1,0 +1,74 @@
+<svg viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g230">
+<title id="t-g230">CFAR penceresi anatomisi: kayan pencere içinde 8 öncü referans hücresi, 2 guard, test hücresi (CUT), 2 guard, 8 ardıl referans hücresi; üstte örnek güç dizisi ve darbe, referans hücrelerinin ortalaması Z, eşik T = α·Z; altta uzun bir darbenin referans hücrelerine taşıp eşiği şişirmesi (kendini maskeleme)</title>
+<!-- üst: güç dizisi -->
+<text x="20" y="24" class="s-baslik">1) Pencere darbe üzerinde: guard hücreleri darbenin kenarını referans dışında tutar</text>
+<rect x="60" y="34" width="780" height="110" fill="var(--dia-panel)" stroke="var(--line)"/>
+<!-- gürültü çubukları (25 hücre, 30 px) -->
+<g fill="var(--ink-3)" opacity=".55">
+<rect x="66" y="126" width="22" height="18"/><rect x="96" y="118" width="22" height="26"/><rect x="126" y="130" width="22" height="14"/><rect x="156" y="112" width="22" height="32"/>
+<rect x="186" y="128" width="22" height="16"/><rect x="216" y="122" width="22" height="22"/><rect x="246" y="134" width="22" height="10"/><rect x="276" y="116" width="22" height="28"/>
+<rect x="306" y="108" width="22" height="36"/><rect x="336" y="96" width="22" height="48"/>
+<rect x="426" y="100" width="22" height="44"/><rect x="456" y="120" width="22" height="24"/>
+<rect x="486" y="126" width="22" height="18"/><rect x="516" y="114" width="22" height="30"/><rect x="546" y="132" width="22" height="12"/><rect x="576" y="120" width="22" height="24"/>
+<rect x="606" y="110" width="22" height="34"/><rect x="636" y="128" width="22" height="16"/><rect x="666" y="124" width="22" height="20"/><rect x="696" y="118" width="22" height="26"/>
+<rect x="726" y="130" width="22" height="14"/><rect x="756" y="122" width="22" height="22"/><rect x="786" y="126" width="22" height="18"/><rect x="816" y="118" width="22" height="26"/>
+</g>
+<!-- darbe: CUT'ta tepe, guard'larda kenar -->
+<rect x="336" y="96" width="22" height="48" fill="var(--accent)" opacity=".45"/>
+<rect x="366" y="46" width="22" height="98" fill="var(--accent)"/>
+<rect x="396" y="60" width="22" height="84" fill="var(--accent)" opacity=".7"/>
+<rect x="426" y="100" width="22" height="44" fill="var(--accent)" opacity=".45"/>
+<!-- eşik çizgisi -->
+<line x1="60" y1="78" x2="840" y2="78" class="spk-filtre"/>
+<text x="836" y="72" text-anchor="end" class="s-kucuk s-altin">T = α · Z</text>
+<line x1="60" y1="124" x2="840" y2="124" stroke="var(--ink-3)" stroke-dasharray="2 3" stroke-width="1"/>
+<text x="836" y="120" text-anchor="end" class="s-kucuk">Z = referans ortalaması (gürültü kestirimi)</text>
+<!-- hücre şeridi -->
+<g class="s-kucuk">
+<rect x="66" y="152" width="262" height="26" rx="3" fill="var(--dia-blok)" stroke="var(--line)"/>
+<text x="197" y="169" text-anchor="middle" class="s-metin2">öncü referans (N/2 = 8)</text>
+<rect x="336" y="152" width="52" height="26" rx="3" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="362" y="169" text-anchor="middle" class="s-metin2">guard</text>
+<rect x="366" y="146" width="22" height="38" rx="3" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+<text x="377" y="171" text-anchor="middle" class="s-metin" style="font-weight:700">CUT</text>
+<rect x="396" y="152" width="52" height="26" rx="3" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="422" y="169" text-anchor="middle" class="s-metin2">guard</text>
+<rect x="456" y="152" width="382" height="26" rx="3" fill="var(--dia-blok)" stroke="var(--line)"/>
+<text x="647" y="169" text-anchor="middle" class="s-metin2">ardıl referans (N/2 = 8)</text>
+</g>
+<!-- düzeltme: guard kutuları CUT ile çakışmasın -->
+<rect x="336" y="152" width="28" height="26" rx="3" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="350" y="169" text-anchor="middle" class="s-kucuk">G=2</text>
+<rect x="390" y="152" width="58" height="26" rx="3" fill="var(--dia-blok-2)" stroke="var(--line-2)"/>
+<text x="419" y="169" text-anchor="middle" class="s-kucuk">G=2</text>
+<rect x="366" y="146" width="22" height="38" rx="3" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+<text x="377" y="171" text-anchor="middle" class="s-metin" style="font-weight:700">CUT</text>
+<!-- ok: pencere kayar -->
+<path d="M60 196 H840" class="yol-sayisal" marker-end="url(#ok-sayisal)"/>
+<text x="60" y="212" class="s-kucuk">her saatte bir hücre kayar → her hücre sırayla CUT olur; toplam pencere N + 2G + 1 = 21 hücre</text>
+<!-- karar -->
+<text x="60" y="236" class="s-metin">karar: <tspan class="s-mono">x_CUT &gt; α · Z</tspan>  →  bölmesiz eşdeğeri  <tspan class="s-mono">x_CUT · N &gt; α · Σ</tspan>   (Σ = 16 referans hücrenin toplamı, α ≈ 21.9 için N = 16, Pfa = 10⁻⁶)</text>
+
+<!-- alt: uzun darbe -->
+<text x="20" y="268" class="s-baslik">2) Darbe pencereden uzun: kenarlar referans hücrelerine taşar, Z şişer, darbe kendini maskeler</text>
+<rect x="60" y="278" width="780" height="80" fill="var(--dia-panel)" stroke="var(--line)"/>
+<g fill="var(--ink-3)" opacity=".55">
+<rect x="66" y="344" width="22" height="14"/><rect x="96" y="338" width="22" height="20"/><rect x="126" y="346" width="22" height="12"/><rect x="156" y="336" width="22" height="22"/>
+<rect x="726" y="342" width="22" height="16"/><rect x="756" y="336" width="22" height="22"/><rect x="786" y="344" width="22" height="14"/><rect x="816" y="338" width="22" height="20"/>
+</g>
+<g fill="var(--accent)" opacity=".85">
+<rect x="186" y="300" width="22" height="58"/><rect x="216" y="296" width="22" height="62"/><rect x="246" y="298" width="22" height="60"/><rect x="276" y="294" width="22" height="64"/>
+<rect x="306" y="300" width="22" height="58"/><rect x="336" y="296" width="22" height="62"/><rect x="366" y="292" width="22" height="66"/><rect x="396" y="298" width="22" height="60"/>
+<rect x="426" y="294" width="22" height="64"/><rect x="456" y="300" width="22" height="58"/><rect x="486" y="296" width="22" height="62"/><rect x="516" y="298" width="22" height="60"/>
+<rect x="546" y="294" width="22" height="64"/><rect x="576" y="300" width="22" height="58"/><rect x="606" y="296" width="22" height="62"/><rect x="636" y="298" width="22" height="60"/>
+<rect x="666" y="302" width="22" height="56"/><rect x="696" y="306" width="22" height="52"/>
+</g>
+<!-- CUT işareti ve pencere -->
+<rect x="366" y="288" width="22" height="70" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+<rect x="66" y="288" width="772" height="70" fill="none" stroke="var(--ink-3)" stroke-dasharray="4 3"/>
+<!-- şişmiş eşik -->
+<line x1="60" y1="284" x2="840" y2="284" class="spk-filtre"/>
+<text x="836" y="298" text-anchor="end" class="s-kucuk s-kirmizi">T = α·Z darbenin üstüne çıkar → tespit yok (300 örneklik darbe, 21 hücrelik pencere)</text>
+<text x="60" y="378" class="s-kucuk">Çare: darbe uzunluğunda pencere (N ≫ PW), kestirimi darbe süresince <tspan style="font-weight:700">dondurmak</tspan> (gating) ya da yavaş güncellenen ayrı bir gürültü tabanı kestiricisi ({{bolum}} metni). Uzun darbe/CW için Bölüm 23'teki "eşik pratikleri".</text>
+<text x="60" y="394" class="s-kucuk">Renkler: gürültü gri, darbe mavi, eşik altın kesikli, CUT altın çerçeve.</text>
+</svg>

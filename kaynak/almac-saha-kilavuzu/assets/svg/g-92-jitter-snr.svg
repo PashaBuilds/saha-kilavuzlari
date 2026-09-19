@@ -1,0 +1,60 @@
+<svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g92">
+<title id="t-g92">Aperture jitter SNR eğri ailesi: yatay eksen giriş frekansı 100 MHz–10 GHz (logaritmik), düşey eksen SNR tavanı; σ = 50, 100, 200, 500 fs için −20·log10(2π·f·σ) doğruları (frekans iki katına çıkınca 6 dB düşer); yatay çizgiler 14 ve 12 bit ideal kuantizasyon SNR'ı (86.0 ve 74.0 dB); referans senaryo çalışma noktası 1.8 GHz IF, 100 fs → 58.9 dB; direct RF örneklemede 9.4 GHz, 100 fs → 44.6 dB</title>
+<text x="62" y="22" class="s-baslik">Jitter SNR tavanı: SNR_j = −20·log10(2π · f_in · σ_j)</text>
+<path d="M62 320.0 H870" class="izgara"/><text x="56" y="324.0" text-anchor="end" class="s-kucuk">30</text>
+<path d="M62 280.0 H870" class="izgara"/><text x="56" y="284.0" text-anchor="end" class="s-kucuk">40</text>
+<path d="M62 240.0 H870" class="izgara"/><text x="56" y="244.0" text-anchor="end" class="s-kucuk">50</text>
+<path d="M62 200.0 H870" class="izgara"/><text x="56" y="204.0" text-anchor="end" class="s-kucuk">60</text>
+<path d="M62 160.0 H870" class="izgara"/><text x="56" y="164.0" text-anchor="end" class="s-kucuk">70</text>
+<path d="M62 120.0 H870" class="izgara"/><text x="56" y="124.0" text-anchor="end" class="s-kucuk">80</text>
+<path d="M62 80.0 H870" class="izgara"/><text x="56" y="84.0" text-anchor="end" class="s-kucuk">90</text>
+<path d="M62 40.0 H870" class="izgara"/><text x="56" y="44.0" text-anchor="end" class="s-kucuk">100</text>
+<path d="M62.0 40 V320" class="izgara"/>
+<text x="62.0" y="336" text-anchor="middle" class="s-kucuk">100 MHz</text>
+<path d="M183.6 40 V320" class="izgara"/>
+<text x="183.6" y="336" text-anchor="middle" class="s-kucuk">200 MHz</text>
+<path d="M254.8 40 V320" class="izgara"/>
+<path d="M305.2 40 V320" class="izgara"/>
+<path d="M344.4 40 V320" class="izgara"/>
+<text x="344.4" y="336" text-anchor="middle" class="s-kucuk">500 MHz</text>
+<path d="M376.4 40 V320" class="izgara"/>
+<path d="M403.4 40 V320" class="izgara"/>
+<path d="M426.8 40 V320" class="izgara"/>
+<path d="M447.5 40 V320" class="izgara"/>
+<path d="M466.0 40 V320" class="izgara"/>
+<text x="466.0" y="336" text-anchor="middle" class="s-kucuk">1 GHz</text>
+<path d="M587.6 40 V320" class="izgara"/>
+<text x="587.6" y="336" text-anchor="middle" class="s-kucuk">2 GHz</text>
+<path d="M658.8 40 V320" class="izgara"/>
+<path d="M709.2 40 V320" class="izgara"/>
+<path d="M748.4 40 V320" class="izgara"/>
+<text x="748.4" y="336" text-anchor="middle" class="s-kucuk">5 GHz</text>
+<path d="M780.4 40 V320" class="izgara"/>
+<path d="M807.4 40 V320" class="izgara"/>
+<path d="M830.8 40 V320" class="izgara"/>
+<path d="M851.5 40 V320" class="izgara"/>
+<path d="M870.0 40 V320" class="izgara"/>
+<text x="870.0" y="336" text-anchor="middle" class="s-kucuk">10 GHz</text>
+<rect x="62" y="40" width="808" height="280" class="eksen"/>
+<text x="466.0" y="352" text-anchor="middle" class="s-kucuk">giriş frekansı f_in (Hz, log) — fs değil!</text>
+<text x="14" y="180.0" text-anchor="middle" transform="rotate(-90 14 180.0)" class="s-kucuk">SNR (dB)</text>
+<path d="M62 95.8 H870" class="spk-filtre"/>
+<text x="864" y="90.8" text-anchor="end" class="s-kucuk s-altin">14 bit ideal kuantizasyon = 86.0 dB</text>
+<path d="M62 144.0 H870" class="spk-filtre"/>
+<text x="864" y="139.0" text-anchor="end" class="s-kucuk s-altin">12 bit ideal kuantizasyon = 74.0 dB</text>
+<path d="M62.0 79.8L75.7 82.5L89.4 85.2L103.1 87.9L116.8 90.6L130.5 93.3L144.2 96.0L157.9 98.8L171.6 101.5L185.3 104.2L198.9 106.9L212.6 109.6L226.3 112.3L240.0 115.0L253.7 117.7L267.4 120.4L281.1 123.2L294.8 125.9L308.5 128.6L322.2 131.3L335.9 134.0L349.6 136.7L363.3 139.4L377.0 142.1L390.7 144.9L404.4 147.6L418.1 150.3L431.8 153.0L445.5 155.7L459.2 158.4L472.8 161.1L486.5 163.8L500.2 166.6L513.9 169.3L527.6 172.0L541.3 174.7L555.0 177.4L568.7 180.1L582.4 182.8L596.1 185.5L609.8 188.2L623.5 191.0L637.2 193.7L650.9 196.4L664.6 199.1L678.3 201.8L692.0 204.5L705.7 207.2L719.4 209.9L733.1 212.7L746.7 215.4L760.4 218.1L774.1 220.8L787.8 223.5L801.5 226.2L815.2 228.9L828.9 231.6L842.6 234.3L856.3 237.1L870.0 239.8" class="yol-sayisal" style="opacity:1.0"/>
+<text x="108.0" y="82.9" class="s-kucuk s-vurgu">σ = 50 fs</text>
+<path d="M62.0 103.9L75.7 106.6L89.4 109.3L103.1 112.0L116.8 114.7L130.5 117.4L144.2 120.1L157.9 122.8L171.6 125.5L185.3 128.3L198.9 131.0L212.6 133.7L226.3 136.4L240.0 139.1L253.7 141.8L267.4 144.5L281.1 147.2L294.8 150.0L308.5 152.7L322.2 155.4L335.9 158.1L349.6 160.8L363.3 163.5L377.0 166.2L390.7 168.9L404.4 171.7L418.1 174.4L431.8 177.1L445.5 179.8L459.2 182.5L472.8 185.2L486.5 187.9L500.2 190.6L513.9 193.3L527.6 196.1L541.3 198.8L555.0 201.5L568.7 204.2L582.4 206.9L596.1 209.6L609.8 212.3L623.5 215.0L637.2 217.8L650.9 220.5L664.6 223.2L678.3 225.9L692.0 228.6L705.7 231.3L719.4 234.0L733.1 236.7L746.7 239.4L760.4 242.2L774.1 244.9L787.8 247.6L801.5 250.3L815.2 253.0L828.9 255.7L842.6 258.4L856.3 261.1L870.0 263.9" class="yol-sayisal" style="opacity:1.0"/>
+<text x="108.0" y="107.0" class="s-kucuk s-vurgu">σ = 100 fs</text>
+<path d="M62.0 127.9L75.7 130.6L89.4 133.4L103.1 136.1L116.8 138.8L130.5 141.5L144.2 144.2L157.9 146.9L171.6 149.6L185.3 152.3L198.9 155.1L212.6 157.8L226.3 160.5L240.0 163.2L253.7 165.9L267.4 168.6L281.1 171.3L294.8 174.0L308.5 176.8L322.2 179.5L335.9 182.2L349.6 184.9L363.3 187.6L377.0 190.3L390.7 193.0L404.4 195.7L418.1 198.4L431.8 201.2L445.5 203.9L459.2 206.6L472.8 209.3L486.5 212.0L500.2 214.7L513.9 217.4L527.6 220.1L541.3 222.9L555.0 225.6L568.7 228.3L582.4 231.0L596.1 233.7L609.8 236.4L623.5 239.1L637.2 241.8L650.9 244.5L664.6 247.3L678.3 250.0L692.0 252.7L705.7 255.4L719.4 258.1L733.1 260.8L746.7 263.5L760.4 266.2L774.1 269.0L787.8 271.7L801.5 274.4L815.2 277.1L828.9 279.8L842.6 282.5L856.3 285.2L870.0 287.9" class="yol-sayisal" style="opacity:0.75"/>
+<text x="108.0" y="131.1" class="s-kucuk s-vurgu">σ = 200 fs</text>
+<path d="M62.0 159.8L75.7 162.5L89.4 165.2L103.1 167.9L116.8 170.6L130.5 173.3L144.2 176.0L157.9 178.8L171.6 181.5L185.3 184.2L198.9 186.9L212.6 189.6L226.3 192.3L240.0 195.0L253.7 197.7L267.4 200.4L281.1 203.2L294.8 205.9L308.5 208.6L322.2 211.3L335.9 214.0L349.6 216.7L363.3 219.4L377.0 222.1L390.7 224.9L404.4 227.6L418.1 230.3L431.8 233.0L445.5 235.7L459.2 238.4L472.8 241.1L486.5 243.8L500.2 246.6L513.9 249.3L527.6 252.0L541.3 254.7L555.0 257.4L568.7 260.1L582.4 262.8L596.1 265.5L609.8 268.2L623.5 271.0L637.2 273.7L650.9 276.4L664.6 279.1L678.3 281.8L692.0 284.5L705.7 287.2L719.4 289.9L733.1 292.7L746.7 295.4L760.4 298.1L774.1 300.8L787.8 303.5L801.5 306.2L815.2 308.9L828.9 311.6L842.6 314.3L856.3 317.1L870.0 319.8" class="yol-sayisal" style="opacity:0.55"/>
+<text x="108.0" y="162.9" class="s-kucuk s-vurgu">σ = 500 fs</text>
+<circle cx="569.1" cy="204.3" r="5" style="fill:var(--gold);stroke:var(--bg);stroke-width:1.5"/>
+<text x="577.1" y="190.3" text-anchor="start" class="s-kucuk s-altin">referans: IF 1.8 GHz, 100 fs → 58.9 dB</text>
+<circle cx="859.1" cy="261.7" r="5" style="fill:var(--gold);stroke:var(--bg);stroke-width:1.5"/>
+<text x="851.1" y="283.7" text-anchor="end" class="s-kucuk s-altin">direct RF: 9.4 GHz, 100 fs → 44.6 dB</text>
+<circle cx="569.1" cy="260.2" r="5" style="fill:var(--gold);stroke:var(--bg);stroke-width:1.5"/>
+<text x="577.1" y="282.2" text-anchor="start" class="s-kucuk s-altin">kötü saat: 500 fs → 45.0 dB</text>
+<text x="62" y="372" class="s-kucuk">Okuma: f_in 2× → −6 dB; σ 2× → −6 dB. 14 bitin 86 dB'sini 1.8 GHz'te görmek için σ ≈ 4.4 fs gerekir — pratikte erişilmez; jitter GHz girişte baskın terimdir.</text>
+</svg>

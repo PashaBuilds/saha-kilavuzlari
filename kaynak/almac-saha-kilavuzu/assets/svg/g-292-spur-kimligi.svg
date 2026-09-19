@@ -1,0 +1,62 @@
+<svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g292">
+<title id="t-g292">Bir spur'un kimliğini üç hamlede çıkarma: (1) giriş frekansını kaydır — spur kaymıyorsa saat/NCO/DC, aynı yöne k kat kayıyorsa k'ıncı harmonik, ters yöne kayıyorsa katlanmış/interleaving; (2) giriş seviyesini 6 dB düşür — 6 dB düşerse doğrusal kaçak, 12/18 dB düşerse HD2/HD3, düşmezse sinyalden bağımsız; (3) FTW'yi 1 LSB değiştir — kayıyorsa NCO</title>
+<style>
+  .sk .bas { font-family: var(--sans); font-size: 12.5px; font-weight: 700; fill: var(--ink); }
+  .sk .t { font-family: var(--sans); font-size: 11px; fill: var(--ink-2); }
+  .sk .son { font-family: var(--sans); font-size: 11px; font-weight: 600; }
+</style>
+<g class="sk">
+<!-- Panel 1: frekans kaydır -->
+<g transform="translate(10,10)">
+  <rect x="0" y="0" width="285" height="310" rx="8" fill="var(--dia-blok)" stroke="var(--line)"/>
+  <text class="bas" x="14" y="22">1 · Giriş frekansını +Δf kaydır</text>
+  <!-- önce -->
+  <line x1="20" y1="110" x2="270" y2="110" class="eksen"/>
+  <path d="M96 110 L100 40 L104 110Z" class="spk-sinyal"/><text class="t" x="100" y="34" text-anchor="middle">f_in</text>
+  <path d="M158 110 L160 80 L162 110Z" class="spk-image"/>
+  <path d="M218 110 L220 85 L222 110Z" class="spk-image"/>
+  <path d="M48 110 L50 88 L52 110Z" class="spk-image"/>
+  <text class="t" x="20" y="128">önce</text>
+  <!-- sonra -->
+  <line x1="20" y1="210" x2="270" y2="210" class="eksen"/>
+  <path d="M116 210 L120 140 L124 210Z" class="spk-sinyal"/><text class="t" x="120" y="134" text-anchor="middle">f_in + Δf</text>
+  <path d="M198 210 L200 180 L202 210Z" class="spk-image"/><text class="son" x="200" y="226" text-anchor="middle" fill="var(--red)">2Δf → HD2</text>
+  <path d="M208 210 L210 185 L212 210Z" class="spk-image" opacity=".5"/><text class="son" x="230" y="240" text-anchor="middle" fill="var(--red)">−Δf → katlanmış</text>
+  <path d="M48 210 L50 188 L52 210Z" class="spk-image"/><text class="son" x="50" y="226" text-anchor="middle" fill="var(--red)">sabit → saat/NCO/DC</text>
+  <text class="t" x="20" y="262">spur'un kaymasını sinyalin kaymasıyla oranla:</text>
+  <text class="t" x="20" y="278">0 → sinyalden bağımsız · +k → HDk · − → katlanmış/interleaving</text>
+</g>
+<!-- Panel 2: seviye düşür -->
+<g transform="translate(307,10)">
+  <rect x="0" y="0" width="285" height="310" rx="8" fill="var(--dia-blok)" stroke="var(--line)"/>
+  <text class="bas" x="14" y="22">2 · Giriş seviyesini 6 dB düşür</text>
+  <line x1="20" y1="110" x2="270" y2="110" class="eksen"/>
+  <path d="M96 110 L100 40 L104 110Z" class="spk-sinyal"/>
+  <path d="M158 110 L160 80 L162 110Z" class="spk-image"/><path d="M218 110 L220 78 L222 110Z" class="spk-image"/><path d="M48 110 L50 82 L52 110Z" class="spk-image"/>
+  <text class="t" x="20" y="128">önce</text>
+  <line x1="20" y1="210" x2="270" y2="210" class="eksen"/>
+  <path d="M96 210 L100 154 L104 210Z" class="spk-sinyal"/><text class="t" x="100" y="148" text-anchor="middle">−6 dB</text>
+  <path d="M158 210 L160 198 L162 210Z" class="spk-image"/><text class="son" x="160" y="226" text-anchor="middle" fill="var(--red)">−12 dB → HD2</text>
+  <path d="M218 210 L220 204 L222 210Z" class="spk-image"/><text class="son" x="232" y="240" text-anchor="middle" fill="var(--red)">−18 dB → HD3</text>
+  <path d="M48 210 L50 182 L52 210Z" class="spk-image"/><text class="son" x="50" y="226" text-anchor="middle" fill="var(--red)">0 dB → bağımsız</text>
+  <text class="t" x="20" y="262">−6 dB düşerse doğrusal kaçak (LO/saat sızıntısı, crosstalk)</text>
+  <text class="t" x="20" y="278">k·6 dB düşerse k'ıncı derece bozulma</text>
+</g>
+<!-- Panel 3: FTW -->
+<g transform="translate(604,10)">
+  <rect x="0" y="0" width="285" height="310" rx="8" fill="var(--dia-blok)" stroke="var(--line)"/>
+  <text class="bas" x="14" y="22">3 · FTW'yi 1 LSB değiştir</text>
+  <line x1="20" y1="110" x2="270" y2="110" class="eksen"/>
+  <path d="M96 110 L100 40 L104 110Z" class="spk-sinyal"/>
+  <g class="spk-image"><path d="M128 110 L130 86 L132 110Z"/><path d="M158 110 L160 86 L162 110Z"/><path d="M188 110 L190 86 L192 110Z"/><path d="M218 110 L220 86 L222 110Z"/></g>
+  <text class="t" x="20" y="128">önce: düzenli aralıklı çiviler</text>
+  <line x1="20" y1="210" x2="270" y2="210" class="eksen"/>
+  <path d="M96 210 L100 140 L104 210Z" class="spk-sinyal"/>
+  <g class="spk-image"><path d="M138 210 L140 186 L142 210Z"/><path d="M181 210 L183 186 L185 210Z"/><path d="M224 210 L226 186 L228 210Z"/></g>
+  <text class="son" x="180" y="226" text-anchor="middle" fill="var(--red)">aralık değişti → NCO faz kırpma</text>
+  <text class="t" x="20" y="262">NCO spur konumları FTW'nin alt bitlerine bağlıdır;</text>
+  <text class="t" x="20" y="278">ADC/analog kaynaklı spur FTW'den etkilenmez.</text>
+  <text class="t" x="20" y="296">Çözüm: dither aç, P'yi artır (B14).</text>
+</g>
+</g>
+</svg>

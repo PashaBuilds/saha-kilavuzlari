@@ -296,6 +296,9 @@ class Derleyici:
         self.figur_idler = []
         self.widget_idler = []
         self.bekleyen_tablo_sinif = ""
+        self.formul_kayit = []      # (no, id, baslik, ilk_formul_html, bolum_no)
+        self.figur_kayit = []       # (sekil_no, fid, caption_duz, bolum_no)
+        self.widget_kayit = []      # (wid, ad, bolum_no)
 
     def uyar(self, m):
         self.uyarilar.append(m)
@@ -396,6 +399,7 @@ class Derleyici:
         self.sekil_no += 1
         self.say("sema")
         self.figur_idler.append(fid)
+        self.figur_kayit.append((self.sekil_no, fid, re.sub(r"[*`_$]", "", caption).split(". ")[0][:90], self.bolum_no))
         cap = self.inline(caption)
         kls = "sema" + (" kaydir" if "kaydir" in secenek else "")
         return (f'<figure class="{kls}" id="{fid}">{svg}'
@@ -489,6 +493,7 @@ class Derleyici:
                                  f'<dd class="birim">{html.escape(parcalar[2])}</dd>')
             elif s.startswith("o:"):
                 ornek.append(f"<p>{self.inline(s[2:].strip(), False)}</p>")
+        self.formul_kayit.append((self.formul_no, fid, baslik, formuller[0] if formuller else "", self.bolum_no))
         sem = f'<dl class="fk-semboller">{"".join(semboller)}</dl>' if semboller else ""
         orn = (f'<div class="fk-ornek"><span class="fk-ornek-bas">Referans senaryoda</span>{"".join(ornek)}</div>'
                if ornek else "")
@@ -561,6 +566,7 @@ class Derleyici:
         ad = attrs.get("ad", wid)
         self.say("widget")
         self.widget_idler.append(wid)
+        self.widget_kayit.append((wid, ad, self.bolum_no))
         gozlem = self.blocks(govde)
         gozlem = re.sub(r"<ul>(.*?)</ul>", r"<ol>\1</ol>", gozlem, flags=re.S)
         return (f'<div class="widget" id="{html.escape(wid)}" data-widget="{html.escape(wid)}">'
@@ -571,6 +577,37 @@ class Derleyici:
                 'baskıda referans senaryo görüntüsü kullanılır.</p></div></div>'
                 f'<div class="w-alt"><div class="w-sonuc"></div>'
                 f'<div class="w-gozlem"><b>Ne gözlemlemeliyim?</b>{gozlem}</div></div></div>')
+
+    # ---- otomatik ekler ----
+    def sozluk_html(self):
+        def anahtar(t):
+            return t["kisaltma"].translate(TR_MAP).lower()
+        parts = []
+        for tm in sorted(SOZLUK, key=anahtar):
+            en = f' <span class="en">{html.escape(tm.get("en", ""))}</span>' if tm.get("en") else ""
+            tr = f' — {html.escape(tm["tr"])}' if tm.get("tr") else ""
+            b = tm.get("bolum")
+            bag = f' <a href="#bolum-{b}">→ Bölüm {b}</a>' if b not in (None, "") else ""
+            parts.append(f'<dt id="sozluk-{slugify(tm["kisaltma"])}">{html.escape(tm["kisaltma"])}{en}{tr}</dt>'
+                         f'<dd>{self.inline(tm.get("tanim", ""), False)}{bag}</dd>')
+        return f'<dl class="sozluk">{"".join(parts)}</dl>'
+
+    def formul_dizini_html(self):
+        rows = []
+        for no, fid, baslik, fhtml, b in self.formul_kayit:
+            bag = f'<a href="#bolum-{b}">B{b}</a>' if str(b).isdigit() else html.escape(str(b))
+            rows.append(f'<tr><td><a href="#f-{html.escape(fid)}">F.{no}</a></td><td>{html.escape(baslik)}</td>'
+                        f'<td>{fhtml.replace("class=\"f\"", "class=\"f-inline\"")}</td><td>{bag}</td></tr>')
+        return ('<div class="tablo-kap genis"><table class="formul-dizini"><thead><tr><th>No</th><th>Formül</th><th>İfade</th><th>Bölüm</th></tr></thead>'
+                f'<tbody>{"".join(rows)}</tbody></table></div>')
+
+    def gorsel_dizini_html(self):
+        li = []
+        for no, fid, cap, b in self.figur_kayit:
+            li.append(f'<li><a href="#{fid}">Şekil {no}</a> · {html.escape(cap)} <span class="s-kucuk">(B{html.escape(str(b))})</span></li>')
+        wl = [f'<li><a href="#{wid}">{html.escape(wid.upper())}</a> · {html.escape(ad)} <span class="s-kucuk">(B{html.escape(str(b))})</span></li>' for wid, ad, b in self.widget_kayit]
+        return (f'<h4>Şekiller ({len(li)})</h4><ol class="dizin">{"".join(li)}</ol>'
+                f'<h4>İnteraktif widget’lar ({len(wl)})</h4><ul class="dizin">{"".join(wl)}</ul>')
 
     def direktif(self, tur, attr_str, govde):
         attrs = attr_parse(attr_str)
@@ -649,6 +686,14 @@ class Derleyici:
             if m:
                 flush()
                 out.append(self.figur(m.group(1).strip(), m.group(2).strip(), (m.group(3) or "").strip()))
+                i += 1
+                continue
+
+            # otomatik ekler
+            if s in ("{{sozluk}}", "{{formul-dizini}}", "{{gorsel-dizini}}"):
+                flush()
+                out.append({"{{sozluk}}": self.sozluk_html, "{{formul-dizini}}": self.formul_dizini_html,
+                            "{{gorsel-dizini}}": self.gorsel_dizini_html}[s]())
                 i += 1
                 continue
 

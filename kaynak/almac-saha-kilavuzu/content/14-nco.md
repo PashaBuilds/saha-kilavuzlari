@@ -118,6 +118,8 @@ o: P = 12 → en kötü faz spur'u ≈ −72 dBc. Referans senaryoda ADC'nin SFD
 o: A = 16 → genlik kuantizasyon SNR'ı ≈ 98 dB; 14-bit ADC'nin 86 dB'sinin yanında görünmez.
 :::
 
+{{svg:g-142-faz-kirpma-spektrum.svg|Aynı 601 MHz tonu için NCO çıkış spektrumu üç ayarda (hesaplanmış). Üstte P = 8 bit, dither kapalı: faz kırpma hatası periyodik, spektrumda −48 dBc civarında düzenli çiviler. Ortada aynı P ile dither açık: çiviler gürültüye dağılır, taban hafifçe yükselir. Altta P = 14 bit: spur'lar −84 dBc'nin altına iner. Kırmızı kesikli çizgi −6.02·P kestirimi, altın nokta ölçülen en büyük spur.}}
+
 Faz spur'larını dağıtmanın standart hilesi **dither**: kırpılan bitlere
 her saatte küçük bir rastgele sayı eklemek. Hata artık periyodik değil,
 gürültü gibi davranır; çizgiler kaybolur, karşılığında gürültü tabanı biraz

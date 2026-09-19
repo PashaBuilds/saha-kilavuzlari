@@ -1,0 +1,121 @@
+<svg viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t-g290">
+<title id="t-g290">Hata ayıklama karar ağacı: PDW akıyor mu? → saat/link (donanım kolu), spektrum doğru mu? (DDC kolu), tespit/ölçüm doğru mu? (tespit kolu); her yaprakta olası neden ve bölüm numarası</title>
+<style>
+  .ka .soru { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.4; }
+  .ka .yaprak { fill: var(--dia-blok); stroke: var(--line-2); stroke-width: 1.1; }
+  .ka .kotu { fill: var(--red-soft); stroke: var(--red); }
+  .ka .iyi { fill: var(--green-soft); stroke: var(--green); }
+  .ka .t { font-family: var(--sans); font-size: 11.5px; fill: var(--ink); }
+  .ka .t2 { font-family: var(--sans); font-size: 10.5px; fill: var(--ink-2); }
+  .ka .b { font-family: var(--mono); font-size: 9.5px; fill: var(--ink-3); }
+  .ka .e { font-family: var(--sans); font-size: 10px; font-weight: 700; }
+  .ka path, .ka line { stroke: var(--ink-3); stroke-width: 1.2; fill: none; marker-end: url(#ok-ince); }
+</style>
+<g class="ka">
+<!-- kök -->
+<rect class="soru" x="460" y="16" width="180" height="40" rx="8"/>
+<text class="t" x="550" y="34" text-anchor="middle">PDW akıyor mu?</text>
+<text class="t2" x="550" y="48" text-anchor="middle">PDW_COUNT artıyor, sıra no ardışık</text>
+<!-- kök dalları -->
+<path d="M460 36 H300 V80"/><text class="e" x="330" y="70" fill="var(--red)">hayır / hiç</text>
+<path d="M640 36 H800 V80"/><text class="e" x="700" y="70" fill="var(--green)">evet ama yanlış</text>
+<line x1="550" y1="56" x2="550" y2="80"/><text class="e" x="556" y="72" fill="var(--gold)">evet, çok fazla</text>
+
+<!-- SOL KOL: donanım -->
+<rect class="soru" x="200" y="80" width="200" height="40" rx="8"/>
+<text class="t" x="300" y="98" text-anchor="middle">Saat kilitli, JESD link up?</text>
+<text class="t2" x="300" y="112" text-anchor="middle">CLK_STATUS bit0–3</text>
+<path d="M200 100 H120 V150"/><text class="e" x="130" y="142" fill="var(--red)">hayır</text>
+<rect class="yaprak kotu" x="30" y="150" width="180" height="56" rx="6"/>
+<text class="t" x="120" y="168" text-anchor="middle">Referans / PLL / SYSREF</text>
+<text class="t2" x="120" y="182" text-anchor="middle">açılış sırasını baştan koş</text>
+<text class="b" x="120" y="196" text-anchor="middle">B11 · B30</text>
+<line x1="300" y1="120" x2="300" y2="150"/><text class="e" x="306" y="142" fill="var(--green)">evet</text>
+<rect class="soru" x="210" y="150" width="180" height="40" rx="8"/>
+<text class="t" x="300" y="168" text-anchor="middle">ADC verisi canlı mı?</text>
+<text class="t2" x="300" y="182" text-anchor="middle">ham snapshot: rampa/desen testi</text>
+<path d="M210 170 H150 V220"/><text class="e" x="156" y="212" fill="var(--red)">hayır</text>
+<rect class="yaprak kotu" x="60" y="220" width="180" height="56" rx="6"/>
+<text class="t" x="150" y="238" text-anchor="middle">Test deseni açık / lane sırası /</text>
+<text class="t" x="150" y="252" text-anchor="middle">veri biçimi (2's comp) yanlış</text>
+<text class="b" x="150" y="266" text-anchor="middle">B11</text>
+<line x1="300" y1="190" x2="300" y2="220"/><text class="e" x="306" y="212" fill="var(--green)">evet</text>
+<rect class="soru" x="210" y="220" width="180" height="40" rx="8"/>
+<text class="t" x="300" y="238" text-anchor="middle">Tespit bloğu etkin, eşik makul?</text>
+<text class="t2" x="300" y="252" text-anchor="middle">NOISE_EST ≈ beklenen taban</text>
+<path d="M300 260 V300"/>
+<rect class="yaprak kotu" x="210" y="300" width="180" height="70" rx="6"/>
+<text class="t" x="300" y="318" text-anchor="middle">Eşik çok yüksek / birim hatası</text>
+<text class="t" x="300" y="332" text-anchor="middle">min PW &gt; darbe · CFAR kapalı</text>
+<text class="t" x="300" y="346" text-anchor="middle">latency hizası bozuk</text>
+<text class="b" x="300" y="360" text-anchor="middle">B23 · B26 · B30</text>
+
+<!-- ORTA KOL: çok fazla -->
+<rect class="soru" x="460" y="80" width="180" height="40" rx="8"/>
+<text class="t" x="550" y="98" text-anchor="middle">Anten sonlandırılınca da mı?</text>
+<text class="t2" x="550" y="112" text-anchor="middle">Pfa'yı sayaçla ölç</text>
+<line x1="550" y1="120" x2="550" y2="150"/><text class="e" x="556" y="142" fill="var(--green)">evet</text>
+<rect class="yaprak kotu" x="460" y="150" width="180" height="70" rx="6"/>
+<text class="t" x="550" y="168" text-anchor="middle">Eşik birimi dBm/dBFS karışık</text>
+<text class="t" x="550" y="182" text-anchor="middle">α Q formatı · NOISE_EST donuk</text>
+<text class="t" x="550" y="196" text-anchor="middle">histerezis 0 · NCO spur</text>
+<text class="b" x="550" y="210" text-anchor="middle">B14 · B23 · B30</text>
+<path d="M640 100 H720 V150"/><text class="e" x="650" y="142" fill="var(--red)">hayır</text>
+<rect class="yaprak" x="660" y="150" width="130" height="56" rx="6"/>
+<text class="t" x="725" y="168" text-anchor="middle">Ortam gerçek:</text>
+<text class="t2" x="725" y="182" text-anchor="middle">CW/uzun darbe tabanı şişiriyor</text>
+<text class="b" x="725" y="196" text-anchor="middle">B23 (gating)</text>
+<line x1="550" y1="220" x2="550" y2="250"/>
+<rect class="soru" x="460" y="250" width="180" height="40" rx="8"/>
+<text class="t" x="550" y="268" text-anchor="middle">Spektrumda çivi var mı?</text>
+<text class="t2" x="550" y="282" text-anchor="middle">CW ver: f_in kaydır, seviye düşür, FTW±1</text>
+<path d="M460 270 H420 V400 H460"/>
+<rect class="yaprak" x="460" y="380" width="180" height="40" rx="6"/>
+<text class="t" x="550" y="396" text-anchor="middle">kaymıyor → saat / NCO / DC</text>
+<text class="b" x="550" y="410" text-anchor="middle">B9 · B14</text>
+<path d="M550 290 V320"/>
+<rect class="yaprak" x="460" y="320" width="180" height="40" rx="6"/>
+<text class="t" x="550" y="336" text-anchor="middle">k× kayıyor → HDk (doyum)</text>
+<text class="b" x="550" y="350" text-anchor="middle">B5 · B8</text>
+<path d="M640 270 H680 V440 H640"/>
+<rect class="yaprak" x="460" y="430" width="180" height="40" rx="6"/>
+<text class="t" x="550" y="446" text-anchor="middle">ters kayıyor → interleaving / alias</text>
+<text class="b" x="550" y="460" text-anchor="middle">B8 · B9</text>
+
+<!-- SAĞ KOL: yanlış değer -->
+<rect class="soru" x="710" y="80" width="180" height="40" rx="8"/>
+<text class="t" x="800" y="98" text-anchor="middle">Hangi alan yanlış?</text>
+<text class="t2" x="800" y="112" text-anchor="middle">bilinen CW + darbe ile karşılaştır</text>
+<path d="M890 100 H980 V150"/><text class="e" x="900" y="142" fill="var(--gold)">RF</text>
+<rect class="yaprak" x="900" y="150" width="180" height="70" rx="6"/>
+<text class="t" x="990" y="168" text-anchor="middle">aynalı → evrik bölge / IQ swap</text>
+<text class="t" x="990" y="182" text-anchor="middle">sabit ofset → LO/NCO register</text>
+<text class="t" x="990" y="196" text-anchor="middle">orantılı → referans ppm</text>
+<text class="b" x="990" y="210" text-anchor="middle">B6 · B8 · B14 · B30</text>
+<path d="M800 120 V250"/><text class="e" x="806" y="240" fill="var(--gold)">PW / TOA</text>
+<rect class="yaprak" x="710" y="250" width="180" height="70" rx="6"/>
+<text class="t" x="800" y="268" text-anchor="middle">kısa → histerezis / eşik yüksek</text>
+<text class="t" x="800" y="282" text-anchor="middle">uzun → video filtre / birleşme</text>
+<text class="t" x="800" y="296" text-anchor="middle">TOA kayıyor → time walk</text>
+<text class="b" x="800" y="310" text-anchor="middle">B22 · B25 · B26</text>
+<path d="M890 270 H990 V350"/><text class="e" x="900" y="342" fill="var(--gold)">PA</text>
+<rect class="yaprak" x="900" y="350" width="180" height="56" rx="6"/>
+<text class="t" x="990" y="368" text-anchor="middle">dalgalı → scalloping / kanal kenarı</text>
+<text class="t" x="990" y="382" text-anchor="middle">ofsetli → kalibrasyon tablosu</text>
+<text class="b" x="990" y="396" text-anchor="middle">B19 · B25 · B30</text>
+<path d="M800 320 V430"/><text class="e" x="806" y="420" fill="var(--gold)">kayıp PDW</text>
+<rect class="yaprak kotu" x="710" y="430" width="180" height="56" rx="6"/>
+<text class="t" x="800" y="448" text-anchor="middle">FIFO taşması · DMA yavaş</text>
+<text class="t" x="800" y="462" text-anchor="middle">PDW_DROP_CNT artıyor</text>
+<text class="b" x="800" y="476" text-anchor="middle">B26 · B30</text>
+
+<!-- alt: bit-true -->
+<rect class="yaprak iyi" x="300" y="530" width="500" height="60" rx="8"/>
+<text class="t" x="550" y="552" text-anchor="middle" style="font-weight:700">Hâlâ açıklanamıyorsa: bit-true döngüsü</text>
+<text class="t2" x="550" y="568" text-anchor="middle">bilinen I/Q dizisi → snapshot her ara noktada → model ile örnek örnek fark = 0 (B13)</text>
+<text class="t2" x="550" y="582" text-anchor="middle">hizalama (latency, decimation fazı) · yuvarlama modu · tohumlu gürültü</text>
+<path d="M300 370 V560 H300" style="marker-end:none"/>
+<path d="M550 470 V530"/>
+<path d="M800 486 V560 H800" style="marker-end:none"/>
+</g>
+</svg>

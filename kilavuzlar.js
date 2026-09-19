@@ -28,7 +28,7 @@
 //   renk        : Vurgu tonu, 0-360 arası hue açısı
 //                 (kullanılanlar: 285 mor/RF, 160 turkuaz/Ethernet,
 //                  25 amber/Lokal-LLM, 210 mavi/Vivado-PS,
-//                  40 altın/Oryantasyon — boşta: 340 gül)
+//                  40 altın/Oryantasyon, 340 gül/Almaç — boşta: 0, 120)
 //   motif       : Kart deseni: "analog" | "digital" | "sinir" | "blok" | "varsayilan"
 //
 // Yalnızca "yolculuk" türüne özel alanlar:
@@ -152,5 +152,27 @@ window.KILAVUZLAR = [
     yol: "kilavuzlar/vivado-ps/index.html",
     renk: 210,
     motif: "blok",
+  },
+  {
+    sira: 5,
+    slug: "almac",
+    kaynak: "almac-saha-kilavuzu",
+    baslik: "Antenden PDW'ye",
+    aciklama:
+      "Tek bir radar darbesinin antenden PDW FIFO'suna yolculuğu: RF ön uç ve " +
+      "almaç mimarileri, direct RF-sampling ADC, FPGA'da DDC (NCO, mixing, " +
+      "filtre, decimation), FFT ve pencereleme, CFAR tespit, PDW üretimi ve PS " +
+      "kontrol yüzeyi. Yirmi interaktif laboratuvar ve tek bir kurgusal referans " +
+      "senaryoyla — register'a eşik yazan gömülü yazılımcının gözünden.",
+    etiketler: ["Almaç Mimarileri", "Direct RF ADC", "DDC · NCO", "FFT & Pencere", "CFAR & PDW", "20 Widget"],
+    bolum: "31 bölüm + 6 ek",
+    bolumSayi: 37,
+    sema: 90,
+    kelime: 0,
+    boyut: "0 KB",
+    guncelleme: "2026-09-19",
+    yol: "kilavuzlar/almac/index.html",
+    renk: 340,
+    motif: "analog",
   },
 ];
